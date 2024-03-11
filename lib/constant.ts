@@ -3,10 +3,6 @@ export const MAX_UNIT256 =
 
 export const NUMBER_WITH_MAX_TWO_DECIMAL_PLACES = /^(?:\d*\.\d{0,2}|\d+)$/;
 
-export const DEFAULT_SLIPPAGE = "0.5";
-
-export const RATING_LEVELS = ["High", "Moderate", "Low"];
-
 export const SOLDecimals = 9;
 
 export const TimezonesMap: Record<string, any> = {
@@ -54,18 +50,3 @@ export const TzList = (() => {
   }
   return arr;
 })();
-
-export const CurrencyList = [
-  {
-    text: "USD",
-    value: "USD",
-  },
-  {
-    text: "GBP",
-    value: "GBP",
-  },
-  {
-    text: "HKD",
-    value: "HKD",
-  },
-];

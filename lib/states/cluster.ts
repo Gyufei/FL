@@ -36,8 +36,8 @@ export const MainnetCluster: Cluster = {
   rpcEndpoint: MAINNET_RPC_ENDPOINT,
   customRpcEndPoint: null,
   api: {
-    default: EndPointPathMap.ethApi,
-    tokenApi: EndPointPathMap.ethTokens,
+    default: EndPointPathMap.solanaApi,
+    tokenApi: EndPointPathMap.solanaToken,
   },
   marginTokens: [
     "0xd2bB751e65fD6DBb224872ED7Df807f29b0F98aa",
@@ -54,8 +54,8 @@ export const DevnetCluster: Cluster = {
   rpcEndpoint: DEVNET_RPC_ENDPOINT,
   customRpcEndPoint: null,
   api: {
-    default: EndPointPathMap.ethApi,
-    tokenApi: EndPointPathMap.ethTokens,
+    default: EndPointPathMap.solanaApi,
+    tokenApi: EndPointPathMap.solanaToken,
   },
   marginTokens: [
     "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",

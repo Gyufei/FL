@@ -1,5 +1,3 @@
-import { GlobalMessageAtom } from "@/lib/states/global-message";
-import { useSetAtom } from "jotai";
 import { Copy } from "lucide-react";
 
 export default function CopyIcon({ text }: { text: string }) {
@@ -7,13 +5,11 @@ export default function CopyIcon({ text }: { text: string }) {
     if (!text) return;
 
     navigator.clipboard.writeText(text);
-    setGlobalMessage({
+    console.log({
       type: "success",
       message: "Copied to clipboard",
     });
   };
-
-  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
   return (
     <Copy

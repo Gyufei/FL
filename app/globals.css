@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-video);
+}
+
+@layer base {
+  input[type="text"] {
+    @apply !bg-transparent;
+  }
+
+  input,
+  .no-outline {
+    @apply outline-none focus:outline-none focus-visible:outline-none;
+  }
+}
+
+@layer components {
+}
+
+@layer utilities {
+  .no-scroll-bar::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}

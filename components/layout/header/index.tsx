@@ -2,6 +2,7 @@ import Image from "next/image";
 import ConnectBtn from "./connect-btn";
 import NetworkSelect from "./network-select";
 import NavigationBtns from "./navigation-btns";
+import MessageBtn from "./message-btn";
 
 export default function Header() {
   return (
@@ -12,6 +13,7 @@ export default function Header() {
         <div className="flex items-center justify-end space-x-4 md:space-x-6">
           <NetworkSelect />
           <ConnectBtn />
+          <MessageBtn />
         </div>
       </div>
     </>

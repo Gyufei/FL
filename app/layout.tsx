@@ -4,7 +4,7 @@ import { VideoFont } from "./fonts";
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
-import HomeLayout from "@/components/layout/home-layout";
+import MainLayout from "@/components/layout/main-layout";
 import GlobalProvider from "@/components/provider/global-provider";
 import { SolanaWalletProviders } from "@/components/provider/solana-wallets";
 
@@ -25,7 +25,7 @@ export default async function RootLayout({
           <JotaiProvider>
             <SolanaWalletProviders>
               <SWRConfigProvider>
-                <HomeLayout>{children}</HomeLayout>
+                <MainLayout>{children}</MainLayout>
               </SWRConfigProvider>
             </SolanaWalletProviders>
           </JotaiProvider>

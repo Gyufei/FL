@@ -17,7 +17,7 @@ export default function CurrChainLogo() {
         alt="current chain logo"
         className="z-10 bg-white mr-2"
       ></Image>
-      <span className="text-base leading-6 text-[#2D2E33]">
+      <span className="text-base leading-6 text-black">
         {isMainnet ? "Solana" : "EVMs"}
       </span>
     </div>

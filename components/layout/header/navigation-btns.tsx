@@ -44,7 +44,7 @@ function NavigationBtn({
   return (
     <div
       data-active={active}
-      className="flex h-12 w-12 items-center justify-center data-[active=false]:hover:brightness-75 rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-[#E0FF62] data-[active=true]:px-6"
+      className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:brightness-75"
       onClick={onClick}
     >
       <Image src={icon} width={24} height={24} alt={text} />

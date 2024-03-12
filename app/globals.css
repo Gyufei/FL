@@ -6,6 +6,14 @@ body {
   font-family: var(--font-video);
 }
 
+:root {
+  --color-black: #2d2e33;
+  --color-yellow: #e0ff62;
+  --color-green: #4cbf87;
+  --color-red: #ff6262;
+  --color-lightgray: #c0c4cc;
+}
+
 @layer base {
   input[type="text"] {
     @apply !bg-transparent;
@@ -24,4 +32,16 @@ body {
   .no-scroll-bar::-webkit-scrollbar {
     display: none; /* Chrome Safari */
   }
+}
+
+.new-border-image-radius::after {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: -4px;
+  right: -4px;
+  background: linear-gradient(160deg, #f6f7f9 9%, rgba(255, 255, 255, 0) 81%);
+  content: "";
+  z-index: -1;
+  border-radius: 24px;
 }

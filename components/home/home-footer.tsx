@@ -1,6 +1,11 @@
-import Image from "next/image";
+"use client";
+import HoverIcon from "../share/hover-icon";
 
 export default function HomeFooter() {
+  const handleGoTwitter = () => {};
+
+  const handleGoDiscord = () => {};
+
   return (
     <div
       className="flex h-10 items-center justify-between px-[120px]"
@@ -12,19 +17,21 @@ export default function HomeFooter() {
         Copyright @ Sherlock Protocol 2024. All Rights Reserved.
       </div>
       <div className="flex items-center space-x-5">
-        <Image
-          src="/icons/x.svg"
+        <HoverIcon
+          onClick={handleGoTwitter}
+          src="/icons/twitter-gray.svg"
+          hoverSrc="/icons/twitter.svg"
           width={28}
           height={28}
           alt="x"
-          className="cursor-pointer hover:brightness-75"
         />
-        <Image
-          src="/icons/discord.svg"
+        <HoverIcon
+          onClick={handleGoDiscord}
+          src="/icons/discord-gray.svg"
+          hoverSrc="/icons/discord.svg"
           width={28}
           height={28}
           alt="discord"
-          className="cursor-pointer hover:brightness-75"
         />
       </div>
     </div>

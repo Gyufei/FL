@@ -40,7 +40,7 @@ function TotalCard({ value, label }: { value: string; label: string }) {
             "linear-gradient(270deg, rgba(224, 255, 98, 0) 0%, #E0FF62 100%)",
         }}
       ></div>
-      <div className="text-lg leading-5 text-[#99A0AF]">{label}</div>
+      <div className="text-lg leading-5 text-gray">{label}</div>
     </div>
   );
 }

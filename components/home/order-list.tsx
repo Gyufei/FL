@@ -49,7 +49,7 @@ function OrderCard({ orderDetail }: { orderDetail: Record<string, any> }) {
             <div className="text-lg leading-[26px] text-black">
               {orderDetail.name}
             </div>
-            <div className="text-xs leading-[18px] text-[#99A0AF]">
+            <div className="text-xs leading-[18px] text-gray">
               <span>Spread:</span>
               <span>{orderDetail.spread}%</span>
             </div>
@@ -111,6 +111,6 @@ function OrderCard({ orderDetail }: { orderDetail: Record<string, any> }) {
 
 function LabelText({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-xs leading-[18px] text-[#99A0AF]">{children}</div>
+    <div className="text-xs leading-[18px] text-gray">{children}</div>
   );
 }

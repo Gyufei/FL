@@ -47,7 +47,7 @@ function CarouselItem1() {
       >
         <div className="flex flex-col items-start">
           <div className="text-4xl leading-[54px] text-black">Carv</div>
-          <div className="text-sm leading-5 text-[#99A0AF]">
+          <div className="text-sm leading-5 text-gray">
             CARV IS BUILDING THE LARGEST GAMING CREDENTIAL INFRASTRUCTURE
           </div>
           <button className="mt-5 rounded-2xl bg-yellow px-[29px] pt-[13px] pb-[11px] text-black">
@@ -61,7 +61,7 @@ function CarouselItem1() {
               <div className="text-xl leading-[30px] text-green">
                 {buyAmount}
               </div>
-              <div className="text-xs leading-[18px] text-[#99A0AF]">
+              <div className="text-xs leading-[18px] text-gray">
                 Buy now
               </div>
             </div>
@@ -70,7 +70,7 @@ function CarouselItem1() {
               <div className="text-xl leading-[30px] text-red">
                 {sellAmount}
               </div>
-              <div className="text-xs leading-[18px] text-[#99A0AF]">
+              <div className="text-xs leading-[18px] text-gray">
                 Sell now
               </div>
             </div>
@@ -78,11 +78,11 @@ function CarouselItem1() {
 
           <div className="mt-12 flex justify-between">
             <div className="flex items-center text-xs">
-              <div className="mr-2 text-[#99A0AF]">24H VOL</div>
+              <div className="mr-2 text-gray">24H VOL</div>
               <div className="text-black">{dayVol}</div>
             </div>
             <div className="flex items-center text-xs">
-              <div className="mr-2 text-[#99A0AF]">7D Change</div>
+              <div className="mr-2 text-gray">7D Change</div>
               <div className="text-black">{sevenChange}%</div>
             </div>
           </div>

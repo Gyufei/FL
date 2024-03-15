@@ -1,0 +1,29 @@
+import Image from "next/image";
+import { formatNum } from "@/lib/utils/number";
+import { ReactElement } from "react";
+
+export default function ReceiveCard({
+  topText,
+  bottomText,
+  value,
+  tokenLogo,
+}: {
+  topText: ReactElement;
+  bottomText: ReactElement;
+  value: number;
+  tokenLogo: string;
+}) {
+  return (
+    <div className="mt-3  rounded-2xl bg-white p-4">
+      <div className="text-xs leading-[18px] text-gray">{topText}</div>
+      <div className="mt-2 flex justify-between">
+        <div className="text-2xl leading-[36px]">{formatNum(value)}</div>
+        <Image src={tokenLogo} width={28} height={28} alt="stable token" />
+      </div>
+      <div className="mt-[2px] text-xs leading-[18px] text-gray">
+        {bottomText}
+        {/* 1 Diamond = ${offerDetail.pointPrice} */}
+      </div>
+    </div>
+  );
+}

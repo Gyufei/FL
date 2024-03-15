@@ -173,7 +173,7 @@ function CollDot() {
 
 function CollContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-[10px] pl-[26px] leading-6 text-[#99A0AF]">
+    <div className="mt-[10px] pl-[26px] leading-6 text-gray">
       {children}
     </div>
   );

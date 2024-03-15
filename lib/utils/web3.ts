@@ -1,8 +1,8 @@
 export function truncateAddr(
   address: string,
   params = {
-    nPrefix: 4,
-    nSuffix: 4,
+    nPrefix: 3,
+    nSuffix: 3,
   },
 ): string {
   if (!address) return address;

@@ -1,13 +1,13 @@
 import KLineChart from "@/components/marketplace/k-line-chart";
 import MarketTrades from "@/components/marketplace/market-trades";
-import MarketplaceFooter from "@/components/marketplace/marketplace-footer";
+import PageFooter from "@/components/share/page-footer";
 import OfferList from "@/components/marketplace/offer-list";
 import OverviewCard from "@/components/marketplace/overview-card";
 
 export default function Marketplace() {
   return (
-    <div className="w-full">
-      <div className="flex items-stretch">
+    <div className="flex h-[calc(100vh-96px)] w-full flex-col">
+      <div className="flex flex-1 items-stretch">
         <div className="flex w-[368px] flex-col space-y-6 px-6">
           <OverviewCard />
           <KLineChart />
@@ -19,7 +19,7 @@ export default function Marketplace() {
           <MarketTrades />
         </div>
       </div>
-      <MarketplaceFooter />
+      <PageFooter />
     </div>
   );
 }

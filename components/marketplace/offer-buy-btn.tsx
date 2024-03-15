@@ -3,6 +3,7 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 import AskDetail from "./offer-detail.tsx/ask-detail";
+import BidDetail from "./offer-detail.tsx/bid-detail";
 
 export default function OfferBuyBtn({
   offerDetail,
@@ -26,17 +27,16 @@ export default function OfferBuyBtn({
         onClose={() => setDrawerOpen(false)}
         direction="right"
         size={952}
-        className="rounded-l-2xl p-6"
+        className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
           title={`${isSell ? "Ask" : "Bid"} Offer Detail`}
           onClose={() => setDrawerOpen(false)}
         />
-        {!isSell ? (
+        {isSell ? (
           <AskDetail offerDetail={offerDetail} />
         ) : (
-          <div></div>
-          // <BidDetail offerDetail={offerDetail} />
+          <BidDetail offerDetail={offerDetail} />
         )}
       </Drawer>
     </>

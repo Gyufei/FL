@@ -24,7 +24,7 @@ export default function CreateOfferBtn() {
         onClose={() => setDrawerOpen(false)}
         direction="right"
         size={500}
-        className="rounded-l-2xl p-6"
+        className="overflow-y-auto rounded-l-2xl p-6"
       >
         <div className="flex h-full flex-col">
           <DrawerTitle

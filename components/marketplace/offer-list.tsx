@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { IOfferType, OfferTypeSelect } from "./offer-type-select";
-import { ISortDir, ISortField, SortSelect } from "./sort-select";
+import { IOfferType, OfferTypeSelect } from "../share/offer-type-select";
+import { ISortDir, ISortField, SortSelect } from "../share/sort-select";
 import SearchInput from "./search-input";
 import { range } from "lodash";
 import { OfferCard } from "./offer-card";

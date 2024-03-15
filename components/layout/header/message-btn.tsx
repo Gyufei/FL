@@ -48,7 +48,7 @@ export default function MessageBtn() {
         onClose={() => setDrawerOpen(false)}
         direction="right"
         size={500}
-        className="rounded-l-2xl p-6"
+        className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
           title="Notifications"
@@ -99,9 +99,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
 
         <div className="flex items-center text-sm leading-5 text-gray">
           User{" "}
-          <span className="text-black">
-            {truncateAddr(msgDetail.user)}
-          </span>{" "}
+          <span className="text-black">{truncateAddr(msgDetail.user)}</span>{" "}
           just{" "}
           <span
             data-type={msgDetail.type}

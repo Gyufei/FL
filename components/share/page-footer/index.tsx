@@ -1,11 +1,11 @@
 "use client";
 
-import HoverIcon from "../share/hover-icon";
+import HoverIcon from "../hover-icon";
 import FooterSetting from "./footer-setting";
 import LanguageSetting from "./language-setting";
 import { LiveMs } from "./live-ms";
 
-export default function MarketplaceFooter() {
+export default function PageFooter() {
   function handleGoTwitter() {}
 
   return (

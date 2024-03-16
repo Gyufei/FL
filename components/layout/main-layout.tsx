@@ -1,4 +1,5 @@
 import Header from "@/components/layout/header";
+import GlobalActionTip from "../share/global-action-tip";
 
 export default function MainLayout({
   children,
@@ -13,6 +14,8 @@ export default function MainLayout({
           {children}
         </div>
       </div>
+
+      <GlobalActionTip />
     </div>
   );
 }

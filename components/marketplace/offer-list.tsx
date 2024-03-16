@@ -11,7 +11,7 @@ import { OfferCard } from "./offer-card";
 export default function OfferList() {
   const offerDetail = {
     avatar: "/img/avatar-placeholder-2.png",
-    name: "Magic Eden",
+    name: "Points",
     no: 123456,
     progress: 0.5,
     offer: 1800,
@@ -21,7 +21,7 @@ export default function OfferList() {
     pointPrice: 18.84,
     filled: false,
     time: 15,
-    type: "buy",
+    type: "sell",
     seller: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
     buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
     token: {

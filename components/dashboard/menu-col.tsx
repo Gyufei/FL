@@ -1,42 +1,32 @@
+"use client";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export default function MenuCol({
-  activeMenu,
-  setActiveMenu,
-}: {
-  activeMenu: string;
-  setActiveMenu: (m: string) => void;
-}) {
+export default function MenuCol() {
+  const pathname = usePathname();
+
   return (
     <div className="mt-[70px] flex flex-col  space-y-5">
       <MenuIcon
-        onClick={() => setActiveMenu("stocks")}
-        isActive={activeMenu === "stocks"}
+        href="/dashboard/my-stocks"
+        isActive={pathname === "/dashboard/my-stocks"}
       >
         <Image src="/icons/stocks.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
       <MenuIcon
-        onClick={() => setActiveMenu("orders")}
-        isActive={activeMenu === "orders"}
+        href="/dashboard/my-orders"
+        isActive={pathname === "/dashboard/my-orders"}
       >
         <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
-      <MenuIcon
-        onClick={() => setActiveMenu("wallet")}
-        isActive={activeMenu === "wallet"}
-      >
+      <MenuIcon href="#" isActive={pathname === "/dashboard/wallet"}>
         <Image src="/icons/wallet.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
-      <MenuIcon
-        onClick={() => setActiveMenu("stats")}
-        isActive={activeMenu === "stats"}
-      >
+      <MenuIcon href="#" isActive={pathname === "/dashboard/stats"}>
         <Image src="/icons/stats.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
-      <MenuIcon
-        onClick={() => setActiveMenu("referral")}
-        isActive={activeMenu === "referral"}
-      >
+      <MenuIcon href="#" isActive={pathname === "/dashboard/referral"}>
         <Image src="/icons/referral.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
     </div>
@@ -45,20 +35,21 @@ export default function MenuCol({
 
 function MenuIcon({
   isActive,
-  onClick,
+  href,
   children,
 }: {
   isActive: boolean;
-  onClick: () => void;
+  href: string;
   children: React.ReactNode;
 }) {
   return (
-    <div
-      data-active={isActive}
-      className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-yellow"
-      onClick={onClick}
-    >
-      {children}
-    </div>
+    <Link href={href}>
+      <div
+        data-active={isActive}
+        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-yellow"
+      >
+        {children}
+      </div>
+    </Link>
   );
 }

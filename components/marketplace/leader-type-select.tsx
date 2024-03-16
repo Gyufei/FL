@@ -6,19 +6,19 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
-export type ITradeType = "All" | "Sales" | "Listings";
-const TradeTypes: ITradeType[] = ["All", "Sales", "Listings"];
+export type ILeaderType = "Tax Income";
+const TradeTypes: ILeaderType[] = ["Tax Income"];
 
-export function TradeTypeSelect({
+export function LeaderTypeSelect({
   type,
   handleTypeChange,
 }: {
-  type: ITradeType;
-  handleTypeChange: (_t: ITradeType) => void;
+  type: ILeaderType;
+  handleTypeChange: (_t: ILeaderType) => void;
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
-  function handleClickOpt(t: ITradeType) {
+  function handleClickOpt(t: ILeaderType) {
     handleTypeChange(t);
     setPopOpen(false);
   }
@@ -39,7 +39,7 @@ export function TradeTypeSelect({
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="flex w-20 flex-col items-stretch border-0 bg-white p-1 shadow-[0px_4px_8px_9px_rgba(14,4,62,0.08)]"
+        className="flex w-[110px] flex-col items-stretch border-0 bg-white p-1 shadow-[0px_4px_8px_9px_rgba(14,4,62,0.08)]"
       >
         {TradeTypes.map((t) => (
           <div

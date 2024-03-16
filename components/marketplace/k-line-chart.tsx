@@ -56,7 +56,13 @@ export default function KLineChart() {
       </div>
 
       <div className="mt-5">
-        <Image src="/img/chart.jpg" width={280} height={350} alt="chart" />
+        <Image
+          src="/img/chart.jpg"
+          width={280}
+          height={260}
+          className="h-[260px]"
+          alt="chart"
+        />
       </div>
     </div>
   );

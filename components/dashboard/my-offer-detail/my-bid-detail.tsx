@@ -5,12 +5,20 @@ import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/components/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/components/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
+import { useState } from "react";
+import ConfirmSettleDialog from "./confirm-settle-dialog";
 
 export default function MyBidDetail({
   offerDetail,
 }: {
   offerDetail: Record<string, any>;
 }) {
+  const [settleConfirmShow, setSettleConfirmShow] = useState(false);
+
+  function handleSettle() {
+    setSettleConfirmShow(true);
+  }
+
   return (
     <>
       <div className="flex justify-between">
@@ -54,7 +62,10 @@ export default function MyBidDetail({
             tokenLogo={offerDetail.token.logoURI}
           />
 
-          <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+          <button
+            onClick={() => handleSettle()}
+            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+          >
             Settle this offer
           </button>
         </div>
@@ -63,6 +74,11 @@ export default function MyBidDetail({
         <MyDetailCard offerDetail={offerDetail} />
       </div>
       <OfferTabs />
+
+      <ConfirmSettleDialog
+        open={settleConfirmShow}
+        onOpenChange={setSettleConfirmShow}
+      />
     </>
   );
 }

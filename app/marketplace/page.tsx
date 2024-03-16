@@ -1,8 +1,9 @@
-import KLineChart from "@/components/marketplace/k-line-chart";
+import Image from "next/image";
 import MarketTrades from "@/components/marketplace/market-trades";
 import PageFooter from "@/components/share/page-footer";
 import OfferList from "@/components/marketplace/offer-list";
 import OverviewCard from "@/components/marketplace/overview-card";
+import LeaderBoard from "@/components/marketplace/leader-board";
 
 export default function Marketplace() {
   return (
@@ -10,12 +11,15 @@ export default function Marketplace() {
       <div className="flex flex-1 items-stretch">
         <div className="flex w-[368px] flex-col space-y-6 px-6">
           <OverviewCard />
-          <KLineChart />
+          <LeaderBoard />
+          <div>
+            <Image src="/img/point-fi.svg" width={280} height={160} alt="fi" />
+          </div>
         </div>
         <div className="max-h-[734px] flex-1 ">
           <OfferList />
         </div>
-        <div className="w-[328px] px-6">
+        <div className="w-[368px] px-6">
           <MarketTrades />
         </div>
       </div>

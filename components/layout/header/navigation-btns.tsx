@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 export default function NavigationBtns() {
   const pathname = usePathname();
 
-  const isDashboard = pathname === "/dashboard";
-  const isMarketPlace = pathname === "/marketplace";
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isMarketPlace = pathname.startsWith("/marketplace");
 
   return (
     <div className="flex items-center space-x-5">

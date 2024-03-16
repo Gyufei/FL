@@ -14,7 +14,7 @@ export function StableTokenSelectDisplay({
   token: IToken;
   setToken: (_t: IToken) => void;
 }) {
-  const tokens = ["USDC", "DAI", "USDT"];
+  const tokens = ["USDC", "USDC"];
   const [popOpen, setPopOpen] = useState(false);
 
   const handleSelectToken = (t: IToken) => {

@@ -37,7 +37,7 @@ const data = [
     name: "kamino",
     no: "883104",
     progress: 0.11,
-    type: "sell",
+    type: "buy",
     orderType: "Maker",
     eqToken: {
       name: "TBA",

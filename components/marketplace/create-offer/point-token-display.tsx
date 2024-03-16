@@ -14,7 +14,7 @@ export function PointTokenSelectDisplay({
   token: IToken;
   setToken: (_t: IToken) => void;
 }) {
-  const tokens = ["Magic Eden", "Magic Eden", "Magic Eden"];
+  const tokens = ["points"];
   const [popOpen, setPopOpen] = useState(false);
 
   const handleSelectToken = (t: IToken) => {
@@ -33,7 +33,7 @@ export function PointTokenSelectDisplay({
             alt="select token"
             className="mr-2"
           ></Image>
-          <div className="whitespace-pre pr-[4px] text-sm leading-5 text-black">
+          <div className="overflow-x-hidden whitespace-nowrap pr-[4px] text-sm leading-5 text-black">
             {token}
           </div>
           <div className="flex h-6 w-6 items-center justify-center">
@@ -43,7 +43,7 @@ export function PointTokenSelectDisplay({
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="z-[103] flex w-[100px] flex-col items-stretch border-0 bg-white p-2 shadow-[0px_4px_8px_9px_rgba(14,4,62,0.08)]"
+        className="z-[103] flex w-[140px] flex-col items-stretch border-0 bg-white p-2 shadow-[0px_4px_8px_9px_rgba(14,4,62,0.08)]"
       >
         {tokens.map((t) => (
           <div

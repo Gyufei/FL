@@ -1,13 +1,14 @@
+"use client";
 import Image from "next/image";
 import { useState } from "react";
-import { IOfferType, OfferTypeSelect } from "../share/offer-type-select";
+import { IOfferType, OfferTypeSelect } from "../../../components/share/offer-type-select";
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { OrderTable } from "./order-table";
+import { OrderTable } from "../../../components/dashboard/order-table";
 
 type IOrderType = "Maker" | "Taker";
 const Types: Array<IOrderType> = ["Maker", "Taker"];

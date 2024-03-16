@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { ITradeType, TradeTypeSelect } from "./trade-type-select";
 import { TradesTable } from "./trades-table";
 import CreateOfferBtn from "./create-offer-btn";
+import KLineChart from "./k-line-chart";
 
 export default function MarketTrades() {
   const [tradeType, setTradeType] = useState<ITradeType>("All");
@@ -21,11 +21,11 @@ export default function MarketTrades() {
           <div className="leading-6 text-black">Market Trades</div>
         </div>
         <TradeTypeSelect
-          tradeType={tradeType}
+          type={tradeType}
           handleTypeChange={handleTradeTypeChange}
         />
       </div>
-      <div className="no-scroll-bar max-h-[448px] w-full flex-1 overflow-y-auto border-b border-[#d8d8d8] pb-[19px]">
+      <div className="no-scroll-bar max-h-[250px] w-full flex-1 overflow-y-auto border-b border-[#d8d8d8] pb-[10px]">
         <TradesTable />
       </div>
 
@@ -33,9 +33,7 @@ export default function MarketTrades() {
         <CreateOfferBtn />
       </div>
 
-      <div>
-        <Image src="/img/point-fi.svg" width={280} height={160} alt="fi" />
-      </div>
+      <KLineChart />
     </div>
   );
 }

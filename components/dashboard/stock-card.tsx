@@ -1,14 +1,15 @@
 import { formatNum } from "@/lib/utils/number";
 import Image from "next/image";
+import ListStockBtn from "./list-stock-btn";
 
 export default function StockCard({
   stockDetail,
 }: {
   stockDetail: Record<string, any>;
 }) {
-  const isCanList = false;
+  const isCanList = true;
   const isListed = false;
-  const isListing = true;
+  const isListing = false;
   const isCanSettle = false;
 
   return (
@@ -101,12 +102,7 @@ export default function StockCard({
             {stockDetail.date}
           </div>
         )}
-        {isCanList && (
-          <div className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black">
-            <Image src="/icons/upload.svg" width={16} height={16} alt="list" />
-            <span>list</span>
-          </div>
-        )}
+        {isCanList && <ListStockBtn stockDetail={stockDetail} />}
         {isListed && <div className="text-sm leading-5 text-black">Listed</div>}
         {isListing && (
           <div className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black">

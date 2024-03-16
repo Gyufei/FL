@@ -6,19 +6,19 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
-export type ITradeType = "All" | "Sales" | "Listings";
-const TradeTypes: ITradeType[] = ["All", "Sales", "Listings"];
+export type IRangeType = "1h" | "1d" | "30d";
+const TradeTypes: IRangeType[] = ["1h", "1d", "30d"];
 
-export function TradeTypeSelect({
+export function LeaderRangeSelect({
   type,
   handleTypeChange,
 }: {
-  type: ITradeType;
-  handleTypeChange: (_t: ITradeType) => void;
+  type: IRangeType;
+  handleTypeChange: (_t: IRangeType) => void;
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
-  function handleClickOpt(t: ITradeType) {
+  function handleClickOpt(t: IRangeType) {
     handleTypeChange(t);
     setPopOpen(false);
   }

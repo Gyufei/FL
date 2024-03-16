@@ -12,9 +12,8 @@ import SettleBreachFee from "./settle-breach-fee";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNote from "./order-note";
 import FeeDisplay from "./fee-display";
-import { useCreateAskMaker } from "@/lib/hooks/contract/use-create-ask-maker";
 
-export function SellContent({
+export function BuyContent({
   step,
   setStep,
 }: {
@@ -25,29 +24,24 @@ export function SellContent({
   const img2 = "/icons/solana.svg";
   const name = "Magic Eden";
 
-  const [sellPointAmount, setSellPointAmount] = useState("");
-  const [sellToken, setSellToken] = useState<IToken>("Points");
-  const [receiveToken, setReceiveToken] = useState<IToken>("USDC");
-  const [receiveTokenAmount, setReceiveAmount] = useState("");
+  const [payTokenAmount, setPayTokenAmount] = useState("");
+  const [payToken, setPayToken] = useState<IToken>("USDC");
+  const [receivePoint, setReceivePoint] = useState<IToken>("Points");
+  const [receivePointAmount, setReceivePointAmount] = useState("");
 
   const [breachFee, setBreachFee] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
 
   const [note, setNote] = useState("");
 
-  const [sellPrice] = useState(18.4);
+  const [payAmountValue] = useState(18.4);
   const [pointPrice] = useState(221);
 
-  function handleSellPayChange(v: string) {
-    setSellPointAmount(v);
+  function handleBuyPayChange(v: string) {
+    setPayTokenAmount(v);
   }
 
-  function handleNext() {
-    if (!sellPointAmount || !receiveTokenAmount) {
-      return;
-    }
-    setStep(1);
-  }
+  const fee = 0.005;
 
   function handleBack() {
     setStep(0);
@@ -69,64 +63,58 @@ export function SellContent({
     <>
       {step === 0 && (
         <div className="mt-6 flex flex-1 flex-col justify-between">
-          <div className="flex flex-1 flex-col">
-            <InputPanel
-              value={sellPointAmount}
-              onValueChange={handleSellPayChange}
-              topText={<>You will sell</>}
-              bottomText={<>1 Diamond = ${pointPrice}</>}
-              tokenSelect={
-                <PointTokenSelectDisplay
-                  token={sellToken}
-                  setToken={setSellToken}
-                />
-              }
-            />
+          <InputPanel
+            value={payTokenAmount}
+            onValueChange={handleBuyPayChange}
+            topText={<>You pay</>}
+            bottomText={<>${payAmountValue}</>}
+            tokenSelect={
+              <StableTokenSelectDisplay
+                token={payToken}
+                setToken={setPayToken}
+              />
+            }
+          />
 
-            <ArrowBetween className="-my-4 self-center" />
+          <ArrowBetween className="-my-4 self-center" />
 
-            <InputPanel
-              value={receiveTokenAmount}
-              onValueChange={setReceiveAmount}
-              topText={
-                <div className="flex items-center">
-                  You&apos;d like to receive
-                  <WithTip>
-                    When buying Diamonds, you need to wait until the diamonds
-                    convert into the protocol&apos;s tokens before you can
-                    receive tokens.
-                  </WithTip>
-                </div>
-              }
-              bottomText={<>Required collateral ${sellPrice}</>}
-              tokenSelect={
-                <StableTokenSelectDisplay
-                  token={receiveToken}
-                  setToken={setReceiveToken}
-                />
-              }
-            />
+          <InputPanel
+            value={receivePointAmount}
+            onValueChange={setReceivePointAmount}
+            topText={
+              <div className="flex items-center">
+                You&apos;d like to receive
+                <WithTip>
+                  When buying Diamonds, you need to wait until the diamonds
+                  convert into the protocol&apos;s tokens before you can receive
+                  tokens.
+                </WithTip>
+              </div>
+            }
+            isCanInput={false}
+            bottomText={<>1 Diamond = ${pointPrice}</>}
+            tokenSelect={
+              <PointTokenSelectDisplay
+                token={receivePoint}
+                setToken={setReceivePoint}
+              />
+            }
+          />
 
-            <div className="mt-4 flex items-center justify-between space-x-3">
-              <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
-              <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
-            </div>
-
-            <OrderNote value={note} onValueChange={setNote} />
-
-            <FeeDisplay />
+          <div className="mt-4 flex items-center justify-between space-x-3">
+            <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
+            <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
           </div>
 
-          <button
-            disabled={isCreateLoading}
-            onClick={handleNext}
-            className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
-          >
+          <OrderNote value={note} onValueChange={setNote} />
+
+          <FeeDisplay />
+
+          <button className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white">
             Confirm Maker Order
           </button>
         </div>
       )}
-
       {step === 1 && (
         <div className="flex h-full flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
@@ -156,34 +144,34 @@ export function SellContent({
 
             <div className="mt-4 rounded-2xl bg-[#FFF6EE] p-3 text-sm leading-5 text-[#FFA95B]">
               When buying Diamonds, you need to wait until the diamonds convert
-              into the protocol`&apos;`s tokens before you can receive tokens.
+              into the protocol&apos;s tokens before you can receive tokens.
             </div>
 
             <div className="mt-4 mb-3 text-sm leading-5 text-gray">
-              You are selling{" "}
+              You are buying{" "}
               <span className="text-black">
-                {sellPointAmount} {sellToken}
+                {receivePointAmount} {receivePoint}
               </span>{" "}
               diamonds for{" "}
               <span className="text-black">
-                {receiveTokenAmount} {receiveToken}
+                {payTokenAmount} {payToken}
               </span>
             </div>
 
             <div className="flex h-12 items-center justify-between border-b border-[#eee]">
               <div className="text-sm leading-5 text-gray">Offer Type</div>
-              <div className="flex h-5 items-center rounded bg-[#FFEFEF] px-[10px] text-[10px] leading-[16px] text-red">
-                Selling
+              <div className="flex h-5 items-center rounded bg-[#EDF8F4] px-[10px] text-[10px] leading-[16px] text-green">
+                Buying
               </div>
             </div>
 
             <div className="flex h-12 items-center justify-between border-b border-[#eee]">
               <div className="flex items-center space-x-1 text-sm leading-5 text-gray">
-                Selling Amount
+                Buy Amount
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center text-xs leading-[18px] text-black">
-                {sellPointAmount}
+                {receivePointAmount}
               </div>
             </div>
 
@@ -193,7 +181,7 @@ export function SellContent({
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-                <span>{receiveTokenAmount}</span>
+                <span>{payTokenAmount}</span>
                 <Image
                   src="/icons/usdc.svg"
                   width={16}
@@ -209,7 +197,7 @@ export function SellContent({
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center text-xs leading-[18px]">
-                ${sellPrice}
+                ${pointPrice}
               </div>
             </div>
 
@@ -222,17 +210,11 @@ export function SellContent({
 
             <div className="flex h-12 items-center justify-between">
               <div className="flex items-center space-x-1 text-sm leading-5 text-gray">
-                Collateral
+                Platform Fee
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-                <span>{receiveTokenAmount}</span>
-                <Image
-                  src="/icons/usdc.svg"
-                  width={16}
-                  height={16}
-                  alt="token"
-                />
+                <span>{fee * 100}%</span>
               </div>
             </div>
           </div>
@@ -247,7 +229,7 @@ export function SellContent({
               onClick={handleDeposit}
               className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-yellow text-black"
             >
-              Deposit {receiveTokenAmount} {receiveToken}
+              Deposit {payTokenAmount} {payToken}
             </button>
           </div>
         </div>

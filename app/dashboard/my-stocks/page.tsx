@@ -1,15 +1,21 @@
+"use client";
 import { useState } from "react";
-import { ISortDir, ISortField, SortSelect } from "../share/sort-select";
+import {
+  ISortDir,
+  ISortField,
+  SortSelect,
+} from "../../../components/share/sort-select";
 import { range } from "lodash";
-import StockCard from "./stock-card";
+import StockCard from "../../../components/dashboard/stock-card";
 
 export default function MyStocks() {
   const stockDetail = {
+    id: 1029831,
     avatar: "/img/avatar-placeholder-2.png",
     token: {
       logoURI: "/icons/solana.svg",
     },
-    name: "Magic Eden",
+    name: "Points",
     no: 123456,
     offer: 644,
     offerPrice: 0.0232,
@@ -22,7 +28,7 @@ export default function MyStocks() {
       logoURI: "/icons/usdc.svg",
     },
     type: "sell",
-    date: '21:01, Feb 2 2023',
+    date: "21:01, Feb 2 2023",
   };
 
   const [sortField, setSortField] = useState<ISortField>("Collateral");

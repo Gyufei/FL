@@ -5,6 +5,7 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OfferTabs from "./offer-tabs";
+import OrderFillDialog from "./order-fill-dialog";
 
 export default function AskDetail({
   offerDetail,
@@ -13,6 +14,12 @@ export default function AskDetail({
 }) {
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
+
+  const [orderFillDialog, setOrderFillDialog] = useState(false);
+
+  function handleConfirmOrder() {
+    setOrderFillDialog(true);
+  }
 
   return (
     <>
@@ -55,7 +62,10 @@ export default function AskDetail({
             </>
           ) : (
             <>
-              <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white">
+              <button
+                onClick={handleConfirmOrder}
+                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
+              >
                 Confirm Maker Order
               </button>
               <div className="mt-3 text-xs leading-5 text-gray">
@@ -73,6 +83,10 @@ export default function AskDetail({
         <DetailCard offerDetail={offerDetail} />
       </div>
       <OfferTabs />
+      <OrderFillDialog
+        open={orderFillDialog}
+        onOpenChange={(val) => setOrderFillDialog(val)}
+      />
     </>
   );
 }

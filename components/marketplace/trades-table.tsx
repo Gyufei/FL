@@ -43,7 +43,7 @@ const data = [
   },
 ];
 
-const trades = new Array(10).fill(data).flat();
+const trades = new Array(2).fill(data).flat().slice(0, 5);
 
 function formatTime(seconds: number) {
   const secs = seconds % 60;

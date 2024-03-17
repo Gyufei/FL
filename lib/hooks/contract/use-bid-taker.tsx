@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import useTadleProgram from "../use-tadle-program";
 import useTxStatus from "./use-tx-status";
-import {
-  PublicKey,
-  LAMPORTS_PER_SOL,
-  Keypair,
-  SystemProgram,
-} from "@solana/web3.js";
+import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useClusterConfig } from "../common/use-cluster-config";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -16,22 +11,18 @@ import {
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
 
-export function useCreateAskMaker() {
+export function useBidTaker({
+  preOrder,
+  makerStr,
+}: {
+  preOrder: string;
+  makerStr: string;
+}) {
   const { publicKey: account } = useWallet();
   const { clusterConfig } = useClusterConfig();
   const { program } = useTadleProgram();
 
-  const writeAction = async ({
-    sellPointAmount,
-    receiveTokenAmount,
-    breachFee,
-    taxForSub,
-  }: {
-    sellPointAmount: number;
-    receiveTokenAmount: number;
-    breachFee: number;
-    taxForSub: number;
-  }) => {
+  const writeAction = async ({ receivePoint }: { receivePoint: number }) => {
     const tokenProgram = TOKEN_PROGRAM_ID;
     const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
     const authority = account;
@@ -50,33 +41,25 @@ export function useCreateAskMaker() {
     );
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
 
-    const maker = PublicKey.findProgramAddressSync(
-      [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
-      program.programId,
-    )[0];
-    const order = PublicKey.findProgramAddressSync(
+    const perOrder = new PublicKey(preOrder);
+    const maker = new PublicKey(makerStr);
+
+    const orderA = PublicKey.findProgramAddressSync(
       [Buffer.from("order"), seedAccount.publicKey.toBuffer()],
       program.programId,
     )[0];
 
+    // Bid Taker: 1000 USDC -> 200 point
     const res = await program.methods
-      .createMaker(
-        new BN(sellPointAmount),
-        new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
-        new BN(breachFee),
-        new BN(taxForSub),
-        false,
-        {
-          ask: {},
-        },
-      )
+      .createTaker(new BN(receivePoint))
       .accounts({
-        authority,
-        seedAccount: seedAccount.publicKey,
-        marketPlace,
+        authority: authority,
         systemConfig,
+        marketPlace,
+        seedAccount: seedAccount.publicKey,
+        order: orderA,
+        preOrder: perOrder,
         maker,
-        order,
         userTokenAccount: userUsdcTokenAccount,
         poolTokenAccount: poolUsdcTokenAccount,
         tokenMint: usdcTokenMint,

@@ -1,9 +1,9 @@
 import Image from "next/image";
-import MarketTrades from "@/components/marketplace/market-trades";
-import PageFooter from "@/components/share/page-footer";
-import OfferList from "@/components/marketplace/offer-list";
-import OverviewCard from "@/components/marketplace/overview-card";
-import LeaderBoard from "@/components/marketplace/leader-board";
+import MarketTrades from "@/app/marketplace/market-trades";
+import PageFooter from "@/app/_page-footer";
+import OfferList from "@/app/marketplace/offer-list";
+import OverviewCard from "@/app/marketplace/overview-card";
+import LeaderBoard from "@/app/marketplace/leader-board";
 
 export default function Marketplace() {
   return (

@@ -16,7 +16,7 @@ body {
 }
 
 @layer base {
-  input[type="text"] {
+  input[type="text"]:not(:disabled) {
     @apply !bg-transparent;
   }
 

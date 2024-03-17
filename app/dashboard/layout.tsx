@@ -1,6 +1,6 @@
-import MenuCol from "@/components/dashboard/menu-col";
-import StockInfo from "@/components/dashboard/stock-info";
-import PageFooter from "@/components/share/page-footer";
+import MenuCol from "@/app/dashboard/menu-col";
+import OverviewInfo from "@/app/dashboard/overview-info";
+import PageFooter from "@/app/_page-footer";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +11,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         <div className="w-[368px]">
-          <StockInfo />
+          <OverviewInfo />
         </div>
       </div>
       <PageFooter />

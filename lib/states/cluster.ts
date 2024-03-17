@@ -25,7 +25,16 @@ interface Cluster {
     tokenApi: string;
   };
   marginTokens: Array<string>;
-  program: Record<string, any>;
+  program: {
+    tadleProgram: string;
+    systemConfig: string;
+    marketPlace: string;
+    usdcTokenMint: string;
+    pointTokenMint: string;
+    poolUsdcTokenAccount: string;
+    poolPointsTokenAccount: string;
+    poolTokenAuthority: string;
+  };
 }
 
 export const MainnetCluster: Cluster = {

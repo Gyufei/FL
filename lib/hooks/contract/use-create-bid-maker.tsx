@@ -16,19 +16,19 @@ import {
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
 
-export function useCreateAskMaker() {
+export function useCreateBidMaker() {
   const { publicKey: account } = useWallet();
   const { clusterConfig } = useClusterConfig();
   const { program } = useTadleProgram();
 
   const writeAction = async ({
-    sellPointAmount,
-    receiveTokenAmount,
+    payTokenAmount,
+    receivePointAmount,
     breachFee,
     taxForSub,
   }: {
-    sellPointAmount: number;
-    receiveTokenAmount: number;
+    payTokenAmount: number;
+    receivePointAmount: number;
     breachFee: number;
     taxForSub: number;
   }) => {
@@ -50,24 +50,27 @@ export function useCreateAskMaker() {
     );
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
 
-    const maker = PublicKey.findProgramAddressSync(
+    const bidMaker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
       program.programId,
     )[0];
-    const order = PublicKey.findProgramAddressSync(
+    const bidMakerOrder = PublicKey.findProgramAddressSync(
       [Buffer.from("order"), seedAccount.publicKey.toBuffer()],
       program.programId,
     )[0];
 
+    // 5000 usdc => 1000 points
+    // settle_breach_fee: 50% => 5000
+    // each_trade_tax: 3% => 300
     const res = await program.methods
       .createMaker(
-        new BN(sellPointAmount),
-        new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
+        new BN(receivePointAmount),
+        new BN(payTokenAmount * LAMPORTS_PER_SOL),
         new BN(breachFee),
         new BN(taxForSub),
         false,
         {
-          ask: {},
+          bid: {},
         },
       )
       .accounts({
@@ -75,8 +78,8 @@ export function useCreateAskMaker() {
         seedAccount: seedAccount.publicKey,
         marketPlace,
         systemConfig,
-        maker,
-        order,
+        maker: bidMaker,
+        order: bidMakerOrder,
         userTokenAccount: userUsdcTokenAccount,
         poolTokenAccount: poolUsdcTokenAccount,
         tokenMint: usdcTokenMint,

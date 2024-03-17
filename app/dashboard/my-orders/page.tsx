@@ -8,7 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { OrderTable } from "../../../components/dashboard/order-table";
+import { OrderTable } from "./order-table";
 
 type IOrderType = "Maker" | "Taker";
 const Types: Array<IOrderType> = ["Maker", "Taker"];

@@ -1,4 +1,4 @@
-import Header from "@/app/_header";
+import Header from "@/app/_page-layout/_header";
 import GlobalActionTip from "../components/share/global-action-tip";
 
 export default function MainLayout({

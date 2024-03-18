@@ -1,4 +1,4 @@
-import HoverIcon from "../../components/share/hover-icon";
+import HoverIcon from "../../../components/share/hover-icon";
 
 export default function LanguageSetting() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HoverIcon from "../../components/share/hover-icon";
+import HoverIcon from "../../../components/share/hover-icon";
 
 export default function FooterSetting() {
   const [open] = useState(false);

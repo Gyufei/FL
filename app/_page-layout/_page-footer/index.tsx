@@ -1,6 +1,6 @@
 "use client";
 
-import HoverIcon from "../../components/share/hover-icon";
+import HoverIcon from "../../../components/share/hover-icon";
 import FooterSetting from "./footer-setting";
 import LanguageSetting from "./language-setting";
 import { LiveMs } from "./live-ms";

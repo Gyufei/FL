@@ -1,6 +1,6 @@
 import MenuCol from "@/app/dashboard/menu-col";
 import OverviewInfo from "@/app/dashboard/overview-info";
-import PageFooter from "@/app/_page-footer";
+import PageFooter from "@/app/_page-layout/_page-footer";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   return (

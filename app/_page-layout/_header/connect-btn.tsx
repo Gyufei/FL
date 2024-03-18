@@ -1,11 +1,8 @@
 "use client";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-
-import { Skeleton } from "../../components/ui/skeleton";
-
+import { Skeleton } from "../../../components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
 import { useCallback, useEffect, useState } from "react";
 import { truncateAddr } from "@/lib/utils/web3";
 import WalletSelectDialog, {
@@ -13,6 +10,7 @@ import WalletSelectDialog, {
 } from "@/components/share/wallet-select-dialog";
 import toPubString from "@/lib/utils/pub-string";
 import { useSetAtom } from "jotai";
+import { SignInBtn } from "./sign-in-btn";
 
 export default function ConnectBtn() {
   const setWalletSelectDialogVisible = useSetAtom(
@@ -80,20 +78,10 @@ export default function ConnectBtn() {
           <br /> that you&apos;re the owner of the connected <br />
           address
         </div>
-        <SignIn />
+        <SignInBtn />
         <Disconnect />
       </DialogContent>
     </Dialog>
-  );
-}
-
-function SignIn() {
-  return (
-    <div className="mt-5 w-full">
-      <button className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black">
-        Sign in
-      </button>
-    </div>
   );
 }
 

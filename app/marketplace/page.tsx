@@ -1,6 +1,6 @@
 import Image from "next/image";
 import MarketTrades from "@/app/marketplace/market-trades";
-import PageFooter from "@/app/_page-footer";
+import PageFooter from "@/app/_page-layout/_page-footer";
 import OfferList from "@/app/marketplace/offer-list";
 import OverviewCard from "@/app/marketplace/overview-card";
 import LeaderBoard from "@/app/marketplace/leader-board";

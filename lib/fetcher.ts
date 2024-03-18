@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+"use client";
+
 export async function plainFetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
@@ -22,8 +25,51 @@ export async function plainFetcher(
 export default async function fetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
+  skipToken?: boolean,
 ) {
-  const res = await plainFetcher(input, init);
-  const jsonRes = await res.json();
-  return jsonRes?.data || jsonRes;
+  let newInit = init;
+  if (!skipToken) {
+    const token = localStorage.get("access_token");
+    if (!token) {
+      return null;
+    }
+
+    newInit = {
+      ...init,
+      headers: {
+        ...init?.headers,
+        Authorization: token,
+      },
+    };
+  }
+
+  const res = await fetch(input, newInit);
+
+  if (!res.ok) {
+    const error = new Error(
+      "An error occurred while fetching the data.",
+    ) as any;
+
+    if (res.status === 401) {
+      return null;
+    }
+
+    if (res.status === 422) {
+      error.info = "params error, sign failed";
+    }
+
+    if (!error.info) {
+      const resBody = await res.text();
+      const errorTip =
+        resBody.length > 100 ? "Failed: An error occurred" : resBody;
+      error.info = errorTip;
+    }
+
+    error.status = res.status;
+
+    throw error;
+  }
+
+  const json = await res.json();
+  return json?.data || json;
 }

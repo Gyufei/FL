@@ -9,7 +9,7 @@ import GlobalProvider from "@/components/provider/global-provider";
 import { SolanaWalletProviders } from "@/components/provider/solana-wallets";
 
 export const metadata = {
-  title: "Poince",
+  title: "Tadle",
   description: "",
 };
 

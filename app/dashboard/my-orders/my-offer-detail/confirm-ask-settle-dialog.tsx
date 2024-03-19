@@ -5,22 +5,22 @@ import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle";
+import { IOrder } from "@/lib/types/order";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
 
 export default function ConfirmAskSettleDialog({
   open,
   onOpenChange,
-  offerDetail,
+  order,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  offerDetail: Record<string, any>;
+  order: IOrder;
 }) {
-  const askOfferNo = 112093871;
-  const required = 64;
-  const value = 8845110;
-  const tokenLogo = "/icons/point.svg";
+  const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
 
-  const [orderType] = useState<"Maker" | "Taker">("Maker");
+  const [orderRole] = useState<"Maker" | "Taker">("Maker");
+
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
 
@@ -34,22 +34,26 @@ export default function ConfirmAskSettleDialog({
         <div className="mt-[30px] w-full">
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">Ask Offer No.</div>
-            <div className="text-sm leading-5 text-black">#{askOfferNo}</div>
+            <div className="text-sm leading-5 text-black">
+              #{order.order_id}
+            </div>
           </div>
           <div className="mt-[30px] flex justify-between">
             <div className="text-sm leading-5 text-gray">Your Role</div>
             <div
-              data-type={orderType}
+              data-type={orderRole}
               className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
             >
-              {orderType}
+              {orderRole}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
             <div className="text-sm leading-5 text-gray">
               Total Settlement Required
             </div>
-            <div className="text-sm leading-5 text-black">{required} $XXX</div>
+            <div className="text-sm leading-5 text-black">
+              {formatNum(amount)} ${formatNum(tokenTotalPrice)}
+            </div>
           </div>
 
           <div className="mt-5 rounded-2xl bg-[#fafafa] p-4">
@@ -57,9 +61,11 @@ export default function ConfirmAskSettleDialog({
               You&apos;re going to settle
             </div>
             <div className="mt-2 flex justify-between">
-              <div className="text-2xl leading-[36px]">{formatNum(value)}</div>
+              <div className="text-2xl leading-[36px]">
+                {formatNum(order.points)}
+              </div>
               <Image
-                src={tokenLogo}
+                src={orderPointInfo.logoURI}
                 width={28}
                 height={28}
                 alt="stable token"
@@ -84,17 +90,17 @@ export default function ConfirmAskSettleDialog({
             </div>
           </div>
 
-          {orderType === "Taker" && (
+          {orderRole === "Taker" && (
             <ConfirmAskTakerSettleBtn
-              orderStr={offerDetail.order}
-              makerStr={offerDetail.maker}
-              preOrderStr={offerDetail.preOrder}
+              orderStr={order.order}
+              makerStr={order.maker_id}
+              preOrderStr={order.pre_order}
             />
           )}
-          {orderType === "Maker" && (
+          {orderRole === "Maker" && (
             <ConfirmAskMakerSettleBtn
-              orderStr={offerDetail.order}
-              makerStr={offerDetail.maker}
+              orderStr={order.order}
+              makerStr={order.maker_id}
             />
           )}
         </div>

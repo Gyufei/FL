@@ -22,7 +22,6 @@ export default function ReceiveCard({
       </div>
       <div className="mt-[2px] text-xs leading-[18px] text-gray">
         {bottomText}
-        {/* 1 Diamond = ${offerDetail.pointPrice} */}
       </div>
     </div>
   );

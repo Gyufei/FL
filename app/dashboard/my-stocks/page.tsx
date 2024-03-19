@@ -6,12 +6,10 @@ import {
   SortSelect,
 } from "../../../components/share/sort-select";
 import StockCard from "./stock-card";
-import { useOrders } from "@/lib/hooks/api/use-orders";
+import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 
 export default function MyStocks() {
-  const { data: orders } = useOrders({
-    marketplaceId: "AzFbdob6LGXhoudr9cQvmiGJUTAohTPxDdCghUABPXmb",
-  });
+  const { data: orders } = useMyOrders();
 
   const [sortField, setSortField] = useState<ISortField>("Collateral");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");

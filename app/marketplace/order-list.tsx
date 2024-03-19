@@ -13,7 +13,7 @@ import {
 } from "../../components/share/sort-select";
 import SearchInput from "./search-input";
 import { OrderCard } from "./order-card";
-import { useOrders } from "@/lib/hooks/api/use-orders";
+import { useMarketplaceOrders } from "@/lib/hooks/api/use-marketplace-orders";
 import { IMarketPlace } from "@/lib/types/marketplace";
 
 export default function OrderList({
@@ -21,7 +21,7 @@ export default function OrderList({
 }: {
   marketplace: IMarketPlace;
 }) {
-  const { data: orders } = useOrders({
+  const { data: orders } = useMarketplaceOrders({
     marketplaceId: marketplace.market_place_id,
   });
 

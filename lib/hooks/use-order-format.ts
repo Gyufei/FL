@@ -2,7 +2,7 @@ import NP from "number-precision";
 import { IOrder } from "../types/order";
 import { useMakerDetail } from "./api/use-maker-detail";
 // import { useTokensInfo } from "./api/use-token-info";
-import { useOrders } from "./api/use-orders";
+import { useMarketplaceOrders } from "./api/use-marketplace-orders";
 import { useMemo } from "react";
 import { IToken } from "../types/token";
 import { formatTimeDuration } from "../utils/time";
@@ -12,7 +12,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     makerId: order.maker_id,
   });
 
-  const { data: orders } = useOrders({
+  const { data: orders } = useMarketplaceOrders({
     marketplaceId: order.marketplace?.market_place_id || "",
   });
 
@@ -71,6 +71,14 @@ export function useOrderFormat({ order }: { order: IOrder }) {
 
   const isFilled = order.used_points === order.points;
 
+  function getOrigin(order: IOrder, defaultValue: string) {
+    if (order.preOrderDetail) {
+      return getOrigin(order.preOrderDetail, order.pre_order);
+    } else {
+      return defaultValue;
+    }
+  }
+
   return {
     isFilled,
     amount,
@@ -90,5 +98,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     makerDetail,
     preOrderMakerDetail,
     subOrders,
+    getOrigin,
   };
 }

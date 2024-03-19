@@ -7,12 +7,23 @@ import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import { useState } from "react";
 import ConfirmBidSettleDialog from "./confirm-bid-settle-dialog";
+import { IOrder } from "@/lib/types/order";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
 
-export default function MyBidDetail({
-  offerDetail,
-}: {
-  offerDetail: Record<string, any>;
-}) {
+export default function MyBidDetail({ order }: { order: IOrder }) {
+  const {
+    tokenTotalPrice,
+    progress,
+    offerLogo,
+    forLogo,
+    pointPerPrice,
+    amount,
+    orderTokenInfo,
+    orderPointInfo,
+  } = useOrderFormat({
+    order,
+  });
+
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   function handleSettle() {
@@ -25,19 +36,19 @@ export default function MyBidDetail({
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={offerDetail.avatar}
-            img2={offerDetail.token.logoURI}
-            name={offerDetail.name}
-            no={offerDetail.no}
-            progress={offerDetail.progress}
+            img1={offerLogo}
+            img2={forLogo}
+            name={order.marketplace.market_place_name}
+            no={order.order_id}
+            progress={progress}
           />
 
           <SwapItemPanel
             className="mt-5"
             topText={<>You have to pay</>}
-            bottomText={<>1 Diamond = ${offerDetail.pointPrice}</>}
-            value={offerDetail.offer}
-            tokenLogo={offerDetail.stableToken.logoURI}
+            bottomText={<>1 Diamond = ${pointPerPrice}</>}
+            value={String(amount)}
+            tokenLogo={orderTokenInfo.logoURI}
             onValueChange={() => {}}
             isCanInput={false}
           />
@@ -47,7 +58,7 @@ export default function MyBidDetail({
           <SwapItemPanel
             onValueChange={() => {}}
             isCanInput={false}
-            bottomText={<>~${formatNum(offerDetail.offerValue)} </>}
+            bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             topText={
               <div className="flex items-center">
                 You will receive
@@ -58,8 +69,8 @@ export default function MyBidDetail({
                 </WithTip>
               </div>
             }
-            value={offerDetail.for}
-            tokenLogo={offerDetail.token.logoURI}
+            value={order.points}
+            tokenLogo={orderPointInfo.logoURI}
           />
 
           <button
@@ -71,12 +82,12 @@ export default function MyBidDetail({
         </div>
 
         {/* right card */}
-        <MyDetailCard offerDetail={offerDetail} />
+        <MyDetailCard order={order} />
       </div>
       {/* <OrderTabs /> */}
 
       <ConfirmBidSettleDialog
-        offerDetail={offerDetail}
+        order={order}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
       />

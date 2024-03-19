@@ -1,18 +1,29 @@
 import { formatNum } from "@/lib/utils/number";
 import OfferInfo from "@/app/marketplace/offer-detail.tsx/offer-info";
-// import OrderTabs from "@/app/marketplace/offer-detail.tsx/order-tabs";
+import OrderTabs from "@/app/marketplace/offer-detail.tsx/order-tabs";
 import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import ConfirmAskSettleDialog from "./confirm-ask-settle-dialog";
 import { useState } from "react";
+import { IOrder } from "@/lib/types/order";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
 
-export default function MyBidDetail({
-  offerDetail,
-}: {
-  offerDetail: Record<string, any>;
-}) {
+export default function MyAskDetail({ order: order }: { order: IOrder }) {
+  const {
+    tokenTotalPrice,
+    progress,
+    offerLogo,
+    forLogo,
+    pointPerPrice,
+    amount,
+    orderTokenInfo,
+    orderPointInfo,
+  } = useOrderFormat({
+    order,
+  });
+
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   return (
@@ -21,19 +32,19 @@ export default function MyBidDetail({
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={offerDetail.avatar}
-            img2={offerDetail.token.logoURI}
-            name={offerDetail.name}
-            no={offerDetail.no}
-            progress={offerDetail.progress}
+            img1={offerLogo}
+            img2={forLogo}
+            name={order.marketplace.market_place_name}
+            no={order.order_id}
+            progress={progress}
           />
 
           <SwapItemPanel
             className="mt-5"
             topText={<>You have to sell</>}
-            bottomText={<>~${formatNum(offerDetail.offerValue)} </>}
-            value={offerDetail.offer}
-            tokenLogo={offerDetail.token.logoURI}
+            bottomText={<>~${formatNum(tokenTotalPrice)} </>}
+            value={order.points}
+            tokenLogo={orderPointInfo.logoURI}
             onValueChange={() => {}}
             isCanInput={false}
           />
@@ -43,7 +54,7 @@ export default function MyBidDetail({
           <SwapItemPanel
             onValueChange={() => {}}
             isCanInput={false}
-            bottomText={<>1 Diamond = ${offerDetail.pointPrice}</>}
+            bottomText={<>1 Diamond = ${pointPerPrice}</>}
             topText={
               <div className="flex items-center">
                 You will receive
@@ -54,8 +65,8 @@ export default function MyBidDetail({
                 </WithTip>
               </div>
             }
-            value={offerDetail.for}
-            tokenLogo={offerDetail.stableToken.logoURI}
+            value={String(amount)}
+            tokenLogo={orderTokenInfo.logoURI}
           />
 
           <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white">
@@ -64,11 +75,11 @@ export default function MyBidDetail({
         </div>
 
         {/* right card */}
-        <MyDetailCard offerDetail={offerDetail} />
+        <MyDetailCard order={order} />
       </div>
-      {/* <OrderTabs /> */}
+      <OrderTabs order={order} />
       <ConfirmAskSettleDialog
-        offerDetail={offerDetail}
+        order={order}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
       />

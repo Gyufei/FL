@@ -29,7 +29,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const [step, setStep] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, makerDetail, tokenPrice } =
+  const { orderPointInfo, orderTokenInfo, makerDetail, tokenPrice, getOrigin } =
     useOrderFormat({
       order,
     });
@@ -67,16 +67,6 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
       receiveTokenAmount: Number(receiveTokenAmount),
       breachFee: Number(breachFee) * 100,
     });
-  }
-
-  function getOrigin(order: IOrder, defaultValue: string) {
-    if (!order.pre_order) return defaultValue;
-
-    if (order.preOrderDetail) {
-      return getOrigin(order.preOrderDetail, order.pre_order);
-    } else {
-      return order.order_id;
-    }
   }
 
   return (
@@ -204,7 +194,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
                   For
                 </div>
                 <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-                  <span>{receiveToken.symbol}</span>
+                  <span>{receiveTokenAmount}</span>
                   <Image
                     src="/icons/USDC.svg"
                     width={16}

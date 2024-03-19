@@ -19,12 +19,12 @@ export default function CancelDrawer({
 }) {
   const { platFormFee } = useGlobalConfig();
 
-  const { offerLogo, forLogo } = useOrderFormat({
+  const { offerLogo, forLogo, amount } = useOrderFormat({
     order,
   });
 
-  const myDeposit = order.amount;
-  const myCompensation = order.points;
+  const myDeposit = amount;
+  const myCompensation = myDeposit;
 
   function handleCancel() {}
 

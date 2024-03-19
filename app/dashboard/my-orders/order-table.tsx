@@ -24,45 +24,16 @@ import {
 import { useState } from "react";
 import MyAskDetail from "./my-offer-detail/my-ask-detail";
 import MyBidDetail from "./my-offer-detail/my-bid-detail";
-
-const data = [
-  {
-    avatar: "/img/token-placeholder.png",
-    token: {
-      logoURI: "/icons/point.svg",
-    },
-    stableToken: {
-      logoURI: "/icons/usdc.svg",
-    },
-    name: "kamino",
-    no: "883104",
-    progress: 0.11,
-    type: "buy",
-    orderType: "Maker",
-    eqToken: {
-      name: "TBA",
-      logoURI: "/icons/point.svg",
-    },
-    offer: 63,
-    for: 157586,
-    seller: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    date: "22:33 Jan 4, 2023",
-    offerValue: 0.0232,
-    forValue: 240.8,
-    pointPrice: 18.84,
-    filled: false,
-    time: 15,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    seconds: 23131311,
-    maker: "DL8K2m3nt2WbWiJZTzD8AhqamRovkeSYJy7iYnUoA3Hi",
-    order: "7Kb5oAJKedXejv2YXBrYuVPZ7bP2Lipj1sfqkJsKV8BA",
-    preOrder: "7Kb5oAJKedXejv2YXBrYuVPZ7bP2Lipj1sfqkJsKV8BA",
-  },
-];
-
-const orders = new Array(10).fill(data).flat();
+import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { IOrder } from "@/lib/types/order";
+import { useGoScan } from "@/lib/hooks/use-go-scan";
+import { formatTimestamp } from "@/lib/utils/time";
 
 export function OrderTable() {
+  const { data: orders } = useMyOrders();
+  const { handleGoScan } = useGoScan();
+
   function openDetail(ord: any) {
     setCurDetail(ord);
     setDrawerOpen(true);
@@ -71,7 +42,7 @@ export function OrderTable() {
   const [curDetail, setCurDetail] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const isSell = curDetail?.type === "sell";
+  const isAsk = curDetail?.order_type === "ask";
 
   return (
     <>
@@ -90,86 +61,43 @@ export function OrderTable() {
         </TableHeader>
         <TableBody>
           {orders.map((ord) => (
-            <TableRow key={ord.no} className="border-none">
+            <TableRow key={ord.order_id} className="border-none">
               <TableCell className="px-1 py-[11px] text-gray">
-                <div className="relative h-fit w-fit">
-                  <Image
-                    src={ord.token.logoURI}
-                    width={32}
-                    height={32}
-                    alt="avatar"
-                    className="rounded-full"
-                  />
-                  <div className="absolute right-0 bottom-0 flex h-3 w-3 items-center justify-center rounded-full border border-white bg-white">
-                    <Image
-                      src={ord.stableToken.logoURI}
-                      width={6.6}
-                      height={5.4}
-                      alt="avatar"
-                      className="rounded-full"
-                    />
-                  </div>
-                </div>
+                <OrderItem order={ord} />
               </TableCell>
               <TableCell className="px-1 py-[11px]">
                 <div>
-                  <div className="text-sm leading-5 text-black">{ord.name}</div>
+                  <div className="text-sm leading-5 text-black">
+                    {ord.marketplace.market_place_name}
+                  </div>
                   <div className="text-[10px] leading-4 text-gray">
-                    #{ord.no}
+                    #{ord.order_id}
                   </div>
                 </div>
               </TableCell>
               <TableCell className="px-1 py-[11px]">
                 <div
-                  data-type={ord.orderType}
+                  data-type={ord.order_type}
                   className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
                 >
-                  {ord.orderType}
+                  {ord.order_type}
                 </div>
               </TableCell>
               <TableCell className="px-1 py-[11px]">
-                <div className="flex items-center space-x-1">
-                  <span>{ord.eqToken.name}</span>
-                  <Image
-                    src={ord.eqToken.logoURI}
-                    width={12}
-                    height={12}
-                    alt="token"
-                  />
-                </div>
+                <OrderEqToken order={ord} />
               </TableCell>
               <TableCell className="px-1 py-[11px]">
-                <div className="flex w-fit flex-col items-end">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm leading-5 text-black">
-                      {ord.offer}
-                    </span>
-                    <Image
-                      src={ord.stableToken.logoURI}
-                      width={16}
-                      height={16}
-                      alt="token"
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm leading-5 text-black">
-                      {ord.for}
-                    </span>
-                    <Image
-                      src={ord.token.logoURI}
-                      width={16}
-                      height={16}
-                      alt="token"
-                    />
-                  </div>
-                </div>
+                <OrderFromTo order={ord} />
               </TableCell>
               <TableCell className="px-1 py-[11px]">
                 <div className="flex items-center">
                   <span className="text-sm leading-5 text-black">
-                    {truncateAddr(ord.seller)}
+                    {truncateAddr(ord.preOrderDetail?.maker_id || "")}
                   </span>
                   <Image
+                    onClick={() =>
+                      handleGoScan(ord.preOrderDetail?.maker_id || "")
+                    }
                     src="/icons/right-45.svg"
                     width={16}
                     height={16}
@@ -179,7 +107,9 @@ export function OrderTable() {
                 </div>
               </TableCell>
               <TableCell className="px-1 py-[11px]">
-                <span className="text-sm leading-5 text-black">{ord.date}</span>
+                <span className="text-sm leading-5 text-black">
+                  {formatTimestamp(ord.create_at)}
+                </span>
               </TableCell>
               <TableCell className="px-1 py-[11px]">
                 <div
@@ -240,16 +170,76 @@ export function OrderTable() {
         className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={`My ${isSell ? "Ask" : "Bid"} Offer Detail`}
+          title={`My ${isAsk ? "Ask" : "Bid"} Offer Detail`}
           onClose={() => setDrawerOpen(false)}
         />
         {curDetail &&
-          (isSell ? (
-            <MyAskDetail offerDetail={curDetail} />
+          (isAsk ? (
+            <MyAskDetail order={curDetail} />
           ) : (
-            <MyBidDetail offerDetail={curDetail} />
+            <MyBidDetail order={curDetail} />
           ))}
       </Drawer>
     </>
+  );
+}
+
+function OrderItem({ order }: { order: IOrder }) {
+  const { offerLogo, forLogo } = useOrderFormat({ order });
+
+  return (
+    <div className="relative h-fit w-fit">
+      <Image
+        src={offerLogo}
+        width={32}
+        height={32}
+        alt="avatar"
+        className="rounded-full"
+      />
+      <div className="absolute right-0 bottom-0 flex h-3 w-3 items-center justify-center rounded-full border border-white bg-white">
+        <Image
+          src={forLogo}
+          width={6.6}
+          height={5.4}
+          alt="avatar"
+          className="rounded-full"
+        />
+      </div>
+    </div>
+  );
+}
+
+function OrderEqToken({ order }: { order: IOrder }) {
+  const { orderEqTokenInfo } = useOrderFormat({ order });
+
+  return (
+    <div className="flex items-center space-x-1">
+      <span>{orderEqTokenInfo.symbol}</span>
+      <Image
+        src={orderEqTokenInfo.logoURI}
+        width={12}
+        height={12}
+        alt="token"
+      />
+    </div>
+  );
+}
+
+function OrderFromTo({ order }: { order: IOrder }) {
+  const { offerValue, forValue, offerLogo, forLogo } = useOrderFormat({
+    order,
+  });
+
+  return (
+    <div className="flex w-fit flex-col items-end">
+      <div className="flex items-center space-x-2">
+        <span className="text-sm leading-5 text-black">{offerValue}</span>
+        <Image src={offerLogo} width={16} height={16} alt="token" />
+      </div>
+      <div className="flex items-center space-x-2">
+        <span className="text-sm leading-5 text-black">{forValue}</span>
+        <Image src={forLogo} width={16} height={16} alt="token" />
+      </div>
+    </div>
   );
 }

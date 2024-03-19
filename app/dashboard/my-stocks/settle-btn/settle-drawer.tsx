@@ -1,3 +1,4 @@
+import NP from "number-precision";
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -11,6 +12,7 @@ import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { formatNum } from "@/lib/utils/number";
+import { useMemo } from "react";
 
 export default function SettleDrawer({
   drawerOpen,
@@ -23,14 +25,18 @@ export default function SettleDrawer({
 }) {
   const { platFormFee } = useGlobalConfig();
 
-  const { offerLogo, forLogo } = useOrderFormat({
-    order,
-  });
+  const { offerLogo, forLogo, orderPointInfo, orderTokenInfo } = useOrderFormat(
+    {
+      order,
+    },
+  );
 
   const filledAmount = order.used_points;
-  const myCollateral = order.amount;
-  const mySettlementAmount = order.amount;
-  const status = "open";
+  const myCollateral = useMemo(
+    () => NP.divide(order.amount, 10 ** orderTokenInfo.decimals),
+    [order, orderTokenInfo],
+  );
+  const mySettlementAmount = myCollateral;
 
   const isAsk = true;
   const isTaker = true;
@@ -55,7 +61,7 @@ export default function SettleDrawer({
                 data-status={"open"}
                 className="flex h-5 items-center px-2 data-[status=open]:bg-[#edf8f4] data-[status=open]:text-green"
               >
-                {status}
+                {order.order_status}
               </div>
             </div>
             <Image
@@ -96,7 +102,7 @@ export default function SettleDrawer({
             <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
               <span>{formatNum(filledAmount)}</span>
               <Image
-                src="/icons/solana.svg"
+                src={orderPointInfo.logoURI}
                 width={16}
                 height={16}
                 alt="token"

@@ -2,31 +2,7 @@
 
 import Image from "next/image";
 import { range } from "lodash";
-
-function formatTimestamp(timestamp: number) {
-  const months = [
-    "JANUARY",
-    "FEBRUARY",
-    "MARCH",
-    "APRIL",
-    "MAY",
-    "JUNE",
-    "JULY",
-    "AUGUST",
-    "SEPTEMBER",
-    "OCTOBER",
-    "NOVEMBER",
-    "DECEMBER",
-  ];
-
-  const date = new Date(timestamp);
-  const month = months[date.getMonth()];
-  const day = date.getDate();
-  const year = date.getFullYear();
-
-  const formattedDate = `${month} ${day}, ${year}`;
-  return formattedDate;
-}
+import { formatTimestampEn } from "@/lib/utils/time";
 
 export default function LatestNews() {
   const newDetail = {
@@ -69,7 +45,7 @@ function NewCard({ newDetail }: { newDetail: Record<string, any> }) {
         }}
       >
         <div className="text-sm leading-5 text-lightgray">
-          {formatTimestamp(newDetail.date)}
+          {formatTimestampEn(newDetail.date)}
         </div>
         <div className="mt-3 w-fit rounded-lg bg-yellow px-3 pt-2 pb-1 text-2xl leading-9 text-black">
           {newDetail.title}

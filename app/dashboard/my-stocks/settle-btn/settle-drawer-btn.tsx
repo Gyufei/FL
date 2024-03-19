@@ -1,12 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import SettleDrawer from "./settle-drawer";
+import { IOrder } from "@/lib/types/order";
 
-export default function SettleDrawerBtn({
-  stockDetail,
-}: {
-  stockDetail: Record<string, any>;
-}) {
+export default function SettleDrawerBtn({ order }: { order: IOrder }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   function handleDrawerOpen(open: boolean) {
@@ -25,7 +22,7 @@ export default function SettleDrawerBtn({
       <SettleDrawer
         drawerOpen={drawerOpen}
         handleDrawerOpen={handleDrawerOpen}
-        stockDetail={stockDetail}
+        order={order}
       />
     </div>
   );

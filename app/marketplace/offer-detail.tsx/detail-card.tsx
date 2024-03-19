@@ -1,27 +1,41 @@
+import NP from "number-precision";
 import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { WithTip } from "../create-offer/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
+import { IOrder } from "@/lib/types/order";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useGoScan } from "@/lib/hooks/use-go-scan";
 
-export default function DetailCard({
-  offerDetail,
-}: {
-  offerDetail: Record<string, any>;
-}) {
+export default function DetailCard({ order }: { order: IOrder }) {
+  const { handleGoScan } = useGoScan();
+
+  const {
+    amount,
+    orderType,
+    orderTokenInfo,
+    orderPointInfo,
+    orderEqTokenInfo,
+    preOrderMakerDetail,
+    makerDetail,
+  } = useOrderFormat({
+    order,
+  });
+
   return (
     <div className="flex-1 px-6">
       <div className="leading-6 text-black">Offer Details</div>
 
       <DetailRow>
         <DetailLabel tipText="">
-          {offerDetail.type === "sell" ? "Selling" : "Buying"} Amount
+          {orderType === "ask" ? "Selling" : "Buying"} Amount
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offerDetail.offerValue)} pts
+            {formatNum(order.points)} pts
           </div>
           <Image
-            src={offerDetail.stableToken.logoURI}
+            src={orderPointInfo.logoURI}
             width={16}
             height={16}
             alt="stable token"
@@ -34,10 +48,10 @@ export default function DetailCard({
         <DetailLabel tipText="">Total collateral</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offerDetail.offerValue)}
+            {formatNum(amount)}
           </div>
           <Image
-            src={offerDetail.stableToken.logoURI}
+            src={orderTokenInfo.logoURI}
             width={16}
             height={16}
             alt="stable token"
@@ -49,9 +63,11 @@ export default function DetailCard({
       <DetailRow>
         <DetailLabel tipText="">Eq. Tokens</DetailLabel>
         <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-[#FFA95B]">TBA</div>
+          <div className="text-sm leading-5 text-[#FFA95B]">
+            {orderEqTokenInfo.symbol}
+          </div>
           <Image
-            src={offerDetail.token.logoURI}
+            src={orderEqTokenInfo.logoURI}
             width={16}
             height={16}
             alt="stable token"
@@ -70,14 +86,18 @@ export default function DetailCard({
       <DetailRow>
         <DetailLabel tipText="">Settlement Breach Fee</DetailLabel>
         <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-[#FFA95B]">3%</div>
+          <div className="text-sm leading-5 text-[#FFA95B]">
+            {NP.divide(order.settle_breach_fee, 100)}%
+          </div>
         </div>
       </DetailRow>
 
       <DetailRow>
         <DetailLabel tipText="">Base Tax for Each Trade</DetailLabel>
         <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-green">0%</div>
+          <div className="text-sm leading-5 text-green">
+            {NP.divide(makerDetail?.each_trade_tax || 0, 100)}%
+          </div>
         </div>
       </DetailRow>
 
@@ -85,12 +105,16 @@ export default function DetailCard({
         <DetailLabel tipText="">Inherit From</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{offerDetail.no}
+            #{order.preOrderDetail?.order_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(offerDetail.seller, { nPrefix: 4, nSuffix: 4 })}
+            {truncateAddr(order.preOrderDetail?.order || "", {
+              nPrefix: 4,
+              nSuffix: 4,
+            })}
           </div>
           <Image
+            onClick={() => handleGoScan(order.preOrderDetail?.order || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -104,12 +128,16 @@ export default function DetailCard({
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{offerDetail.no}
+            #{order.preOrderDetail?.order_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(offerDetail.buyer, { nPrefix: 4, nSuffix: 4 })}
+            {truncateAddr(order.preOrderDetail?.maker_id || "", {
+              nPrefix: 4,
+              nSuffix: 4,
+            })}
           </div>
           <Image
+            onClick={() => handleGoScan(order.preOrderDetail?.maker_id || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -123,7 +151,11 @@ export default function DetailCard({
         <DetailLabel tipText="">Origin Offer Maker Tax Income</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
-            ${offerDetail.offerValue}
+            $
+            {NP.divide(
+              preOrderMakerDetail?.trade_tax || 0,
+              Math.pow(10, orderTokenInfo.decimals),
+            )}
           </div>
         </div>
       </DetailRow>

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import HoverIcon from "../../components/share/hover-icon";
 
 import {
@@ -9,24 +9,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "../../components/ui/input";
-import { formatNum } from "@/lib/utils/number";
+import { IMarketPlace } from "@/lib/types/marketplace";
+import { useSetAtom } from "jotai";
+import { GlobalMessageAtom } from "@/lib/states/global-message";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { useTokens } from "@/lib/hooks/api/use-tokens";
+import TokenImg from "@/components/share/token-img";
+import MarketplaceOverview from "@/components/share/market-place-overview";
 
-export default function OverviewCard() {
-  const overviewDetail = {
-    avatar: "/img/avatar-placeholder.png",
-    name: "Open Solmap",
-    floorPrice: 1.911,
-    supply: 1000,
-    dayChangePercent: 5.66,
-    dayVol: 920.48,
-    sevenDayChangePercent: -64.66,
-    sevenVol: 6733.48,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-  };
-
+export default function MarketplaceCard({
+  marketplace,
+}: {
+  marketplace: IMarketPlace;
+}) {
   const [isStar, setIsStar] = useState(false);
+  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
   function handleStar() {
     if (isStar) {
@@ -37,10 +34,11 @@ export default function OverviewCard() {
   }
 
   const handleCopy = () => {
-    if (!overviewDetail.name) return;
+    if (!marketplace.market_place_name) return;
 
-    navigator.clipboard.writeText(overviewDetail.name);
-    console.log({
+    navigator.clipboard.writeText(marketplace.market_place_name);
+
+    setGlobalMessage({
       type: "success",
       message: "Copied to clipboard",
     });
@@ -54,16 +52,15 @@ export default function OverviewCard() {
     <div className="rounded-3xl bg-[#F0F1F5] p-5">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-3">
-          <Image
-            src={overviewDetail.avatar}
+          <TokenImg
+            tokenAddr={marketplace.token_mint}
             width={56}
             height={56}
-            alt="avatar"
             className="rounded-full"
           />
           <div className="flex flex-col">
             <div className="text-lg leading-[28px] text-black">
-              {overviewDetail.name}
+              {marketplace.market_place_name}
             </div>
             <OverviewIcons
               isStar={isStar}
@@ -77,78 +74,7 @@ export default function OverviewCard() {
         <FoldPop />
       </div>
 
-      <div className="mt-5 flex-col space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <LabelText>Floor Price</LabelText>
-            <div className="flex items-center leading-6 text-black">
-              {overviewDetail.floorPrice}
-              <Image
-                src={overviewDetail.token.logoURI}
-                width={18}
-                height={18}
-                alt="token"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col items-end">
-            <LabelText>Supply</LabelText>
-            <div className="flex items-center leading-6 text-black">
-              {formatNum(overviewDetail.supply)}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <LabelText>1D Change</LabelText>
-            <div
-              data-up={overviewDetail.dayChangePercent > 0}
-              className="leading-6 data-[up=true]:text-green data-[up=false]:text-red"
-            >
-              {overviewDetail.dayChangePercent}%
-            </div>
-          </div>
-          <div className="flex flex-col items-end">
-            <LabelText>1D Vol.</LabelText>
-            <div className="flex items-center leading-6 text-black">
-              {overviewDetail.dayVol}
-              <Image
-                src={overviewDetail.token.logoURI}
-                width={18}
-                height={18}
-                alt="token"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <LabelText>7D Change</LabelText>
-            <div
-              data-up={overviewDetail.sevenDayChangePercent > 0}
-              className="leading-6 data-[up=true]:text-green data-[up=false]:text-red"
-            >
-              {overviewDetail.sevenDayChangePercent}%
-            </div>
-          </div>
-
-          <div className="flex flex-col items-end">
-            <LabelText>7D Vol.</LabelText>
-            <div className="flex items-center leading-6 text-black">
-              {overviewDetail.sevenVol}
-              <Image
-                src={overviewDetail.token.logoURI}
-                width={18}
-                height={18}
-                alt="token"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <MarketplaceOverview marketplace={marketplace} />
     </div>
   );
 }
@@ -219,26 +145,36 @@ function OverviewIcons({
 }
 
 function FoldPop() {
-  const cateList = [
-    {
-      avatar: "/img/avatar-placeholder.png",
-      name: "Untitled Ul",
-      link: "untitledui.com",
-    },
-    {
-      avatar: "/img/avatar-placeholder.png",
-      name: "Sisyphus Ventures",
-      link: "sisyphusvc.com",
-    },
-    {
-      avatar: "/img/avatar-placeholder.png",
-      name: "PolymathAl",
-      link: "polymath-ai.com",
-    },
-  ];
+  const { data: marketplaceData } = useMarketplaces();
+  const { data: tokens } = useTokens();
 
   const [popOpen, setPopOpen] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const cateList = useMemo(() => {
+    return (marketplaceData || []).map((marketplace) => {
+      return {
+        name: marketplace.market_place_name,
+        tokenLogo: tokens?.find((token) => {
+          token.address === marketplace.token_mint;
+        })?.logoURI,
+        link: marketplace.market_place_id,
+      };
+    });
+  }, [marketplaceData, tokens]);
+
+  const filteredCateList = useMemo(
+    () =>
+      searchText
+        ? cateList.filter((cate) =>
+            cate.name
+              .toLocaleUpperCase()
+              .includes(searchText.toLocaleUpperCase()),
+          )
+        : cateList,
+    [cateList, searchText],
+  );
 
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -268,18 +204,20 @@ function FoldPop() {
           />
           <Input
             placeholder="Search"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
             className="h-8 rounded-lg border-none bg-[#fafafa] pl-8"
           />
         </div>
-        {cateList.map((cate) => (
+        {filteredCateList.map((cate) => (
           <div
             className="flex rounded-lg px-2 py-[6px] hover:bg-[#fafafa]"
             key={cate.name}
           >
             <Image
-              src={cate.avatar || ""}
+              src={cate.tokenLogo || "/img/token-placeholder.png"}
               width={32}
               height={32}
               alt="avatar"
@@ -289,15 +227,18 @@ function FoldPop() {
               <div className="text-xs leading-[18px] text-black">
                 {cate.name}
               </div>
-              <div className="text-[10px] leading-4 text-gray">{cate.link}</div>
+              <div
+                style={{
+                  width: "150px",
+                }}
+                className="w-[150px] overflow-hidden text-ellipsis whitespace-nowrap text-[10px] leading-4 text-gray"
+              >
+                {cate.link}
+              </div>
             </div>
           </div>
         ))}
       </PopoverContent>
     </Popover>
   );
-}
-
-function LabelText({ children }: { children: React.ReactNode }) {
-  return <div className="text-xs leading-[18px] text-gray">{children}</div>;
 }

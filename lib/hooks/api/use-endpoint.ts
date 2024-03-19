@@ -8,17 +8,12 @@ export function useEndPoint() {
     return clusterConfig?.api.default;
   }, [clusterConfig]);
 
-  const gqlEndPoint = useMemo(() => {
-    return apiEndPoint + "/graphql";
-  }, [apiEndPoint]);
-
   const tokenEndPoint = useMemo(() => {
     return "https://token.jup.ag/strict";
   }, []);
 
   return {
     apiEndPoint,
-    gqlEndPoint,
     tokenEndPoint,
   };
 }

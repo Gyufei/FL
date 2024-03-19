@@ -1,3 +1,4 @@
+import NP from "number-precision";
 import Image from "next/image";
 import {
   Table,
@@ -8,31 +9,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { truncateAddr } from "@/lib/utils/web3";
+import { IOrder } from "@/lib/types/order";
+import { IToken } from "@/lib/types/token";
+import { useGoScan } from "@/lib/hooks/use-go-scan";
+import { formatTimestamp } from "@/lib/utils/time";
 
-const data = [
-  {
-    no: "883104",
-    amount: 38400,
-    amountPercent: 0.12,
-    deposits: 2.61,
-    token: {
-      logoURI: "/icons/magic-eden.svg",
-    },
-    stableToken: {
-      logoURI: "/icons/usdc.svg",
-    },
-    hash: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    date: "22:33 Jan 4, 2023",
-    eqToken: {
-      name: "TBA",
-      logoURI: "/icons/magic-eden.svg",
-    },
-  },
-];
+export function TakerOrders({
+  orders,
+  offerLogo,
+  forLogo,
+  orderEqTokenInfo,
+}: {
+  orders: Array<IOrder>;
+  offerLogo: string;
+  forLogo: string;
+  orderEqTokenInfo: IToken;
+}) {
+  const { handleGoScan } = useGoScan();
 
-const orders = new Array(2).fill(data).flat();
-
-export function TakerOrders() {
   return (
     <Table className="flex-1 text-xs leading-[18px]">
       <TableHeader className="text-gray">
@@ -48,39 +42,30 @@ export function TakerOrders() {
       <TableBody>
         {orders.map((o) => (
           <TableRow
-            key={o.no}
+            key={o.order_id}
             className="border-[#eee] text-sm leading-5 text-black"
           >
-            <TableCell className="px-1 py-[11px]">#{o.no}</TableCell>
+            <TableCell className="px-1 py-[11px]">#{o.order_id}</TableCell>
             <TableCell className="px-1 py-[11px]">
               <div className="flex items-center space-x-1">
                 <div>
-                  #{o.amount} ({o.amountPercent * 100}%)
+                  #{o.used_points} ({NP.divide(o.used_points, o.points) * 100}
+                  %)
                 </div>
-                <Image
-                  src={o.token.logoURI}
-                  width={16}
-                  height={16}
-                  alt="token"
-                />
+                <Image src={offerLogo} width={16} height={16} alt="token" />
               </div>
             </TableCell>
             <TableCell className="px-1 py-[11px]">
               <div className="flex items-center space-x-1">
-                <span>{o.deposits}</span>
-                <Image
-                  src={o.stableToken.logoURI}
-                  width={12}
-                  height={12}
-                  alt="token"
-                />
+                <span>{o.amount}</span>
+                <Image src={forLogo} width={12} height={12} alt="token" />
               </div>
             </TableCell>
             <TableCell className="px-1 py-[11px]">
               <div className="flex items-center space-x-1">
-                <span>{o.eqToken.name}</span>
+                <span>{orderEqTokenInfo.symbol}</span>
                 <Image
-                  src={o.eqToken.logoURI}
+                  src={orderEqTokenInfo.logoURI}
                   width={12}
                   height={12}
                   alt="token"
@@ -89,8 +74,14 @@ export function TakerOrders() {
             </TableCell>
             <TableCell className="px-1 py-[11px]">
               <div className="flex items-center">
-                {truncateAddr(o.hash)}
+                {truncateAddr(o.relist_tx_hash || o.order_tx_hash || "")}
                 <Image
+                  onClick={() =>
+                    handleGoScan(
+                      o.relist_tx_hash || o.order_tx_hash || "",
+                      "tx",
+                    )
+                  }
                   src="/icons/right-45.svg"
                   width={16}
                   height={16}
@@ -99,7 +90,9 @@ export function TakerOrders() {
                 />
               </div>
             </TableCell>
-            <TableCell className="px-1 py-[11px]">{o.date}</TableCell>
+            <TableCell className="px-1 py-[11px]">
+              {formatTimestamp(o.create_at)}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

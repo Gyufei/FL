@@ -2,21 +2,7 @@ import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { truncateAddr } from "@/lib/utils/web3";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
-
-function formatTime(secs: number) {
-  const minutes = Math.floor(secs / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  const formattedTime = {
-    days: days,
-    hours: hours % 24,
-    minutes: minutes % 60,
-    seconds: secs % 60,
-  };
-
-  return formattedTime;
-}
+import { formatTimeObj } from "@/lib/utils/time";
 
 export default function MyDetailCard({
   offerDetail,
@@ -160,7 +146,7 @@ function DetailLabel({
 }
 
 function TimeDisplay({ seconds }: { seconds: number }) {
-  const dateObj = formatTime(seconds);
+  const dateObj = formatTimeObj(seconds);
 
   return (
     <div className="mt-4 flex justify-center space-x-4">

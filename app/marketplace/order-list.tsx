@@ -1,75 +1,43 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { IOfferType, OfferTypeSelect } from "../../components/share/offer-type-select";
-import { ISortDir, ISortField, SortSelect } from "../../components/share/sort-select";
+import { useMemo, useState } from "react";
+import {
+  IOrderType,
+  OrderTypeSelect,
+} from "../../components/share/order-type-select";
+import {
+  ISortDir,
+  ISortField,
+  SortSelect,
+} from "../../components/share/sort-select";
 import SearchInput from "./search-input";
-import { OfferCard } from "./offer-card";
+import { OrderCard } from "./order-card";
+import { useOrders } from "@/lib/hooks/api/use-orders";
+import { IMarketPlace } from "@/lib/types/marketplace";
 
-export default function OfferList() {
-  const offerDetails = [
-    {
-      id: 1,
-      avatar: "/img/avatar-placeholder-2.png",
-      name: "Points",
-      no: 123456,
-      progress: 0.5,
-      offer: 1800,
-      offerValue: 0.0232,
-      for: 2.2,
-      forValue: 240.8,
-      pointPrice: 18.84,
-      filled: false,
-      time: 15,
-      type: "sell",
-      seller: "DL8K2m3nt2WbWiJZTzD8AhqamRovkeSYJy7iYnUoA3Hi",
-      buyer: "7Kb5oAJKedXejv2YXBrYuVPZ7bP2Lipj1sfqkJsKV8BA",
-      token: {
-        logoURI: "/icons/solana.svg",
-      },
-      stableToken: {
-        logoURI: "/icons/usdc.svg",
-      },
-      maker: "DL8K2m3nt2WbWiJZTzD8AhqamRovkeSYJy7iYnUoA3Hi",
-      order: "7Kb5oAJKedXejv2YXBrYuVPZ7bP2Lipj1sfqkJsKV8BA",
-    },
-    {
-      id: 2,
-      avatar: "/img/avatar-placeholder-2.png",
-      name: "Points",
-      no: 3323212,
-      progress: 0.75,
-      offer: 1800,
-      offerValue: 0.0232,
-      for: 2.2,
-      forValue: 240.8,
-      pointPrice: 18.84,
-      filled: false,
-      time: 15,
-      type: "buy",
-      seller: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-      buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-      token: {
-        logoURI: "/icons/solana.svg",
-      },
-      stableToken: {
-        logoURI: "/icons/usdc.svg",
-      },
-      maker: "DL8K2m3nt2WbWiJZTzD8AhqamRovkeSYJy7iYnUoA3Hi",
-      order: "7Kb5oAJKedXejv2YXBrYuVPZ7bP2Lipj1sfqkJsKV8BA",
-    },
-  ];
+export default function OrderList({
+  marketplace,
+}: {
+  marketplace: IMarketPlace;
+}) {
+  const { data: orders } = useOrders({
+    marketplaceId: marketplace.market_place_id,
+  });
 
-  const [offerType, setOfferType] = useState<IOfferType>("buy");
+  const [orderType, setOrderType] = useState<IOrderType>("ask");
+
+  const filterOrders = useMemo(() => {
+    return (orders || [])?.filter((o) => o.order_type === orderType);
+  }, [orders, orderType]);
 
   const [sortField, setSortField] = useState<ISortField>("Collateral");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");
 
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
-  function handleTypeChange(t: IOfferType) {
-    setOfferType(t);
+  function handleTypeChange(t: IOrderType) {
+    setOrderType(t);
   }
 
   function handleSortFieldChange(field: ISortField) {
@@ -88,8 +56,8 @@ export default function OfferList() {
     <div className="flex h-full flex-col rounded-3xl bg-[#fafafa] p-5">
       <div className="flex items-center justify-between border-b border-[#d8d8d8] py-5">
         <div className="flex items-center space-x-4">
-          <OfferTypeSelect
-            type={offerType}
+          <OrderTypeSelect
+            type={orderType}
             handleTypeChange={handleTypeChange}
           />
           <SortSelect
@@ -133,8 +101,12 @@ export default function OfferList() {
       </div>
 
       <div className="no-scroll-bar mt-5 grid flex-1 grid-cols-2 gap-5 overflow-y-auto">
-        {offerDetails.map((offerDetail) => (
-          <OfferCard offerDetail={offerDetail} key={offerDetail.id} />
+        {(filterOrders || []).map((order) => (
+          <OrderCard
+            order={order}
+            marketplace={marketplace}
+            key={order.order_id}
+          />
         ))}
       </div>
     </div>

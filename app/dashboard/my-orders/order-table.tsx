@@ -27,9 +27,9 @@ import MyBidDetail from "./my-offer-detail/my-bid-detail";
 
 const data = [
   {
-    avatar: "/img/avatar-placeholder.png",
+    avatar: "/img/token-placeholder.png",
     token: {
-      logoURI: "/icons/magic-eden.svg",
+      logoURI: "/icons/point.svg",
     },
     stableToken: {
       logoURI: "/icons/usdc.svg",
@@ -41,7 +41,7 @@ const data = [
     orderType: "Maker",
     eqToken: {
       name: "TBA",
-      logoURI: "/icons/magic-eden.svg",
+      logoURI: "/icons/point.svg",
     },
     offer: 63,
     for: 157586,

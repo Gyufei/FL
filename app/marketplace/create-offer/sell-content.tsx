@@ -21,14 +21,21 @@ export function SellContent({
   step: number;
   setStep: (_step: number) => void;
 }) {
-  const img1 = "/icons/magic-eden.svg";
+  const img1 = "/icons/point.svg";
   const img2 = "/icons/solana.svg";
   const name = "Magic Eden";
 
   const [sellPointAmount, setSellPointAmount] = useState("");
-  const [sellPoint, setSellPoint] = useState<IToken>("Points");
+  const [sellPoint, setSellPoint] = useState<IToken>({
+    symbol: "POINTS",
+    logoURI: "/icons/point.svg",
+  } as IToken);
   const [receiveTokenAmount, setReceiveAmount] = useState("");
-  const [receiveToken, setReceiveToken] = useState<IToken>("USDC");
+  const [receiveToken, setReceiveToken] = useState<IToken>({
+    symbol: "USDC",
+    logoURI: "/icons/usdc.svg",
+    decimals: 6,
+  } as IToken);
 
   const [breachFee, setBreachFee] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
@@ -162,11 +169,11 @@ export function SellContent({
             <div className="mt-4 mb-3 text-sm leading-5 text-gray">
               You are selling{" "}
               <span className="text-black">
-                {sellPointAmount} {sellPoint}
+                {sellPointAmount} {sellPoint.symbol}
               </span>{" "}
               diamonds for{" "}
               <span className="text-black">
-                {receiveTokenAmount} {receiveToken}
+                {receiveTokenAmount} {receiveToken.symbol}
               </span>
             </div>
 
@@ -247,7 +254,7 @@ export function SellContent({
               onClick={handleDeposit}
               className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-yellow text-black"
             >
-              Deposit {receiveTokenAmount} {receiveToken}
+              Deposit {receiveTokenAmount} {receiveToken.symbol}
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { SmallSwitch } from "@/components/share/small-switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TakerOrders } from "./taker-orders";
 import {
   Pagination,
@@ -11,9 +11,28 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { IOrder } from "@/lib/types/order";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useWallet } from "@solana/wallet-adapter-react";
 
-export default function OfferTabs() {
+export default function OrderTabs({ order }: { order: IOrder }) {
   const [currentTab, setCurrentTab] = useState("orders");
+
+  const { publicKey } = useWallet();
+
+  const { subOrders, offerLogo, forLogo, orderEqTokenInfo } = useOrderFormat({
+    order,
+  });
+
+  const [onlyMe, setOnlyMe] = useState(false);
+
+  const orders = useMemo(
+    () =>
+      subOrders.filter((o) =>
+        onlyMe && publicKey ? o.authority === publicKey.toBase58() : true,
+      ),
+    [publicKey, onlyMe, subOrders],
+  );
 
   return (
     <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4">
@@ -44,14 +63,23 @@ export default function OfferTabs() {
             >
               Only Me
             </label>
-            <SmallSwitch id="onlyMe" />
+            <SmallSwitch
+              checked={onlyMe}
+              onCheckedChange={(v) => setOnlyMe(v)}
+              id="onlyMe"
+            />
           </div>
         </TabsList>
         <TabsContent
           value="orders"
           className="no-scroll-bar max-h-[285px] flex-1 overflow-y-auto"
         >
-          <TakerOrders />
+          <TakerOrders
+            orders={orders}
+            offerLogo={offerLogo}
+            forLogo={forLogo}
+            orderEqTokenInfo={orderEqTokenInfo}
+          />
           <Pagination>
             <PaginationContent>
               <PaginationItem>

@@ -1,7 +1,10 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { IOfferType, OfferTypeSelect } from "../../../components/share/offer-type-select";
+import {
+  IOrderType,
+  OrderTypeSelect,
+} from "../../../components/share/order-type-select";
 
 import {
   Popover,
@@ -10,23 +13,25 @@ import {
 } from "@/components/ui/popover";
 import { OrderTable } from "./order-table";
 
-type IOrderType = "Maker" | "Taker";
-const Types: Array<IOrderType> = ["Maker", "Taker"];
+type IMakerTakerType = "Maker" | "Taker";
+const Types: Array<IMakerTakerType> = ["Maker", "Taker"];
 type IStatus = "Virgin" | "Ongoing" | "Canceled" | "Finished";
 const Status: Array<IStatus> = ["Virgin", "Ongoing", "Canceled", "Finished"];
 
 export default function MyOrders() {
-  const [offerType, setOfferType] = useState<IOfferType>("buy");
+  const [orderType, setOrderType] = useState<IOrderType>("ask");
 
-  function handleTypeChange(t: IOfferType) {
-    setOfferType(t);
+  function handleTypeChange(t: IOrderType) {
+    setOrderType(t);
   }
 
-  const [orderType, setOrderType] = useState<IOrderType>(Types[0]);
+  const [makerTakerType, setMakerTakerType] = useState<IMakerTakerType>(
+    Types[0],
+  );
   const [status, setStatus] = useState<IStatus>(Status[0]);
 
-  function handleOrderTypeChange(t: IOrderType) {
-    setOrderType(t);
+  function handleMakerTakerChange(t: IMakerTakerType) {
+    setMakerTakerType(t);
   }
 
   function handleStatusChange(s: IStatus) {
@@ -38,13 +43,16 @@ export default function MyOrders() {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-5">
           <div className="text-xl leading-[30px] text-black">My Orders</div>
-          <OfferTypeSelect
-            type={offerType}
+          <OrderTypeSelect
+            type={orderType}
             handleTypeChange={handleTypeChange}
           />
         </div>
         <div className="flex items-center space-x-6">
-          <TypeSelect type={orderType} setType={handleOrderTypeChange} />
+          <MakerTakerSelect
+            type={makerTakerType}
+            setType={handleMakerTakerChange}
+          />
           <StatusSelect status={status} setStatus={handleStatusChange} />
         </div>
       </div>
@@ -55,16 +63,16 @@ export default function MyOrders() {
   );
 }
 
-function TypeSelect({
+function MakerTakerSelect({
   type,
   setType,
 }: {
-  type: IOrderType;
-  setType: (t: IOrderType) => void;
+  type: IMakerTakerType;
+  setType: (t: IMakerTakerType) => void;
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
-  function handleTypeChange(t: IOrderType) {
+  function handleTypeChange(t: IMakerTakerType) {
     setType(t);
     setPopOpen(false);
   }

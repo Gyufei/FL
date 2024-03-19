@@ -1,6 +1,6 @@
 import { formatNum } from "@/lib/utils/number";
 import OfferInfo from "@/app/marketplace/offer-detail.tsx/offer-info";
-import OfferTabs from "@/app/marketplace/offer-detail.tsx/offer-tabs";
+// import OrderTabs from "@/app/marketplace/offer-detail.tsx/order-tabs";
 import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
@@ -66,7 +66,7 @@ export default function MyBidDetail({
         {/* right card */}
         <MyDetailCard offerDetail={offerDetail} />
       </div>
-      <OfferTabs />
+      {/* <OrderTabs /> */}
       <ConfirmAskSettleDialog
         offerDetail={offerDetail}
         open={settleConfirmShow}

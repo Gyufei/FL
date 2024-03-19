@@ -1,12 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import CancelDrawer from "./cancel-drawer";
+import { IOrder } from "@/lib/types/order";
 
-export default function DelistBtn({
-  stockDetail,
-}: {
-  stockDetail: Record<string, any>;
-}) {
+export default function DelistBtn({ order }: { order: IOrder }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   function handleDrawerOpen(open: boolean) {
@@ -31,7 +28,7 @@ export default function DelistBtn({
       <CancelDrawer
         drawerOpen={drawerOpen}
         handleDrawerOpen={handleDrawerOpen}
-        stockDetail={stockDetail}
+        order={order}
       />
     </div>
   );

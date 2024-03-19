@@ -10,7 +10,7 @@ export default function ReceiveCard({
 }: {
   topText: ReactElement;
   bottomText: ReactElement;
-  value: number;
+  value: string;
   tokenLogo: string;
 }) {
   return (

@@ -21,13 +21,20 @@ export function BuyContent({
   step: number;
   setStep: (_step: number) => void;
 }) {
-  const img1 = "/icons/magic-eden.svg";
+  const img1 = "/icons/point.svg";
   const img2 = "/icons/solana.svg";
   const name = "Magic Eden";
 
   const [payTokenAmount, setPayTokenAmount] = useState("");
-  const [payToken, setPayToken] = useState<IToken>("USDC");
-  const [receivePoint, setReceivePoint] = useState<IToken>("Points");
+  const [payToken, setPayToken] = useState<IToken>({
+    symbol: "USDC",
+    logoURI: "/icons/usdc.svg",
+    decimals: 6,
+  } as IToken);
+  const [receivePoint, setReceivePoint] = useState<IToken>({
+    symbol: "POINTS",
+    logoURI: "/icons/point.svg",
+  } as IToken);
   const [receivePointAmount, setReceivePointAmount] = useState("");
 
   const [breachFee, setBreachFee] = useState("");
@@ -160,11 +167,11 @@ export function BuyContent({
             <div className="mt-4 mb-3 text-sm leading-5 text-gray">
               You are buying{" "}
               <span className="text-black">
-                {receivePointAmount} {receivePoint}
+                {receivePointAmount} {receivePoint.symbol}
               </span>{" "}
               diamonds for{" "}
               <span className="text-black">
-                {payTokenAmount} {payToken}
+                {payTokenAmount} {payToken.symbol}
               </span>
             </div>
 
@@ -240,7 +247,7 @@ export function BuyContent({
               onClick={handleDeposit}
               className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-yellow text-black"
             >
-              Deposit {payTokenAmount} {payToken}
+              Deposit {payTokenAmount} {payToken.symbol}
             </button>
           </div>
         </div>

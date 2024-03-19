@@ -1,9 +1,12 @@
+import { useSignIn } from "@/lib/hooks/api/use-sign-in";
 import { useWallet } from "@solana/wallet-adapter-react";
 import base58 from "bs58";
 import { useCallback } from "react";
 
 export function SignInBtn() {
   const { publicKey, signMessage } = useWallet();
+
+  const { trigger: signInAction } = useSignIn();
 
   const onClick = useCallback(async () => {
     try {
@@ -19,11 +22,17 @@ export function SignInBtn() {
       // Verify that the bytes were signed using the private key that matches the known public key
       const signatureStr = base58.encode(signature);
 
+      signInAction({
+        wallet: publicKey.toBase58(),
+        signature: signatureStr,
+        ts: String(Math.floor(Date.now() / 1000)),
+      });
+
       console.log(signatureStr);
     } catch (error: any) {
       console.log("error", `Sign Message failed! ${error?.message}`);
     }
-  }, [publicKey, signMessage]);
+  }, [publicKey, signMessage, signInAction]);
 
   return (
     <div className="mt-5 w-full">

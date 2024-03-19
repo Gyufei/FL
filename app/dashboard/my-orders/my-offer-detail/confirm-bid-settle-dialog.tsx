@@ -18,7 +18,7 @@ export default function ConfirmBidSettleDialog({
   const bidOfferNo = 112093871;
   const required = 64;
   const value = 8845110;
-  const tokenLogo = "/icons/magic-eden.svg";
+  const tokenLogo = "/icons/point.svg";
 
   const [orderType] = useState<"Maker" | "Taker">("Maker");
   const [sliderMax] = useState(100);

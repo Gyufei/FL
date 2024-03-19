@@ -8,18 +8,29 @@ export default function SliderCard({
   value,
   sliderValue,
   sliderMax,
+  canGoMax,
   tokenLogo,
   bottomText,
   setSliderValue,
 }: {
   topText: ReactElement;
-  value: number;
+  value: string;
   sliderValue: number;
+  canGoMax: number;
   sliderMax: number;
   tokenLogo: string;
   bottomText: ReactElement;
   setSliderValue: (_v: number) => void;
 }) {
+  function handleSlider(val: number) {
+    if (val > canGoMax) {
+      setSliderValue(canGoMax);
+      return;
+    }
+
+    setSliderValue(val);
+  }
+
   return (
     <div className="mt-5 rounded-2xl bg-white p-4">
       <div className="text-xs leading-[18px] text-gray">{topText}</div>
@@ -30,7 +41,7 @@ export default function SliderCard({
       <div className="mt-3 flex">
         <Slider
           value={[sliderValue]}
-          onValueChange={(val) => setSliderValue(val[0])}
+          onValueChange={(val) => handleSlider(val[0])}
           max={sliderMax}
           step={1}
         />
@@ -38,16 +49,13 @@ export default function SliderCard({
           {sliderValue}%
         </div>
         <div
-          onClick={() => setSliderValue(sliderMax)}
+          onClick={() => setSliderValue(canGoMax)}
           className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
         >
           Max
         </div>
       </div>
-      <div className="text-xs leading-[18px] text-gray">
-        {bottomText}
-        {/* ~${formatNum(offerDetail.offerValue)} */}
-      </div>
+      <div className="text-xs leading-[18px] text-gray">{bottomText}</div>
     </div>
   );
 }

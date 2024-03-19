@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { truncateAddr } from "@/lib/utils/web3";
+import { formatTimeDuration } from "@/lib/utils/time";
 
 const data = [
   {
@@ -45,23 +46,6 @@ const data = [
 
 const trades = new Array(2).fill(data).flat().slice(0, 5);
 
-function formatTime(seconds: number) {
-  const secs = seconds % 60;
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) {
-    return `${days}d`;
-  } else if (hours > 0) {
-    return `${hours}h`;
-  } else if (minutes > 0) {
-    return `${minutes}m`;
-  } else {
-    return `${secs}s`;
-  }
-}
-
 export function TradesTable() {
   return (
     <Table className="text-xs leading-[18px]">
@@ -80,7 +64,7 @@ export function TradesTable() {
         {trades.map((trade) => (
           <TableRow key={trade.no} className="border-none">
             <TableCell className="px-1 py-[11px] text-gray">
-              {formatTime(trade.time)}
+              {formatTimeDuration(trade.time)}
             </TableCell>
             <TableCell className="px-1 py-[11px]">#{trade.no}</TableCell>
             <TableCell className="px-1 py-[11px]">

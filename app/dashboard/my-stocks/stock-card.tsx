@@ -3,54 +3,57 @@ import Image from "next/image";
 import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
 import DelistBtn from "./delist-btn/delist-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
+import { IOrder } from "@/lib/types/order";
+import { TokenPairImg } from "@/components/share/token-pair-img";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { formatTimestamp } from "@/lib/utils/time";
 
-export default function StockCard({
-  stockDetail,
-}: {
-  stockDetail: Record<string, any>;
-}) {
-  const isAskStock = stockDetail.type === "sell";
-  const isCanList = stockDetail.status === "canList";
-  const isListed = stockDetail.status === "listed";
-  const isListing = stockDetail.status === "listing";
-  const isCanSettle = stockDetail.status === "canSettle";
+export default function StockCard({ order }: { order: IOrder }) {
+  const isAskStock = order.order_type === "ask";
+
+  const afterTGE = false;
+  const isCanList = order.order_type === "bid";
+  const isListed = order.order_status === "ongoing";
+  const isCanDelist = order.order_status === "virgin";
+  const isCanSettle = afterTGE && order.order_type === "ask";
+
+  const {
+    offerValue,
+    forValue,
+    offerLogo,
+    forLogo,
+    pointPerPrice,
+    tokenTotalPrice,
+  } = useOrderFormat({
+    order,
+  });
 
   return (
     <div className="rounded-[20px] bg-white p-5">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-3">
-          <div className="relative">
-            <Image
-              src={stockDetail.avatar}
-              width={48}
-              height={48}
-              alt="avatar"
-              className="rounded-full"
-            />
-            <div className="absolute right-0 bottom-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
-              <Image
-                src={stockDetail.token.logoURI}
-                width={8.8}
-                height={7.2}
-                alt="avatar"
-                className="rounded-full"
-              />
-            </div>
-          </div>
+          <TokenPairImg
+            src1={offerLogo}
+            src2={forLogo}
+            width1={48}
+            height1={48}
+            width2={8.8}
+            height2={8.8}
+          />
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {stockDetail.name}
+              {order.marketplace?.market_place_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{stockDetail.no}
+              #{order.order_id}
             </div>
           </div>
         </div>
 
         <div
-          data-type={stockDetail.type}
-          className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=buy]:bg-[#FFEFEF] data-[type=sell]:bg-[#EDF8F4] data-[type=buy]:text-red data-[type=sell]:text-green"
+          data-type={order.order_type}
+          className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
         >
           {!isAskStock ? "Bid" : "Ask"}
         </div>
@@ -60,9 +63,9 @@ export default function StockCard({
         <div className="flex flex-col">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">Offer</div>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(stockDetail.offer, 2, true)}
+            {formatNum(offerValue, 2, true)}
             <Image
-              src={stockDetail.stableToken.logoURI}
+              src={offerLogo}
               width={16}
               height={16}
               alt="stable"
@@ -70,7 +73,7 @@ export default function StockCard({
             />
           </div>
           <div className="text-xs leading-[18px] text-lightgray">
-            ${stockDetail.offerPrice} /Diamond
+            ${formatNum(pointPerPrice)} /Diamond
           </div>
         </div>
         <Image
@@ -82,9 +85,9 @@ export default function StockCard({
         <div className="flex flex-col items-end">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">For</div>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(stockDetail.for, 2, true)}
+            {formatNum(forValue, 2, true)}
             <Image
-              src={stockDetail.stableToken.logoURI}
+              src={forLogo}
               width={16}
               height={16}
               alt="stable"
@@ -92,25 +95,23 @@ export default function StockCard({
             />
           </div>
           <div className="text-xs leading-[18px] text-lightgray">
-            ${stockDetail.forAmount}
+            ${formatNum(tokenTotalPrice)}
           </div>
         </div>
       </div>
 
       <div className="flex justify-between pt-4">
         {isCanList || isCanSettle ? (
-          <ManToMans num={stockDetail.listedTimes} />
+          <ManToMans num={4} />
         ) : (
           <div className="text-xs leading-[18px] text-lightgray">
-            {stockDetail.date}
+            {formatTimestamp(order.create_at || order.relist_at)}
           </div>
         )}
-        {isCanList && isAskStock && (
-          <ListAskStockBtn stockDetail={stockDetail} />
-        )}
+        {isCanList && isAskStock && <ListAskStockBtn order={order} />}
         {isListed && <div className="text-sm leading-5 text-black">Listed</div>}
-        {isListing && <DelistBtn stockDetail={stockDetail} />}
-        {isCanSettle && <SettleDrawerBtn stockDetail={stockDetail} />}
+        {isCanDelist && <DelistBtn order={order} />}
+        {isCanSettle && <SettleDrawerBtn order={order} />}
       </div>
     </div>
   );

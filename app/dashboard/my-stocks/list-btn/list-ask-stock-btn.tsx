@@ -1,53 +1,55 @@
+import { useState } from "react";
+import NP from "number-precision";
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
-import { useState } from "react";
+
 import { InputPanel } from "../../../marketplace/create-offer/input-panel";
 import { IToken } from "@/lib/types/token";
 import { WithTip } from "../../../marketplace/create-offer/with-tip";
 import ArrowBetween from "../../../marketplace/create-offer/arrow-between";
 import { StableTokenSelectDisplay } from "../../../marketplace/create-offer/stable-token-display";
+import { PointTokenSelectDisplay } from "../../../marketplace/create-offer/point-token-display";
 import SettleBreachFee from "../../../marketplace/create-offer/settle-breach-fee";
 import TaxForSubTrades from "../../../marketplace/create-offer/tax-for-sub-trades";
 import OrderNote from "../../../marketplace/create-offer/order-note";
 import FeeDisplay from "../../../marketplace/create-offer/fee-display";
-import { PointTokenSelectDisplay } from "../../../marketplace/create-offer/point-token-display";
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { useAskRelist } from "@/lib/hooks/contract/use-ask-relist";
+import { useGlobalConfig } from "@/lib/hooks/use-global-config";
+import { IOrder } from "@/lib/types/order";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { formatNum } from "@/lib/utils/number";
 
-export default function ListAskStockBtn({
-  stockDetail,
-}: {
-  stockDetail: Record<string, any>;
-}) {
-  const platFormFee = 0.025;
+export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
+  const { platFormFee } = useGlobalConfig();
 
   const [step, setStep] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const [sellPointAmount, setSellPointAmount] = useState("");
-  const [sellPoint, setSellPoint] = useState<IToken>("Points");
-  const [receiveToken, setReceiveToken] = useState<IToken>("USDC");
+  const { orderPointInfo, orderTokenInfo, makerDetail, tokenPrice } =
+    useOrderFormat({
+      order,
+    });
+
+  const [sellPointAmount] = useState(order.points);
+  const [receiveToken] = useState<IToken>(orderTokenInfo);
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [breachFee, setBreachFee] = useState("");
-  const taxForSub = "";
+  const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
 
   const [note, setNote] = useState("");
 
-  const [sellPrice] = useState(18.4);
-  const [pointPrice] = useState(221);
+  const sellPrice = NP.times(receiveTokenAmount, tokenPrice);
+  const pointPrice = NP.divide(sellPrice, sellPointAmount);
 
   const { isLoading: isDepositLoading, write: writeAction } = useAskRelist({
-    makerStr: stockDetail.maker,
-    orderStr: stockDetail.order,
+    makerStr: order.maker_id,
+    orderStr: order.order,
   });
-
-  function handleSellPayChange(v: string) {
-    setSellPointAmount(v);
-  }
 
   function handleNext() {
     if (!sellPointAmount || !receiveTokenAmount) {
@@ -65,6 +67,16 @@ export default function ListAskStockBtn({
       receiveTokenAmount: Number(receiveTokenAmount),
       breachFee: Number(breachFee) * 100,
     });
+  }
+
+  function getOrigin(order: IOrder, defaultValue: string) {
+    if (!order.pre_order) return defaultValue;
+
+    if (order.preOrderDetail) {
+      return getOrigin(order.preOrderDetail, order.pre_order);
+    } else {
+      return order.order_id;
+    }
   }
 
   return (
@@ -85,20 +97,21 @@ export default function ListAskStockBtn({
             />
             <div className="flex flex-1 flex-col">
               <ListInfo
-                id={stockDetail.id}
-                inherit={stockDetail.id}
-                origin={stockDetail.id}
+                id={order.order_id}
+                inherit={order.preOrderDetail?.order_id || ""}
+                origin={getOrigin(order, "")}
               />
 
               <InputPanel
                 value={sellPointAmount}
-                onValueChange={handleSellPayChange}
+                onValueChange={() => {}}
                 topText={<>You will sell</>}
-                bottomText={<>1 Diamond = ${pointPrice}</>}
+                bottomText={<>1 Diamond = ${formatNum(pointPrice)}</>}
+                isCanInput={false}
                 tokenSelect={
                   <PointTokenSelectDisplay
-                    token={sellPoint}
-                    setToken={setSellPoint}
+                    token={orderPointInfo as IToken}
+                    setToken={() => {}}
                   />
                 }
               />
@@ -118,11 +131,11 @@ export default function ListAskStockBtn({
                     </WithTip>
                   </div>
                 }
-                bottomText={<>Required collateral ${sellPrice}</>}
+                bottomText={<>Required collateral ${formatNum(sellPrice)}</>}
                 tokenSelect={
                   <StableTokenSelectDisplay
-                    token={receiveToken}
-                    setToken={setReceiveToken}
+                    token={orderTokenInfo as IToken}
+                    setToken={() => {}}
                   />
                 }
               />
@@ -153,7 +166,7 @@ export default function ListAskStockBtn({
           </>
         )}
         {step === 1 && (
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex h-full flex-col justify-between">
             <div className="flex flex-col">
               <DrawerTitle
                 title="Confirm transaction"
@@ -162,11 +175,11 @@ export default function ListAskStockBtn({
               <div className="text-sm leading-5 text-gray">
                 You are selling{" "}
                 <span className="text-black">
-                  {sellPointAmount} {sellPoint} pts
+                  {formatNum(sellPointAmount)} {orderPointInfo.symbol} pts
                 </span>{" "}
                 for{" "}
                 <span className="text-black">
-                  {receiveTokenAmount} {receiveToken}
+                  {receiveTokenAmount} {orderTokenInfo.symbol}
                 </span>
                 . Are you sure?
               </div>
@@ -176,9 +189,9 @@ export default function ListAskStockBtn({
                   Selling
                 </div>
                 <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-                  <span>{sellPointAmount}</span>
+                  <span>{formatNum(sellPointAmount)}</span>
                   <Image
-                    src="/icons/magic-eden.svg"
+                    src={orderPointInfo.logoURI}
                     width={16}
                     height={16}
                     alt="token"
@@ -191,7 +204,7 @@ export default function ListAskStockBtn({
                   For
                 </div>
                 <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-                  <span>{receiveToken}</span>
+                  <span>{receiveToken.symbol}</span>
                   <Image
                     src="/icons/USDC.svg"
                     width={16}
@@ -224,7 +237,7 @@ export default function ListAskStockBtn({
                 onClick={handleDeposit}
                 className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-yellow text-black"
               >
-                Deposit {receiveTokenAmount} {receiveToken}
+                Deposit {receiveTokenAmount} {receiveToken.symbol}
               </button>
             </div>
           </div>

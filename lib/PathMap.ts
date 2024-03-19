@@ -1,5 +1,5 @@
 export function WithHost(path: string) {
-  return `https://api.depe.app${path}`;
+  return `https://tadle.aggregation.top${path}`;
   //return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
 }
 
@@ -9,6 +9,13 @@ export function WithCDN(path: string) {
 }
 
 export const EndPointPathMap = {
-  solanaApi: WithHost("/sepolia"),
-  solanaToken: WithCDN("/tokens/sepolia/tokenlist.json"),
+  solanaApi: WithHost(""),
+  solanaToken: WithCDN("/tokens/solana/tokenlist.json"),
+};
+
+export const Paths = {
+  signIn: "/user/sign_in",
+  order: "/market_place/order",
+  makerDetail: "/market_place/maker_detail",
+  marketPlace: "/market_place",
 };

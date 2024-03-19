@@ -6,20 +6,30 @@ import SettleAskTaker from "./settle-ask-taker";
 import SettleBidTaker from "./settle-bid-taker";
 import SettleAskMaker from "./settle-ask-maker";
 import SettleBidMaker from "./settle-bid-maker";
+import { IOrder } from "@/lib/types/order";
+import { useGlobalConfig } from "@/lib/hooks/use-global-config";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { TokenPairImg } from "@/components/share/token-pair-img";
+import { formatNum } from "@/lib/utils/number";
 
 export default function SettleDrawer({
   drawerOpen,
   handleDrawerOpen,
-  stockDetail,
+  order,
 }: {
   drawerOpen: boolean;
   handleDrawerOpen: (_o: boolean) => void;
-  stockDetail: Record<string, any>;
+  order: IOrder;
 }) {
-  const filledAmount = 9;
-  const myCollateral = 63;
-  const mySettlementAmount = 63;
-  const platFormFee = 0.025;
+  const { platFormFee } = useGlobalConfig();
+
+  const { offerLogo, forLogo } = useOrderFormat({
+    order,
+  });
+
+  const filledAmount = order.used_points;
+  const myCollateral = order.amount;
+  const mySettlementAmount = order.amount;
   const status = "open";
 
   const isAsk = true;
@@ -58,26 +68,17 @@ export default function SettleDrawer({
             />
           </div>
           <div className="flex items-center">
-            <div className="relative h-fit">
-              <Image
-                src={stockDetail.avatar}
-                width={40}
-                height={40}
-                alt="avatar"
-                className="rounded-full"
-              />
-              <div className="absolute right-0 bottom-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
-                <Image
-                  src={stockDetail.token.logoURI}
-                  width={8.8}
-                  height={7.2}
-                  alt="avatar"
-                  className="rounded-full"
-                />
-              </div>
-            </div>
+            <TokenPairImg
+              src1={offerLogo}
+              src2={forLogo}
+              width1={40}
+              height1={40}
+              width2={8.8}
+              height2={7.2}
+            />
+
             <div className="ml-3 text-xl leading-[30px] text-black">
-              {stockDetail.name}
+              {order.marketplace?.market_place_name}
             </div>
           </div>
 
@@ -93,7 +94,7 @@ export default function SettleDrawer({
               <WithTip></WithTip>
             </div>
             <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-              <span>{filledAmount}</span>
+              <span>{formatNum(filledAmount)}</span>
               <Image
                 src="/icons/solana.svg"
                 width={16}
@@ -109,7 +110,7 @@ export default function SettleDrawer({
               <WithTip></WithTip>
             </div>
             <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-              <span>{myCollateral}</span>
+              <span>{formatNum(myCollateral)}</span>
               <Image src="/icons/usdc.svg" width={16} height={16} alt="token" />
             </div>
           </div>
@@ -120,7 +121,7 @@ export default function SettleDrawer({
               <WithTip></WithTip>
             </div>
             <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-              <span>{mySettlementAmount}</span>
+              <span>{formatNum(mySettlementAmount)}</span>
               <Image src="/icons/usdc.svg" width={16} height={16} alt="token" />
             </div>
           </div>
@@ -145,28 +146,28 @@ export default function SettleDrawer({
           {isAsk &&
             (isTaker ? (
               <SettleAskTaker
-                preOrderStr={stockDetail.preOrder}
-                orderStr={stockDetail.order}
-                makerStr={stockDetail.maker}
+                preOrderStr={order.pre_order}
+                orderStr={order.order}
+                makerStr={order.maker_id}
               />
             ) : (
               <SettleAskMaker
-                orderStr={stockDetail.order}
-                makerStr={stockDetail.maker}
+                orderStr={order.order}
+                makerStr={order.maker_id}
               />
             ))}
           {!isAsk &&
             (isTaker ? (
               <SettleBidTaker
-                preOrderStr={stockDetail.preOrder}
-                orderStr={stockDetail.order}
-                makerStr={stockDetail.maker}
+                preOrderStr={order.pre_order}
+                orderStr={order.order}
+                makerStr={order.maker_id}
               />
             ) : (
               <SettleBidMaker
-                preOrderStr={stockDetail.preOrder}
-                orderStr={stockDetail.order}
-                makerStr={stockDetail.maker}
+                preOrderStr={order.pre_order}
+                orderStr={order.order}
+                makerStr={order.maker_id}
               />
             ))}
         </div>

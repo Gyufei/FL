@@ -4,13 +4,10 @@ import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 import AskDetail from "./offer-detail.tsx/ask-detail";
 import BidDetail from "./offer-detail.tsx/bid-detail";
+import { IOrder } from "@/lib/types/order";
 
-export default function OfferBuyBtn({
-  offerDetail,
-}: {
-  offerDetail: Record<string, any>;
-}) {
-  const isSell = offerDetail.type === "sell";
+export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
+  const isAsk = order.order_type === "ask";
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -30,14 +27,10 @@ export default function OfferBuyBtn({
         className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={`${isSell ? "Ask" : "Bid"} Offer Detail`}
+          title={`${isAsk ? "Ask" : "Bid"} Offer Detail`}
           onClose={() => setDrawerOpen(false)}
         />
-        {isSell ? (
-          <AskDetail offerDetail={offerDetail} />
-        ) : (
-          <BidDetail offerDetail={offerDetail} />
-        )}
+        {isAsk ? <AskDetail order={order} /> : <BidDetail order={order} />}
       </Drawer>
     </>
   );

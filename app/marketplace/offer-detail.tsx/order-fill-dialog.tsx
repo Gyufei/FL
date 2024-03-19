@@ -6,15 +6,18 @@ import Link from "next/link";
 export default function OrderFillDialog({
   open,
   onOpenChange,
+  deposited,
+  depositTokenLogo,
+  orderNo,
+  txHash,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
+  deposited: string;
+  depositTokenLogo: string;
+  orderNo: string;
+  txHash: string;
 }) {
-  const orderNo = 11209371;
-  const deposit = 63;
-  const tokenLogo = "/icons/usdc.svg";
-  const txHash = "DSUvc5qf5LJHHV5e2tD184ixotSnCnwj7i4jJa4Xsrmt";
-
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
       <DialogContent
@@ -41,8 +44,13 @@ export default function OrderFillDialog({
           <div className="mt-8 flex justify-between">
             <div className="text-gray">Deposited</div>
             <div className="flex items-center space-x-1 text-black">
-              <span>${deposit}</span>
-              <Image src={tokenLogo} width={16} height={16} alt="token" />
+              <span>${deposited}</span>
+              <Image
+                src={depositTokenLogo}
+                width={16}
+                height={16}
+                alt="token"
+              />
             </div>
           </div>
           <div className="mt-8 flex justify-between">

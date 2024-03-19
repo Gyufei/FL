@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 "use client";
 
+import { AccessTokenAtom, UserStore } from "./states/user";
+
 export async function plainFetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
@@ -29,7 +31,7 @@ export default async function fetcher(
 ) {
   let newInit = init;
   if (!skipToken) {
-    const token = localStorage.get("access_token");
+    const token = UserStore.get(AccessTokenAtom);
     if (!token) {
       return null;
     }
@@ -51,6 +53,7 @@ export default async function fetcher(
     ) as any;
 
     if (res.status === 401) {
+      UserStore.set(AccessTokenAtom, "");
       return null;
     }
 

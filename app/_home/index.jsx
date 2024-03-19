@@ -1,6 +1,6 @@
 import HomeCarousel from "./home-carousel";
 import TotalBanner from "./total-banner";
-import OrderList from "./order-list";
+import MarketPlace from "./marketplace-list";
 import Faqs from "./faqs";
 import LatestNews from "./latest-news";
 import SubscribeInput from "./subscribe-input";
@@ -12,7 +12,7 @@ export default function Home() {
     <div>
       <HomeCarousel />
       <TotalBanner />
-      <OrderList />
+      <MarketPlace />
       <Faqs />
       <LatestNews />
       <SubscribeInput />

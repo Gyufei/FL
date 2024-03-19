@@ -3,19 +3,28 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 import { WithTip } from "../../../marketplace/create-offer/with-tip";
+import { IOrder } from "@/lib/types/order";
+import { useGlobalConfig } from "@/lib/hooks/use-global-config";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { TokenPairImg } from "@/components/share/token-pair-img";
 
 export default function CancelDrawer({
   drawerOpen,
   handleDrawerOpen,
-  stockDetail,
+  order,
 }: {
   drawerOpen: boolean;
   handleDrawerOpen: (_o: boolean) => void;
-  stockDetail: Record<string, any>;
+  order: IOrder;
 }) {
-  const myDeposit = 63;
-  const myCompensation = 63;
-  const platFormFee = 0.025;
+  const { platFormFee } = useGlobalConfig();
+
+  const { offerLogo, forLogo } = useOrderFormat({
+    order,
+  });
+
+  const myDeposit = order.amount;
+  const myCompensation = order.points;
 
   function handleCancel() {}
 
@@ -34,26 +43,17 @@ export default function CancelDrawer({
             onClose={() => handleDrawerOpen(false)}
           />
           <div className="flex items-center">
-            <div className="relative h-fit">
-              <Image
-                src={stockDetail.avatar}
-                width={40}
-                height={40}
-                alt="avatar"
-                className="rounded-full"
-              />
-              <div className="absolute right-0 bottom-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
-                <Image
-                  src={stockDetail.token.logoURI}
-                  width={8.8}
-                  height={7.2}
-                  alt="avatar"
-                  className="rounded-full"
-                />
-              </div>
-            </div>
+            <TokenPairImg
+              src1={offerLogo}
+              src2={forLogo}
+              width1={40}
+              height1={40}
+              width2={8.8}
+              height2={7.2}
+            />
+
             <div className="ml-3 text-xl leading-[30px] text-black">
-              {stockDetail.name}
+              {order.marketplace?.market_place_name}
             </div>
           </div>
 

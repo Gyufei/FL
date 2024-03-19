@@ -6,31 +6,31 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export type IOfferType = "buy" | "sell";
+export type IOrderType = "ask" | "bid";
 
-export const OfferTypes: { label: string; value: IOfferType }[] = [
-  {
-    label: "Buys / Bids",
-    value: "buy",
-  },
+export const OfferTypes: { label: string; value: IOrderType }[] = [
   {
     label: "Sells / Asks",
-    value: "sell",
+    value: "ask",
+  },
+  {
+    label: "Buys / Bids",
+    value: "bid",
   },
 ];
 
-export function OfferTypeSelect({
+export function OrderTypeSelect({
   type,
   handleTypeChange,
 }: {
-  type: IOfferType;
-  handleTypeChange: (_t: IOfferType) => void;
+  type: IOrderType;
+  handleTypeChange: (_t: IOrderType) => void;
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
   const currentTypeObj = OfferTypes.find((t) => t.value === type);
 
-  function handleClickOpt(t: IOfferType) {
+  function handleClickOpt(t: IOrderType) {
     handleTypeChange(t);
     setPopOpen(false);
   }
@@ -43,7 +43,7 @@ export function OfferTypeSelect({
           className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-none data-[open=true]:bg-yellow"
         >
           <Image
-            src={type === "buy" ? "/icons/buys.svg" : "/icons/sells.svg"}
+            src={type === "ask" ? "/icons/buys.svg" : "/icons/sells.svg"}
             width={20}
             height={20}
             alt="type icon"
@@ -72,10 +72,10 @@ export function OfferTypeSelect({
             className="flex cursor-pointer items-center rounded-xl px-3 py-2 data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => handleClickOpt(t.value)}
           >
-            {t.value === "buy" ? (
+            {t.value === "ask" ? (
               <Image
                 src={
-                  type === "buy" ? "/icons/buys.svg" : "/icons/buys-gray.svg"
+                  type === "ask" ? "/icons/buys.svg" : "/icons/buys-gray.svg"
                 }
                 width={20}
                 height={20}
@@ -84,7 +84,7 @@ export function OfferTypeSelect({
             ) : (
               <Image
                 src={
-                  t.value === "sell"
+                  t.value === "bid"
                     ? "/icons/sells.svg"
                     : "/icons/sells-gray.svg"
                 }

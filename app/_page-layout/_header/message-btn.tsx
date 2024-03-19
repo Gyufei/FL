@@ -12,7 +12,7 @@ import { truncateAddr } from "@/lib/utils/web3";
 
 export default function MessageBtn() {
   const msgDetail = {
-    avatar: "/img/avatar-placeholder-3.png",
+    avatar: "/img/token-placeholder-3.png",
     name: "Points",
     no: 123456,
     user: "DkVN7RKTNjSSER5oyurf3vddQU2ZneSCYwXvpErvTCFA",

@@ -8,67 +8,53 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import OfferBuyBtn from "./offer-buy-btn";
+import OrderBuyBtn from "./order-buy-btn";
+import { IOrder } from "@/lib/types/order";
+import { IMarketPlace } from "@/lib/types/marketplace";
+import { TokenPairImg } from "@/components/share/token-pair-img";
+import { useOrderFormat } from "@/lib/hooks/use-order-format";
 
-function formatTime(seconds: number) {
-  const secs = seconds % 60;
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) {
-    return `${days}d ${hours % 24}h`;
-  } else if (hours > 0) {
-    return `${hours}h ${minutes % 60}m`;
-  } else if (minutes > 0) {
-    return `${minutes}m`;
-  } else {
-    return `${secs}s`;
-  }
-}
-
-export function OfferCard({
-  offerDetail,
+export function OrderCard({
+  order,
+  marketplace,
 }: {
-  offerDetail: Record<string, any>;
+  order: IOrder;
+  marketplace: IMarketPlace;
 }) {
+  const {
+    orderType,
+    progress,
+    offerValue,
+    forValue,
+    offerLogo,
+    forLogo,
+    pointPerPrice,
+    orderDuration,
+    tokenTotalPrice,
+  } = useOrderFormat({
+    order,
+  });
+
   return (
     <div className="h-fit rounded-[20px] bg-white p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="relative">
-            <Image
-              src={offerDetail.avatar}
-              width={56}
-              height={56}
-              alt="avatar"
-              className="rounded-full"
-            />
-            <div className="absolute right-0 bottom-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
-              <Image
-                src={offerDetail.token.logoURI}
-                width={8.8}
-                height={7.2}
-                alt="avatar"
-                className="rounded-full"
-              />
-            </div>
-          </div>
+          <TokenPairImg src1={offerLogo} src2={forLogo} />
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {offerDetail.name}
+              {marketplace.market_place_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{offerDetail.no}
+              #{order.order_id}
             </div>
           </div>
         </div>
 
         <div className="relative">
-          <CircleProgress percentage={offerDetail.progress * 100} />
+          <CircleProgress percentage={progress * 100} />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] text-gray">
-            {offerDetail.progress * 100}%
+            {progress * 100}%
           </div>
         </div>
       </div>
@@ -77,9 +63,9 @@ export function OfferCard({
         <div className="flex flex-col">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">Offer</div>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(offerDetail.offer, 2, true)}
+            {formatNum(offerValue, 2, true)}
             <Image
-              src={offerDetail.stableToken.logoURI}
+              src={offerLogo}
               width={16}
               height={16}
               alt="stable"
@@ -87,7 +73,11 @@ export function OfferCard({
             />
           </div>
           <div className="text-xs leading-[18px] text-lightgray">
-            ${offerDetail.offerValue} /Diamond
+            {orderType === "ask" ? (
+              <>${formatNum(pointPerPrice)} /Diamond</>
+            ) : (
+              <>${formatNum(tokenTotalPrice)}</>
+            )}
           </div>
         </div>
         <Image
@@ -99,9 +89,9 @@ export function OfferCard({
         <div className="flex flex-col items-end">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">For</div>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(offerDetail.for, 2, true)}
+            {formatNum(forValue, 2, true)}
             <Image
-              src={offerDetail.stableToken.logoURI}
+              src={forLogo}
               width={16}
               height={16}
               alt="stable"
@@ -109,17 +99,21 @@ export function OfferCard({
             />
           </div>
           <div className="text-xs leading-[18px] text-lightgray">
-            ${offerDetail.forValue}
+            {orderType === "ask" ? (
+              <>${formatNum(tokenTotalPrice)}</>
+            ) : (
+              <>${formatNum(pointPerPrice)} /Diamond</>
+            )}
           </div>
         </div>
       </div>
 
       <div className="flex justify-between pt-4">
         <div className="text-xs leading-[18px] text-lightgray">
-          {formatTime(offerDetail.time)}
+          {orderDuration}
         </div>
-        <div className="flex items-center space-x-3">
-          <div className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#eee]">
+        <div className="flex items-center">
+          <div className="mr-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#eee]">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -132,14 +126,12 @@ export function OfferCard({
                   />
                 </TooltipTrigger>
                 <TooltipContent className="w-[200px]">
-                  <p className="text-xs leading-[18px]">
-                    The seller&apos;s note content is displayed here.
-                  </p>
+                  <p className="text-xs leading-[18px]">{order.order_note}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </div>
-          <OfferBuyBtn offerDetail={offerDetail} />
+          <OrderBuyBtn order={order} />
         </div>
       </div>
     </div>

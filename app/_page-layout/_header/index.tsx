@@ -10,7 +10,7 @@ export default function Header() {
       <div className="flex h-24 items-center justify-between p-6">
         <NavigationBtns />
         <Logo />
-        <div className="flex items-center justify-end space-x-4 md:space-x-6">
+        <div className="flex flex-1 items-center justify-end space-x-4 md:space-x-6">
           <NetworkSelect />
           <ConnectBtn />
           <MessageBtn />
@@ -22,7 +22,7 @@ export default function Header() {
 
 function Logo() {
   return (
-    <div className="flex items-center justify-center justify-self-center">
+    <div className="flex flex-1 items-center justify-center justify-self-center">
       <Image src="/icons/logo.svg" alt="logo" width={75} height={20} />
     </div>
   );

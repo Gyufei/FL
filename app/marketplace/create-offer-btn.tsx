@@ -6,8 +6,13 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SellContent } from "./create-offer/sell-content";
 import { BuyContent } from "./create-offer/buy-content";
+import { IMarketplace } from "@/lib/types/marketplace";
 
-export default function CreateOfferBtn() {
+export default function CreateOfferBtn({
+  marketplace,
+}: {
+  marketplace: IMarketplace;
+}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
 
@@ -64,13 +69,21 @@ export default function CreateOfferBtn() {
             value="sell"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
           >
-            <SellContent step={step} setStep={setStep} />
+            <SellContent
+              marketplace={marketplace}
+              step={step}
+              setStep={setStep}
+            />
           </TabsContent>
           <TabsContent
             value="buy"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
           >
-            <BuyContent step={step} setStep={setStep} />
+            <BuyContent
+              marketplace={marketplace}
+              step={step}
+              setStep={setStep}
+            />
           </TabsContent>
         </Tabs>
       </Drawer>

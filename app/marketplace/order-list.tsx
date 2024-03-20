@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import {
   IOrderType,
@@ -14,12 +13,13 @@ import {
 import SearchInput from "./search-input";
 import { OrderCard } from "./order-card";
 import { useMarketplaceOrders } from "@/lib/hooks/api/use-marketplace-orders";
-import { IMarketPlace } from "@/lib/types/marketplace";
+import { IMarketplace } from "@/lib/types/marketplace";
+import HoverIcon from "@/components/share/hover-icon";
 
 export default function OrderList({
   marketplace,
 }: {
-  marketplace: IMarketPlace;
+  marketplace: IMarketplace;
 }) {
   const { data: orders } = useMarketplaceOrders({
     marketplaceId: marketplace.market_place_id,
@@ -73,28 +73,28 @@ export default function OrderList({
             data-active={layout === "list"}
             className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
           >
-            <Image
-              src={
-                layout === "list" ? "/icons/menu.svg" : "/icons/menu-gray.svg"
-              }
+            <HoverIcon
+              src="/icons/menu-gray.svg"
+              hoverSrc="/icons/menu.svg"
+              active={layout === "list"}
               width={20}
               height={20}
-              alt="menu"
               onClick={() => setLayout("list")}
+              alt="menu"
             />
           </div>
           <div
             data-active={layout === "grid"}
             className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
           >
-            <Image
-              src={
-                layout === "grid" ? "/icons/grid.svg" : "/icons/grid-gray.svg"
-              }
+            <HoverIcon
+              src="/icons/grid-gray.svg"
+              hoverSrc="/icons/grid.svg"
+              active={layout === "grid"}
               width={20}
               height={20}
-              alt="menu"
               onClick={() => setLayout("grid")}
+              alt="menu"
             />
           </div>
         </div>

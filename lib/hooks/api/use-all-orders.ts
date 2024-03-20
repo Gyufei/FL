@@ -19,8 +19,6 @@ export function useAllOrders() {
     for (const marketplace of marketplaceData) {
       const orderRes = await fetcher(
         `${apiEndPoint}${Paths.order}?market_place_id=${marketplace.market_place_id}`,
-        {},
-        true,
       );
 
       let parsedRes = orderRes.map((order: Record<string, any>) => {

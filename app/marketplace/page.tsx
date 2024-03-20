@@ -26,21 +26,23 @@ export default function Marketplace() {
     (marketplace) => marketplace.market_place_id === marketplaceId,
   );
 
+  if (!marketplace) return null;
+
   return (
     <div className="flex h-[calc(100vh-96px)] w-full flex-col">
       <div className="flex flex-1 items-stretch">
-        <div className="flex w-[368px] flex-col space-y-6 px-6">
-          {marketplace && <MarketplaceCard marketplace={marketplace} />}
+        <div className="flex w-[348px] flex-col space-y-6 px-6">
+          <MarketplaceCard marketplace={marketplace} />
           <LeaderBoard />
           <div>
             <Image src="/img/point-fi.svg" width={280} height={160} alt="fi" />
           </div>
         </div>
         <div className="max-h-[734px] flex-1 ">
-          {marketplace && <OrderList marketplace={marketplace} />}
+          <OrderList marketplace={marketplace} />
         </div>
         <div className="w-[368px] px-6">
-          <MarketTrades />
+          <MarketTrades marketplace={marketplace} />
         </div>
       </div>
       <PageFooter />

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { IMarketPlace } from "@/lib/types/marketplace";
+import { IMarketplace } from "@/lib/types/marketplace";
 import TokenImg from "@/components/share/token-img";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function MarketplaceList() {
   );
 }
 
-function ItemCard({ marketplace }: { marketplace: IMarketPlace }) {
+function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
   const router = useRouter();
 
   function handleGo() {

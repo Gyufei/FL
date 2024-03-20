@@ -21,7 +21,6 @@ export default function NetworkSelect() {
   const handleSelectNet = async (c: ClusterType) => {
     if (c === cluster) return;
     setCluster(c);
-    setPopOpen(false);
   };
 
   return (
@@ -43,7 +42,7 @@ export default function NetworkSelect() {
         </div>
       </PopoverTrigger>
       <PopoverContent
-        className="flex w-[160px] flex-col items-stretch space-y-2 border-none bg-white p-2"
+        className="flex w-[248px] flex-col items-stretch space-y-2 border-none bg-white p-2"
         style={{
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}
@@ -64,8 +63,23 @@ export default function NetworkSelect() {
           <div className="flex-1 text-sm">Solana</div>
         </div>
         <div
-          onClick={() => {}}
+          onClick={() => handleSelectNet(ClusterType.Devnet)}
           data-state={ClusterType.Devnet === cluster ? "active" : "inactive"}
+          className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
+        >
+          <Image
+            width={24}
+            height={24}
+            src="/icons/solana.svg"
+            alt="chain logo"
+            className="z-10 bg-white"
+          />
+          <div className="flex-1 text-sm">Solana Dev</div>
+        </div>
+        <DevnetCard isActive={ClusterType.Devnet === cluster} />
+        <div
+          onClick={() => {}}
+          data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >
           <Image
@@ -92,3 +106,35 @@ export default function NetworkSelect() {
 const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
   loading: () => <Skeleton className="h-10 w-10 rounded-full" />,
 });
+
+function DevnetCard({ isActive }: { isActive: boolean }) {
+  function goClaimTestToken() {}
+
+  function goHelp() {}
+
+  return (
+    <div
+      data-active={isActive}
+      className="rounded-xl bg-[#fafafa] p-4 zoom-in-50 data-[active=false]:hidden"
+    >
+      <div className="text-sm leading-5 text-[rgba(153,160,175,0.5)]">
+        Try Testnet
+      </div>
+      <div className="mt-4 flex justify-between">
+        <div
+          onClick={goClaimTestToken}
+          className="flex cursor-pointer items-center"
+        >
+          <div className="mr-1 h-1 w-1 rounded-full bg-[#99A0AF]"></div>
+          <div className="text-xs leading-[18px] text-gray">
+            Claim test tokens
+          </div>
+        </div>
+        <div onClick={goHelp} className="flex cursor-pointer items-center">
+          <div className="mr-1 h-1 w-1 rounded-full bg-[#99A0AF]"></div>
+          <div className="text-xs leading-[18px] text-gray">Help</div>
+        </div>
+      </div>
+    </div>
+  );
+}

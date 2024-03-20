@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "../../components/ui/input";
-import { IMarketPlace } from "@/lib/types/marketplace";
+import { IMarketplace } from "@/lib/types/marketplace";
 import { useSetAtom } from "jotai";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
@@ -20,7 +20,7 @@ import MarketplaceOverview from "@/components/share/market-place-overview";
 export default function MarketplaceCard({
   marketplace,
 }: {
-  marketplace: IMarketPlace;
+  marketplace: IMarketplace;
 }) {
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
@@ -49,15 +49,16 @@ export default function MarketplaceCard({
   const handleGoDiscord = () => {};
 
   return (
-    <div className="rounded-3xl bg-[#F0F1F5] p-5">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center space-x-3">
-          <TokenImg
-            tokenAddr={marketplace.token_mint}
-            width={56}
-            height={56}
-            className="rounded-full"
-          />
+    <div className="relative mt-4 rounded-3xl bg-[#F0F1F5] p-5 pt-3">
+      <TokenImg
+        tokenAddr={marketplace.token_mint}
+        width={73}
+        height={73}
+        className="absolute -top-4 rounded-3xl"
+      />
+
+      <div className="flex items-center justify-between pl-[84px]">
+        <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
             <div className="text-lg leading-[28px] text-black">
               {marketplace.market_place_name}

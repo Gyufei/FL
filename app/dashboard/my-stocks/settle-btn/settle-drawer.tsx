@@ -152,12 +152,14 @@ export default function SettleDrawer({
           {isAsk &&
             (isTaker ? (
               <SettleAskTaker
+                marketplaceStr={order.marketplace.market_place_id}
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}
               />
             ) : (
               <SettleAskMaker
+                marketplaceStr={order.marketplace.market_place_id}
                 orderStr={order.order}
                 makerStr={order.maker_id}
               />
@@ -165,12 +167,14 @@ export default function SettleDrawer({
           {!isAsk &&
             (isTaker ? (
               <SettleBidTaker
+                marketplaceStr={order.marketplace.market_place_id}
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}
               />
             ) : (
               <SettleBidMaker
+                marketplaceStr={order.marketplace.market_place_id}
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}

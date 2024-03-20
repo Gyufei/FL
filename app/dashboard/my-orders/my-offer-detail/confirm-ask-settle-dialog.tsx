@@ -17,9 +17,9 @@ export default function ConfirmAskSettleDialog({
   onOpenChange: (_open: boolean) => void;
   order: IOrder;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
-
-  const [orderRole] = useState<"Maker" | "Taker">("Maker");
+  const { amount, tokenTotalPrice, orderPointInfo, orderRole } = useOrderFormat(
+    { order },
+  );
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
@@ -92,6 +92,7 @@ export default function ConfirmAskSettleDialog({
 
           {orderRole === "Taker" && (
             <ConfirmAskTakerSettleBtn
+              marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
               preOrderStr={order.pre_order}
@@ -99,6 +100,7 @@ export default function ConfirmAskSettleDialog({
           )}
           {orderRole === "Maker" && (
             <ConfirmAskMakerSettleBtn
+              marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
             />

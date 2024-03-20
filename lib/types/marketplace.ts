@@ -1,4 +1,4 @@
-export interface IMarketPlace {
+export interface IMarketplace {
   market_place_id: string;
   market_place_name: string;
   floor_price: string;

@@ -18,4 +18,6 @@ export const Paths = {
   order: "/market_place/order",
   makerDetail: "/market_place/maker_detail",
   marketPlace: "/market_place",
+  addTransaction: "/transaction/add",
+  updateTransaction: "/transaction/update",
 };

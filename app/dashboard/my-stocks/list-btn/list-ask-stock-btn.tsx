@@ -47,6 +47,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const pointPrice = NP.divide(sellPrice, sellPointAmount);
 
   const { isLoading: isDepositLoading, write: writeAction } = useAskRelist({
+    marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
     orderStr: order.order,
   });

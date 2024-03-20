@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { IMarketPlace } from "@/lib/types/marketplace";
+import { IMarketplace } from "@/lib/types/marketplace";
 import { formatNum } from "@/lib/utils/number";
 
 export default function MarketplaceOverview({
   marketplace,
 }: {
-  marketplace: IMarketPlace;
+  marketplace: IMarketplace;
 }) {
   return (
     <div className="mt-5 flex-col space-y-4">
@@ -28,7 +28,7 @@ export default function MarketplaceOverview({
 
       <div className="flex items-center justify-between">
         <div>
-          <LabelText>1D Change</LabelText>
+          <LabelText>24h Change</LabelText>
           <div
             data-up={Number(marketplace.change_rate_24h) > 0}
             className="leading-6 data-[up=true]:text-green data-[up=false]:text-red"
@@ -37,7 +37,7 @@ export default function MarketplaceOverview({
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <LabelText>1D Vol.</LabelText>
+          <LabelText>24h Vol.</LabelText>
           <div className="flex items-center leading-6 text-black">
             ${marketplace.vol_24h}
           </div>

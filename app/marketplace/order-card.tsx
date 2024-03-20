@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import OrderBuyBtn from "./order-buy-btn";
 import { IOrder } from "@/lib/types/order";
-import { IMarketPlace } from "@/lib/types/marketplace";
+import { IMarketplace } from "@/lib/types/marketplace";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 
@@ -19,7 +19,7 @@ export function OrderCard({
   marketplace,
 }: {
   order: IOrder;
-  marketplace: IMarketPlace;
+  marketplace: IMarketplace;
 }) {
   const {
     orderType,
@@ -39,7 +39,12 @@ export function OrderCard({
     <div className="h-fit rounded-[20px] bg-white p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <TokenPairImg src1={offerLogo} src2={forLogo} />
+          <TokenPairImg
+            src1={offerLogo}
+            src2={forLogo}
+            width1={48}
+            height1={48}
+          />
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
@@ -52,7 +57,10 @@ export function OrderCard({
         </div>
 
         <div className="relative">
-          <CircleProgress percentage={progress * 100} />
+          <CircleProgress
+            percentage={progress * 100}
+            className="scale-[1.1429]"
+          />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] text-gray">
             {progress * 100}%
           </div>
@@ -60,7 +68,7 @@ export function OrderCard({
       </div>
 
       <div className="mt-4 flex items-center justify-between border-b border-[#F0F1F5] pb-5">
-        <div className="flex flex-col">
+        <div className="flex flex-1 flex-col">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">Offer</div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(offerValue, 2, true)}
@@ -80,13 +88,15 @@ export function OrderCard({
             )}
           </div>
         </div>
-        <Image
-          src="/icons/arrow-right-gray.svg"
-          width={20}
-          height={20}
-          alt="arrow"
-        />
-        <div className="flex flex-col items-end">
+        <div className="flex flex-1 items-center justify-center">
+          <Image
+            src="/icons/arrow-right-gray.svg"
+            width={20}
+            height={20}
+            alt="arrow"
+          />
+        </div>
+        <div className="flex flex-1 flex-col items-end">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">For</div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(forValue, 2, true)}
@@ -113,13 +123,13 @@ export function OrderCard({
           {orderDuration}
         </div>
         <div className="flex items-center">
-          <div className="mr-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#eee]">
+          <div className="mr-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
                   <HoverIcon
                     src="/icons/msg-gray.svg"
-                    hoverSrc="/icons/msg.svg"
+                    hoverSrc="/icons/msg-gray.svg"
                     width={16}
                     height={16}
                     alt="msg"

@@ -13,13 +13,16 @@ import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNote from "./order-note";
 import FeeDisplay from "./fee-display";
 import { useCreateBidMaker } from "@/lib/hooks/contract/use-create-bid-maker";
+import { IMarketplace } from "@/lib/types/marketplace";
 
 export function BuyContent({
   step,
   setStep,
+  marketplace,
 }: {
   step: number;
   setStep: (_step: number) => void;
+  marketplace: IMarketplace;
 }) {
   const img1 = "/icons/point.svg";
   const img2 = "/icons/solana.svg";
@@ -62,8 +65,11 @@ export function BuyContent({
     setStep(0);
   }
 
-  const { isLoading: isCreateLoading, write: createAction } =
-    useCreateBidMaker();
+  const { isLoading: isCreateLoading, write: createAction } = useCreateBidMaker(
+    {
+      marketplaceStr: marketplace.market_place_id,
+    },
+  );
 
   function handleDeposit() {
     createAction({
@@ -71,6 +77,7 @@ export function BuyContent({
       receivePointAmount: Number(receivePointAmount),
       breachFee: Number(breachFee || 50) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
+      note: note,
     });
   }
 

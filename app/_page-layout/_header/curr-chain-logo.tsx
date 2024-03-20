@@ -18,7 +18,7 @@ export default function CurrChainLogo() {
         className="z-10 mr-2 bg-white"
       ></Image>
       <span className="text-base leading-6 text-black">
-        {isMainnet ? "Solana" : "EVMs"}
+        {isMainnet ? "Solana" : "Solana Dev"}
       </span>
     </div>
   );

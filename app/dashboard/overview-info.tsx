@@ -60,7 +60,7 @@ export default function OverviewInfo() {
             <div className="leading-6 text-black">{formatNum(makerOrders)}</div>
           </div>
           <div className="flex flex-col items-end">
-            <LabelText>Profit</LabelText>
+            <LabelText>Taker Orders</LabelText>
             <div className="leading-6 text-black">{formatNum(takerOrders)}</div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function OverviewInfo() {
             </div>
           </div>
           <div className="flex flex-col items-end">
-            <LabelText>Profit</LabelText>
+            <LabelText>Tax Income</LabelText>
             <div
               data-loss={taxIncome < 0}
               className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
@@ -114,9 +114,9 @@ export default function OverviewInfo() {
         <div className="relative mt-2">
           <Input
             placeholder="https://"
-            className="h-12 border-[#d4d4d4] pr-[52px] text-base focus:border-black"
+            className="h-12 border-[#d4d4d4] pl-4 pr-[52px] text-base focus:border-[#3dd866]"
           />
-          <div className="absolute right-2 top-[13px] leading-[22px] text-lightgray">
+          <div className="absolute right-4 top-[13px] leading-[22px] text-lightgray">
             Copy
           </div>
         </div>

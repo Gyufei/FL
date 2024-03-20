@@ -50,7 +50,7 @@ export function TradesTable() {
   return (
     <Table className="text-xs leading-[18px]">
       <TableHeader className="text-gray">
-        <TableRow className="border-[#d8d8d8]">
+        <TableRow className="border-[#eee]">
           <TableHead className="w-5 px-1 py-[11px]">
             <Image src="/icons/time.svg" width={16} height={16} alt="time" />
           </TableHead>

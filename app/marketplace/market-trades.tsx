@@ -5,8 +5,13 @@ import { ITradeType, TradeTypeSelect } from "./trade-type-select";
 import { TradesTable } from "./trades-table";
 import CreateOfferBtn from "./create-offer-btn";
 import KLineChart from "./k-line-chart";
+import { IMarketplace } from "@/lib/types/marketplace";
 
-export default function MarketTrades() {
+export default function MarketTrades({
+  marketplace,
+}: {
+  marketplace: IMarketplace;
+}) {
   const [tradeType, setTradeType] = useState<ITradeType>("All");
 
   function handleTradeTypeChange(t: ITradeType) {
@@ -25,12 +30,12 @@ export default function MarketTrades() {
           handleTypeChange={handleTradeTypeChange}
         />
       </div>
-      <div className="no-scroll-bar max-h-[250px] w-full flex-1 overflow-y-auto border-b border-[#d8d8d8] pb-[10px]">
+      <div className="no-scroll-bar max-h-[250px] w-full flex-1 overflow-y-auto border-b border-[#eee] pb-[10px]">
         <TradesTable />
       </div>
 
       <div className="py-6">
-        <CreateOfferBtn />
+        <CreateOfferBtn marketplace={marketplace} />
       </div>
 
       <KLineChart />

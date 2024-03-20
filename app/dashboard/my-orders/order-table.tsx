@@ -76,12 +76,7 @@ export function OrderTable() {
                 </div>
               </TableCell>
               <TableCell className="px-1 py-[11px]">
-                <div
-                  data-type={ord.order_type}
-                  className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
-                >
-                  {ord.order_type}
-                </div>
+                <OrderRole order={ord} />
               </TableCell>
               <TableCell className="px-1 py-[11px]">
                 <OrderEqToken order={ord} />
@@ -240,6 +235,19 @@ function OrderFromTo({ order }: { order: IOrder }) {
         <span className="text-sm leading-5 text-black">{forValue}</span>
         <Image src={forLogo} width={16} height={16} alt="token" />
       </div>
+    </div>
+  );
+}
+
+function OrderRole({ order }: { order: IOrder }) {
+  const { orderRole } = useOrderFormat({ order });
+
+  return (
+    <div
+      data-type={orderRole}
+      className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
+    >
+      {orderRole}
     </div>
   );
 }

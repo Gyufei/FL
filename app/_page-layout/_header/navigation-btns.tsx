@@ -10,7 +10,7 @@ export default function NavigationBtns() {
   const isMarketPlace = pathname.startsWith("/marketplace");
 
   return (
-    <div className="flex items-center space-x-5">
+    <div className="flex flex-1 items-center space-x-5">
       <NavigationBtn
         active={isDashboard}
         icon="/icons/dashboard.svg"

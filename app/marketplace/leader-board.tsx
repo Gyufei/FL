@@ -51,7 +51,7 @@ export default function LeaderBoard() {
       <div className="mt-4 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black">Market Trades</div>
+          <div className="leading-6 text-black">Leaderboard</div>
         </div>
         <LeaderTypeSelect
           type={leaderType}
@@ -62,10 +62,10 @@ export default function LeaderBoard() {
           handleTypeChange={handleRangeTypeChange}
         />
       </div>
-      <div className="no-scroll-bar max-h-[250px] w-full flex-1 overflow-y-auto border-b border-[#d8d8d8] pb-[10px]">
+      <div className="no-scroll-bar max-h-[250px] w-full flex-1 overflow-y-auto border-b border-[#eee] pb-[10px]">
         <Table className="text-xs leading-[18px]">
           <TableHeader className="text-gray">
-            <TableRow className="border-[#d8d8d8]">
+            <TableRow className="border-[#eee]">
               <TableHead className="h-10 w-5 px-1 py-[6px]">#</TableHead>
               <TableHead className="h-10 px-1 py-[6px]">Wallet</TableHead>
               <TableHead className="h-10 px-1 py-[6px]">Amount</TableHead>

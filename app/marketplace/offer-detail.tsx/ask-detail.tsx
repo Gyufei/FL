@@ -43,6 +43,7 @@ export default function AskDetail({ order }: { order: IOrder }) {
     isSuccess,
     write: writeAction,
   } = useBidTaker({
+    marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
     preOrder: order.pre_order,
   });

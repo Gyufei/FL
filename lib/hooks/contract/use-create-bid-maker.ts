@@ -1,55 +1,47 @@
 import { useEffect } from "react";
 import useTadleProgram from "../use-tadle-program";
 import useTxStatus from "./use-tx-status";
-import {
-  PublicKey,
-  LAMPORTS_PER_SOL,
-  Keypair,
-  SystemProgram,
-} from "@solana/web3.js";
+import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { useClusterConfig } from "../common/use-cluster-config";
-import { useWallet } from "@solana/wallet-adapter-react";
-import {
-  TOKEN_PROGRAM_ID,
-  TOKEN_2022_PROGRAM_ID,
-  getAssociatedTokenAddress,
-} from "@solana/spl-token";
+import { useTransaction } from "../api/use-transaction";
+import toPubString from "@/lib/utils/pub-string";
+import { useAccounts } from "./use-accounts";
 
-export function useCreateBidMaker() {
-  const { publicKey: account } = useWallet();
-  const { clusterConfig } = useClusterConfig();
+export function useCreateBidMaker({
+  marketplaceStr,
+}: {
+  marketplaceStr: string;
+}) {
   const { program } = useTadleProgram();
+  const { confirmTransaction } = useTransaction();
+  const { getAccounts } = useAccounts();
 
   const writeAction = async ({
     payTokenAmount,
     receivePointAmount,
     breachFee,
     taxForSub,
+    note,
   }: {
     payTokenAmount: number;
     receivePointAmount: number;
     breachFee: number;
     taxForSub: number;
+    note: string;
   }) => {
-    const tokenProgram = TOKEN_PROGRAM_ID;
-    const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
-    const authority = account;
-    const seedAccount = Keypair.generate();
-    const systemProgram = SystemProgram.programId;
-    const marketPlace = new PublicKey(clusterConfig.program.marketPlace);
-    const systemConfig = new PublicKey(clusterConfig.program.systemConfig);
-    const userUsdcTokenAccount = await getAssociatedTokenAddress(
-      new PublicKey(clusterConfig.program.usdcTokenMint),
-      account!,
-      false,
+    const {
       tokenProgram,
-    );
-    const poolUsdcTokenAccount = new PublicKey(
-      clusterConfig.program.poolUsdcTokenAccount,
-    );
-    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
+      tokenProgram2022,
+      authority,
+      systemProgram,
+      systemConfig,
+      userUsdcTokenAccount,
+      poolUsdcTokenAccount,
+      usdcTokenMint,
+      seedAccount,
+    } = await getAccounts();
 
+    const marketPlace = new PublicKey(marketplaceStr);
     const bidMaker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
       program.programId,
@@ -62,7 +54,7 @@ export function useCreateBidMaker() {
     // 5000 usdc => 1000 points
     // settle_breach_fee: 50% => 5000
     // each_trade_tax: 3% => 300
-    const res = await program.methods
+    const txHash = await program.methods
       .createMaker(
         new BN(receivePointAmount),
         new BN(payTokenAmount * LAMPORTS_PER_SOL),
@@ -90,7 +82,15 @@ export function useCreateBidMaker() {
       .signers([seedAccount])
       .rpc();
 
-    return res;
+    await confirmTransaction({
+      maker: toPubString(bidMaker),
+      order: toPubString(bidMakerOrder),
+      marketplace: toPubString(marketPlace),
+      txHash,
+      note,
+    });
+
+    return txHash;
   };
 
   const wrapRes = useTxStatus(writeAction);

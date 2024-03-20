@@ -66,7 +66,23 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   const pointPerPrice = NP.divide(tokenTotalPrice, order.points);
 
   const orderDuration = formatTimeDuration(
-    NP.minus(Date.now() / 1000, order.create_at || order.relist_at),
+    Math.floor(
+      NP.minus(
+        Date.now() / 1000,
+        new Date(order.create_at || order.relist_at).getTime() / 1000,
+      ),
+    ),
+  );
+
+  console.log(order);
+  console.log(orderDuration);
+  console.log(
+    Math.floor(
+      NP.minus(
+        Date.now() / 1000,
+        new Date(order.create_at || order.relist_at).getTime() / 1000,
+      ),
+    ),
   );
 
   const isFilled = order.used_points === order.points;
@@ -78,6 +94,14 @@ export function useOrderFormat({ order }: { order: IOrder }) {
       return defaultValue;
     }
   }
+
+  const orderRole = useMemo(() => {
+    if (order.pre_order == "0") {
+      return "Maker";
+    } else {
+      return "Taker";
+    }
+  }, [order]);
 
   return {
     isFilled,
@@ -99,5 +123,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     preOrderMakerDetail,
     subOrders,
     getOrigin,
+    orderRole,
   };
 }

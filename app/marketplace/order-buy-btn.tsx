@@ -15,7 +15,7 @@ export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
     <>
       <button
         onClick={() => setDrawerOpen(true)}
-        className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-yellow hover:bg-yellow"
+        className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:bg-yellow"
       >
         Buy
       </button>

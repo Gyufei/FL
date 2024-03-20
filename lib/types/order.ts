@@ -1,4 +1,4 @@
-import { IMarketPlace } from "./marketplace";
+import { IMarketplace } from "./marketplace";
 
 export interface IOrder {
   order_id: string;
@@ -21,7 +21,7 @@ export interface IOrder {
   order_type: "ask" | "bid";
   create_at: string;
   order_note: string;
-  marketplace: IMarketPlace;
+  marketplace: IMarketplace;
   order_tx_hash: string;
   relist_tx_hash: string;
   relist_at: string;

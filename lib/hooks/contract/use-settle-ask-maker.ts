@@ -1,61 +1,39 @@
 import { useEffect } from "react";
 import useTadleProgram from "../use-tadle-program";
 import useTxStatus from "./use-tx-status";
-import {
-  PublicKey,
-  SystemProgram,
-  LAMPORTS_PER_SOL,
-  Keypair,
-} from "@solana/web3.js";
+import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { useClusterConfig } from "../common/use-cluster-config";
-import { useWallet } from "@solana/wallet-adapter-react";
-import {
-  TOKEN_PROGRAM_ID,
-  TOKEN_2022_PROGRAM_ID,
-  getAssociatedTokenAddress,
-} from "@solana/spl-token";
+import { useTransaction } from "../api/use-transaction";
+import { useAccounts } from "./use-accounts";
 
 export function useSettleAskMaker({
+  marketplaceStr,
   makerStr,
   orderStr,
 }: {
+  marketplaceStr: string;
   makerStr: string;
   orderStr: string;
 }) {
-  const { publicKey: account } = useWallet();
-  const { clusterConfig } = useClusterConfig();
   const { program } = useTadleProgram();
+  const { confirmTransaction } = useTransaction();
+  const { getAccounts } = useAccounts();
 
   const writeAction = async () => {
-    const tokenProgram = TOKEN_PROGRAM_ID;
-    const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
-    const authority = account;
-    const systemProgram = SystemProgram.programId;
-    const marketPlace = new PublicKey(clusterConfig.program.marketPlace);
-    const systemConfig = new PublicKey(clusterConfig.program.systemConfig);
-    const userUsdcTokenAccount = await getAssociatedTokenAddress(
-      new PublicKey(clusterConfig.program.usdcTokenMint),
-      account!,
-      false,
+    const {
       tokenProgram,
-    );
-    const userPointsTokenAccount = await getAssociatedTokenAddress(
-      new PublicKey(clusterConfig.program.pointTokenMint),
-      account!,
-      false,
-      tokenProgram,
-    );
-    const poolUsdcTokenAccount = new PublicKey(
-      clusterConfig.program.poolUsdcTokenAccount,
-    );
-    const poolPointsTokenAccount = new PublicKey(
-      clusterConfig.program.poolPointsTokenAccount,
-    );
-    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
-    const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
-
-    const programAuthority = Keypair.generate();
+      tokenProgram2022,
+      authority,
+      systemProgram,
+      systemConfig,
+      userUsdcTokenAccount,
+      poolUsdcTokenAccount,
+      usdcTokenMint,
+      userPointsTokenAccount,
+      poolPointsTokenAccount,
+      pointTokenMint,
+      programAuthority,
+    } = await getAccounts();
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
       [systemConfig.toBuffer()],
@@ -63,10 +41,11 @@ export function useSettleAskMaker({
     )[0];
 
     const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
-      [Buffer.from("wsol_tmp_token_account"), account!.toBuffer()],
+      [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
       program.programId,
     )[0];
 
+    const marketPlace = new PublicKey(marketplaceStr);
     const order = new PublicKey(orderStr);
     const maker = new PublicKey(makerStr);
 
@@ -87,7 +66,7 @@ export function useSettleAskMaker({
       .signers([programAuthority])
       .rpc();
 
-    const res = await program.methods
+    const txHash = await program.methods
       .settleAskMaker(new BN(0))
       .accounts({
         authority: authority,
@@ -110,7 +89,15 @@ export function useSettleAskMaker({
       .signers([])
       .rpc();
 
-    return res;
+    await confirmTransaction({
+      maker: makerStr,
+      order: orderStr,
+      marketplace: marketplaceStr,
+      txHash,
+      note: "",
+    });
+
+    return txHash;
   };
 
   const wrapRes = useTxStatus(writeAction);

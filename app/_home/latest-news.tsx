@@ -15,7 +15,7 @@ export default function LatestNews() {
   return (
     <div className="mt-[120px] px-[120px]">
       <div className="text-center text-4xl leading-[54px] text-black">
-        Latest from Poince
+        Latest from Tadle Market
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-10">

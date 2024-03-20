@@ -8,7 +8,7 @@ export default function TotalBanner() {
   return (
     <div className="mt-5 flex flex-col items-center py-10">
       <div className="text-4xl leading-[54px] text-black">
-        The First Point Marketplace
+        The First Pre SuperMarket
       </div>
       <div className="leading-5 text-lightgray">
         FASTEST DATA · DEEPEST LIQUIDITY · FUN REWARDS

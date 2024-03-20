@@ -1,4 +1,4 @@
-Sitemap: https://depe.dev/sitemap.xml
+Sitemap: https://tadle.com/sitemap.xml
 
 User-agent: *
 Disallow: /api

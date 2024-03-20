@@ -17,7 +17,7 @@ export default function Faqs() {
         FAQ&apos;s
       </div>
       <div className="text-center text-4xl leading-[54px] text-black">
-        Find out more about Poince
+        Find out more about Tadle Market
       </div>
 
       <Collapsible

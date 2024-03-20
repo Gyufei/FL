@@ -14,7 +14,7 @@ export default function HomeFooter() {
       }}
     >
       <div className="text-sm leading-5 text-lightgray">
-        Copyright @ Sherlock Protocol 2024. All Rights Reserved.
+        Copyright @ Tadle 2023. All Rights Reserved.
       </div>
       <div className="flex items-center space-x-5">
         <HoverIcon

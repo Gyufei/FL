@@ -14,7 +14,7 @@ export const metadata = {
     default: "Tadle Market",
   },
   description: "The First Pre SuperMarket",
-
+  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
   openGraph: {
     title: "Tadle Market",
     description: "The First Pre SuperMarket",

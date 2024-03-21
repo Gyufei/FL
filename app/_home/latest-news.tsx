@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { range } from "lodash";
+// import { range } from "lodash";
 import { formatTimestampEn } from "@/lib/utils/time";
 
 export default function LatestNews() {

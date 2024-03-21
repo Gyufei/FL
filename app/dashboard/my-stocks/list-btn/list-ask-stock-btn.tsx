@@ -13,8 +13,7 @@ import { StableTokenSelectDisplay } from "../../../marketplace/create-offer/stab
 import { PointTokenSelectDisplay } from "../../../marketplace/create-offer/point-token-display";
 import SettleBreachFee from "../../../marketplace/create-offer/settle-breach-fee";
 import TaxForSubTrades from "../../../marketplace/create-offer/tax-for-sub-trades";
-import OrderNote from "../../../marketplace/create-offer/order-note";
-import FeeDisplay from "../../../marketplace/create-offer/fee-display";
+import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fee";
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { useAskRelist } from "@/lib/hooks/contract/use-ask-relist";
@@ -143,9 +142,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
                 />
               </div>
 
-              <OrderNote value={note} onValueChange={setNote} />
-
-              <FeeDisplay />
+              <OrderNoteAndFee value={note} onValueChange={setNote} />
             </div>
 
             <button

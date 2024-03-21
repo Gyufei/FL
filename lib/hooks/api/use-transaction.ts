@@ -14,7 +14,7 @@ export interface IAddParams {
 
 export interface IUpdateParams {
   tx_hash: string;
-  tx_status?: 1 | 2 | 3 | 4 | 5;
+  tx_status?: "1" | "2" | "3" | "4" | "5";
 }
 
 export function useTransaction() {
@@ -57,10 +57,10 @@ export function useTransaction() {
 
   function parsedUpdateParams({
     txHash,
-    status = 5,
+    status = "5",
   }: {
     txHash: string;
-    status?: 1 | 2 | 3 | 4 | 5;
+    status?: "1" | "2" | "3" | "4" | "5";
   }) {
     return {
       tx_hash: txHash,
@@ -69,14 +69,10 @@ export function useTransaction() {
   }
 
   async function addTransaction(transactionParams: IAddParams) {
-    const addResult = await fetcher(
-      `${apiEndPoint}${Paths.addTransaction}`,
-      {
-        method: "post",
-        body: JSON.stringify(transactionParams),
-      },
-      true,
-    );
+    const addResult = await fetcher(`${apiEndPoint}${Paths.addTransaction}`, {
+      method: "post",
+      body: JSON.stringify(transactionParams),
+    });
 
     return addResult;
   }
@@ -88,7 +84,6 @@ export function useTransaction() {
         method: "post",
         body: JSON.stringify(updateParams),
       },
-      true,
     );
 
     return addResult;

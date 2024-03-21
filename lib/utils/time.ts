@@ -1,6 +1,6 @@
-export function formatTimestamp(timestamp: string) {
+export function formatTimestamp(timestamp: string | number) {
   const currentDate = new Date();
-  const date = new Date(Number(timestamp) * 1000);
+  const date = new Date(Number(timestamp));
 
   const isSameDay = currentDate.toDateString() === date.toDateString();
   const isCurrentYear = currentDate.getFullYear() === date.getFullYear();
@@ -89,4 +89,3 @@ export function formatTimestampEn(timestamp: number) {
   const formattedDate = `${month} ${day}, ${year}`;
   return formattedDate;
 }
-

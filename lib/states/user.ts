@@ -1,8 +1,7 @@
-import { createStore } from "jotai";
+import { atom, createStore } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-export const AccessTokenAtom = atomWithStorage<string>("access_token", "");
-
 export const UserStore = createStore();
+export const ShowSignAtom = atom(false);
 
-UserStore.sub(AccessTokenAtom, () => {});
+export const AccessTokenAtom = atomWithStorage<string>("access_token", "");

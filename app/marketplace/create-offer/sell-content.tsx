@@ -10,8 +10,7 @@ import ArrowBetween from "./arrow-between";
 import { WithTip } from "./with-tip";
 import SettleBreachFee from "./settle-breach-fee";
 import TaxForSubTrades from "./tax-for-sub-trades";
-import OrderNote from "./order-note";
-import FeeDisplay from "./fee-display";
+import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateAskMaker } from "@/lib/hooks/contract/use-create-ask-maker";
 import { IMarketplace } from "@/lib/types/marketplace";
 
@@ -106,9 +105,18 @@ export function SellContent({
                 <div className="flex items-center">
                   You&apos;d like to receive
                   <WithTip>
-                    When buying Diamonds, you need to wait until the diamonds
-                    convert into the protocol&apos;s tokens before you can
-                    receive tokens.
+                    <div className="relative">
+                      When buying Diamonds, you need to wait until the diamonds
+                      convert into the protocol&apos;s tokens before you can
+                      receive tokens.
+                      <Image
+                        src="/icons/info-tip.svg"
+                        height={30}
+                        width={30}
+                        alt="info"
+                        className="absolute -right-[18px] -bottom-[14px] !text-[#E0FF62]"
+                      />
+                    </div>
                   </WithTip>
                 </div>
               }
@@ -126,9 +134,7 @@ export function SellContent({
               <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
             </div>
 
-            <OrderNote value={note} onValueChange={setNote} />
-
-            <FeeDisplay />
+            <OrderNoteAndFee value={note} onValueChange={setNote} />
           </div>
 
           <button

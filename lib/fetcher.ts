@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 "use client";
 
-import { AccessTokenAtom, UserStore } from "./states/user";
+import { AccessTokenAtom, ShowSignAtom, UserStore } from "./states/user";
 
 export async function plainFetcher(
   input: URL | RequestInfo,
@@ -33,6 +33,7 @@ export default async function fetcher(
   if (!skipToken) {
     const token = UserStore.get(AccessTokenAtom);
     if (!token) {
+      UserStore.set(ShowSignAtom, true);
       return null;
     }
 
@@ -40,7 +41,7 @@ export default async function fetcher(
       ...init,
       headers: {
         ...init?.headers,
-        Authorization: token,
+        Authorization: JSON.parse(token),
       },
     };
   }
@@ -54,6 +55,7 @@ export default async function fetcher(
 
     if (res.status === 401) {
       UserStore.set(AccessTokenAtom, "");
+      UserStore.set(ShowSignAtom, true);
       return null;
     }
 

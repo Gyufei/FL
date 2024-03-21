@@ -56,7 +56,7 @@ export default function MyOrders() {
           <StatusSelect status={status} setStatus={handleStatusChange} />
         </div>
       </div>
-      <div className="mt-5 flex-1 border-t border-[#eee]">
+      <div className="relative mt-5 flex flex-1 flex-col justify-end border-t border-[#eee]">
         <OrderTable />
       </div>
     </div>

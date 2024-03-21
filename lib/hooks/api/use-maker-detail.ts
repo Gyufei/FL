@@ -13,8 +13,6 @@ export function useMakerDetail({ makerId }: { makerId: string }) {
 
     const res = await fetcher(
       `${apiEndPoint}${Paths.makerDetail}?maker_id=${makerId}`,
-      {},
-      true,
     );
 
     return res as IMakerDetail;

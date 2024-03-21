@@ -2,10 +2,14 @@ import useSWRMutation from "swr/mutation";
 import { useEndPoint } from "./use-endpoint";
 import fetcher from "@/lib/fetcher";
 import { useEffect } from "react";
-import { AccessTokenAtom, UserStore } from "@/lib/states/user";
+import { AccessTokenAtom, ShowSignAtom } from "@/lib/states/user";
 import { Paths } from "@/lib/PathMap";
+import { useSetAtom } from "jotai";
 
 export function useSignIn() {
+  const setToken = useSetAtom(AccessTokenAtom);
+  const setSignIn = useSetAtom(ShowSignAtom);
+
   const { apiEndPoint } = useEndPoint();
 
   const LoginFetcher = async (
@@ -36,7 +40,8 @@ export function useSignIn() {
 
   useEffect(() => {
     if (res.data) {
-      UserStore.set(AccessTokenAtom, res.data.access_token);
+      setToken(res.data.access_token);
+      setSignIn(false);
     }
   }, [res.data]);
 

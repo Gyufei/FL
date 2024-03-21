@@ -10,8 +10,7 @@ import ArrowBetween from "./arrow-between";
 import { WithTip } from "./with-tip";
 import SettleBreachFee from "./settle-breach-fee";
 import TaxForSubTrades from "./tax-for-sub-trades";
-import OrderNote from "./order-note";
-import FeeDisplay from "./fee-display";
+import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateBidMaker } from "@/lib/hooks/contract/use-create-bid-maker";
 import { IMarketplace } from "@/lib/types/marketplace";
 
@@ -127,9 +126,7 @@ export function BuyContent({
             <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
           </div>
 
-          <OrderNote value={note} onValueChange={setNote} />
-
-          <FeeDisplay />
+          <OrderNoteAndFee value={note} onValueChange={setNote} />
 
           <button
             onClick={handleNext}

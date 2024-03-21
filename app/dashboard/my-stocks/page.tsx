@@ -34,7 +34,7 @@ export default function MyStocks() {
         />
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-5 border-t border-[#eee] pt-5 sm:grid-cols-3 md:grid-cols-4">
+      <div className="mt-5 grid grid-cols-1 gap-5 border-t border-[#eee] pt-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {(orders || []).map((order) => (
           <StockCard key={order.order_id} order={order} />
         ))}

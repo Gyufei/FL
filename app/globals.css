@@ -13,6 +13,7 @@ body {
   --color-red: #ff6262;
   --color-gary: #99a0af;
   --color-lightgray: #c0c4cc;
+  --color-focus: #3dd866;
 }
 
 @layer base {

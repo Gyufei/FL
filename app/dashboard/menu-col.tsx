@@ -9,14 +9,14 @@ export default function MenuCol() {
   return (
     <div className="mt-[70px] flex flex-col  space-y-5">
       <MenuIcon
-        href="/dashboard/my-stocks"
-        isActive={pathname === "/dashboard/my-stocks"}
-      >
-        <Image src="/icons/stocks.svg" width={24} height={24} alt="stocks" />
-      </MenuIcon>
-      <MenuIcon
         href="/dashboard/my-orders"
         isActive={pathname === "/dashboard/my-orders"}
+      >
+        <Image src="/icons/orders.svg" width={24} height={24} alt="orders" />
+      </MenuIcon>
+      <MenuIcon
+        href="/dashboard/my-stocks"
+        isActive={pathname === "/dashboard/my-stocks"}
       >
         <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>

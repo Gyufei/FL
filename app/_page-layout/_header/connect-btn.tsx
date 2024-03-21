@@ -9,8 +9,9 @@ import WalletSelectDialog, {
   WalletSelectDialogVisibleAtom,
 } from "@/components/share/wallet-select-dialog";
 import toPubString from "@/lib/utils/pub-string";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { SignInBtn } from "./sign-in-btn";
+import { ShowSignAtom } from "@/lib/states/user";
 
 export default function ConnectBtn() {
   const setWalletSelectDialogVisible = useSetAtom(
@@ -37,7 +38,7 @@ export default function ConnectBtn() {
     setShortAddr(sa);
   }, [address]);
 
-  const [popOpen, setPopOpen] = useState(false);
+  const [showSignIn, setShowSignIn] = useAtom(ShowSignAtom);
 
   if (!connected) {
     return (
@@ -54,7 +55,7 @@ export default function ConnectBtn() {
   }
 
   return (
-    <Dialog open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
+    <Dialog open={showSignIn} onOpenChange={(isOpen) => setShowSignIn(isOpen)}>
       <DialogTrigger asChild>
         <button className="shadow-25 h-12 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:brightness-75">
           <div className="flex items-center">

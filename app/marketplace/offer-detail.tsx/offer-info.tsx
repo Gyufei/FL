@@ -39,7 +39,7 @@ export default function OfferInfo({
 
       <div className="relative">
         <CircleProgress
-          className="scale-[1.1385]"
+          className="scale-[1.4285]"
           percentage={progress * 100}
         />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm leading-[20px] text-black">

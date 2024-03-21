@@ -56,6 +56,13 @@ export function PointTokenSelectDisplay({
             onClick={() => handleSelectToken(t)}
             className="flex h-8 cursor-pointer items-center rounded-xl px-1 text-sm text-black hover:bg-[#f5f6f7]"
           >
+            <Image
+              width={24}
+              height={24}
+              src={token.logoURI}
+              alt="select token"
+              className="mr-2"
+            ></Image>
             {t.symbol}
           </div>
         ))}

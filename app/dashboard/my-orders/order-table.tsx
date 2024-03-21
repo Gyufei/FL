@@ -5,23 +5,17 @@ import DrawerTitle from "@/components/share/drawer-title";
 
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Header,
+  HeaderRow,
+  Body,
+  Row,
+  HeaderCell,
+  Cell,
+} from "@table-library/react-table-library/table";
+
 import { truncateAddr } from "@/lib/utils/web3";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useState } from "react";
+import { Pagination } from "@/components/ui/pagination/pagination";
+import { useMemo, useState } from "react";
 import MyAskDetail from "./my-offer-detail/my-ask-detail";
 import MyBidDetail from "./my-offer-detail/my-bid-detail";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
@@ -44,117 +38,134 @@ export function OrderTable() {
 
   const isAsk = curDetail?.order_type === "ask";
 
+  const [page, setPage] = useState<number>(0);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+
+  const data = useMemo(() => {
+    const orderData = orders.map((o) => {
+      return {
+        ...o,
+        id: o.order_id,
+      };
+    });
+    return {
+      nodes: orderData,
+    };
+  }, [orders]);
+
   return (
     <>
-      <Table className="text-xs leading-[18px]">
-        <TableHeader className="text-xs leading-[18px] text-gray">
-          <TableRow className="border-none ">
-            <TableHead className="h-10 px-1 py-[11px]">Items</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]">Offer</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]">Type</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]">Eq.Token</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]">From/To</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]">Seller</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]">Created Time</TableHead>
-            <TableHead className="h-10 px-1 py-[11px]"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((ord) => (
-            <TableRow key={ord.order_id} className="border-none">
-              <TableCell className="px-1 py-[11px] text-gray">
-                <OrderItem order={ord} />
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <div>
-                  <div className="text-sm leading-5 text-black">
-                    {ord.marketplace.market_place_name}
-                  </div>
-                  <div className="text-[10px] leading-4 text-gray">
-                    #{ord.order_id}
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <OrderRole order={ord} />
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <OrderEqToken order={ord} />
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <OrderFromTo order={ord} />
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <div className="flex items-center">
-                  <span className="text-sm leading-5 text-black">
-                    {truncateAddr(ord.preOrderDetail?.maker_id || "")}
-                  </span>
-                  <Image
-                    onClick={() =>
-                      handleGoScan(ord.preOrderDetail?.maker_id || "")
-                    }
-                    src="/icons/right-45.svg"
-                    width={16}
-                    height={16}
-                    alt="goScan"
-                    className="cursor-pointer"
-                  />
-                </div>
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <span className="text-sm leading-5 text-black">
-                  {formatTimestamp(ord.create_at)}
-                </span>
-              </TableCell>
-              <TableCell className="px-1 py-[11px]">
-                <div
-                  onClick={() => openDetail(ord)}
-                  className="flex h-7 w-fit cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black"
+      <Table
+        data={data}
+        className="flex-1 !grid-cols-[100px_repeat(7,minmax(0,1fr))] grid-rows-[40px_repeat(9,64px)] gap-2 text-xs leading-[18px]"
+      >
+        {(tableList: Array<any>) => (
+          <>
+            <Header className="text-xs leading-[18px] text-gray">
+              <HeaderRow className="border-none !bg-transparent">
+                <HeaderCell className="h-10 px-1 py-[11px]">Items</HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">Offer</HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">Type</HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  Eq.Token
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">From/To</HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">Seller</HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  Created Time
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]"></HeaderCell>
+              </HeaderRow>
+            </Header>
+            <Body>
+              {tableList.map((ord) => (
+                <Row
+                  key={ord.order_id}
+                  item={ord}
+                  className="h-12 border-none !bg-transparent"
                 >
-                  Detail
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+                  <Cell className="h-12 px-1 py-[11px] align-top text-gray">
+                    <OrderItem order={ord} />
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <div>
+                      <div className="text-sm leading-5 text-black">
+                        {ord.marketplace.market_place_name}
+                      </div>
+                      <div className="text-[10px] leading-4 text-gray">
+                        #{ord.order_id}
+                      </div>
+                    </div>
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <OrderRole order={ord} />
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <OrderEqToken order={ord} />
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <OrderFromTo order={ord} />
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <div className="flex items-center">
+                      <span className="text-sm leading-5 text-black">
+                        {truncateAddr(ord.preOrderDetail?.maker_id || "")}
+                      </span>
+                      <Image
+                        onClick={() =>
+                          handleGoScan(ord.preOrderDetail?.maker_id || "")
+                        }
+                        src="/icons/right-45.svg"
+                        width={16}
+                        height={16}
+                        alt="goScan"
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <span className="text-sm leading-5 text-black">
+                      {formatTimestamp(new Date(ord.create_at).getTime())}
+                    </span>
+                  </Cell>
+                  <Cell className="h-12 px-1 py-[11px] align-top">
+                    <div
+                      onClick={() => openDetail(ord)}
+                      className="flex h-7 w-fit cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black"
+                    >
+                      Detail
+                    </div>
+                  </Cell>
+                </Row>
+              ))}
+            </Body>
+          </>
+        )}
       </Table>
 
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              className="h-8 w-8 rounded-lg bg-white"
-              href="#"
-              isActive
-            >
-              1
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">2</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">8</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">9</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">10</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
+      <Pagination
+        totalPages={10}
+        edgePageCount={3}
+        middlePagesSiblingCount={1}
+        currentPage={page}
+        setCurrentPage={handlePageChange}
+      >
+        <Pagination.PrevButton />
+
+        <nav className="mx-2 flex items-center justify-center">
+          <ul className="flex items-center gap-2">
+            <Pagination.PageButton
+              activeClassName=""
+              inactiveClassName=""
+              className=""
+            />
+          </ul>
+        </nav>
+
+        <Pagination.NextButton />
       </Pagination>
 
       <Drawer

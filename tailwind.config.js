@@ -14,6 +14,7 @@ module.exports = {
         red: "var(--color-red)",
         gray: "var(--color-gary)",
         lightgray: "var(--color-lightgray)",
+        focus: "var(--color-focus)",
       },
     },
   },

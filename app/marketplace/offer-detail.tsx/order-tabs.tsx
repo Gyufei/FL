@@ -2,18 +2,10 @@ import { SmallSwitch } from "@/components/share/small-switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMemo, useState } from "react";
 import { TakerOrders } from "./taker-orders";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { Pagination } from "@/components/ui/pagination/pagination";
 
 export default function OrderTabs({ order }: { order: IOrder }) {
   const [currentTab, setCurrentTab] = useState("orders");
@@ -25,6 +17,12 @@ export default function OrderTabs({ order }: { order: IOrder }) {
   });
 
   const [onlyMe, setOnlyMe] = useState(false);
+
+  const [page, setPage] = useState<number>(0);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
 
   const orders = useMemo(
     () =>
@@ -80,42 +78,27 @@ export default function OrderTabs({ order }: { order: IOrder }) {
             forLogo={forLogo}
             orderEqTokenInfo={orderEqTokenInfo}
           />
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="h-8 w-8 rounded-lg bg-white"
-                  href="#"
-                  isActive
-                >
-                  1
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">8</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">9</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">10</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
+
+          <Pagination
+            totalPages={10}
+            edgePageCount={3}
+            middlePagesSiblingCount={1}
+            currentPage={page}
+            setCurrentPage={handlePageChange}
+          >
+            <Pagination.PrevButton />
+
+            <nav className="mx-2 flex items-center justify-center">
+              <ul className="flex items-center gap-2">
+                <Pagination.PageButton
+                  activeClassName=""
+                  inactiveClassName=""
+                  className=""
+                />
+              </ul>
+            </nav>
+
+            <Pagination.NextButton />
           </Pagination>
         </TabsContent>
         <TabsContent value="history" className="flex-1"></TabsContent>

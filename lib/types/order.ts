@@ -12,12 +12,12 @@ export interface IOrder {
   settled_points: string;
   settle_breach_fee: string;
   order_status:
-    | "unKnow"
-    | "virgin"
-    | "ongoing"
-    | "canceled"
-    | "settled"
-    | "finished";
+  | "unknown"
+  | "virgin"
+  | "ongoing"
+  | "canceled"
+  | "settled"
+  | "finished";
   order_type: "ask" | "bid";
   create_at: string;
   order_note: string;

@@ -14,7 +14,7 @@ export default function TotalBanner() {
         FASTEST DATA · DEEPEST LIQUIDITY · FUN REWARDS
       </div>
       <div className="mt-4 flex flex-wrap justify-center space-y-2">
-        <TotalCard value="10×" label="Faster SWEEPING" />
+        <TotalCard value="1000×" label="Financial Efficiency" />
         <TotalCard
           value={`$${formatNum(totalGmv, 2, true)}`}
           label="Total GMV"

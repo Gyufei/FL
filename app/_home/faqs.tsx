@@ -30,18 +30,15 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 0}>
-            How much does an audit contest cost?
+            What is Tadle Market?
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Our audit contests are extremely cost-effective. Clients pay a small
-            fixed fee to post a bounty for community participation. The more
-            issues found, the more the rewards paid from that bounty. We handle
-            verifying issues and payouts to make it simple. The collective
-            insights greatly outweigh the small fixed cost. Ready to tap into
-            community expertise and boost your security? Request an audit today
-            to get started.
+            Tadle Market, built on Tadle Application Layer, is the inaugural pre
+            supermarket where users can trade points and future tokens from
+            different projects across various blockchains all in one convenient
+            platform.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -55,19 +52,14 @@ export default function Faqs() {
         }}
       >
         <CollapsibleTrigger asChild>
-          <CollTrigger isOpen={openIdx === 1}>
-            How do audit contests work?
-          </CollTrigger>
+          <CollTrigger isOpen={openIdx === 1}>What are “Points”?</CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Our audit contests are extremely cost-effective. Clients pay a small
-            fixed fee to post a bounty for community participation. The more
-            issues found, the more the rewards paid from that bounty. We handle
-            verifying issues and payouts to make it simple. The collective
-            insights greatly outweigh the small fixed cost. Ready to tap into
-            community expertise and boost your security? Request an audit today
-            to get started.
+            More and more projects are adopting a “points system” where users
+            earn points for their contributions to the community. These
+            accumulated points could potentially be exchanged for the project’s
+            token, as observed in recent notable airdrops.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -82,18 +74,21 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 2}>
-            Are your audits guaranteed?
+            What makes Tadle Market stand out?
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Our audit contests are extremely cost-effective. Clients pay a small
-            fixed fee to post a bounty for community participation. The more
-            issues found, the more the rewards paid from that bounty. We handle
-            verifying issues and payouts to make it simple. The collective
-            insights greatly outweigh the small fixed cost. Ready to tap into
-            community expertise and boost your security? Request an audit today
-            to get started.
+            Tadle Market presents a cutting-edge point marketplace boasting
+            unparalleled speed in data processing, extensive liquidity, and fun
+            rewards. Serving as the ultimate nexus for early investors, Key
+            Opinion Leaders, and airdrop farmers, Tadle Market curates the
+            finest deals available in the market. <br /> Here, points sellers
+            can secure their early profits, while points buyers gain access to
+            exclusive opportunities to engage with projects in their nascent
+            stages. Tadle Market employs funds with exceptional efficiency,
+            ensuring that buyers and sellers can engage in transactions with
+            confidence, safety, and optimal efficiency.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -108,18 +103,20 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 3}>
-            How do smart contract audits work?
+            How does Tadle Market work?
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Our audit contests are extremely cost-effective. Clients pay a small
-            fixed fee to post a bounty for community participation. The more
-            issues found, the more the rewards paid from that bounty. We handle
-            verifying issues and payouts to make it simple. The collective
-            insights greatly outweigh the small fixed cost. Ready to tap into
-            community expertise and boost your security? Request an audit today
-            to get started.
+            Empowered by smart contracts, Tadle Market is committed to streamlining
+            on-chain transactions that benefit both buyers and sellers,
+            fostering a secure and transparent marketplace environment. One of
+            the key features enhancing security on the platform is the
+            collateral mechanism. This mechanism acts as a safeguard for market
+            participants, mitigating risks and providing an additional layer of
+            protection. By requiring collateral, Tadle Market minimizes the potential
+            for fraudulent activities and ensures that transactions proceed
+            smoothly and fairly.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -173,8 +170,6 @@ function CollDot() {
 
 function CollContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-[10px] pl-[26px] leading-6 text-gray">
-      {children}
-    </div>
+    <div className="mt-[10px] pl-[26px] leading-6 text-gray">{children}</div>
   );
 }

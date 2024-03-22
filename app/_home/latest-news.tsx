@@ -1,16 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { range } from "lodash";
+// import { range } from "lodash";
 import { formatTimestampEn } from "@/lib/utils/time";
 
 export default function LatestNews() {
-  const newDetail = {
-    date: 1674259200000,
-    title: "How Did My Audit Go?",
-    subTitle: "A Framework For Evaluating Audit Effectiveness.",
+  const postSummary1 = {
+    date: 1710057600000,
+    title: "Introducing Tax Income",
+    subTitle: "Achieve passive income with non-performing assets",
     content:
-      "Right now the process of choosing and recommending audit firms in the blockchain space is opaque. Sticking to the values of Web3, we want to demystify the selection process and introduce quantifiable metrics for audit effectiveness, there by enhancing trust and reliability within the blockchain ecosystem.",
+      "Tax income is implemented on Tadle Market as an incentive for users to contribute liquidity to the market. For instance, consider a scenario where user A holds reward points from a reputable project and places a Sells/Asks order. When another user fulfills this order as a buyer, they will pay a tax income fee to user A. This system encourages participation and liquidity provision, benefiting both buyers and sellers within the marketplace ecosystem. The tax income ratio can be pre-set by the user when providing liquidity and placing post-only orders.",
+  };
+  const postSummary2 = {
+    date: 1707379200000,
+    title: "Introducing Flexibility Features",
+    subTitle: "Bring Upfront Liquidity to Vesting Allocations",
+    content: `
+      Users on Tadle Market benefit from extensive flexibility when engaging in trading activities. For instance, a buyer of a specific order can subsequently opt to sell it on the market to optimize their returns. This flexibility empowers users to adapt their strategies according to market conditions and their individual investment objectives, thereby maximizing their potential profits within the Tadle Market ecosystem.
+      The tax income and collateral parameters are customizable and can be set in advance during the order creation process. This feature allows users to define specific tax income and collateral requirements according to their preferences and needs, providing greater flexibility and control over their transactions.By parameterizing these aspects, Tadle Market empowers users to tailor their orders to meet specific objectives, whether it's maximizing profits, managing risks, or optimizing liquidity. This customization capability enhances the overall user experience and facilitates seamless execution of trades on the platform. 
+      `,
   };
   return (
     <div className="mt-[120px] px-[120px]">
@@ -19,9 +28,8 @@ export default function LatestNews() {
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-10">
-        {range(2).map((i) => (
-          <NewCard newDetail={newDetail} key={i} />
-        ))}
+        <NewCard newDetail={postSummary1} key={1} />
+        <NewCard newDetail={postSummary2} key={2} />
       </div>
     </div>
   );

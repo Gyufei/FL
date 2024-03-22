@@ -1050,7 +1050,7 @@ export const TadleAbi = {
         kind: "enum",
         variants: [
           {
-            name: "UnKnow",
+            name: "Unknown",
           },
           {
             name: "Virgin",

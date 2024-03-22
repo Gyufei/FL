@@ -14,11 +14,11 @@ export const metadata = {
     default: "Tadle Market",
   },
   description: "The First Pre SuperMarket",
-
+  metadataBase: new URL(`https://${process.env.VERCEL_DOMAIN}`),
   openGraph: {
     title: "Tadle Market",
     description: "The First Pre SuperMarket",
-    url: "https://tadle.com",
+    url: `https://${process.env.VERCEL_DOMAIN}`,
     siteName: "Tadle Market",
     images: "/img/GGzCP6QaAAAm9Ye.png",
     locale: "en_US",

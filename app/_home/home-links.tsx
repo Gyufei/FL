@@ -5,7 +5,7 @@ export default function HomeLinks() {
     <div className="flex items-center justify-between py-[60px] px-[120px]">
       <Image src="/icons/logo.svg" width={75} height={20} alt="logo" />
       <div className="flex items-center space-x-10">
-        <LinkItem href="">Request an audit</LinkItem>
+        <LinkItem href="">Join Waitlist</LinkItem>
         <LinkItem href="">Contact us</LinkItem>
         <LinkItem href="">Live Contests</LinkItem>
         <LinkItem href="">Docs</LinkItem>

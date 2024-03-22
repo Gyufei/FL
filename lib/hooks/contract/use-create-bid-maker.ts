@@ -6,6 +6,7 @@ import { BN } from "bn.js";
 import { useTransaction } from "../api/use-transaction";
 import toPubString from "@/lib/utils/pub-string";
 import { useAccounts } from "./use-accounts";
+import { useAllOrders } from "../api/use-all-orders";
 
 export function useCreateBidMaker({
   marketplaceStr,
@@ -13,8 +14,8 @@ export function useCreateBidMaker({
   marketplaceStr: string;
 }) {
   const { program } = useTadleProgram();
-  const { confirmTransaction } = useTransaction();
   const { getAccounts } = useAccounts();
+  const { confirmTransaction } = useTransaction();
 
   const writeAction = async ({
     payTokenAmount,
@@ -95,11 +96,12 @@ export function useCreateBidMaker({
 
   const wrapRes = useTxStatus(writeAction);
 
+  const { mutate: refreshOrders } = useAllOrders();
   useEffect(() => {
     if (wrapRes.isSuccess) {
-      return;
+      refreshOrders();
     }
-  }, [wrapRes.isSuccess]);
+  }, [wrapRes.isSuccess, refreshOrders]);
 
   return wrapRes;
 }

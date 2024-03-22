@@ -1,5 +1,6 @@
+import NP from "number-precision";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IToken } from "@/lib/types/token";
 
 import { InputPanel } from "./input-panel";
@@ -18,10 +19,12 @@ export function SellContent({
   step,
   setStep,
   marketplace,
+  onSuccess,
 }: {
   step: number;
   setStep: (_step: number) => void;
   marketplace: IMarketplace;
+  onSuccess: () => void;
 }) {
   const img1 = "/icons/point.svg";
   const img2 = "/icons/solana.svg";
@@ -44,8 +47,19 @@ export function SellContent({
 
   const [note, setNote] = useState("");
 
-  const [sellPrice] = useState(18.4);
-  const [pointPrice] = useState(221);
+  const sellPrice = useMemo(() => {
+    if (!receiveTokenAmount) {
+      return 0;
+    }
+    return NP.times(receiveTokenAmount, 1);
+  }, [receiveTokenAmount]);
+
+  const pointPrice = useMemo(() => {
+    if (!sellPointAmount) {
+      return 0;
+    }
+    return NP.divide(sellPrice, sellPointAmount);
+  }, [sellPrice, sellPointAmount]);
 
   function handleSellPayChange(v: string) {
     setSellPointAmount(v);
@@ -62,13 +76,15 @@ export function SellContent({
     setStep(0);
   }
 
-  const { isLoading: isCreateLoading, write: createAction } = useCreateAskMaker(
-    {
-      marketplaceStr: marketplace.market_place_id,
-    },
-  );
+  const {
+    isLoading: isCreateLoading,
+    write: createAction,
+    isSuccess,
+  } = useCreateAskMaker({
+    marketplaceStr: marketplace.market_place_id,
+  });
 
-  function handleDeposit() {
+  async function handleDeposit() {
     createAction({
       sellPointAmount: Number(sellPointAmount),
       receiveTokenAmount: Number(receiveTokenAmount),
@@ -77,6 +93,12 @@ export function SellContent({
       note: note,
     });
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      onSuccess();
+    }
+  }, [isSuccess, onSuccess]);
 
   return (
     <>

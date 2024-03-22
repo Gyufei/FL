@@ -5,6 +5,7 @@ import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransaction } from "../api/use-transaction";
 import { useAccounts } from "./use-accounts";
+import { useAllOrders } from "../api/use-all-orders";
 
 export function useSettleBidTaker({
   marketplaceStr,
@@ -106,11 +107,11 @@ export function useSettleBidTaker({
 
   const wrapRes = useTxStatus(writeAction);
 
+  const { mutate: refreshOrders } = useAllOrders();
   useEffect(() => {
     if (wrapRes.isSuccess) {
-      return;
+      refreshOrders();
     }
-  }, [wrapRes.isSuccess]);
-
+  }, [wrapRes.isSuccess, refreshOrders]);
   return wrapRes;
 }

@@ -12,7 +12,7 @@ export default function StockCard({ order }: { order: IOrder }) {
   const isAskStock = order.order_type === "ask";
 
   const afterTGE = false;
-  const isCanList = order.order_type === "bid";
+  const isCanList = order.order_status === "canceled" && isAskStock;
   const isListed = order.order_status === "ongoing";
   const isCanDelist = order.order_status === "virgin";
   const isCanSettle = afterTGE && order.order_type === "ask";
@@ -105,7 +105,9 @@ export default function StockCard({ order }: { order: IOrder }) {
           <ManToMans num={4} />
         ) : (
           <div className="text-xs leading-[18px] text-lightgray">
-            {formatTimestamp(order.create_at || order.relist_at)}
+            {formatTimestamp(
+              new Date(order.relist_at || order.create_at).getTime(),
+            )}
           </div>
         )}
         {isCanList && isAskStock && <ListAskStockBtn order={order} />}

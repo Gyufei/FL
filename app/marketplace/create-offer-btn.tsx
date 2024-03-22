@@ -70,6 +70,7 @@ export default function CreateOfferBtn({
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
           >
             <SellContent
+              onSuccess={() => handleCloseDrawer()}
               marketplace={marketplace}
               step={step}
               setStep={setStep}
@@ -80,6 +81,7 @@ export default function CreateOfferBtn({
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
           >
             <BuyContent
+              onSuccess={() => handleCloseDrawer()}
               marketplace={marketplace}
               step={step}
               setStep={setStep}

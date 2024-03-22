@@ -5,6 +5,8 @@ export const NUMBER_WITH_MAX_TWO_DECIMAL_PLACES = /^(?:\d*\.\d{0,2}|\d+)$/;
 
 export const SOLDecimals = 9;
 
+export const SolanaZeroed = "11111111111111111111111111111111";
+
 export const TimezonesMap: Record<string, any> = {
   "-12": "Pacific/Wake",
   "-11": "Pacific/Midway",

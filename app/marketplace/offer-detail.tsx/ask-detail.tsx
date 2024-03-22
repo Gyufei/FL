@@ -7,7 +7,6 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import OrderFillDialog from "./order-fill-dialog";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
@@ -17,13 +16,18 @@ import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 
-export default function AskDetail({ order }: { order: IOrder }) {
-  const { platFormFee } = useGlobalConfig();
+export default function AskDetail({
+  order,
+  onSuccess,
+}: {
+  order: IOrder;
+  onSuccess: (_o: IOrder) => void;
+}) {
+  const { platformFee } = useGlobalConfig();
 
   const {
     tokenPrice,
     progress,
-    offerValue,
     offerLogo,
     forValue,
     forLogo,
@@ -35,7 +39,6 @@ export default function AskDetail({ order }: { order: IOrder }) {
     order,
   });
 
-  const [orderFillDialog, setOrderFillDialog] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const {
@@ -45,32 +48,29 @@ export default function AskDetail({ order }: { order: IOrder }) {
   } = useBidTaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
-    preOrder: order.pre_order,
+    preOrder: order.order,
   });
 
-  const [sliderValue, setSliderValue] = useState(0);
+  const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return (1 - progress) * 100;
-  }, [progress]);
+    return NP.minus(order.points, order.used_points);
+  }, [order]);
 
   const payTokenAmount = useMemo(() => {
-    if (!sliderValue) return "";
-    return String(NP.times(NP.divide(sliderValue, 100), forValue));
-  }, [sliderValue, forValue]);
+    if (!receivePointAmount) return "";
+    return String(
+      NP.times(NP.divide(receivePointAmount, order.points), forValue),
+    );
+  }, [receivePointAmount, forValue, order.points]);
 
   const payTokenTotalPrice = useMemo(() => {
     if (!payTokenAmount) return "0";
     return NP.times(payTokenAmount || 0, tokenPrice);
   }, [payTokenAmount, tokenPrice]);
 
-  const receivePointAmount = useMemo(() => {
-    if (!sliderValue) return "";
-    return String(NP.times(NP.divide(sliderValue, 100), offerValue));
-  }, [sliderValue, offerValue]);
-
   function handleSliderChange(v: number) {
-    setSliderValue(v);
+    setReceivePointAmount(v);
   }
 
   function handleConfirmOrder() {
@@ -87,12 +87,9 @@ export default function AskDetail({ order }: { order: IOrder }) {
     });
   }
 
-  const [resultOrder, setResultOrder] = useState<IOrder | null>(null);
-
   useEffect(() => {
     if (isSuccess) {
-      setOrderFillDialog(true);
-      setResultOrder(order);
+      onSuccess(order);
     }
   }, [isSuccess]);
 
@@ -115,15 +112,15 @@ export default function AskDetail({ order }: { order: IOrder }) {
             value={payTokenAmount}
             tokenLogo={forLogo}
             canGoMax={sliderCanMax}
-            sliderMax={100}
-            sliderValue={sliderValue}
+            sliderMax={Number(order.points)}
+            sliderValue={receivePointAmount}
             setSliderValue={handleSliderChange}
           />
 
           <ReceiveCard
             topText={<>You will receive</>}
             bottomText={<>1 Diamond = ${formatNum(pointPerPrice)}</>}
-            value={receivePointAmount}
+            value={String(receivePointAmount)}
             tokenLogo={offerLogo}
           />
 
@@ -160,15 +157,6 @@ export default function AskDetail({ order }: { order: IOrder }) {
       </div>
 
       <OrderTabs order={order} />
-
-      <OrderFillDialog
-        open={orderFillDialog}
-        onOpenChange={(val) => setOrderFillDialog(val)}
-        deposited={payTokenAmount}
-        depositTokenLogo={forLogo}
-        txHash={resultOrder?.order_tx_hash || ""}
-        orderNo={resultOrder?.order_id || ""}
-      />
 
       <Drawer
         open={drawerOpen}
@@ -224,7 +212,7 @@ export default function AskDetail({ order }: { order: IOrder }) {
               <WithTip></WithTip>
             </div>
             <div className="flex items-center text-xs leading-[18px]">
-              {platFormFee * 100}%
+              {platformFee * 100}%
             </div>
           </div>
         </div>

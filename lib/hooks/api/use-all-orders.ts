@@ -5,6 +5,7 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { IOrder } from "@/lib/types/order";
 import { useMarketplaces } from "./use-marketplaces";
+import { SolanaZeroed } from "@/lib/constant";
 
 export function useAllOrders() {
   const { apiEndPoint } = useEndPoint();
@@ -29,13 +30,16 @@ export function useAllOrders() {
       });
 
       parsedRes = parsedRes.map((order: Record<string, any>) => {
-        const preOrderDetail =
-          parsedRes.find(
-            (o: Record<string, any>) => o.order === order.pre_order,
-          ) || null;
+        const isZeroed = order.pre_order === SolanaZeroed;
+        const preOrderDetail = isZeroed
+          ? null
+          : parsedRes.find(
+              (o: Record<string, any>) => o.order === order.pre_order,
+            ) || null;
 
         return {
           ...order,
+          pre_order: isZeroed ? "" : order.pre_order,
           preOrderDetail,
         };
       });

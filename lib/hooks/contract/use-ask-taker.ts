@@ -6,6 +6,7 @@ import { BN } from "bn.js";
 import { useTransaction } from "../api/use-transaction";
 import toPubString from "@/lib/utils/pub-string";
 import { useAccounts } from "./use-accounts";
+import { useAllOrders } from "../api/use-all-orders";
 
 export function useAskTaker({
   marketplaceStr,
@@ -37,7 +38,7 @@ export function useAskTaker({
     const preOrder = new PublicKey(preOrderStr);
     const maker = new PublicKey(makerStr);
 
-    const bidOrderA = PublicKey.findProgramAddressSync(
+    const order = PublicKey.findProgramAddressSync(
       [Buffer.from("order"), seedAccount.publicKey.toBuffer()],
       program.programId,
     )[0];
@@ -49,7 +50,7 @@ export function useAskTaker({
         authority,
         systemConfig,
         seedAccount: seedAccount.publicKey,
-        order: bidOrderA,
+        order: order,
         preOrder,
         maker: maker,
         marketPlace,
@@ -65,7 +66,7 @@ export function useAskTaker({
 
     await confirmTransaction({
       maker: makerStr,
-      order: toPubString(bidOrderA),
+      order: toPubString(order),
       marketplace: marketplaceStr,
       txHash,
       note: "",
@@ -76,11 +77,11 @@ export function useAskTaker({
 
   const wrapRes = useTxStatus(writeAction);
 
+  const { mutate: refreshOrders } = useAllOrders();
   useEffect(() => {
     if (wrapRes.isSuccess) {
-      return;
+      refreshOrders();
     }
-  }, [wrapRes.isSuccess]);
-
+  }, [wrapRes.isSuccess, refreshOrders]);
   return wrapRes;
 }

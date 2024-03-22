@@ -74,17 +74,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     ),
   );
 
-  console.log(order);
-  console.log(orderDuration);
-  console.log(
-    Math.floor(
-      NP.minus(
-        Date.now() / 1000,
-        new Date(order.create_at || order.relist_at).getTime() / 1000,
-      ),
-    ),
-  );
-
   const isFilled = order.used_points === order.points;
 
   function getOrigin(order: IOrder, defaultValue: string) {

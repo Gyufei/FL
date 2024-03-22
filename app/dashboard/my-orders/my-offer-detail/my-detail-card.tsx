@@ -46,7 +46,8 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
   }, [makerDetail, orderTokenInfo]);
 
   const seconds = order?.create_at
-    ? Date.now() / 1000 - Number(order?.create_at)
+    ? Date.now() -
+      Number(new Date(order?.relist_at || order?.create_at).getTime())
     : 0;
 
   return (

@@ -1,5 +1,6 @@
+import NP from "number-precision";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IToken } from "@/lib/types/token";
 
 import { InputPanel } from "./input-panel";
@@ -18,10 +19,12 @@ export function BuyContent({
   step,
   setStep,
   marketplace,
+  onSuccess,
 }: {
   step: number;
   setStep: (_step: number) => void;
   marketplace: IMarketplace;
+  onSuccess: () => void;
 }) {
   const img1 = "/icons/point.svg";
   const img2 = "/icons/solana.svg";
@@ -44,8 +47,19 @@ export function BuyContent({
 
   const [note, setNote] = useState("");
 
-  const [payAmountValue] = useState(18.4);
-  const [pointPrice] = useState(221);
+  const payAmountValue = useMemo(() => {
+    if (!payTokenAmount) return 0;
+
+    return NP.times(payTokenAmount, 1);
+  }, [payTokenAmount]);
+
+  const pointPrice = useMemo(() => {
+    if (!receivePointAmount) {
+      return 0;
+    }
+
+    return NP.divide(payAmountValue, receivePointAmount);
+  }, [payAmountValue, receivePointAmount]);
 
   const fee = 0.005;
 
@@ -64,11 +78,13 @@ export function BuyContent({
     setStep(0);
   }
 
-  const { isLoading: isCreateLoading, write: createAction } = useCreateBidMaker(
-    {
-      marketplaceStr: marketplace.market_place_id,
-    },
-  );
+  const {
+    isLoading: isCreateLoading,
+    write: createAction,
+    isSuccess,
+  } = useCreateBidMaker({
+    marketplaceStr: marketplace.market_place_id,
+  });
 
   function handleDeposit() {
     createAction({
@@ -79,6 +95,12 @@ export function BuyContent({
       note: note,
     });
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      onSuccess();
+    }
+  }, [isSuccess, onSuccess]);
 
   return (
     <>

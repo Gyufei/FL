@@ -7,7 +7,6 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import OrderFillDialog from "./order-fill-dialog";
 import { useAskTaker } from "@/lib/hooks/contract/use-ask-taker";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -17,15 +16,20 @@ import { IOrder } from "@/lib/types/order";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 
-export default function BidDetail({ order }: { order: IOrder }) {
-  const { platFormFee } = useGlobalConfig();
+export default function BidDetail({
+  order,
+  onSuccess,
+}: {
+  order: IOrder;
+  onSuccess: (_o: IOrder) => void;
+}) {
+  const { platformFee } = useGlobalConfig();
 
   const {
     tokenPrice,
     progress,
     offerValue,
     offerLogo,
-    forValue,
     forLogo,
     pointPerPrice,
     isFilled,
@@ -35,21 +39,18 @@ export default function BidDetail({ order }: { order: IOrder }) {
     order,
   });
 
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sellPointAmount, setSellPointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return (1 - progress) * 100;
-  }, [progress]);
-
-  const sellPointAmount = useMemo(() => {
-    if (!sliderValue) return "";
-    return String(NP.times(NP.divide(sliderValue, 100), forValue));
-  }, [sliderValue, forValue]);
+    return NP.minus(order.points, order.used_points);
+  }, [order]);
 
   const receiveTokenAmount = useMemo(() => {
-    if (!sliderValue) return "";
-    return String(NP.times(NP.divide(sliderValue, 100), offerValue));
-  }, [sliderValue, offerValue]);
+    if (!sellPointAmount) return "";
+    return String(
+      NP.times(NP.divide(sellPointAmount, order.points), offerValue),
+    );
+  }, [sellPointAmount, offerValue, order.points]);
 
   const receiveTokenTotalPrice = useMemo(() => {
     if (!receiveTokenAmount) return "0";
@@ -58,12 +59,7 @@ export default function BidDetail({ order }: { order: IOrder }) {
 
   const receiveToken = "USDC";
 
-  const [sliderMax] = useState(100);
-
-  const [orderFillDialog, setOrderFillDialog] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const [resultOrder, setResultOrder] = useState<IOrder | null>(null);
 
   const {
     isLoading: isDepositLoading,
@@ -72,7 +68,7 @@ export default function BidDetail({ order }: { order: IOrder }) {
   } = useAskTaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
-    preOrderStr: order.pre_order,
+    preOrderStr: order.order,
   });
 
   function handleConfirmOrder() {
@@ -84,7 +80,7 @@ export default function BidDetail({ order }: { order: IOrder }) {
   }
 
   function handleSliderChange(v: number) {
-    setSliderValue(v);
+    setSellPointAmount(v);
   }
 
   async function handleDeposit() {
@@ -95,8 +91,7 @@ export default function BidDetail({ order }: { order: IOrder }) {
 
   useEffect(() => {
     if (isSuccess) {
-      setOrderFillDialog(true);
-      setResultOrder(order);
+      onSuccess(order);
     }
   }, [isSuccess]);
 
@@ -116,10 +111,10 @@ export default function BidDetail({ order }: { order: IOrder }) {
           <SliderCard
             topText={<>You will sell</>}
             bottomText={<>1 Diamond = ${formatNum(pointPerPrice)}</>}
-            value={sellPointAmount}
+            value={String(sellPointAmount)}
             canGoMax={sliderCanMax}
-            sliderMax={sliderMax}
-            sliderValue={sliderValue}
+            sliderMax={Number(order.points)}
+            sliderValue={sellPointAmount}
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
           />
@@ -150,15 +145,6 @@ export default function BidDetail({ order }: { order: IOrder }) {
       </div>
 
       <OrderTabs order={order} />
-
-      <OrderFillDialog
-        open={orderFillDialog}
-        onOpenChange={(val) => setOrderFillDialog(val)}
-        deposited={receiveTokenAmount}
-        depositTokenLogo={forLogo}
-        txHash={resultOrder?.order_tx_hash || ""}
-        orderNo={resultOrder?.order_id || ""}
-      />
 
       <Drawer
         open={drawerOpen}
@@ -210,7 +196,7 @@ export default function BidDetail({ order }: { order: IOrder }) {
               <WithTip></WithTip>
             </div>
             <div className="flex items-center text-xs leading-[18px]">
-              {platFormFee * 100}%
+              {platformFee * 100}%
             </div>
           </div>
         </div>

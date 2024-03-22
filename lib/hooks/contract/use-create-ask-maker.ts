@@ -6,6 +6,7 @@ import { BN } from "bn.js";
 import { useTransaction } from "../api/use-transaction";
 import toPubString from "@/lib/utils/pub-string";
 import { useAccounts } from "./use-accounts";
+import { useAllOrders } from "../api/use-all-orders";
 
 export function useCreateAskMaker({
   marketplaceStr: marketplaceStr,
@@ -93,11 +94,13 @@ export function useCreateAskMaker({
 
   const wrapRes = useTxStatus(writeAction);
 
+  const { mutate: refreshOrders } = useAllOrders();
+
   useEffect(() => {
     if (wrapRes.isSuccess) {
-      return;
+      refreshOrders();
     }
-  }, [wrapRes.isSuccess]);
+  }, [wrapRes.isSuccess, refreshOrders]);
 
   return wrapRes;
 }

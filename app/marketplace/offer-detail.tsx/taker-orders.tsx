@@ -91,7 +91,7 @@ export function TakerOrders({
               </div>
             </TableCell>
             <TableCell className="px-1 py-[11px]">
-              {formatTimestamp(o.create_at)}
+              {formatTimestamp(new Date(o.create_at).getTime())}
             </TableCell>
           </TableRow>
         ))}

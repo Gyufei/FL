@@ -1,27 +1,31 @@
 import { useEffect } from "react";
 import useTadleProgram from "../use-tadle-program";
 import useTxStatus from "./use-tx-status";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransaction } from "../api/use-transaction";
-import toPubString from "@/lib/utils/pub-string";
 import { useAccounts } from "./use-accounts";
-import { useAllOrders } from "../api/use-all-orders";
 
-export function useBidTaker({
+export function useRelistMaker({
   marketplaceStr,
-  preOrder,
   makerStr,
+  orderStr,
 }: {
   marketplaceStr: string;
-  preOrder: string;
   makerStr: string;
+  orderStr: string;
 }) {
   const { program } = useTadleProgram();
   const { confirmTransaction } = useTransaction();
   const { getAccounts } = useAccounts();
 
-  const writeAction = async ({ receivePoint }: { receivePoint: number }) => {
+  const writeAction = async ({
+    receiveTokenAmount,
+    breachFee,
+  }: {
+    receiveTokenAmount: number;
+    breachFee: number;
+  }) => {
     const {
       tokenProgram,
       tokenProgram2022,
@@ -31,42 +35,37 @@ export function useBidTaker({
       userUsdcTokenAccount,
       poolUsdcTokenAccount,
       usdcTokenMint,
-      seedAccount,
     } = await getAccounts();
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const perOrder = new PublicKey(preOrder);
+    const order = new PublicKey(orderStr);
     const maker = new PublicKey(makerStr);
+    console.log(marketplaceStr, orderStr, makerStr);
 
-    const orderA = PublicKey.findProgramAddressSync(
-      [Buffer.from("order"), seedAccount.publicKey.toBuffer()],
-      program.programId,
-    )[0];
-
-    // Bid Taker: 1000 USDC -> 200 point
     const txHash = await program.methods
-      .createTaker(new BN(receivePoint))
+      .relistMaker(
+        new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
+        new BN(breachFee),
+      )
       .accounts({
         authority: authority,
         systemConfig,
-        marketPlace,
-        seedAccount: seedAccount.publicKey,
-        order: orderA,
-        preOrder: perOrder,
-        maker,
+        order,
         userTokenAccount: userUsdcTokenAccount,
         poolTokenAccount: poolUsdcTokenAccount,
+        maker,
+        marketPlace,
         tokenMint: usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
       })
-      .signers([seedAccount])
+      .signers([])
       .rpc();
 
     await confirmTransaction({
       maker: makerStr,
-      order: toPubString(orderA),
+      order: orderStr,
       marketplace: marketplaceStr,
       txHash,
       note: "",
@@ -77,12 +76,11 @@ export function useBidTaker({
 
   const wrapRes = useTxStatus(writeAction);
 
-  const { mutate: refreshOrders } = useAllOrders();
   useEffect(() => {
     if (wrapRes.isSuccess) {
-      refreshOrders();
+      return;
     }
-  }, [wrapRes.isSuccess, refreshOrders]);
+  }, [wrapRes.isSuccess]);
 
   return wrapRes;
 }

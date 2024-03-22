@@ -16,14 +16,14 @@ import TaxForSubTrades from "../../../marketplace/create-offer/tax-for-sub-trade
 import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fee";
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
-import { useAskRelist } from "@/lib/hooks/contract/use-ask-relist";
+import { useRelistMaker } from "@/lib/hooks/contract/use-relist-maker";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { formatNum } from "@/lib/utils/number";
 
 export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
-  const { platFormFee } = useGlobalConfig();
+  const { platformFee } = useGlobalConfig();
 
   const [step, setStep] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const sellPrice = NP.times(receiveTokenAmount, tokenPrice);
   const pointPrice = NP.divide(sellPrice, sellPointAmount);
 
-  const { isLoading: isDepositLoading, write: writeAction } = useAskRelist({
+  const { isLoading: isDepositLoading, write: writeAction } = useRelistMaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
     orderStr: order.order,
@@ -208,7 +208,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
                   <WithTip></WithTip>
                 </div>
                 <div className="flex items-center text-xs leading-[18px]">
-                  {platFormFee * 100}%
+                  {platformFee * 100}%
                 </div>
               </div>
             </div>

@@ -109,12 +109,12 @@ export function useTransaction() {
       txHash,
       note,
     });
-    const updateParams = parsedUpdateParams({
-      txHash,
-    });
+    // const updateParams = parsedUpdateParams({
+    //   txHash,
+    // });
 
     await addTransaction(addParams);
-    await updateTransaction(updateParams);
+    // await updateTransaction(updateParams);
 
     return true;
   }

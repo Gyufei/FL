@@ -23,7 +23,7 @@ export default function SettleDrawer({
   handleDrawerOpen: (_o: boolean) => void;
   order: IOrder;
 }) {
-  const { platFormFee } = useGlobalConfig();
+  const { platformFee } = useGlobalConfig();
 
   const { offerLogo, forLogo, orderPointInfo, orderTokenInfo } = useOrderFormat(
     {
@@ -138,7 +138,7 @@ export default function SettleDrawer({
               <WithTip></WithTip>
             </div>
             <div className="flex items-center text-xs leading-[18px]">
-              {platFormFee * 100}%
+              {platformFee * 100}%
             </div>
           </div>
         </div>

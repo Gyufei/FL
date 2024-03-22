@@ -31,6 +31,8 @@ export default function SliderCard({
     setSliderValue(val);
   }
 
+  const progress = ((sliderValue / sliderMax) * 100).toFixed();
+
   return (
     <div className="mt-5 rounded-2xl bg-white p-4">
       <div className="text-xs leading-[18px] text-gray">{topText}</div>
@@ -46,7 +48,7 @@ export default function SliderCard({
           step={1}
         />
         <div className="ml-4 mr-3 flex h-5 items-center rounded-full border border-[#eee] px-[10px] text-[10px] leading-4 text-black">
-          {sliderValue}%
+          {progress}%
         </div>
         <div
           onClick={() => setSliderValue(canGoMax)}

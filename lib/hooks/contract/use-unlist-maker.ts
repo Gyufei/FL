@@ -1,31 +1,25 @@
 import { useEffect } from "react";
 import useTadleProgram from "../use-tadle-program";
 import useTxStatus from "./use-tx-status";
-import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { BN } from "bn.js";
+import { PublicKey } from "@solana/web3.js";
 import { useTransaction } from "../api/use-transaction";
 import { useAccounts } from "./use-accounts";
+import { useAllOrders } from "../api/use-all-orders";
 
-export function useAskRelist({
+export function useUnlistMaker({
   marketplaceStr,
-  makerStr,
   orderStr,
+  makerStr,
 }: {
   marketplaceStr: string;
-  makerStr: string;
   orderStr: string;
+  makerStr: string;
 }) {
   const { program } = useTadleProgram();
   const { confirmTransaction } = useTransaction();
   const { getAccounts } = useAccounts();
 
-  const writeAction = async ({
-    receiveTokenAmount,
-    breachFee,
-  }: {
-    receiveTokenAmount: number;
-    breachFee: number;
-  }) => {
+  const writeAction = async () => {
     const {
       tokenProgram,
       tokenProgram2022,
@@ -37,23 +31,31 @@ export function useAskRelist({
       usdcTokenMint,
     } = await getAccounts();
 
-    const marketPlace = new PublicKey(marketplaceStr);
+    const poolTokenAuthority = PublicKey.findProgramAddressSync(
+      [systemConfig.toBuffer()],
+      program.programId,
+    )[0];
+
+    const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
+      [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
+      program.programId,
+    )[0];
+
     const order = new PublicKey(orderStr);
     const maker = new PublicKey(makerStr);
 
+    // Ask Taker: 200 point -> 1000 USDC
     const txHash = await program.methods
-      .relistMaker(
-        new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
-        new BN(breachFee),
-      )
+      .unlistMaker()
       .accounts({
-        authority: authority,
+        authority,
         systemConfig,
         order,
         userTokenAccount: userUsdcTokenAccount,
         poolTokenAccount: poolUsdcTokenAccount,
         maker,
-        marketPlace,
+        poolTokenAuthority,
+        wsolTmpTokenAccount,
         tokenMint: usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
@@ -75,11 +77,11 @@ export function useAskRelist({
 
   const wrapRes = useTxStatus(writeAction);
 
+  const { mutate: refreshOrders } = useAllOrders();
   useEffect(() => {
     if (wrapRes.isSuccess) {
-      return;
+      refreshOrders();
     }
-  }, [wrapRes.isSuccess]);
-
+  }, [wrapRes.isSuccess, refreshOrders]);
   return wrapRes;
 }

@@ -1,5 +1,5 @@
 import useSWRImmutable from "swr/immutable";
-import fetcher from "../../fetcher";
+// import fetcher from "../../fetcher";
 import type { IToken } from "../../types/token";
 import { useEndPoint } from "./use-endpoint";
 // import { useMemo } from "react";
@@ -10,7 +10,8 @@ export function useTokens() {
   const { tokenEndPoint } = useEndPoint();
 
   async function tFetcher() {
-    const tokens = await fetcher(tokenEndPoint);
+    // const tokens = await fetcher(tokenEndPoint);
+    const tokens = [] as Array<IToken>;
     return {
       tokens,
     };

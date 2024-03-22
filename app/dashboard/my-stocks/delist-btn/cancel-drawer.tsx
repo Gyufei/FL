@@ -7,6 +7,8 @@ import { IOrder } from "@/lib/types/order";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { TokenPairImg } from "@/components/share/token-pair-img";
+import { useUnlistMaker } from "@/lib/hooks/contract/use-unlist-maker";
+import { useEffect } from "react";
 
 export default function CancelDrawer({
   drawerOpen,
@@ -17,16 +19,34 @@ export default function CancelDrawer({
   handleDrawerOpen: (_o: boolean) => void;
   order: IOrder;
 }) {
-  const { platFormFee } = useGlobalConfig();
+  const { platformFee } = useGlobalConfig();
 
   const { offerLogo, forLogo, amount } = useOrderFormat({
     order,
   });
 
+  const {
+    isLoading,
+    write: action,
+    isSuccess,
+  } = useUnlistMaker({
+    marketplaceStr: order.marketplace.market_place_id,
+    makerStr: order.maker_id,
+    orderStr: order.order,
+  });
+
   const myDeposit = amount;
   const myCompensation = myDeposit;
 
-  function handleCancel() {}
+  function handleCancel() {
+    action(undefined);
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      handleDrawerOpen(false);
+    }
+  }, [isSuccess]);
 
   return (
     <Drawer
@@ -91,7 +111,7 @@ export default function CancelDrawer({
               <WithTip></WithTip>
             </div>
             <div className="flex items-center text-xs leading-[18px]">
-              {platFormFee * 100}%
+              {platformFee * 100}%
             </div>
           </div>
         </div>
@@ -103,6 +123,7 @@ export default function CancelDrawer({
             Back
           </button>
           <button
+            disabled={isLoading}
             onClick={handleCancel}
             className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-[#FFA95B] text-white"
           >

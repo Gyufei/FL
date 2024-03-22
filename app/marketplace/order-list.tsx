@@ -100,7 +100,7 @@ export default function OrderList({
         </div>
       </div>
 
-      <div className="no-scroll-bar mt-5 grid flex-1 grid-cols-2 gap-5 overflow-y-auto">
+      <div className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-2 gap-5 overflow-y-auto">
         {(filterOrders || []).map((order) => (
           <OrderCard
             order={order}

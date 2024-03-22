@@ -41,8 +41,6 @@ export function useAccounts() {
     );
     const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
 
-    const programAuthority = Keypair.generate();
-
     return {
       tokenProgram,
       tokenProgram2022,
@@ -56,7 +54,6 @@ export function useAccounts() {
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
-      programAuthority,
     };
   }
 

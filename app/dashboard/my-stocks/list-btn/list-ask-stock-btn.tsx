@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NP from "number-precision";
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
@@ -45,7 +45,11 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const sellPrice = NP.times(receiveTokenAmount, tokenPrice);
   const pointPrice = NP.divide(sellPrice, sellPointAmount);
 
-  const { isLoading: isDepositLoading, write: writeAction } = useRelistMaker({
+  const {
+    isLoading: isDepositLoading,
+    write: writeAction,
+    isSuccess,
+  } = useRelistMaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
     orderStr: order.order,
@@ -65,9 +69,15 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   function handleDeposit() {
     writeAction({
       receiveTokenAmount: Number(receiveTokenAmount),
-      breachFee: Number(breachFee) * 100,
+      breachFee: Number(breachFee || 50) * 100,
     });
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      setDrawerOpen(false);
+    }
+  }, [isSuccess]);
 
   return (
     <div>

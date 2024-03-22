@@ -9,15 +9,8 @@ import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { formatTimestamp } from "@/lib/utils/time";
 
 export default function StockCard({ order }: { order: IOrder }) {
-  const isAskStock = order.order_type === "ask";
-
-  const afterTGE = false;
-  const isCanList = order.order_status === "canceled" && isAskStock;
-  const isListed = order.order_status === "ongoing";
-  const isCanDelist = order.order_status === "virgin";
-  const isCanSettle = afterTGE && order.order_type === "ask";
-
   const {
+    afterTGE,
     offerValue,
     forValue,
     offerLogo,
@@ -27,6 +20,15 @@ export default function StockCard({ order }: { order: IOrder }) {
   } = useOrderFormat({
     order,
   });
+
+  const isAskStock = order.order_type === "ask";
+
+  const isCanList =
+    order.order_status === "canceled" && isAskStock && !afterTGE;
+  const isListed = order.order_status === "ongoing";
+  const isCanDelist = order.order_status === "virgin" && !afterTGE;
+  const isCanSettle =
+    afterTGE && !["canceled", "finished"].includes(order.order_status);
 
   return (
     <div className="rounded-[20px] bg-white p-5">

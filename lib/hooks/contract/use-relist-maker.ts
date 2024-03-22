@@ -40,7 +40,6 @@ export function useRelistMaker({
     const marketPlace = new PublicKey(marketplaceStr);
     const order = new PublicKey(orderStr);
     const maker = new PublicKey(makerStr);
-    console.log(marketplaceStr, orderStr, makerStr);
 
     const txHash = await program.methods
       .relistMaker(

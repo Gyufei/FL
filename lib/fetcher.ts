@@ -33,7 +33,6 @@ export default async function fetcher(
     let newInit = init;
     if (!skipToken) {
       const token = localStorage.getItem("access_token");
-      console.log(token);
       if (!token) {
         UserStore.set(ShowSignAtom, true);
         return null;

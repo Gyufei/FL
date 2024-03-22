@@ -51,7 +51,7 @@ export function useAllOrders() {
   };
 
   const res = useSWR(
-    marketplaceData?.map((m) => m.market_place_id),
+    () => marketplaceData?.map((m) => m.market_place_id),
     AllOrdersFetcher,
   );
 

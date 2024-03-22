@@ -85,14 +85,26 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   }
 
   const orderRole = useMemo(() => {
-    if (order.pre_order == "0") {
+    if (order.pre_order == "") {
       return "Maker";
     } else {
       return "Taker";
     }
   }, [order]);
 
+  const afterTGE = useMemo(() => {
+    const tgeTime = order.marketplace.tge;
+    if (tgeTime === "0") {
+      return false;
+    }
+
+    const tgeTimeNum = Number(tgeTime);
+    const now = Date.now() / 1000;
+    return now > tgeTimeNum;
+  }, [order.marketplace.tge]);
+
   return {
+    afterTGE,
     isFilled,
     amount,
     tokenPrice,

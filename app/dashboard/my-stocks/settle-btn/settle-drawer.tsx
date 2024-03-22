@@ -38,8 +38,12 @@ export default function SettleDrawer({
   );
   const mySettlementAmount = myCollateral;
 
-  const isAsk = true;
-  const isTaker = true;
+  const isAsk = order.order_type === "ask";
+  const isTaker = order.pre_order;
+
+  function onSuccess() {
+    handleDrawerOpen(false);
+  }
 
   return (
     <Drawer
@@ -100,7 +104,7 @@ export default function SettleDrawer({
               <WithTip></WithTip>
             </div>
             <div className="flex items-center space-x-1 text-xs leading-[18px] text-black">
-              <span>{formatNum(filledAmount)}</span>
+              <span>{formatNum(filledAmount || 0)}</span>
               <Image
                 src={orderPointInfo.logoURI}
                 width={16}
@@ -156,12 +160,14 @@ export default function SettleDrawer({
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}
+                onSuccess={onSuccess}
               />
             ) : (
               <SettleAskMaker
                 marketplaceStr={order.marketplace.market_place_id}
                 orderStr={order.order}
                 makerStr={order.maker_id}
+                onSuccess={onSuccess}
               />
             ))}
           {!isAsk &&
@@ -171,6 +177,7 @@ export default function SettleDrawer({
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}
+                onSuccess={onSuccess}
               />
             ) : (
               <SettleBidMaker
@@ -178,6 +185,7 @@ export default function SettleDrawer({
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}
+                onSuccess={onSuccess}
               />
             ))}
         </div>

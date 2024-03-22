@@ -12,6 +12,8 @@ import {
   HeaderCell,
   Cell,
 } from "@table-library/react-table-library/table";
+import { usePagination } from "@table-library/react-table-library/pagination";
+import { useTheme } from "@table-library/react-table-library/theme";
 
 import { truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
@@ -24,7 +26,15 @@ import { IOrder } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 
-export function OrderTable() {
+export function OrderTable({
+  role,
+  status,
+  type,
+}: {
+  role: "Taker" | "Maker";
+  status: string;
+  type: string;
+}) {
   const { data: orders } = useMyOrders();
   const { handleGoScan } = useGoScan();
 
@@ -38,34 +48,77 @@ export function OrderTable() {
 
   const isAsk = curDetail?.order_type === "ask";
 
-  const [page, setPage] = useState<number>(0);
-
-  const handlePageChange = (page: number) => {
-    setPage(page);
-  };
-
   const data = useMemo(() => {
-    const orderData = orders.map((o) => {
-      return {
-        ...o,
-        id: o.order_id,
-      };
-    });
+    const orderData = orders
+      .map((o) => {
+        return {
+          ...o,
+          id: o.order_id,
+        };
+      })
+      .filter((o) => {
+        const oRole = o.pre_order ? "Taker" : "Maker";
+        const oStatus = o.order_status;
+        const oType = o.order_type;
+        console.log(oRole, oStatus, oType, role, status, type);
+
+        return (
+          oRole === role && oStatus === status.toLowerCase() && oType === type
+        );
+      });
     return {
       nodes: orderData,
     };
-  }, [orders]);
+  }, [orders, role, status, type]);
+
+  const theme = useTheme({
+    Table: `
+    `,
+    Header: "",
+    Body: "",
+    BaseRow: `
+      font-size: 14px;
+      line-height: 18px;
+    `,
+    HeaderRow: `
+      background: transparent;
+    `,
+    Row: `
+    `,
+    BaseCell: ``,
+    HeaderCell: `
+      font-size: 12px;
+      font-weight: 400;
+      color: #c0c4cc;
+      line-height: 18px;
+    `,
+    Cell: ``,
+  });
+
+  const pagination = usePagination(data, {
+    state: {
+      page: 0,
+      size: 10,
+    },
+    onChange: () => {},
+  });
+
+  const handlePageChange = (page: number) => {
+    pagination.fns.onSetPage(page);
+  };
 
   return (
     <>
       <Table
         data={data}
-        className="flex-1 !grid-cols-[100px_repeat(7,minmax(0,1fr))] grid-rows-[40px_repeat(9,64px)] gap-2 text-xs leading-[18px]"
+        theme={theme}
+        pagination={pagination}
+        className="flex-1 !grid-cols-[100px_repeat(7,minmax(0,1fr))] grid-rows-[40px_repeat(9,64px)] gap-2"
       >
         {(tableList: Array<any>) => (
           <>
             <Header className="text-xs leading-[18px] text-gray">
-              <HeaderRow className="border-none !bg-transparent">
+              <HeaderRow className="border-none">
                 <HeaderCell className="h-10 px-1 py-[11px]">Items</HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">Offer</HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">Type</HeaderCell>
@@ -111,19 +164,23 @@ export function OrderTable() {
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div className="flex items-center">
-                      <span className="text-sm leading-5 text-black">
-                        {truncateAddr(ord.preOrderDetail?.maker_id || "")}
-                      </span>
-                      <Image
-                        onClick={() =>
-                          handleGoScan(ord.preOrderDetail?.maker_id || "")
-                        }
-                        src="/icons/right-45.svg"
-                        width={16}
-                        height={16}
-                        alt="goScan"
-                        className="cursor-pointer"
-                      />
+                      {ord.preOrderDetail?.maker_id && (
+                        <>
+                          <span className="text-sm leading-5 text-black">
+                            {truncateAddr(ord.preOrderDetail?.maker_id || "")}
+                          </span>
+                          <Image
+                            onClick={() =>
+                              handleGoScan(ord.preOrderDetail?.maker_id || "")
+                            }
+                            src="/icons/right-45.svg"
+                            width={16}
+                            height={16}
+                            alt="goScan"
+                            className="cursor-pointer"
+                          />
+                        </>
+                      )}
                     </div>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
@@ -147,10 +204,10 @@ export function OrderTable() {
       </Table>
 
       <Pagination
-        totalPages={10}
+        totalPages={pagination.state.getTotalPages(data.nodes)}
         edgePageCount={3}
         middlePagesSiblingCount={1}
-        currentPage={page}
+        currentPage={pagination.state.page}
         setCurrentPage={handlePageChange}
       >
         <Pagination.PrevButton />

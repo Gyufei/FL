@@ -59,44 +59,71 @@ export function SortSelect({
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}
       >
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger
-            data-checked={sortField === "Created"}
-            className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
-          >
-            Created
-          </DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent
-              sideOffset={6}
-              className="w-[158px] border-0 bg-white p-1"
-              style={{
-                boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
-              }}
-            >
-              <DropdownMenuItem
-                data-active={sortField === "Created" && sortDir === "Ascending"}
-                className="h-9 cursor-pointer py-[3px] data-[active=true]:bg-[#FAFAFA]"
-              >
-                <SortUp
-                  onClick={() => handleSortDirClick("Created", "Ascending")}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                data-active={
-                  sortField === "Created" && sortDir === "Descending"
-                }
-                className="h-9 cursor-pointer py-[3px] data-[active=true]:bg-[#FAFAFA]"
-              >
-                <SortDown
-                  onClick={() => handleSortDirClick("Created", "Descending")}
-                />
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
+        <SortOptions
+          field="Created"
+          sortField={sortField}
+          sortDir={sortDir}
+          onSortDirChange={handleSortDirClick}
+        />
+        <SortOptions
+          field="Price"
+          sortField={sortField}
+          sortDir={sortDir}
+          onSortDirChange={handleSortDirClick}
+        />
+        <SortOptions
+          field="Collateral"
+          sortField={sortField}
+          sortDir={sortDir}
+          onSortDirChange={handleSortDirClick}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function SortOptions({
+  field,
+  sortField,
+  sortDir,
+  onSortDirChange,
+}: {
+  field: ISortField;
+  sortField: ISortField;
+  sortDir: ISortDir;
+  onSortDirChange: (_field: ISortField, _dir: ISortDir) => void;
+}) {
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger
+        data-checked={sortField === field}
+        className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
+      >
+        {field}
+      </DropdownMenuSubTrigger>
+      <DropdownMenuPortal>
+        <DropdownMenuSubContent
+          sideOffset={6}
+          className="w-[158px] border-0 bg-white p-1"
+          style={{
+            boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
+          }}
+        >
+          <DropdownMenuItem
+            data-active={sortField === field && sortDir === "Ascending"}
+            className="h-9 cursor-pointer py-[3px] data-[active=true]:bg-[#FAFAFA]"
+          >
+            <SortUp onClick={() => onSortDirChange(field, "Ascending")} />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            data-active={sortField === field && sortDir === "Descending"}
+            className="h-9 cursor-pointer py-[3px] data-[active=true]:bg-[#FAFAFA]"
+          >
+            <SortDown onClick={() => onSortDirChange(field, "Descending")} />
+          </DropdownMenuItem>
+        </DropdownMenuSubContent>
+      </DropdownMenuPortal>
+    </DropdownMenuSub>
   );
 }
 

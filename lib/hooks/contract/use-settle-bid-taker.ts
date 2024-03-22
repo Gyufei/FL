@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import useTadleProgram from "../use-tadle-program";
 import useTxStatus from "./use-tx-status";
-import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { BN } from "bn.js";
+import { PublicKey } from "@solana/web3.js";
 import { useTransaction } from "../api/use-transaction";
 import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
@@ -35,7 +34,6 @@ export function useSettleBidTaker({
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
-      programAuthority,
     } = await getAccounts();
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
@@ -52,23 +50,6 @@ export function useSettleBidTaker({
     const order = new PublicKey(orderStr);
     const maker = new PublicKey(makerStr);
     const preOrder = new PublicKey(preOrderStr);
-
-    const time_now = Math.ceil(new Date().getTime() / 1000) - 10 - 86400;
-
-    await program.methods
-      .updateMarketPlace(
-        pointTokenMint,
-        new BN(10 * LAMPORTS_PER_SOL),
-        new BN(time_now),
-        new BN(86400),
-      )
-      .accounts({
-        authority: programAuthority.publicKey,
-        systemConfig,
-        marketPlace,
-      })
-      .signers([programAuthority])
-      .rpc();
 
     const txHash = await program.methods
       .settleBidTaker()

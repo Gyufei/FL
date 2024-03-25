@@ -35,7 +35,7 @@ export default function Marketplace() {
           <MarketplaceCard marketplace={marketplace} />
           <LeaderBoard />
           <div>
-            <Image src="/img/point-fi.svg" width={280} height={160} alt="fi" />
+            <Image src="/img/ad-placeholder-1.png" width={280} height={160} alt="ad1" />
           </div>
         </div>
         <div className="max-h-[734px] flex-1 ">

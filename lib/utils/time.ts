@@ -42,6 +42,9 @@ export function formatTimeDuration(seconds: number) {
     }
     return `${days}d ${hours % 24}h`;
   } else if (hours > 0) {
+    if (minutes % 60 === 0) {
+      return `${hours}h`;
+    }
     return `${hours}h ${minutes % 60}m`;
   } else if (minutes > 0) {
     return `${minutes}m`;

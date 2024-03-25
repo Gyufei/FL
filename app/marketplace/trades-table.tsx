@@ -1,92 +1,102 @@
 import Image from "next/image";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { truncateAddr } from "@/lib/utils/web3";
 import { formatTimeDuration } from "@/lib/utils/time";
+import { CompactTable } from "@table-library/react-table-library/compact";
+import { useTheme } from "@table-library/react-table-library/theme";
+import { useMemo } from "react";
+import { formatNum } from "@/lib/utils/number";
 
-const data = [
-  {
-    time: 60,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    seller: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-  {
-    time: 21,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    seller: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-  {
-    time: 3600,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    seller: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-];
+export function TradesTable({ trades }: { trades: any[] }) {
+  const theme = useTheme({
+    Table: `
+      height: 250px;
+      grid-template-rows: 40px repeat(auto-fit, 40px);
+      grid-template-columns:  30px repeat(4, minmax(0, 1fr));
+      font-weight: 400;
 
-const trades = new Array(2).fill(data).flat().slice(0, 5);
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    `,
+    Header: "",
+    Body: "",
+    BaseRow: `
+    `,
+    HeaderRow: `
+      background: #fff;
+    `,
+    Row: ``,
+    BaseCell: `
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
 
-export function TradesTable() {
+      &:nth-child(n+3) {
+        text-align: right;
+      }
+
+      &:nth-child(3) {
+        text-align: center;
+      }
+    `,
+    HeaderCell: `
+      color: #c0c4cc;
+    `,
+    Cell: `
+      color: #2d2e33;
+      height: 40px;
+    `,
+  });
+
+  const data = useMemo(() => {
+    return {
+      nodes: trades,
+    };
+  }, [trades]);
+
+  const COLUMNS = [
+    {
+      label: "",
+      renderCell: (trade: any) => <div>{formatTimeDuration(trade.time)}</div>,
+    },
+    {
+      label: "Item Id",
+      renderCell: (trade: any) => <div>#{trade.no}</div>,
+    },
+    {
+      label: "Value",
+      renderCell: (trade: any) => (
+        <div className="flex items-center justify-center">
+          <span>{trade.value}</span>
+          <Image src={trade.token.logoURI} width={12} height={12} alt="token" />
+        </div>
+      ),
+    },
+    {
+      label: "Amount",
+      renderCell: (trade: any) => <div>{formatNum(trade.amount)}</div>,
+    },
+    {
+      label: "Buyer",
+      renderCell: (trade: any) => <div>{truncateAddr(trade.buyer)}</div>,
+    },
+  ];
+
   return (
-    <Table className="text-xs leading-[18px]">
-      <TableHeader className="text-gray">
-        <TableRow className="border-[#eee]">
-          <TableHead className="w-5 px-1 py-[11px]">
-            <Image src="/icons/time.svg" width={16} height={16} alt="time" />
-          </TableHead>
-          <TableHead className="px-1 py-[11px]">No.</TableHead>
-          <TableHead className="px-1 py-[11px]">Value</TableHead>
-          <TableHead className="px-1 py-[11px]">Seller</TableHead>
-          <TableHead className="px-1 py-[11px]">Buyer</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {trades.map((trade) => (
-          <TableRow key={trade.no} className="border-none">
-            <TableCell className="px-1 py-[11px] text-gray">
-              {formatTimeDuration(trade.time)}
-            </TableCell>
-            <TableCell className="px-1 py-[11px]">#{trade.no}</TableCell>
-            <TableCell className="px-1 py-[11px]">
-              <div className="flex items-center">
-                <span>{trade.value}</span>
-                <Image
-                  src={trade.token.logoURI}
-                  width={12}
-                  height={12}
-                  alt="token"
-                />
-              </div>
-            </TableCell>
-            <TableCell className="px-1 py-[11px]">
-              {truncateAddr(trade.seller)}
-            </TableCell>
-            <TableCell className="px-1 py-[11px]">
-              {truncateAddr(trade.buyer)}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="overflow-y- relative h-[250px] w-full flex-1 border-b border-[#eee] pb-[10px]">
+      <Image
+        src="/icons/time.svg"
+        width={16}
+        height={16}
+        alt="time"
+        className="absolute left-0 top-[10px] z-10"
+      />
+      <CompactTable
+        columns={COLUMNS}
+        data={data}
+        theme={theme}
+        layout={{ fixedHeader: true }}
+      />
+    </div>
   );
 }

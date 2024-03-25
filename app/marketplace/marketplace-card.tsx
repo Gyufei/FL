@@ -60,7 +60,7 @@ export default function MarketplaceCard({
       <div className="flex items-center justify-between pl-[84px]">
         <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
-            <div className="text-lg leading-[28px] text-black">
+            <div className="text-lg leading-[28px] text-black w-[140px] whitespace-nowrap text-ellipsis overflow-hidden">
               {marketplace.market_place_name}
             </div>
             <OverviewIcons

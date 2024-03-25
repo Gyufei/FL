@@ -23,7 +23,7 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
   const router = useRouter();
 
   function handleGo() {
-    router.push(`/marketplace?market_place_id=${marketplace.market_place_id}`);
+    router.push(`/marketplace?marketplaceId=${marketplace.market_place_id}`);
   }
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useCallback, useMemo } from "react";
+import React, { ReactNode, useCallback } from "react";
 
 import { WalletError, Adapter } from "@solana/wallet-adapter-base";
 import {
@@ -10,12 +10,10 @@ import {
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { SolflareWalletAdapter } from "@solflare-wallet/wallet-adapter";
 import { OKXWalletAdapter } from "./okx-wallet-adapter";
-import { useClusterConfig } from "@/lib/hooks/common/use-cluster-config";
+import { useRpc } from "@/lib/hooks/web3/use-rpc";
 
 export function SolanaWalletProviders({ children }: { children?: ReactNode }) {
-  const { clusterConfig } = useClusterConfig();
-
-  const endpoint = useMemo(() => clusterConfig.rpcEndpoint, [clusterConfig]);
+  const { rpc } = useRpc();
 
   const wallets = [
     new PhantomWalletAdapter(),
@@ -30,7 +28,7 @@ export function SolanaWalletProviders({ children }: { children?: ReactNode }) {
 
   return (
     <ConnectionProvider
-      endpoint={endpoint}
+      endpoint={rpc}
       config={{ disableRetryOnRateLimit: true }}
     >
       <WalletProvider wallets={wallets} onError={onError} autoConnect={true}>

@@ -1,9 +1,13 @@
+import { useRpc } from "@/lib/hooks/web3/use-rpc";
+import { useRpcLatency } from "@/lib/hooks/web3/use-rpc-latency";
 import { useMemo } from "react";
 
 export function LiveMs() {
-  const ms = 5;
+  const { rpc } = useRpc();
+  const { data: ms } = useRpcLatency(rpc);
 
   const msColor = useMemo(() => {
+    if (!ms) return "#3DD866";
     if (ms < 100) return "#3DD866";
     if (ms > 99 && ms < 200) return "#FFA95B";
     if (ms > 200) return "#FF6262";

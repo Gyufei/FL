@@ -5,7 +5,7 @@ import { usePagination } from "@table-library/react-table-library/pagination";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IOrder } from "@/lib/types/order";
 import { IToken } from "@/lib/types/token";
-import { useGoScan } from "@/lib/hooks/use-go-scan";
+import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";

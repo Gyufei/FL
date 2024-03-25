@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import useTadleProgram from "../use-tadle-program";
+import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { useTransaction } from "../api/use-transaction";
+import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
 
@@ -17,7 +17,7 @@ export function useSettleAskMaker({
   orderStr: string;
 }) {
   const { program } = useTadleProgram();
-  const { confirmTransaction } = useTransaction();
+  const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
   const writeAction = async () => {
@@ -33,12 +33,9 @@ export function useSettleAskMaker({
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
+      associatedTokenProgram,
+      poolTokenAuthority,
     } = await getAccounts();
-
-    const poolTokenAuthority = PublicKey.findProgramAddressSync(
-      [systemConfig.toBuffer()],
-      program.programId,
-    )[0];
 
     const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
       [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
@@ -67,12 +64,14 @@ export function useSettleAskMaker({
         pointTokenMint,
         tokenProgram,
         tokenProgram2022,
+        pointTokenProgram: tokenProgram,
+        associatedTokenProgram,
         systemProgram,
       })
       .signers([])
       .rpc();
 
-    await confirmTransaction({
+    await recordTransaction({
       maker: makerStr,
       order: orderStr,
       marketplace: marketplaceStr,

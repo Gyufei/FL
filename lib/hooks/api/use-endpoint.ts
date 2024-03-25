@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useClusterConfig } from "../common/use-cluster-config";
+import { useClusterConfig } from "../web3/use-cluster-config";
 
 export function useEndPoint() {
   const { clusterConfig } = useClusterConfig();

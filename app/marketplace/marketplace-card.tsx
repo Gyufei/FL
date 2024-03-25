@@ -16,6 +16,7 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useTokens } from "@/lib/hooks/api/use-tokens";
 import TokenImg from "@/components/share/token-img";
 import MarketplaceOverview from "@/components/share/market-place-overview";
+import { useRouter } from "next/navigation";
 
 export default function MarketplaceCard({
   marketplace,
@@ -60,7 +61,7 @@ export default function MarketplaceCard({
       <div className="flex items-center justify-between pl-[84px]">
         <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
-            <div className="text-lg leading-[28px] text-black w-[140px] whitespace-nowrap text-ellipsis overflow-hidden">
+            <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-lg leading-[28px] text-black">
               {marketplace.market_place_name}
             </div>
             <OverviewIcons
@@ -149,6 +150,8 @@ function FoldPop() {
   const { data: marketplaceData } = useMarketplaces();
   const { data: tokens } = useTokens();
 
+  const router = useRouter();
+
   const [popOpen, setPopOpen] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -176,6 +179,10 @@ function FoldPop() {
         : cateList,
     [cateList, searchText],
   );
+
+  function handleGo(name: string) {
+    router.push(`/marketplace/${name}`);
+  }
 
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -214,7 +221,8 @@ function FoldPop() {
         </div>
         {filteredCateList.map((cate) => (
           <div
-            className="flex rounded-lg px-2 py-[6px] hover:bg-[#fafafa]"
+            className="flex cursor-pointer rounded-lg px-2 py-[6px] hover:bg-[#fafafa]"
+            onClick={() => handleGo(cate.name)}
             key={cate.name}
           >
             <Image

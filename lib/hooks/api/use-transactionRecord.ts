@@ -12,12 +12,12 @@ export interface IAddParams {
   transaction_note: string;
 }
 
-export interface IUpdateParams {
-  tx_hash: string;
-  tx_status?: "1" | "2" | "3" | "4" | "5";
-}
+// export interface IUpdateParams {
+//   tx_hash: string;
+//   tx_status?: "1" | "2" | "3" | "4" | "5";
+// }
 
-export function useTransaction() {
+export function useTransactionRecord() {
   const { apiEndPoint } = useEndPoint();
   const { publicKey } = useWallet();
 
@@ -55,18 +55,18 @@ export function useTransaction() {
     } as IAddParams;
   }
 
-  function parsedUpdateParams({
-    txHash,
-    status = "5",
-  }: {
-    txHash: string;
-    status?: "1" | "2" | "3" | "4" | "5";
-  }) {
-    return {
-      tx_hash: txHash,
-      tx_status: status,
-    } as IUpdateParams;
-  }
+  // function parsedUpdateParams({
+  //   txHash,
+  //   status = "5",
+  // }: {
+  //   txHash: string;
+  //   status?: "1" | "2" | "3" | "4" | "5";
+  // }) {
+  //   return {
+  //     tx_hash: txHash,
+  //     tx_status: status,
+  //   } as IUpdateParams;
+  // }
 
   async function addTransaction(transactionParams: IAddParams) {
     const addResult = await fetcher(`${apiEndPoint}${Paths.addTransaction}`, {
@@ -77,19 +77,19 @@ export function useTransaction() {
     return addResult;
   }
 
-  async function updateTransaction(updateParams: IUpdateParams) {
-    const addResult = await fetcher(
-      `${apiEndPoint}${Paths.updateTransaction}`,
-      {
-        method: "post",
-        body: JSON.stringify(updateParams),
-      },
-    );
+  // async function updateTransaction(updateParams: IUpdateParams) {
+  //   const addResult = await fetcher(
+  //     `${apiEndPoint}${Paths.updateTransaction}`,
+  //     {
+  //       method: "post",
+  //       body: JSON.stringify(updateParams),
+  //     },
+  //   );
 
-    return addResult;
-  }
+  //   return addResult;
+  // }
 
-  async function confirmTransaction({
+  async function recordTransaction({
     maker,
     order,
     marketplace,
@@ -120,10 +120,6 @@ export function useTransaction() {
   }
 
   return {
-    addTransaction,
-    updateTransaction,
-    confirmTransaction,
-    parsedAddParams,
-    parsedUpdateParams,
+    recordTransaction,
   };
 }

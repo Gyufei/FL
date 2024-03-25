@@ -5,7 +5,7 @@ import { WithTip } from "../create-offer/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
-import { useGoScan } from "@/lib/hooks/use-go-scan";
+import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 
 export default function DetailCard({ order }: { order: IOrder }) {
   const { handleGoScan } = useGoScan();

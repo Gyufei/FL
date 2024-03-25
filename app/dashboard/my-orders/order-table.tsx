@@ -23,7 +23,7 @@ import MyBidDetail from "./my-offer-detail/my-bid-detail";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOrderFormat } from "@/lib/hooks/use-order-format";
 import { IOrder } from "@/lib/types/order";
-import { useGoScan } from "@/lib/hooks/use-go-scan";
+import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 
 export function OrderTable({

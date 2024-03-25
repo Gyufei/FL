@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { useAtomValue } from "jotai";
-import { ClusterAtom, ClusterType } from "@/lib/states/cluster";
+import { ClusterAtom } from "@/lib/states/cluster";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 export default function CurrChainLogo() {
   const cluster = useAtomValue(ClusterAtom);
 
-  const isMainnet = cluster === ClusterType.Mainnet;
-  // const isDev = cluster === ClusterType.Devnet;
+  const isMainnet = cluster === WalletAdapterNetwork.Mainnet;
 
   return (
     <div className="relative flex items-center justify-center">

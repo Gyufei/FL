@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import useTadleProgram from "../use-tadle-program";
+import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./use-tx-status";
 import { PublicKey } from "@solana/web3.js";
-import { useTransaction } from "../api/use-transaction";
+import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
 
@@ -18,7 +18,7 @@ export function useSettleBidMaker({
   preOrderStr: string;
 }) {
   const { program } = useTadleProgram();
-  const { confirmTransaction } = useTransaction();
+  const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
   const writeAction = async () => {
@@ -34,12 +34,9 @@ export function useSettleBidMaker({
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
+      associatedTokenProgram,
+      poolTokenAuthority,
     } = await getAccounts();
-
-    const poolTokenAuthority = PublicKey.findProgramAddressSync(
-      [systemConfig.toBuffer()],
-      program.programId,
-    )[0];
 
     const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
       [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
@@ -54,7 +51,7 @@ export function useSettleBidMaker({
     const txHash = await program.methods
       .settleBidMaker()
       .accounts({
-        authority: authority,
+        authority,
         systemConfig,
         maker: bidMaker,
         order: bidMakerOrder,
@@ -69,6 +66,8 @@ export function useSettleBidMaker({
         pointTokenMint,
         tokenProgram,
         tokenProgram2022,
+        pointTokenProgram: tokenProgram,
+        associatedTokenProgram,
         systemProgram,
       })
       .remainingAccounts([
@@ -81,7 +80,7 @@ export function useSettleBidMaker({
       .signers([])
       .rpc();
 
-    await confirmTransaction({
+    await recordTransaction({
       maker: makerStr,
       order: orderStr,
       marketplace: marketplaceStr,

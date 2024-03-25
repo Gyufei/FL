@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import useTadleProgram from "../use-tadle-program";
+import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./use-tx-status";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { useTransaction } from "../api/use-transaction";
+import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
 
 export function useRelistMaker({
@@ -16,7 +16,7 @@ export function useRelistMaker({
   orderStr: string;
 }) {
   const { program } = useTadleProgram();
-  const { confirmTransaction } = useTransaction();
+  const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
   const writeAction = async ({
@@ -62,7 +62,7 @@ export function useRelistMaker({
       .signers([])
       .rpc();
 
-    await confirmTransaction({
+    await recordTransaction({
       maker: makerStr,
       order: orderStr,
       marketplace: marketplaceStr,

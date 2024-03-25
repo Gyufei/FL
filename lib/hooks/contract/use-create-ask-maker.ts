@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import useTadleProgram from "../use-tadle-program";
+import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./use-tx-status";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { useTransaction } from "../api/use-transaction";
+import { useTransactionRecord } from "../api/use-transactionRecord";
 import toPubString from "@/lib/utils/pub-string";
 import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
@@ -16,7 +16,7 @@ export function useCreateAskMaker({
   const { program } = useTadleProgram();
   const { getAccounts } = useAccounts();
 
-  const { confirmTransaction } = useTransaction();
+  const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async ({
     sellPointAmount,
@@ -41,6 +41,8 @@ export function useCreateAskMaker({
       poolUsdcTokenAccount,
       usdcTokenMint,
       seedAccount,
+      associatedTokenProgram,
+      poolTokenAuthority,
     } = await getAccounts();
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -73,15 +75,18 @@ export function useCreateAskMaker({
         order,
         userTokenAccount: userUsdcTokenAccount,
         poolTokenAccount: poolUsdcTokenAccount,
+        poolTokenAuthority,
         tokenMint: usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
+        poolTokenProgram: tokenProgram,
+        associatedTokenProgram,
         systemProgram,
       })
       .signers([seedAccount])
       .rpc();
 
-    await confirmTransaction({
+    await recordTransaction({
       maker: toPubString(maker),
       order: toPubString(order),
       marketplace: marketplaceStr,

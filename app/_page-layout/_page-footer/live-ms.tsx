@@ -21,14 +21,16 @@ export function LiveMs() {
           backgroundColor: msColor,
         }}
       ></div>
-      <div
-        className="text-sm leading-5"
-        style={{
-          color: msColor,
-        }}
-      >
-        Live {ms}ms
-      </div>
+      {ms && (
+        <div
+          className="text-sm leading-5"
+          style={{
+            color: msColor,
+          }}
+        >
+          Live {ms}ms
+        </div>
+      )}
     </div>
   );
 }

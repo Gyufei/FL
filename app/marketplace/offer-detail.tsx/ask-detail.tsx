@@ -97,7 +97,7 @@ export default function AskDetail({
         token: orderTokenInfo,
       });
     }
-  }, [isSuccess, onSuccess, txHash, payTokenAmount, orderTokenInfo]);
+  }, [isSuccess]);
 
   return (
     <>

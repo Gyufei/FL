@@ -99,7 +99,7 @@ export default function BidDetail({
         token: orderTokenInfo,
       });
     }
-  }, [isSuccess, onSuccess, txHash, receiveTokenAmount, orderTokenInfo]);
+  }, [isSuccess]);
 
   return (
     <>

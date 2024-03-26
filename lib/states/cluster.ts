@@ -78,7 +78,7 @@ export const GlobalRpcsAtom = atomWithStorage<
   Record<WalletAdapterNetwork, string | null>
 >("gRpc", {
   [WalletAdapterNetwork.Mainnet]: RPCS.solanaFm,
-  [WalletAdapterNetwork.Devnet]: RPCS.solanaFmDevnet,
+  [WalletAdapterNetwork.Devnet]: RPCS.solanaDevnet,
   [WalletAdapterNetwork.Testnet]: RPCS.solanaTestnet,
 });
 

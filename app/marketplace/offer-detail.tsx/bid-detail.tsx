@@ -14,14 +14,14 @@ import DrawerTitle from "@/components/share/drawer-title";
 import { WithTip } from "../create-offer/with-tip";
 import { IOrder } from "@/lib/types/order";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
 export default function BidDetail({
   order,
   onSuccess,
 }: {
   order: IOrder;
-  onSuccess: (_o: IOrder) => void;
+  onSuccess: (_o: Record<string, any>) => void;
 }) {
   const { platformFee } = useGlobalConfig();
 
@@ -62,6 +62,7 @@ export default function BidDetail({
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const {
+    data: txHash,
     isLoading: isDepositLoading,
     isSuccess,
     write: createAction,
@@ -91,9 +92,14 @@ export default function BidDetail({
 
   useEffect(() => {
     if (isSuccess) {
-      onSuccess(order);
+      onSuccess({
+        no: "",
+        pay: receiveTokenAmount,
+        tx: txHash,
+        token: orderTokenInfo,
+      });
     }
-  }, [isSuccess]);
+  }, [isSuccess, onSuccess, txHash, receiveTokenAmount, orderTokenInfo]);
 
   return (
     <>

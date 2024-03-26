@@ -4,7 +4,6 @@ import useTxStatus from "./use-tx-status";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
-import toPubString from "@/lib/utils/pub-string";
 import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
 
@@ -87,9 +86,6 @@ export function useCreateAskMaker({
       .rpc();
 
     await recordTransaction({
-      maker: toPubString(maker),
-      order: toPubString(order),
-      marketplace: marketplaceStr,
       txHash,
       note,
     });

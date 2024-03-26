@@ -4,8 +4,9 @@ import { formatNum } from "@/lib/utils/number";
 import { WithTip } from "../create-offer/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
+import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 
 export default function DetailCard({ order }: { order: IOrder }) {
   const { handleGoScan } = useGoScan();
@@ -16,9 +17,11 @@ export default function DetailCard({ order }: { order: IOrder }) {
     orderTokenInfo,
     orderPointInfo,
     orderEqTokenInfo,
-    preOrderMakerDetail,
-    makerDetail,
   } = useOrderFormat({
+    order,
+  });
+
+  const { makerDetail, preOrderMakerDetail } = useOrderMakerDetail({
     order,
   });
 

@@ -8,7 +8,7 @@ import MyDetailCard from "./my-detail-card";
 import { useState } from "react";
 import ConfirmBidSettleDialog from "./confirm-bid-settle-dialog";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
 export default function MyBidDetail({ order }: { order: IOrder }) {
   const {

@@ -12,9 +12,9 @@ export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [orderFillDialog, setOrderFillDialog] = useState(false);
-  const [resultOrder, setResultOrder] = useState<IOrder | null>(null);
+  const [resultOrder, setResultOrder] = useState<any | null>(null);
 
-  function handleSuccess(ord: IOrder) {
+  function handleSuccess(ord: Record<string, any>) {
     setDrawerOpen(false);
     setResultOrder(ord);
     setOrderFillDialog(true);
@@ -49,7 +49,7 @@ export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
         <OrderFillDialog
           open={orderFillDialog}
           onOpenChange={(val) => setOrderFillDialog(val)}
-          order={resultOrder}
+          res={resultOrder}
         />
       )}
     </>

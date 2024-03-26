@@ -8,7 +8,7 @@ import MyDetailCard from "./my-detail-card";
 import ConfirmAskSettleDialog from "./confirm-ask-settle-dialog";
 import { useState } from "react";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
 export default function MyAskDetail({ order: order }: { order: IOrder }) {
   const {

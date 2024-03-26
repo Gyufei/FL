@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 export function LiveMs() {
   const { rpc } = useRpc();
-  const { data: ms } = useRpcLatency(rpc);
+  const { data: ms } = useRpcLatency(rpc!);
 
   const msColor = useMemo(() => {
     if (!ms) return "#3DD866";

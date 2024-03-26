@@ -21,7 +21,7 @@ import { useMemo, useState } from "react";
 import MyAskDetail from "./my-offer-detail/my-ask-detail";
 import MyBidDetail from "./my-offer-detail/my-bid-detail";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { IOrder } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
@@ -58,7 +58,7 @@ export function OrderTable({
       })
       .filter((o) => {
         const oRole = o.pre_order ? "Taker" : "Maker";
-        const oStatus = o.order_status;
+        const oStatus = o.maker_status;
         const oType = o.order_type;
 
         return (

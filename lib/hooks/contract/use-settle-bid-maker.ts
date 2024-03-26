@@ -81,9 +81,6 @@ export function useSettleBidMaker({
       .rpc();
 
     await recordTransaction({
-      maker: makerStr,
-      order: orderStr,
-      marketplace: marketplaceStr,
       txHash,
       note: "",
     });

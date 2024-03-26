@@ -5,7 +5,7 @@ import DrawerTitle from "@/components/share/drawer-title";
 import { WithTip } from "../../../marketplace/create-offer/with-tip";
 import { IOrder } from "@/lib/types/order";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useUnlistMaker } from "@/lib/hooks/contract/use-unlist-maker";
 import { useEffect } from "react";
@@ -30,7 +30,6 @@ export default function CancelDrawer({
     write: action,
     isSuccess,
   } = useUnlistMaker({
-    marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
     orderStr: order.order,
   });

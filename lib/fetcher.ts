@@ -27,27 +27,9 @@ export async function plainFetcher(
 export default async function fetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
-  skipToken?: boolean,
 ) {
   try {
-    let newInit = init;
-    if (!skipToken) {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        UserStore.set(ShowSignAtom, true);
-        return null;
-      }
-
-      newInit = {
-        ...init,
-        headers: {
-          ...init?.headers,
-          Authorization: JSON.parse(token),
-        },
-      };
-    }
-
-    const res = await fetch(input, newInit);
+    const res = await fetch(input, init);
 
     if (!res.ok) {
       const error = new Error(

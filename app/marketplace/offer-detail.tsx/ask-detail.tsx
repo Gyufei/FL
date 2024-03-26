@@ -13,7 +13,7 @@ import DrawerTitle from "@/components/share/drawer-title";
 import { WithTip } from "../create-offer/with-tip";
 import { useBidTaker } from "@/lib/hooks/contract/use-bid-taker";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 
 export default function AskDetail({
@@ -21,7 +21,7 @@ export default function AskDetail({
   onSuccess,
 }: {
   order: IOrder;
-  onSuccess: (_o: IOrder) => void;
+  onSuccess: (_o: Record<string, any>) => void;
 }) {
   const { platformFee } = useGlobalConfig();
 
@@ -42,6 +42,7 @@ export default function AskDetail({
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const {
+    data: txHash,
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
@@ -89,9 +90,14 @@ export default function AskDetail({
 
   useEffect(() => {
     if (isSuccess) {
-      onSuccess(order);
+      onSuccess({
+        no: "",
+        pay: payTokenAmount,
+        tx: txHash,
+        token: orderTokenInfo,
+      });
     }
-  }, [isSuccess]);
+  }, [isSuccess, onSuccess, txHash, payTokenAmount, orderTokenInfo]);
 
   return (
     <>

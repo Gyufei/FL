@@ -3,15 +3,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMemo, useState } from "react";
 import { TakerOrders } from "./taker-orders";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useOrderSubOrders } from "@/lib/hooks/order/use-order-sub-orders";
 
 export default function OrderTabs({ order }: { order: IOrder }) {
   const [currentTab, setCurrentTab] = useState("orders");
 
   const { publicKey } = useWallet();
 
-  const { subOrders, offerLogo, forLogo, orderEqTokenInfo } = useOrderFormat({
+  const { offerLogo, forLogo, orderEqTokenInfo } = useOrderFormat({
+    order,
+  });
+
+  const { subOrders } = useOrderSubOrders({
     order,
   });
 

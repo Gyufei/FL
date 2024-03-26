@@ -2,20 +2,16 @@ import Image from "next/image";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { truncateAddr } from "@/lib/utils/web3";
 import Link from "next/link";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
-import { IOrder } from "@/lib/types/order";
 
 export default function OrderFillDialog({
   open,
   onOpenChange,
-  order,
+  res,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IOrder;
+  res: Record<string, any>;
 }) {
-  const { amount, orderTokenInfo } = useOrderFormat({ order: order });
-
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
       <DialogContent
@@ -37,14 +33,14 @@ export default function OrderFillDialog({
         <div className="mt-[30px] text-sm leading-5">
           <div className="flex justify-between">
             <div className="text-gray">Sub No.</div>
-            <div className="text-black">#{order.order_id}</div>
+            <div className="text-black">#{res.no}</div>
           </div>
           <div className="mt-8 flex justify-between">
             <div className="text-gray">Deposited</div>
             <div className="flex items-center space-x-1 text-black">
-              <span>${amount}</span>
+              <span>${res.pay}</span>
               <Image
-                src={orderTokenInfo.logoURI}
+                src={res.token.logoURI}
                 width={16}
                 height={16}
                 alt="token"
@@ -54,7 +50,7 @@ export default function OrderFillDialog({
           <div className="mt-8 flex justify-between">
             <div className="text-gray">Tx</div>
             <div className="text-black">
-              {truncateAddr(order.relist_tx_hash || order.order_tx_hash, {
+              {truncateAddr(res.tx, {
                 nPrefix: 4,
                 nSuffix: 4,
               })}

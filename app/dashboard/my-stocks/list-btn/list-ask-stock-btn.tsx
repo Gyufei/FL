@@ -19,8 +19,10 @@ import ListInfo from "./list-info";
 import { useRelistMaker } from "@/lib/hooks/contract/use-relist-maker";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { formatNum } from "@/lib/utils/number";
+import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
+import { useOrderSubOrders } from "@/lib/hooks/order/use-order-sub-orders";
 
 export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const { platformFee } = useGlobalConfig();
@@ -28,10 +30,17 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const [step, setStep] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, makerDetail, tokenPrice, getOrigin } =
-    useOrderFormat({
-      order,
-    });
+  const { orderPointInfo, orderTokenInfo, tokenPrice } = useOrderFormat({
+    order,
+  });
+
+  const { getOrigin } = useOrderSubOrders({
+    order,
+  });
+
+  const { makerDetail } = useOrderMakerDetail({
+    order,
+  });
 
   const [sellPointAmount] = useState(order.points);
   const [receiveToken] = useState<IToken>(orderTokenInfo);

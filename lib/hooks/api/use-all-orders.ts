@@ -19,12 +19,23 @@ export function useAllOrders() {
 
     for (const marketplace of marketplaceData) {
       const orderRes = await fetcher(
-        `${apiEndPoint}${Paths.order}?market_place_id=${marketplace.market_place_id}`,
+        `${apiEndPoint}${Paths.order}?project=${marketplace.market_place_name}`,
       );
 
       let parsedRes = orderRes.map((order: Record<string, any>) => {
+        const order_role = getOrderRole(order);
+
+        const order_type =
+          order_role === "Maker"
+            ? order.order_type
+            : order.order_type === "ask"
+            ? "bid"
+            : "ask";
+
         return {
           ...order,
+          order_role,
+          order_type,
           marketplace,
         };
       });
@@ -58,4 +69,16 @@ export function useAllOrders() {
   return {
     ...res,
   };
+}
+
+function getOrderRole(order: Record<string, any>): "Maker" | "Taker" {
+  if (order.pre_order == SolanaZeroed) {
+    return "Maker";
+  } else {
+    if (["unknown", "canceled"].includes(order.maker_status)) {
+      return "Taker";
+    } else {
+      return "Maker";
+    }
+  }
 }

@@ -30,7 +30,6 @@ export function useSignIn() {
         method: "POST",
         body: JSON.stringify(arg),
       },
-      true,
     );
 
     return res;

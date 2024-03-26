@@ -1,30 +1,11 @@
 import NP from "number-precision";
-import { IOrder } from "../types/order";
-import { useMakerDetail } from "./api/use-maker-detail";
+import { IOrder } from "../../types/order";
 // import { useTokensInfo } from "./api/use-token-info";
-import { useMarketplaceOrders } from "./api/use-marketplace-orders";
 import { useMemo } from "react";
-import { IToken } from "../types/token";
-import { formatTimeDuration } from "../utils/time";
+import { IToken } from "../../types/token";
+import { formatTimeDuration } from "../../utils/time";
 
 export function useOrderFormat({ order }: { order: IOrder }) {
-  const { data: makerDetail } = useMakerDetail({
-    makerId: order.maker_id,
-  });
-
-  const { data: orders } = useMarketplaceOrders({
-    marketplaceId: order.marketplace?.market_place_id || "",
-  });
-
-  const subOrders = useMemo(
-    () => (orders || [])?.filter((o: IOrder) => o.pre_order === order.order),
-    [orders, order.order],
-  );
-
-  const { data: preOrderMakerDetail } = useMakerDetail({
-    makerId: order.preOrderDetail?.maker_id || "",
-  });
-
   const progress = Number(
     (Number(order.used_points) / Number(order.points)).toFixed(2),
   );
@@ -50,12 +31,34 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     logoURI: "/icons/point.svg",
     decimals: 9,
   } as IToken;
-
-  const orderType = order.order_type;
   const tokenLogo = orderTokenInfo.logoURI;
   const pointLogo = orderPointInfo.logoURI;
 
-  const amount = NP.divide(order.amount, 10 ** orderTokenInfo.decimals);
+  const orderRole = order.order_role;
+
+  const isMaker = useMemo(() => {
+    return order.order_role === "Maker";
+  }, [order]);
+
+  const isTaker = useMemo(() => {
+    return !isMaker;
+  }, [isMaker]);
+
+  console.log(orderRole, isTaker, isMaker);
+
+  const orderType = order.order_type;
+
+  const takerAmount = NP.divide(
+    order.taker_amount,
+    10 ** orderTokenInfo.decimals,
+  );
+  const makerAmount = NP.divide(
+    order.maker_amount,
+    10 ** orderTokenInfo.decimals,
+  );
+
+  const amount = isTaker ? takerAmount : makerAmount;
+  console.log(order, isTaker, amount);
 
   const offerValue = orderType === "ask" ? order.points : amount;
   const forValue = orderType === "ask" ? amount : order.points;
@@ -75,22 +78,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   );
 
   const isFilled = order.used_points === order.points;
-
-  function getOrigin(order: IOrder, defaultValue: string) {
-    if (order.preOrderDetail) {
-      return getOrigin(order.preOrderDetail, order.pre_order);
-    } else {
-      return defaultValue;
-    }
-  }
-
-  const orderRole = useMemo(() => {
-    if (order.pre_order == "") {
-      return "Maker";
-    } else {
-      return "Taker";
-    }
-  }, [order]);
 
   const afterTGE = useMemo(() => {
     const tgeTime = order.marketplace.tge;
@@ -120,10 +107,8 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     orderPointInfo,
     orderTokenInfo,
     orderEqTokenInfo,
-    makerDetail,
-    preOrderMakerDetail,
-    subOrders,
-    getOrigin,
     orderRole,
+    isMaker,
+    isTaker,
   };
 }

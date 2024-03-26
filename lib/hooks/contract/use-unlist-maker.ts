@@ -7,11 +7,9 @@ import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
 
 export function useUnlistMaker({
-  marketplaceStr,
   orderStr,
   makerStr,
 }: {
-  marketplaceStr: string;
   orderStr: string;
   makerStr: string;
 }) {
@@ -61,9 +59,6 @@ export function useUnlistMaker({
       .rpc();
 
     await recordTransaction({
-      maker: makerStr,
-      order: orderStr,
-      marketplace: marketplaceStr,
       txHash,
       note: "",
     });

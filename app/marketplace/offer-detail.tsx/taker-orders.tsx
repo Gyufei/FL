@@ -51,21 +51,18 @@ export function TakerOrders({
     `,
     Row: `
     `,
-    BaseCell: ``,
+    BaseCell: `
+      &:not(:first-child) {
+        text-align: right;
+      }
+    `,
     HeaderCell: `
       font-size: 12px;
       font-weight: 400;
       color: #c0c4cc;
       line-height: 18px;
-
-      &:not(:first-child) {
-        text-align: right;
-      }
     `,
     Cell: `
-      &:not(:first-child) {
-        text-align: right;
-      }
     `,
   });
 
@@ -86,7 +83,7 @@ export function TakerOrders({
     {
       label: "Fill Amount",
       renderCell: (o: IOrder) => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center justify-end space-x-1">
           <div>
             #{o.used_points} ({NP.divide(o.used_points, o.points) * 100}
             %)
@@ -98,8 +95,8 @@ export function TakerOrders({
     {
       label: "Deposits",
       renderCell: (o: IOrder) => (
-        <div className="flex items-center space-x-1">
-          <span>{o.amount}</span>
+        <div className="flex items-center justify-end space-x-1">
+          <span>{o.taker_amount}</span>
           <Image src={forLogo} width={12} height={12} alt="token" />
         </div>
       ),
@@ -107,7 +104,7 @@ export function TakerOrders({
     {
       label: "Eq.Token",
       renderCell: () => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center justify-end space-x-1">
           <span>{orderEqTokenInfo.symbol}</span>
           <Image
             src={orderEqTokenInfo.logoURI}
@@ -121,12 +118,10 @@ export function TakerOrders({
     {
       label: "Tx Hash",
       renderCell: (o: IOrder) => (
-        <div className="flex items-center">
-          {truncateAddr(o.relist_tx_hash || o.order_tx_hash || "")}
+        <div className="flex items-center justify-end">
+          {truncateAddr(o.taker_tx_hash || "")}
           <Image
-            onClick={() =>
-              handleGoScan(o.relist_tx_hash || o.order_tx_hash || "", "tx")
-            }
+            onClick={() => handleGoScan(o.taker_tx_hash || "", "tx")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -138,8 +133,11 @@ export function TakerOrders({
     },
     {
       label: "Time",
-      renderCell: (o: IOrder) =>
-        `${formatTimestamp(new Date(o.create_at).getTime())}`,
+      renderCell: (o: IOrder) => (
+        <div className="flex items-center justify-end">{`${formatTimestamp(
+          new Date(o.create_at).getTime(),
+        )}`}</div>
+      ),
     },
   ];
 

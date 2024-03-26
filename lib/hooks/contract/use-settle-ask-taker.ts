@@ -80,9 +80,6 @@ export function useSettleAskTaker({
       .rpc();
 
     await recordTransaction({
-      maker: makerStr,
-      order: orderStr,
-      marketplace: marketplaceStr,
       txHash,
       note: "",
     });

@@ -6,7 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle";
 import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
 export default function ConfirmBidSettleDialog({
   open,

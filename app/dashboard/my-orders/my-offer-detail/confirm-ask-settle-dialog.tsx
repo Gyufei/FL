@@ -6,7 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
 export default function ConfirmAskSettleDialog({
   open,

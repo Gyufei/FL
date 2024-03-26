@@ -5,18 +5,22 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import { formatTimeObj } from "@/lib/utils/time";
 import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useMemo } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 
 export default function MyDetailCard({ order }: { order: IOrder }) {
   const { publicKey } = useWallet();
 
-  const { amount, orderTokenInfo, orderPointInfo, makerDetail } =
-    useOrderFormat({
-      order,
-    });
+  const { amount, orderTokenInfo, orderPointInfo } = useOrderFormat({
+    order,
+  });
+
+  const { makerDetail } = useOrderMakerDetail({
+    order,
+  });
 
   const { handleGoScan } = useGoScan();
 

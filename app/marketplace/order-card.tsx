@@ -12,7 +12,7 @@ import OrderBuyBtn from "./order-buy-btn";
 import { IOrder } from "@/lib/types/order";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
 export function OrderCard({
   order,

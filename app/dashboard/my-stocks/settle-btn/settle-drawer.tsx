@@ -9,7 +9,7 @@ import SettleAskMaker from "./settle-ask-maker";
 import SettleBidMaker from "./settle-bid-maker";
 import { IOrder } from "@/lib/types/order";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { formatNum } from "@/lib/utils/number";
 import { useMemo } from "react";
@@ -31,15 +31,19 @@ export default function SettleDrawer({
     },
   );
 
-  const filledAmount = order.used_points;
-  const myCollateral = useMemo(
-    () => NP.divide(order.amount, 10 ** orderTokenInfo.decimals),
-    [order, orderTokenInfo],
-  );
-  const mySettlementAmount = myCollateral;
-
   const isAsk = order.order_type === "ask";
   const isTaker = order.pre_order;
+
+  const filledAmount = order.used_points;
+  const myCollateral = useMemo(
+    () =>
+      NP.divide(
+        isTaker ? order.taker_amount : order.maker_amount,
+        10 ** orderTokenInfo.decimals,
+      ),
+    [order, orderTokenInfo, isTaker],
+  );
+  const mySettlementAmount = myCollateral;
 
   function onSuccess() {
     handleDrawerOpen(false);
@@ -65,7 +69,7 @@ export default function SettleDrawer({
                 data-status={"open"}
                 className="flex h-5 items-center px-2 data-[status=open]:bg-[#edf8f4] data-[status=open]:text-green"
               >
-                {order.order_status}
+                {order.maker_status}
               </div>
             </div>
             <Image

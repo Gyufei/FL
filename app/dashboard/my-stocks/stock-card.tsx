@@ -5,7 +5,7 @@ import DelistBtn from "./delist-btn/delist-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { IOrder } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useOrderFormat } from "@/lib/hooks/use-order-format";
+import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { formatTimestamp } from "@/lib/utils/time";
 
 export default function StockCard({ order }: { order: IOrder }) {
@@ -17,6 +17,8 @@ export default function StockCard({ order }: { order: IOrder }) {
     forLogo,
     pointPerPrice,
     tokenTotalPrice,
+    orderType,
+    isMaker,
   } = useOrderFormat({
     order,
   });
@@ -24,11 +26,21 @@ export default function StockCard({ order }: { order: IOrder }) {
   const isAskStock = order.order_type === "ask";
 
   const isCanList =
-    order.order_status === "canceled" && isAskStock && !afterTGE;
-  const isListed = order.order_status === "ongoing";
-  const isCanDelist = order.order_status === "virgin" && !afterTGE;
+    !afterTGE &&
+    orderType === "bid" &&
+    order.maker_status === "unknown" &&
+    order.taker_status === "initialized";
+
+  const isListed =
+    !afterTGE &&
+    isMaker &&
+    orderType === "ask" &&
+    order.maker_status === "virgin" &&
+    order.taker_status === "initialized";
+
+  const isCanDelist = isMaker && order.maker_status === "virgin" && afterTGE;
   const isCanSettle =
-    afterTGE && !["canceled", "finished"].includes(order.order_status);
+    afterTGE && !["canceled", "finished"].includes(order.maker_status);
 
   return (
     <div className="rounded-[20px] bg-white p-5">
@@ -112,7 +124,7 @@ export default function StockCard({ order }: { order: IOrder }) {
             )}
           </div>
         )}
-        {isCanList && isAskStock && <ListAskStockBtn order={order} />}
+        {isCanList && <ListAskStockBtn order={order} />}
         {isListed && <div className="text-sm leading-5 text-black">Listed</div>}
         {isCanDelist && <DelistBtn order={order} />}
         {isCanSettle && <SettleDrawerBtn order={order} />}

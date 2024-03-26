@@ -60,7 +60,6 @@ export function OrderTable({
         const oRole = o.pre_order ? "Taker" : "Maker";
         const oStatus = o.order_status;
         const oType = o.order_type;
-        console.log(oRole, oStatus, oType, role, status, type);
 
         return (
           oRole === role && oStatus === status.toLowerCase() && oType === type

@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import { useClusterConfig } from "./use-cluster-config";
 import { useAtomValue } from "jotai";
-import { CustomRpcsAtom } from "@/lib/states/cluster";
-import { Connection } from "@solana/web3.js";
+import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/cluster";
 
 export function useRpc() {
   const { clusterConfig } = useClusterConfig();
+
+  const globalRpcs = useAtomValue(GlobalRpcsAtom);
   const customRpcs = useAtomValue(CustomRpcsAtom);
 
   const rpc = useMemo(() => {
@@ -13,24 +14,10 @@ export function useRpc() {
       return customRpcs[clusterConfig.network]!;
     }
 
-    return clusterConfig.rpcEndpoint;
-  }, [clusterConfig, customRpcs]);
-
-  async function testRpcLatency(testRpc: string) {
-    const connection = new Connection(testRpc);
-
-    const startTimestamp = Date.now();
-    // 调用特定的 RPC
-    await connection.getEpochInfo();
-    const endTimestamp = Date.now();
-
-    const latency = endTimestamp - startTimestamp;
-
-    return latency;
-  }
+    return globalRpcs[clusterConfig.network];
+  }, [clusterConfig, globalRpcs, customRpcs]);
 
   return {
     rpc,
-    testRpcLatency,
   };
 }

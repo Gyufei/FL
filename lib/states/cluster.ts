@@ -11,8 +11,6 @@ export const RPCS = {
 
 interface Cluster {
   network: WalletAdapterNetwork;
-  rpcEndpoint: string;
-  customRpcEndPoint: string | null;
   api: {
     default: string;
     tokenApi: string;
@@ -31,8 +29,6 @@ interface Cluster {
 
 export const MainnetCluster: Cluster = {
   network: WalletAdapterNetwork.Mainnet,
-  rpcEndpoint: RPCS.solanaFm,
-  customRpcEndPoint: null,
   api: {
     default: EndPointPathMap.solanaApi,
     tokenApi: EndPointPathMap.solanaToken,
@@ -53,9 +49,7 @@ export const MainnetCluster: Cluster = {
 };
 
 export const DevnetCluster: Cluster = {
-  network: WalletAdapterNetwork.Testnet,
-  rpcEndpoint: RPCS.solanaFmDevnet,
-  customRpcEndPoint: null,
+  network: WalletAdapterNetwork.Devnet,
   api: {
     default: EndPointPathMap.solanaApi,
     tokenApi: EndPointPathMap.solanaToken,
@@ -80,9 +74,17 @@ export const ClusterAtom = atomWithStorage<WalletAdapterNetwork>(
   WalletAdapterNetwork.Mainnet,
 );
 
+export const GlobalRpcsAtom = atomWithStorage<
+  Record<WalletAdapterNetwork, string | null>
+>("gRpc", {
+  [WalletAdapterNetwork.Mainnet]: RPCS.solanaFm,
+  [WalletAdapterNetwork.Devnet]: RPCS.solanaFmDevnet,
+  [WalletAdapterNetwork.Testnet]: RPCS.solanaTestnet,
+});
+
 export const CustomRpcsAtom = atomWithStorage<
   Record<WalletAdapterNetwork, string | null>
->("rpc", {
+>("cRpc", {
   [WalletAdapterNetwork.Mainnet]: null,
   [WalletAdapterNetwork.Devnet]: null,
   [WalletAdapterNetwork.Testnet]: null,

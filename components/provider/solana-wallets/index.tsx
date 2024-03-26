@@ -28,7 +28,7 @@ export function SolanaWalletProviders({ children }: { children?: ReactNode }) {
 
   return (
     <ConnectionProvider
-      endpoint={rpc}
+      endpoint={rpc!}
       config={{ disableRetryOnRateLimit: true }}
     >
       <WalletProvider wallets={wallets} onError={onError} autoConnect={true}>

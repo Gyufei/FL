@@ -6,7 +6,6 @@ export function useRpcLatency(rpc: string) {
     const connection = new Connection(testRpc);
 
     const startTimestamp = Date.now();
-    // 调用特定的 RPC
     await connection.getEpochInfo();
     const endTimestamp = Date.now();
 

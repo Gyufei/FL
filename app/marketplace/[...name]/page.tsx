@@ -16,8 +16,6 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     (marketplace) => marketplace.market_place_name === marketplaceName,
   );
 
-  console.log(marketplaceName);
-
   if (!marketplace) return null;
 
   return (

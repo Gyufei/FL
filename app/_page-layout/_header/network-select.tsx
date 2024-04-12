@@ -128,16 +128,17 @@ function DevnetCard({ isActive }: { isActive: boolean }) {
       <div className="mt-4 flex justify-between">
         <div
           onClick={goClaimTestToken}
-          className="flex cursor-pointer items-center"
+          className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]"
         >
-          <div className="mr-1 h-1 w-1 rounded-full bg-[#99A0AF]"></div>
-          <div className="text-xs leading-[18px] text-gray">
-            Claim test tokens
-          </div>
+          <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
+          <div className="text-xs leading-[18px]">Claim test tokens</div>
         </div>
-        <div onClick={goHelp} className="flex cursor-pointer items-center">
-          <div className="mr-1 h-1 w-1 rounded-full bg-[#99A0AF]"></div>
-          <div className="text-xs leading-[18px] text-gray">Help</div>
+        <div
+          onClick={goHelp}
+          className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]"
+        >
+          <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
+          <div className="text-xs leading-[18px] ">Help</div>
         </div>
       </div>
     </div>

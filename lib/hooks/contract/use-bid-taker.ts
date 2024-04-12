@@ -42,12 +42,18 @@ export function useBidTaker({
       program.programId,
     )[0];
 
+    const userConfig = PublicKey.findProgramAddressSync(
+      [Buffer.from("user_config"), authority!.toBuffer()],
+      program.programId,
+    )[0];
+
     // Bid Taker: 1000 USDC -> 200 point
     const txHash = await program.methods
       .createTaker(new BN(receivePoint))
       .accounts({
         authority: authority,
         systemConfig,
+        userConfig,
         marketPlace,
         seedAccount: seedAccount.publicKey,
         order: orderA,

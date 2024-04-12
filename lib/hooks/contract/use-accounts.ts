@@ -29,14 +29,14 @@ export function useAccounts() {
 
     const userUsdcTokenAccount = await getAssociatedTokenAddress(
       new PublicKey(clusterConfig.program.usdcTokenMint),
-      account!,
+      authority!,
       false,
       tokenProgram,
       associatedTokenProgram,
     );
     const userPointsTokenAccount = await getAssociatedTokenAddress(
       new PublicKey(clusterConfig.program.pointTokenMint),
-      account!,
+      authority!,
       false,
       tokenProgram,
       associatedTokenProgram,

@@ -43,6 +43,7 @@ export function TakerOrders({
     Table: `
       height: 280px;
       grid-template-rows: 40px repeat(5, 48px);
+      grid-template-columns:  60px repeat(5, minmax(0, 1fr));
       font-weight: 400;
     `,
     Header: "",
@@ -57,6 +58,7 @@ export function TakerOrders({
       box-shadow: inset 0px -1px 0px 0px #EEEEEE;
     `,
     BaseCell: `
+      font-size: 14px;
       &:not(:first-child) {
         text-align: right;
       }

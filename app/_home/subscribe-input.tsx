@@ -27,8 +27,7 @@ export default function SubscribeInput() {
       style={{
         backgroundColor: "rgba(254, 255, 250, 0.8)",
         backdropFilter: "blur(100px)",
-        backgroundImage:
-          "url(/img/yellow-bg-white.png), url(/img/yellow-bg.png)",
+        backgroundImage: "url(/img/yellow-bg.png)",
       }}
     >
       <div className="text-center text-4xl leading-[54px] text-black">

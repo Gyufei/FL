@@ -7,6 +7,12 @@ import { IOrder } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { formatTimestamp } from "@/lib/utils/time";
+import { useState } from "react";
+import Drawer from "react-modern-drawer";
+import DrawerTitle from "@/components/share/drawer-title";
+import MyAskDetail from "../my-orders/my-offer-detail/my-ask-detail";
+import MyBidDetail from "../my-orders/my-offer-detail/my-bid-detail";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function StockCard({ order }: { order: IOrder }) {
   const {
@@ -14,14 +20,18 @@ export default function StockCard({ order }: { order: IOrder }) {
     offerValue,
     forValue,
     offerLogo,
-    forLogo,
     pointPerPrice,
     tokenTotalPrice,
     orderType,
     isMaker,
+    forLogo,
   } = useOrderFormat({
     order,
   });
+
+  const { currentChain } = useCurrentChain();
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isAskStock = order.order_type === "ask";
 
@@ -45,10 +55,13 @@ export default function StockCard({ order }: { order: IOrder }) {
   return (
     <div className="rounded-[20px] bg-white p-5">
       <div className="flex items-start justify-between">
-        <div className="flex items-center space-x-3">
+        <div
+          className="flex cursor-pointer items-center space-x-3"
+          onClick={() => setDrawerOpen(true)}
+        >
           <TokenPairImg
             src1={offerLogo}
-            src2={forLogo}
+            src2={currentChain.logo}
             width1={48}
             height1={48}
             width2={8.8}
@@ -129,6 +142,24 @@ export default function StockCard({ order }: { order: IOrder }) {
         {isCanDelist && <DelistBtn order={order} />}
         {isCanSettle && <SettleDrawerBtn order={order} />}
       </div>
+      <Drawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        direction="right"
+        size={952}
+        className="overflow-y-auto rounded-l-2xl p-6"
+      >
+        <DrawerTitle
+          title={`My ${isAskStock ? "Ask" : "Bid"} Offer Detail`}
+          onClose={() => setDrawerOpen(false)}
+        />
+        {order &&
+          (isAskStock ? (
+            <MyAskDetail order={order} />
+          ) : (
+            <MyBidDetail order={order} />
+          ))}
+      </Drawer>
     </div>
   );
 }

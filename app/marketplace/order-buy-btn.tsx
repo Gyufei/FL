@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 import AskDetail from "./offer-detail/ask-detail";
 import BidDetail from "./offer-detail/bid-detail";

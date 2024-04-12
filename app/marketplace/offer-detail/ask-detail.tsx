@@ -6,10 +6,11 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import "react-modern-drawer/dist/index.css";
 import { useBidTaker } from "@/lib/hooks/contract/use-bid-taker";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { useGlobalConfig } from "@/lib/hooks/use-global-config";
+import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 
 export default function AskDetail({
   order,
@@ -18,6 +19,7 @@ export default function AskDetail({
   order: IOrder;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
+  const { platformFee } = useGlobalConfig();
   const {
     tokenPrice,
     progress,
@@ -30,6 +32,14 @@ export default function AskDetail({
   } = useOrderFormat({
     order,
   });
+
+  const { makerDetail } = useOrderMakerDetail({
+    order,
+  });
+
+  const tradeFee = useMemo(() => {
+    return NP.divide(makerDetail?.each_trade_tax || 0, 10000);
+  }, [makerDetail]);
 
   const {
     data: txHash,
@@ -50,10 +60,10 @@ export default function AskDetail({
 
   const payTokenAmount = useMemo(() => {
     if (!receivePointAmount) return "";
-    return String(
-      NP.times(NP.divide(receivePointAmount, order.points), forValue),
-    );
-  }, [receivePointAmount, forValue, order.points]);
+    const pay = NP.times(NP.divide(receivePointAmount, order.points), forValue);
+    const payWithFee = NP.times(pay, 1 + platformFee + tradeFee).toFixed();
+    return payWithFee;
+  }, [receivePointAmount, forValue, order.points, tradeFee, platformFee]);
 
   const payTokenTotalPrice = useMemo(() => {
     if (!payTokenAmount) return "0";

@@ -127,7 +127,7 @@ export default function LeaderBoard() {
 
   return (
     <div>
-      <div className="mt-4 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
           <div className="leading-6 text-black">Leaderboard</div>

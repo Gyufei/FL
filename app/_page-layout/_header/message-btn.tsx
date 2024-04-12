@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 
 import { useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";

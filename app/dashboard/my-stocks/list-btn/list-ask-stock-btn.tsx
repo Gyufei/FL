@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import NP from "number-precision";
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 
 import { InputPanel } from "../../../marketplace/create-offer/input-panel";

@@ -13,10 +13,11 @@ import { useState } from "react";
 
 type IFilterType = "Type" | "Status";
 const FilterTypes: Array<IFilterType> = ["Type", "Status"];
-export type IRole = "Maker" | "Taker";
-export const Roles: Array<IRole> = ["Maker", "Taker"];
-export type IStatus = "Virgin" | "Ongoing" | "Canceled" | "Finished";
+export type IRole = "All" | "Maker" | "Taker";
+export const Roles: Array<IRole> = ["All", "Maker", "Taker"];
+export type IStatus = "All" | "Virgin" | "Ongoing" | "Canceled" | "Finished";
 export const Status: Array<IStatus> = [
+  "All",
   "Virgin",
   "Ongoing",
   "Canceled",

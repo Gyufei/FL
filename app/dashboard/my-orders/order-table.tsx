@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 
 import {
@@ -25,14 +24,16 @@ import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { IOrder } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
+import { IRole, IStatus } from "./filter-select";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export function OrderTable({
   role,
   status,
   type,
 }: {
-  role: "Taker" | "Maker";
-  status: string;
+  role: IRole;
+  status: IStatus;
   type: string;
 }) {
   const { data: orders } = useMyOrders();
@@ -61,9 +62,10 @@ export function OrderTable({
         const oStatus = o.maker_status;
         const oType = o.order_type;
 
-        return (
-          oRole === role && oStatus === status.toLowerCase() && oType === type
-        );
+        const isRole = role === "All" || role === oRole;
+        const isStatus = status === "All" || status.toLowerCase() === oStatus;
+
+        return isRole && isStatus && oType === type;
       });
     return {
       nodes: orderData,
@@ -112,7 +114,7 @@ export function OrderTable({
         data={data}
         theme={theme}
         pagination={pagination}
-        className="flex-1 !grid-cols-[100px_repeat(7,minmax(0,1fr))] grid-rows-[40px_repeat(9,64px)] gap-2"
+        className="flex-1 !grid-cols-[100px_repeat(7,minmax(0,1fr))] grid-rows-[40px_repeat(7,64px)] gap-2"
       >
         {(tableList: Array<any>) => (
           <>
@@ -247,7 +249,8 @@ export function OrderTable({
 }
 
 function OrderItem({ order }: { order: IOrder }) {
-  const { offerLogo, forLogo } = useOrderFormat({ order });
+  const { offerLogo } = useOrderFormat({ order });
+  const { currentChain } = useCurrentChain();
 
   return (
     <div className="relative h-fit w-fit">
@@ -260,7 +263,7 @@ function OrderItem({ order }: { order: IOrder }) {
       />
       <div className="absolute right-0 bottom-0 flex h-3 w-3 items-center justify-center rounded-full border border-white bg-white">
         <Image
-          src={forLogo}
+          src={currentChain.logo}
           width={6.6}
           height={5.4}
           alt="avatar"

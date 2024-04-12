@@ -106,49 +106,51 @@ export function BuyContent({
     <>
       {step === 0 && (
         <div className="mt-6 flex flex-1 flex-col justify-between">
-          <InputPanel
-            value={payTokenAmount}
-            onValueChange={handleBuyPayChange}
-            topText={<>You pay</>}
-            bottomText={<>${payAmountValue}</>}
-            tokenSelect={
-              <StableTokenSelectDisplay
-                token={payToken}
-                setToken={setPayToken}
-              />
-            }
-          />
+          <div className="flex flex-1 flex-col">
+            <InputPanel
+              value={payTokenAmount}
+              onValueChange={handleBuyPayChange}
+              topText={<>You pay</>}
+              bottomText={<>${payAmountValue}</>}
+              tokenSelect={
+                <StableTokenSelectDisplay
+                  token={payToken}
+                  setToken={setPayToken}
+                />
+              }
+            />
 
-          <ArrowBetween className="-my-4 self-center" />
+            <ArrowBetween className="-my-4 self-center" />
 
-          <InputPanel
-            value={receivePointAmount}
-            onValueChange={setReceivePointAmount}
-            topText={
-              <div className="flex items-center">
-                You&apos;d like to receive
-                <WithTip>
-                  When buying Diamonds, you need to wait until the diamonds
-                  convert into the protocol&apos;s tokens before you can receive
-                  tokens.
-                </WithTip>
-              </div>
-            }
-            bottomText={<>1 Diamond = ${pointPrice}</>}
-            tokenSelect={
-              <PointTokenSelectDisplay
-                token={receivePoint}
-                setToken={setReceivePoint}
-              />
-            }
-          />
+            <InputPanel
+              value={receivePointAmount}
+              onValueChange={setReceivePointAmount}
+              topText={
+                <div className="flex items-center">
+                  You&apos;d like to receive
+                  <WithTip>
+                    When buying Diamonds, you need to wait until the diamonds
+                    convert into the protocol&apos;s tokens before you can
+                    receive tokens.
+                  </WithTip>
+                </div>
+              }
+              bottomText={<>1 Diamond = ${pointPrice}</>}
+              tokenSelect={
+                <PointTokenSelectDisplay
+                  token={receivePoint}
+                  setToken={setReceivePoint}
+                />
+              }
+            />
 
-          <div className="mt-4 flex items-center justify-between space-x-3">
-            <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
-            <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
+            <div className="mt-4 flex items-center justify-between space-x-3">
+              <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
+              <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
+            </div>
+
+            <OrderNoteAndFee value={note} onValueChange={setNote} />
           </div>
-
-          <OrderNoteAndFee value={note} onValueChange={setNote} />
 
           <button
             onClick={handleNext}

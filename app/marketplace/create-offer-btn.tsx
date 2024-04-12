@@ -1,5 +1,4 @@
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 import { useState } from "react";
 

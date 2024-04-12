@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
 import { WithTip } from "../../../marketplace/create-offer/with-tip";
 import { IOrder } from "@/lib/types/order";

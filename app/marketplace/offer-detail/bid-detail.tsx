@@ -7,7 +7,6 @@ import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
 import { useAskTaker } from "@/lib/hooks/contract/use-ask-taker";
-import "react-modern-drawer/dist/index.css";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 

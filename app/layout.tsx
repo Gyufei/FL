@@ -7,6 +7,7 @@ import SWRConfigProvider from "@/components/provider/swr-config-provider";
 import MainLayout from "@/app/main-layout";
 import GlobalProvider from "@/components/provider/global-provider";
 import { SolanaWalletProviders } from "@/components/provider/solana-wallets";
+import "react-modern-drawer/dist/index.css";
 
 export const metadata = {
   title: {

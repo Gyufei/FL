@@ -54,7 +54,7 @@ export default function OrderList({
 
   return (
     <div className="flex h-full flex-col rounded-3xl bg-[#fafafa] p-5">
-      <div className="flex items-center justify-between border-b border-[#d8d8d8] py-5">
+      <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-5">
         <div className="flex items-center space-x-4">
           <OrderTypeSelect
             type={orderType}

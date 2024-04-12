@@ -1,7 +1,6 @@
 import NP from "number-precision";
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import { WithTip } from "../../../marketplace/create-offer/with-tip";
 import SettleAskTaker from "./settle-ask-taker";
 import SettleBidTaker from "./settle-bid-taker";

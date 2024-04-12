@@ -19,7 +19,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   if (!marketplace) return null;
 
   return (
-    <div className="flex h-[calc(100vh-96px)] w-full flex-col">
+    <div className="flex h-[calc(100vh-156px)] w-full flex-col">
       <div className="flex flex-1 items-stretch">
         <div className="flex w-[348px] flex-col space-y-6 px-6">
           <MarketplaceCard marketplace={marketplace} />
@@ -30,10 +30,11 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               width={280}
               height={160}
               alt="ad1"
+              className="rounded-2xl"
             />
           </div>
         </div>
-        <div className="max-h-[734px] flex-1 ">
+        <div className="max-h-[748px] flex-1 ">
           <OrderList marketplace={marketplace} />
         </div>
         <div className="w-[368px] px-6">

@@ -6,7 +6,48 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { useMemo } from "react";
 import { formatNum } from "@/lib/utils/number";
 
-export function TradesTable({ trades }: { trades: any[] }) {
+const data = [
+  {
+    id: 1,
+    time: 60,
+    no: "883104",
+    value: 2.61,
+    token: {
+      logoURI: "/icons/eth.svg",
+    },
+    amount: 12312,
+    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
+  },
+  {
+    id: 2,
+    time: 21,
+    no: "883104",
+    value: 2.61,
+    token: {
+      logoURI: "/icons/eth.svg",
+    },
+    amount: 12312,
+    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
+  },
+  {
+    id: 3,
+    time: 3600,
+    no: "883104",
+    value: 2.61,
+    token: {
+      logoURI: "/icons/eth.svg",
+    },
+    amount: 12312,
+    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
+  },
+];
+
+const trades = new Array(10)
+  .fill(data)
+  .flat()
+  .map((item, index) => ({ ...item, id: index }));
+
+export function TradesTable() {
   const theme = useTheme({
     Table: `
       height: 250px;
@@ -52,7 +93,7 @@ export function TradesTable({ trades }: { trades: any[] }) {
     return {
       nodes: trades,
     };
-  }, [trades]);
+  }, []);
 
   const COLUMNS = [
     {

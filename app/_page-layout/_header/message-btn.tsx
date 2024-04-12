@@ -57,6 +57,7 @@ export default function MessageBtn() {
         direction="right"
         size={500}
         className="overflow-y-auto rounded-l-2xl p-6"
+        customIdSuffix="msg-drawer"
       >
         <DrawerTitle
           title="Notifications"

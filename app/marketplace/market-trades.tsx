@@ -7,41 +7,6 @@ import CreateOfferBtn from "./create-offer-btn";
 import KLineChart from "./k-line-chart";
 import { IMarketplace } from "@/lib/types/marketplace";
 
-const data = [
-  {
-    time: 60,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    amount: 12312,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-  {
-    time: 21,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    amount: 12312,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-  {
-    time: 3600,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    amount: 12312,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-];
-
-const trades = new Array(10).fill(data).flat();
-
 export default function MarketTrades({
   marketplace,
 }: {
@@ -65,7 +30,7 @@ export default function MarketTrades({
           handleTypeChange={handleTradeTypeChange}
         />
       </div>
-      <TradesTable trades={trades} />
+      <TradesTable />
 
       <div className="py-6">
         <CreateOfferBtn marketplace={marketplace} />

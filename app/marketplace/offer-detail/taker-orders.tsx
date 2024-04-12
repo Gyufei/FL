@@ -3,34 +3,37 @@ import Image from "next/image";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { truncateAddr } from "@/lib/utils/web3";
-import { IOrder } from "@/lib/types/order";
 import { IToken } from "@/lib/types/token";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useTheme } from "@table-library/react-table-library/theme";
+import { formatNum } from "@/lib/utils/number";
+import { TakerOrder } from "@/lib/hooks/api/use-taker-orders";
 
 export function TakerOrders({
   orders,
   offerLogo,
-  forLogo,
   orderEqTokenInfo,
+  orderTokenInfo,
 }: {
-  orders: Array<IOrder>;
+  orders: Array<TakerOrder>;
   offerLogo: string;
   forLogo: string;
   orderEqTokenInfo: IToken;
+  orderTokenInfo: IToken;
 }) {
   const { handleGoScan } = useGoScan();
 
   const data = useMemo(() => {
-    const orderData = orders.map((o) => {
+    const orderData = orders.map((o, index) => {
       return {
         ...o,
-        id: o.order_id,
+        id: index,
       };
     });
+
     return {
       nodes: orderData,
     };
@@ -45,11 +48,13 @@ export function TakerOrders({
     Header: "",
     Body: "",
     BaseRow: `
+      background-color: #fafafa;
     `,
     HeaderRow: `
       background: transparent;
     `,
     Row: `
+      box-shadow: inset 0px -1px 0px 0px #EEEEEE;
     `,
     BaseCell: `
       &:not(:first-child) {
@@ -79,26 +84,15 @@ export function TakerOrders({
   };
 
   const COLUMNS = [
-    { label: "Sub No.", renderCell: (o: IOrder) => `#${o.order_id}` },
+    { label: "Sub No.", renderCell: (o: any) => `#${o.sub_no}` },
     {
       label: "Fill Amount",
-      renderCell: (o: IOrder) => (
-        <div className="flex items-center justify-end space-x-1">
-          <div>
-            #{o.used_points} ({NP.divide(o.used_points, o.points) * 100}
-            %)
-          </div>
-          <Image src={offerLogo} width={16} height={16} alt="token" />
-        </div>
-      ),
+      renderCell: (o: any) => <PointsCell order={o} offerLogo={offerLogo} />,
     },
     {
       label: "Deposits",
-      renderCell: (o: IOrder) => (
-        <div className="flex items-center justify-end space-x-1">
-          <span>{o.taker_amount}</span>
-          <Image src={forLogo} width={12} height={12} alt="token" />
-        </div>
+      renderCell: (o: TakerOrder) => (
+        <AmountCell order={o} tokenInfo={orderTokenInfo} />
       ),
     },
     {
@@ -117,11 +111,11 @@ export function TakerOrders({
     },
     {
       label: "Tx Hash",
-      renderCell: (o: IOrder) => (
+      renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">
-          {truncateAddr(o.taker_tx_hash || "")}
+          {truncateAddr(o.tx_hash || "")}
           <Image
-            onClick={() => handleGoScan(o.taker_tx_hash || "", "tx")}
+            onClick={() => handleGoScan(o.tx_hash || "", "tx")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -133,7 +127,7 @@ export function TakerOrders({
     },
     {
       label: "Time",
-      renderCell: (o: IOrder) => (
+      renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">{`${formatTimestamp(
           new Date(o.create_at).getTime(),
         )}`}</div>
@@ -171,5 +165,45 @@ export function TakerOrders({
         <Pagination.NextButton />
       </Pagination>
     </>
+  );
+}
+
+function PointsCell({
+  order,
+  offerLogo,
+}: {
+  order: TakerOrder;
+  offerLogo: string;
+}) {
+  const points = order.points;
+  const totalPoints = order.total_points;
+  const percent = formatNum(NP.divide(points, totalPoints) * 100);
+
+  return (
+    <div className="flex items-center justify-end space-x-1">
+      <div>
+        #{points} ({percent}%)
+      </div>
+      <Image src={offerLogo} width={16} height={16} alt="token" />
+    </div>
+  );
+}
+
+function AmountCell({
+  order,
+  tokenInfo,
+}: {
+  order: TakerOrder;
+  tokenInfo: IToken;
+}) {
+  const amount = useMemo(() => {
+    return NP.divide(order.deposits, 10 ** tokenInfo.decimals);
+  }, [order.deposits, tokenInfo]);
+
+  return (
+    <div className="flex items-center justify-end space-x-1">
+      <span>{formatNum(amount)}</span>
+      <Image src={tokenInfo.logoURI} width={12} height={12} alt="token" />
+    </div>
   );
 }

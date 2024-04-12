@@ -31,6 +31,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     logoURI: "/icons/point.svg",
     decimals: 9,
   } as IToken;
+
   const tokenLogo = orderTokenInfo.logoURI;
   const pointLogo = orderPointInfo.logoURI;
 
@@ -44,8 +45,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     return !isMaker;
   }, [isMaker]);
 
-  console.log(orderRole, isTaker, isMaker);
-
   const orderType = order.order_type;
 
   const takerAmount = NP.divide(
@@ -58,7 +57,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   );
 
   const amount = isTaker ? takerAmount : makerAmount;
-  console.log(order, isTaker, amount);
 
   const offerValue = orderType === "ask" ? order.points : amount;
   const forValue = orderType === "ask" ? amount : order.points;
@@ -110,5 +108,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     orderRole,
     isMaker,
     isTaker,
+    takerAmount,
+    makerAmount,
   };
 }

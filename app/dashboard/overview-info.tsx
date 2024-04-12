@@ -1,27 +1,27 @@
+"use client";
 import { formatNum } from "@/lib/utils/number";
 import Image from "next/image";
 import { Input } from "../../components/ui/input";
+import { useAccountOverview } from "@/lib/hooks/api/use-account-overview";
 // import { GaugeComponent } from "./gauge";
 
 export default function OverviewInfo() {
-  const uid = 3098219;
-  const name = "Autumn Phillips";
+  // TODO: date-pick-comp
   const date = "Mar 4, 2024";
 
-  const tradeVol = 10000;
-  const profit = 10000;
-  const makerOrders = 10000;
-  const takerOrders = 10000;
-  const valueToSettle = 10000;
-  const taxIncome = 300;
+  const { data: accountInfo } = useAccountOverview();
 
   return (
     <div className="flex h-full flex-col px-4">
       {/* top header */}
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <div className="text-xs leading-6 text-gray">UID {uid}</div>
-          <div className="leading-6 text-black">{name}</div>
+          <div className="text-xs leading-6 text-gray">
+            UID {accountInfo?.uid}
+          </div>
+          <div className="leading-6 text-black">
+            {accountInfo?.user_name || ""}
+          </div>
         </div>
 
         <div className="flex h-12 items-center space-x-2 rounded-full bg-[#fafafa] px-5 text-sm leading-5 text-black">
@@ -41,15 +41,18 @@ export default function OverviewInfo() {
         <div className="mt-5 flex justify-between">
           <div>
             <LabelText>Trade Vol.</LabelText>
-            <div className="leading-6 text-black">${formatNum(tradeVol)}</div>
+            <div className="leading-6 text-black">
+              ${formatNum(accountInfo?.trade_vol)}
+            </div>
           </div>
           <div className="flex flex-col items-end">
             <LabelText>Profit</LabelText>
             <div
-              data-loss={profit < 0}
+              data-loss={accountInfo?.profit < 0}
               className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
             >
-              {profit > 0 ? "+" : "-"} ${formatNum(tradeVol)}
+              {accountInfo?.profit < 0 ? "-" : "+"} $
+              {formatNum(accountInfo?.profit)}
             </div>
           </div>
         </div>
@@ -57,11 +60,15 @@ export default function OverviewInfo() {
         <div className="mt-4 flex justify-between">
           <div>
             <LabelText>Maker Orders</LabelText>
-            <div className="leading-6 text-black">{formatNum(makerOrders)}</div>
+            <div className="leading-6 text-black">
+              {formatNum(accountInfo?.maker_order)}
+            </div>
           </div>
           <div className="flex flex-col items-end">
             <LabelText>Taker Orders</LabelText>
-            <div className="leading-6 text-black">{formatNum(takerOrders)}</div>
+            <div className="leading-6 text-black">
+              {formatNum(accountInfo?.taker_order)}
+            </div>
           </div>
         </div>
 
@@ -69,16 +76,17 @@ export default function OverviewInfo() {
           <div>
             <LabelText>Notional Value to Settle</LabelText>
             <div className="leading-6 text-black">
-              ${formatNum(valueToSettle)}
+              ${formatNum(accountInfo?.settled_value)}
             </div>
           </div>
           <div className="flex flex-col items-end">
             <LabelText>Tax Income</LabelText>
             <div
-              data-loss={taxIncome < 0}
+              data-loss={accountInfo?.tax_income < 0}
               className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
             >
-              {taxIncome > 0 ? "+" : "-"} ${formatNum(taxIncome)}
+              {accountInfo?.tax_income < 0 ? "-" : "+"} $
+              {formatNum(accountInfo?.tax_income)}
             </div>
           </div>
         </div>

@@ -15,8 +15,10 @@ export interface IOrder {
     | "virgin"
     | "ongoing"
     | "canceled"
-    | "settled"
-    | "finished";
+    | "filled"
+    | "settling"
+    | "settled";
+  taker_status: "unknown" | "initialized" | "finished" | "settled";
   maker_tx_hash: string;
   order: string;
   order_id: string;
@@ -28,7 +30,6 @@ export interface IOrder {
   settle_breach_fee: string;
   settled_points: string;
   taker_amount: string;
-  taker_status: "unknown" | "initialized" | "finished" | "settled";
   taker_tx_hash: string;
   used_points: string;
 }

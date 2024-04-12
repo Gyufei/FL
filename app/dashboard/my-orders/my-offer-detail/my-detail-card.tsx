@@ -14,9 +14,12 @@ import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 export default function MyDetailCard({ order }: { order: IOrder }) {
   const { publicKey } = useWallet();
 
-  const { amount, orderTokenInfo, orderPointInfo } = useOrderFormat({
-    order,
-  });
+  const { orderType, orderTokenInfo, orderPointInfo, afterTGE } =
+    useOrderFormat({
+      order,
+    });
+
+  const isAsk = orderType === "ask";
 
   const { makerDetail } = useOrderMakerDetail({
     order,
@@ -60,11 +63,12 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
 
       <DetailRow>
         <DetailLabel tipText="">
-          Filled / {order.order_type === "ask" ? "Selling" : "Buying"} Amount
+          Filled / {isAsk ? "Selling" : "Buying"} Amount
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            5K / {formatNum(order.points)} pts
+            {formatNum(order.used_points, 2, true)} /{" "}
+            {formatNum(order.points, 2, true)} pts
           </div>
           <Image
             src={orderPointInfo.logoURI}
@@ -77,18 +81,13 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">$USDC to Pay</DetailLabel>
+        <DetailLabel tipText="">
+          {isAsk ? "Base Tax for each Trade" : "Tax for Sub Trade"}
+        </DetailLabel>
         <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-black">
-            {formatNum(amount)}
+          <div className="text-sm leading-5 text-green">
+            {Number(makerDetail?.each_trade_tax || 0) / 100}%
           </div>
-          <Image
-            src={orderTokenInfo.logoURI}
-            width={16}
-            height={16}
-            alt="stable token"
-            className="rounded-full"
-          />
         </div>
       </DetailRow>
 
@@ -97,15 +96,6 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
             {Number(order.settle_breach_fee) / 100}%
-          </div>
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText="">Tax for Sub Trade</DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-green">
-            {Number(makerDetail?.each_trade_tax || 0) / 100}%
           </div>
         </div>
       </DetailRow>
@@ -133,6 +123,15 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
         </div>
       </DetailRow>
 
+      {isAsk && (
+        <DetailRow>
+          <DetailLabel tipText="">Est. Settling At</DetailLabel>
+          <div className="flex items-center space-x-1">
+            <div className="text-sm leading-5 text-gray">Not Started</div>
+          </div>
+        </DetailRow>
+      )}
+
       <DetailRow>
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
@@ -159,7 +158,9 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
       </DetailRow>
 
       <DetailRow showBottomLine={false}>
-        <DetailLabel tipText="">Your Tax Income</DetailLabel>
+        <DetailLabel tipText="">
+          {isAsk ? "Origin Offer Maker Tax Income" : "Your Tax Income"}
+        </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
             ${formatNum(taxIncome)}
@@ -167,7 +168,7 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
         </div>
       </DetailRow>
 
-      <TimeDisplay seconds={seconds} />
+      {afterTGE && <TimeDisplay seconds={seconds} />}
     </div>
   );
 }

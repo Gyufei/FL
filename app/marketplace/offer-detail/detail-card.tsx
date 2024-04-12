@@ -11,13 +11,7 @@ import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 export default function DetailCard({ order }: { order: IOrder }) {
   const { handleGoScan } = useGoScan();
 
-  const {
-    amount,
-    orderType,
-    orderTokenInfo,
-    orderPointInfo,
-    orderEqTokenInfo,
-  } = useOrderFormat({
+  const { amount, orderType, orderTokenInfo, orderPointInfo } = useOrderFormat({
     order,
   });
 
@@ -48,7 +42,53 @@ export default function DetailCard({ order }: { order: IOrder }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">Total collateral</DetailLabel>
+        <DetailLabel tipText="">
+          {orderType === "ask" ? "Seller" : "Buyer"}
+        </DetailLabel>
+        <div className="flex items-center space-x-1">
+          <div className="text-sm leading-5 text-black">
+            {truncateAddr(order.maker_id || "", {
+              nPrefix: 4,
+              nSuffix: 4,
+            })}
+          </div>
+          <Image
+            onClick={() => handleGoScan(order.maker_id || "")}
+            src="/icons/right-45.svg"
+            width={16}
+            height={16}
+            alt="goScan"
+            className="cursor-pointer"
+          />
+        </div>
+      </DetailRow>
+
+      <DetailRow>
+        <DetailLabel tipText="">
+          {orderType === "ask"
+            ? "Base Tax for Each Trade"
+            : "Tax for Sub Trades"}
+        </DetailLabel>
+        <div className="flex items-center space-x-1">
+          <div className="text-sm leading-5 text-green">
+            {NP.divide(makerDetail?.each_trade_tax || 0, 100)}%
+          </div>
+        </div>
+      </DetailRow>
+
+      <DetailRow>
+        <DetailLabel tipText="">Settlement Breach Fee</DetailLabel>
+        <div className="flex items-center space-x-1">
+          <div className="text-sm leading-5 text-[#FFA95B]">
+            {NP.divide(order.settle_breach_fee, 100)}%
+          </div>
+        </div>
+      </DetailRow>
+
+      <DetailRow>
+        <DetailLabel tipText="">
+          {orderType === "ask" ? "Total collateral" : "Total Deposit"}
+        </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
             {formatNum(amount)}
@@ -64,66 +104,9 @@ export default function DetailCard({ order }: { order: IOrder }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">Eq. Tokens</DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-[#FFA95B]">
-            {orderEqTokenInfo.symbol}
-          </div>
-          <Image
-            src={orderEqTokenInfo.logoURI}
-            width={16}
-            height={16}
-            alt="stable token"
-            className="rounded-full"
-          />
-        </div>
-      </DetailRow>
-
-      <DetailRow>
         <DetailLabel tipText="">Est. Settling On</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-gray">Not Started</div>
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText="">Settlement Breach Fee</DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-[#FFA95B]">
-            {NP.divide(order.settle_breach_fee, 100)}%
-          </div>
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText="">Base Tax for Each Trade</DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-green">
-            {NP.divide(makerDetail?.each_trade_tax || 0, 100)}%
-          </div>
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText="">Inherit From</DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{order.preOrderDetail?.order_id}
-          </div>
-          <div className="text-sm leading-5 text-black">
-            {truncateAddr(order.preOrderDetail?.order || "", {
-              nPrefix: 4,
-              nSuffix: 4,
-            })}
-          </div>
-          <Image
-            onClick={() => handleGoScan(order.preOrderDetail?.order || "")}
-            src="/icons/right-45.svg"
-            width={16}
-            height={16}
-            alt="goScan"
-            className="cursor-pointer"
-          />
         </div>
       </DetailRow>
 

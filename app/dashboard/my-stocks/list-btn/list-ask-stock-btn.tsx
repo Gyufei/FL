@@ -22,7 +22,7 @@ import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { formatNum } from "@/lib/utils/number";
 import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
-import { useOrderSubOrders } from "@/lib/hooks/order/use-order-sub-orders";
+import { useOrderTree } from "@/lib/hooks/order/use-order-tree";
 
 export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   const { platformFee } = useGlobalConfig();
@@ -34,9 +34,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
     order,
   });
 
-  const { getOrigin } = useOrderSubOrders({
-    order,
-  });
+  const { getOrigin } = useOrderTree();
 
   const { makerDetail } = useOrderMakerDetail({
     order,

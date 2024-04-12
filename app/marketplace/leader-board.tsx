@@ -8,38 +8,14 @@ import { useMemo, useState } from "react";
 import { IRangeType, LeaderRangeSelect } from "./leader-range-select";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-
-const data = [
-  {
-    no: "1",
-    wallet: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    amount: "123",
-  },
-  {
-    no: "2",
-    wallet: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    amount: "123",
-  },
-  {
-    no: "3",
-    wallet: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-    amount: "123",
-  },
-];
-
-const leader = new Array(10)
-  .fill(data)
-  .flat()
-  .map((i, idx) => {
-    return {
-      ...i,
-      no: idx + 1,
-    };
-  });
+import { useTaxIncome } from "@/lib/hooks/api/use-tax-income";
+import { sortBy } from "lodash";
 
 export default function LeaderBoard() {
   const [leaderType, setLeaderType] = useState<ILeaderType>("Tax Income");
-  const [timeRange, setTimeRange] = useState<IRangeType>("1h");
+  const [timeRange, setTimeRange] = useState<IRangeType>("hour");
+
+  const { data } = useTaxIncome(timeRange);
 
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
@@ -94,11 +70,20 @@ export default function LeaderBoard() {
     `,
   });
 
-  const data = useMemo(() => {
+  const tableData = useMemo(() => {
+    const nodes = sortBy(data || [], ["amount"])
+      .reverse()
+      .map((item: any, index: number) => {
+        return {
+          no: index + 1,
+          wallet: item.wallet,
+          amount: item.amount,
+        };
+      });
     return {
-      nodes: leader,
+      nodes,
     };
-  }, []);
+  }, [data]);
 
   const COLUMNS = [
     {
@@ -159,7 +144,7 @@ export default function LeaderBoard() {
       <div className="h-[250px] w-full flex-1 overflow-y-hidden border-b border-[#eee] pb-[10px]">
         <CompactTable
           columns={COLUMNS}
-          data={data}
+          data={tableData}
           theme={theme}
           layout={{ fixedHeader: true }}
         />

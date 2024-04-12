@@ -266,13 +266,15 @@ function NetItem({
         <div className="ml-2 flex flex-col text-xs leading-[18px] text-black">
           <div className="flex items-center space-x-1">
             <div>{name}</div>
-            <div
-              style={{
-                color: msColor,
-              }}
-            >
-              {ms}ms
-            </div>
+            {ms && (
+              <div
+                style={{
+                  color: msColor,
+                }}
+              >
+                {ms}ms
+              </div>
+            )}
           </div>
           <div className="text-[10px] leading-4 text-gray">{label}</div>
         </div>

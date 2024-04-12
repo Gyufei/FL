@@ -7,10 +7,12 @@ import "react-modern-drawer/dist/index.css";
 
 import { useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
-import { range } from "lodash";
 import { truncateAddr } from "@/lib/utils/web3";
+import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 
 export default function MessageBtn() {
+  const { messageHistory } = useWsMsgs();
   const msgDetail = {
     avatar: "/img/token-placeholder-3.png",
     name: "Points",
@@ -18,6 +20,7 @@ export default function MessageBtn() {
     user: "DkVN7RKTNjSSER5oyurf3vddQU2ZneSCYwXvpErvTCFA",
     type: "sell",
     num: 1,
+    txHash: "",
     value: 644,
     token: {
       logoURI: "/icons/solana.svg",
@@ -39,9 +42,14 @@ export default function MessageBtn() {
         className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6]"
       >
         <Image src="/icons/bell.svg" width={24} height={24} alt="bell" />
-        <Badge variant="destructive" className="absolute -right-3 -top-2 px-1">
-          3+
-        </Badge>
+        {!!messageHistory.length && (
+          <Badge
+            variant="destructive"
+            className="absolute -right-3 -top-2 px-1"
+          >
+            {messageHistory.length}+
+          </Badge>
+        )}
       </div>
       <Drawer
         open={drawerOpen}
@@ -54,8 +62,8 @@ export default function MessageBtn() {
           title="Notifications"
           onClose={() => setDrawerOpen(false)}
         />
-        {range(3).map((i) => (
-          <MsgRow key={i} msgDetail={msgDetail} />
+        {messageHistory.map((i, idx) => (
+          <MsgRow key={idx} msgDetail={msgDetail} />
         ))}
       </Drawer>
     </>
@@ -63,6 +71,8 @@ export default function MessageBtn() {
 }
 
 function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
+  const { handleGoScan } = useGoScan();
+
   return (
     <div className="flex space-x-3">
       <div className="relative mt-3 h-fit">
@@ -91,40 +101,50 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
         }}
       >
         <div className="flex items-start space-x-1">
-          <div className="leading-6 text-black">{msgDetail.name}</div>
+          <div className="mr-1 leading-6 text-black">{msgDetail.name}</div>
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
             #{msgDetail.no}
           </div>
         </div>
 
         <div className="flex items-center text-sm leading-5 text-gray">
-          User{" "}
-          <span className="text-black">{truncateAddr(msgDetail.user)}</span>{" "}
-          just{" "}
+          User
+          <span className="mx-1 inline-block text-black">
+            {truncateAddr(msgDetail.user)}
+          </span>
+          just
           <span
             data-type={msgDetail.type}
-            className="data-[type=sell]:text-red data-[type=buy]:text-green"
+            className="mx-1 inline-block data-[type=sell]:text-red data-[type=buy]:text-green"
           >
             {msgDetail.type === "sell" ? "selling" : "bought"}
           </span>
-          <span className="text-black">
+          <span className="mr-1 inline-block text-black">
             {msgDetail.num} {msgDetail.name}
-          </span>{" "}
-          for{" "}
-          <span className="text-black">
+          </span>
+          for
+          <span className="mx-1 inline-block text-black">
             {msgDetail.value} {msgDetail.stableToken.name}
           </span>
         </div>
 
         <div className="flex items-center text-xs leading-[18px] text-lightgray">
-          <div>3 hours ago · Solscan</div>
-          <Image
-            src="/icons/arrow-right-gray.svg"
-            width={16}
-            height={16}
-            alt="right"
-            className="-rotate-45 cursor-pointer"
-          />
+          <div className="flex items-center">
+            <div>3 hours ago ·</div>
+            <div
+              className="flex cursor-pointer items-center"
+              onClick={() => handleGoScan(msgDetail.txHash)}
+            >
+              Solscan
+              <Image
+                src="/icons/arrow-right-gray.svg"
+                width={16}
+                height={16}
+                alt="right"
+                className="-rotate-45 cursor-pointer"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -23,6 +23,7 @@ export default function ConfirmAskSettleDialog({
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
+  const settleAmount = Math.floor(amount * (sliderValue / 100));
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
@@ -52,7 +53,7 @@ export default function ConfirmAskSettleDialog({
               Total Settlement Required
             </div>
             <div className="text-sm leading-5 text-black">
-              {formatNum(amount)} ${formatNum(tokenTotalPrice)}
+              {formatNum(amount)} (${formatNum(tokenTotalPrice)})
             </div>
           </div>
 
@@ -62,7 +63,7 @@ export default function ConfirmAskSettleDialog({
             </div>
             <div className="mt-2 flex justify-between">
               <div className="text-2xl leading-[36px]">
-                {formatNum(order.points)}
+                {formatNum(settleAmount)}
               </div>
               <Image
                 src={orderPointInfo.logoURI}

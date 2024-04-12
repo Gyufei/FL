@@ -6,8 +6,24 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
-export type IRangeType = "1h" | "1d" | "30d";
-const TradeTypes: IRangeType[] = ["1h", "1d", "30d"];
+export type IRangeType = "hour" | "day" | "month";
+const TradeTypes: Array<{
+  label: string;
+  value: IRangeType;
+}> = [
+  {
+    label: "1h",
+    value: "hour",
+  },
+  {
+    label: "1d",
+    value: "day",
+  },
+  {
+    label: "30d",
+    value: "month",
+  },
+];
 
 export function LeaderRangeSelect({
   type,
@@ -43,16 +59,16 @@ export function LeaderRangeSelect({
       >
         {TradeTypes.map((t) => (
           <div
-            key={t}
-            data-checked={type === t}
+            key={t.value}
+            data-checked={type === t.value}
             className="flex cursor-pointer items-center rounded-xl px-3 py-2 data-[checked=true]:bg-[#FAFAFA]"
-            onClick={() => handleClickOpt(t)}
+            onClick={() => handleClickOpt(t.value)}
           >
             <div
-              data-checked={type === t}
+              data-checked={type === t.value}
               className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
             >
-              {t}
+              {t.label}
             </div>
           </div>
         ))}

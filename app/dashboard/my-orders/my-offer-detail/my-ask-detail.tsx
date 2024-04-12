@@ -1,14 +1,15 @@
 import { formatNum } from "@/lib/utils/number";
-import OfferInfo from "@/app/marketplace/offer-detail.tsx/offer-info";
-import OrderTabs from "@/app/marketplace/offer-detail.tsx/order-tabs";
+import OfferInfo from "@/app/marketplace/offer-detail/offer-info";
+import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
 import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import ConfirmAskSettleDialog from "./confirm-ask-settle-dialog";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { useCloseOriginMaker } from "@/lib/hooks/contract/use-close-origin-maker";
 
 export default function MyAskDetail({ order: order }: { order: IOrder }) {
   const {
@@ -20,11 +21,34 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
     amount,
     orderTokenInfo,
     orderPointInfo,
+    afterTGE,
   } = useOrderFormat({
     order,
   });
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
+
+  const isClosed = useMemo(() => {
+    return order.maker_status === "filled" || order.maker_status === "canceled";
+  }, [order]);
+
+  const {
+    isLoading: isClosing,
+    write: writeAction,
+    // isSuccess,
+  } = useCloseOriginMaker({
+    makerStr: order.maker_id,
+    orderStr: order.order,
+  });
+
+  function handleClose() {
+    if (isClosing) return;
+    writeAction?.(undefined);
+  }
+
+  function handleSettle() {
+    setSettleConfirmShow(true);
+  }
 
   return (
     <>
@@ -69,9 +93,26 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
             tokenLogo={orderTokenInfo.logoURI}
           />
 
-          <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white">
-            Close this offer
-          </button>
+          {afterTGE ? (
+            <button
+              onClick={() => handleSettle()}
+              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+            >
+              Settle this offer
+            </button>
+          ) : isClosed ? (
+            <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+              Waiting for Settlement
+            </button>
+          ) : (
+            <button
+              disabled={isClosing}
+              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+              onClick={handleClose}
+            >
+              Close this offer
+            </button>
+          )}
         </div>
 
         {/* right card */}

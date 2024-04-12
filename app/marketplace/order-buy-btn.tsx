@@ -2,10 +2,10 @@ import { useState } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import DrawerTitle from "@/components/share/drawer-title";
-import AskDetail from "./offer-detail.tsx/ask-detail";
-import BidDetail from "./offer-detail.tsx/bid-detail";
+import AskDetail from "./offer-detail/ask-detail";
+import BidDetail from "./offer-detail/bid-detail";
 import { IOrder } from "@/lib/types/order";
-import OrderFillDialog from "./offer-detail.tsx/order-fill-dialog";
+import OrderFillDialog from "./offer-detail/order-fill-dialog";
 
 export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
   const isAsk = order.order_type === "ask";

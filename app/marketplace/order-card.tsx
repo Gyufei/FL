@@ -13,6 +13,7 @@ import { IOrder } from "@/lib/types/order";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { useMemo } from "react";
 
 export function OrderCard({
   order,
@@ -34,6 +35,10 @@ export function OrderCard({
   } = useOrderFormat({
     order,
   });
+
+  const showBuy = useMemo(() => {
+    return ["virgin", "ongoing"].includes(order.maker_status);
+  }, [order]);
 
   return (
     <div className="h-fit rounded-[20px] bg-white p-5">
@@ -123,7 +128,10 @@ export function OrderCard({
           {orderDuration}
         </div>
         <div className="flex items-center">
-          <div className="mr-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full">
+          <div
+            data-right={showBuy}
+            className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full data-[right=true]:mr-3"
+          >
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -141,7 +149,7 @@ export function OrderCard({
               </Tooltip>
             </TooltipProvider>
           </div>
-          <OrderBuyBtn order={order} />
+          {showBuy && <OrderBuyBtn order={order} />}
         </div>
       </div>
     </div>

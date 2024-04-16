@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import NP from "number-precision";
+import { useMemo, useState } from "react";
 import {
   ISortDir,
   ISortField,
@@ -7,6 +8,8 @@ import {
 } from "../../../components/share/sort-select";
 import StockCard from "./stock-card";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
+import { sortBy } from "lodash";
+import { IOrder } from "@/lib/types/order";
 
 export default function MyStocks() {
   const { data: orders } = useMyOrders();
@@ -22,6 +25,47 @@ export default function MyStocks() {
     setSortDir(dir);
   }
 
+  const sortOrders = useMemo(() => {
+    if (!sortField) return orders;
+
+    let sortArr = orders;
+    if (sortField === "Collateral") {
+      const collateralFunc = (order: IOrder) => {
+        return order.order_role === "Taker"
+          ? order.taker_amount
+          : order.maker_amount;
+      };
+      sortArr = sortBy(orders, [collateralFunc]);
+    }
+
+    if (sortField === "Price") {
+      const priceFunc = (order: IOrder) => {
+        const amount =
+          order.order_role === "Taker"
+            ? order.taker_amount
+            : order.maker_amount;
+        const pointPerPrice = NP.divide(amount, order.points);
+        return pointPerPrice;
+      };
+      sortArr = sortBy(orders, [priceFunc]);
+    }
+
+    if (sortField === "Created") {
+      const createdFunc = (order: IOrder) => {
+        return new Date(order.create_at).getTime();
+      };
+
+      sortArr = sortBy(orders, [createdFunc]);
+    }
+
+    if (sortDir === "Descending") {
+      return sortArr.reverse();
+    } else {
+      return sortArr;
+    }
+  }, [orders, sortField, sortDir]);
+  console.log(sortOrders);
+
   return (
     <div className="ml-5 flex flex-1 flex-col">
       <div className="flex items-center justify-between">
@@ -35,7 +79,7 @@ export default function MyStocks() {
       </div>
 
       <div className="mt-5 grid grid-cols-1 gap-5 border-t border-[#eee] pt-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {(orders || []).map((order) => (
+        {(sortOrders || []).map((order) => (
           <StockCard key={order.order_id} order={order} />
         ))}
       </div>

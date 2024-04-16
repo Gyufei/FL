@@ -86,12 +86,24 @@ export function OrderTable({
     `,
     Row: `
     `,
-    BaseCell: ``,
+    BaseCell: `
+      &:nth-last-child(2) > div,
+      &:last-child > div {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      &:not(:first-child) > div {
+        padding-left: 10px;
+      }
+    `,
     HeaderCell: `
       font-size: 12px;
       font-weight: 400;
       color: #c0c4cc;
       line-height: 18px;
+
     `,
     Cell: ``,
   });

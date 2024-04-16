@@ -63,6 +63,7 @@ export default function LeaderBoard() {
       &:first-child {
         padding-left: 8px;
       }
+      border-bottom: 1px solid #eee;
     `,
     Cell: `
       color: #2d2e33;

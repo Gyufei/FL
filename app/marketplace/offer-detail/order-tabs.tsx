@@ -31,7 +31,7 @@ export default function OrderTabs({ order }: { order: IOrder }) {
         className="flex flex-1 flex-col"
         onValueChange={setCurrentTab}
       >
-        <TabsList className="flex items-center justify-between">
+        <TabsList className="flex items-center justify-between p-0">
           <div className="flex items-center justify-start space-x-10">
             <TabsTrigger
               className="w-[105px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"

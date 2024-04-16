@@ -4,7 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Drawer from "react-modern-drawer";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
@@ -32,6 +32,11 @@ export default function MessageBtn() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const showLen = useMemo(() => {
+    if (messageHistory.length < 99) return messageHistory.length;
+    return "99+";
+  }, [messageHistory]);
+
   if (pathname === "/") return null;
 
   return (
@@ -46,7 +51,7 @@ export default function MessageBtn() {
             variant="destructive"
             className="absolute -right-3 -top-2 px-1"
           >
-            {messageHistory.length}+
+            {showLen}
           </Badge>
         )}
       </div>

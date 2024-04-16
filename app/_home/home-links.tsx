@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function HomeLinks() {
   return (
-    <div className="flex items-center justify-between py-[60px] px-[120px]">
+    <div className="flex items-center justify-between py-[60px] px-[120px] 2xl:px-0">
       <Image src="/icons/logo.svg" width={75} height={20} alt="logo" />
       <div className="flex items-center space-x-10">
         <LinkItem href="">Join Waitlist</LinkItem>

@@ -8,7 +8,7 @@ export default function HomeFooter() {
 
   return (
     <div
-      className="flex h-10 items-center justify-between px-[120px]"
+      className="flex h-10 items-center justify-between px-[120px] 2xl:px-0"
       style={{
         boxShadow: "inset 0px 1px 0px 0px #EEEEEE",
       }}

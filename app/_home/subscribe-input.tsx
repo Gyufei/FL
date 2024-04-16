@@ -23,7 +23,7 @@ export default function SubscribeInput() {
 
   return (
     <div
-      className="mt-[60px] w-screen bg-cover bg-no-repeat py-20"
+      className="mt-[60px] w-full bg-cover bg-no-repeat py-20"
       style={{
         backgroundColor: "rgba(254, 255, 250, 0.8)",
         backdropFilter: "blur(100px)",

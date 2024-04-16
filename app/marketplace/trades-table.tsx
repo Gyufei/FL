@@ -82,6 +82,7 @@ export function TradesTable() {
     `,
     HeaderCell: `
       color: #c0c4cc;
+      border-bottom: 1px solid #eee;
     `,
     Cell: `
       color: #2d2e33;

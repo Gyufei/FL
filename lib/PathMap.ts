@@ -22,4 +22,6 @@ export const Paths = {
   taxIncome: "/user/tax_income",
   takerOrders: "/market_place/taker_orders",
   accountOverview: "/user/overview",
+  makerOrders: "/user/maker_orders",
+  tradingVol: "/user/trade_vol",
 };

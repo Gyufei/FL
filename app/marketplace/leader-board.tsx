@@ -10,12 +10,16 @@ import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { useTaxIncome } from "@/lib/hooks/api/use-tax-income";
 import { sortBy } from "lodash";
+import { useMakerOrders } from "@/lib/hooks/api/use-maker-orders";
+import { useTradingVol } from "@/lib/hooks/api/use-trading-vol";
 
 export default function LeaderBoard() {
   const [leaderType, setLeaderType] = useState<ILeaderType>("Tax Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("hour");
 
-  const { data } = useTaxIncome(timeRange);
+  const { data: taxIncomeData } = useTaxIncome(timeRange);
+  const { data: makerOrdersData } = useMakerOrders(timeRange);
+  const { data: tradingVolData } = useTradingVol(timeRange);
 
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
@@ -24,6 +28,17 @@ export default function LeaderBoard() {
   function handleRangeTypeChange(r: IRangeType) {
     setTimeRange(r);
   }
+
+  const data = useMemo(() => {
+    switch (leaderType) {
+      case "Tax Income":
+        return taxIncomeData;
+      case "Maker Orders":
+        return makerOrdersData;
+      case "Trading Vol":
+        return tradingVolData;
+    }
+  }, [leaderType, taxIncomeData, makerOrdersData, tradingVolData]);
 
   const theme = useTheme({
     Table: `
@@ -121,8 +136,14 @@ export default function LeaderBoard() {
       ),
     },
     {
-      label: "Amount",
-      renderCell: (item: any) => <div>${formatNum(item.amount)}</div>,
+      label: leaderType !== "Maker Orders" ? "Amount" : "Count",
+      renderCell: (item: any) => (
+        <div>
+          {leaderType === "Maker Orders"
+            ? formatNum(item.count || 0)
+            : `$${formatNum(item.amount)}`}
+        </div>
+      ),
     },
   ];
 

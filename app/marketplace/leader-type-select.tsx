@@ -6,8 +6,8 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
-export type ILeaderType = "Tax Income";
-const TradeTypes: ILeaderType[] = ["Tax Income"];
+export type ILeaderType = "Tax Income" | "Maker Orders" | "Trading Vol";
+const TradeTypes: ILeaderType[] = ["Tax Income", "Maker Orders", "Trading Vol"];
 
 export function LeaderTypeSelect({
   type,
@@ -27,7 +27,7 @@ export function LeaderTypeSelect({
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
         <div className="flex cursor-pointer items-center justify-end space-x-1 rounded-full py-[5px] outline-none">
-          <div className="text-sm leading-5 text-gray">{type}</div>
+          <div className="text-xs leading-5 text-gray">{type}</div>
           <Image
             data-open={popOpen}
             src="/icons/arrow-down-gray.svg"

@@ -54,20 +54,15 @@ function Calendar({
       }}
       components={{
         IconLeft: ({ ..._props }) => (
+          <Image src="/icons/left.svg" width={24} height={24} alt="right" />
+        ),
+        IconRight: ({ ..._props }) => (
           <Image
-            src="/icons/calendar-right.svg"
+            src="/icons/left.svg"
             width={24}
             height={24}
             alt="right"
             className="rotate-180"
-          />
-        ),
-        IconRight: ({ ..._props }) => (
-          <Image
-            src="/icons/calendar-right.svg"
-            width={24}
-            height={24}
-            alt="right"
           />
         ),
       }}

@@ -65,17 +65,17 @@ export default function LeaderBoard() {
       font-weight: 400;
       line-height: 18px;
 
-      &:first-child {
+      &:first-of-type {
         text-align: left;
       }
 
-      &:nth-child(3) {
+      &:nth-of-type(3) {
         text-align: right;
       }
     `,
     HeaderCell: `
       color: #c0c4cc;
-      &:first-child {
+      &:first-of-type {
         padding-left: 8px;
       }
       border-bottom: 1px solid #eee;
@@ -91,6 +91,7 @@ export default function LeaderBoard() {
       .reverse()
       .map((item: any, index: number) => {
         return {
+          id: index + 1,
           no: index + 1,
           wallet: item.wallet,
           amount: item.amount,

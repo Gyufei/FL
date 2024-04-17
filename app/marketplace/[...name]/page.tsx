@@ -6,6 +6,8 @@ import OrderList from "@/app/marketplace/order-list";
 import LeaderBoard from "@/app/marketplace/leader-board";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceCard from "../marketplace-card";
+import useTge from "@/lib/hooks/marketplace/useTge";
+import { useMemo } from "react";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
@@ -15,6 +17,13 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplace = marketplaceData?.find(
     (marketplace) => marketplace.market_place_name === marketplaceName,
   );
+
+  const { checkIsAfterTge } = useTge();
+
+  const isAfterTge = useMemo(() => {
+    if (!marketplace) return false;
+    return checkIsAfterTge(marketplace.tge);
+  }, [marketplace, checkIsAfterTge]);
 
   if (!marketplace) return null;
 
@@ -34,8 +43,17 @@ export default function Marketplace({ params }: { params: { name: string } }) {
             />
           </div>
         </div>
-        <div className="max-h-[748px] flex-1 ">
-          <OrderList marketplace={marketplace} />
+        <div className="max-h-[748px] flex-1">
+          {isAfterTge ? (
+            <div className="flex h-full items-center justify-center rounded-3xl bg-[#fafafa] p-5">
+              <div className="text-center text-xl leading-8 text-gray">
+                This project is under settlement. <br />
+                No offer is available.
+              </div>
+            </div>
+          ) : (
+            <OrderList marketplace={marketplace} />
+          )}
         </div>
         <div className="w-[368px] px-6">
           <MarketTrades marketplace={marketplace} />

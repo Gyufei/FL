@@ -4,8 +4,11 @@ import { IOrder } from "../../types/order";
 import { useMemo } from "react";
 import { IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
+import useTge from "../marketplace/useTge";
 
 export function useOrderFormat({ order }: { order: IOrder }) {
+  const { checkIsAfterTge } = useTge();
+
   const progress = Number(
     (Number(order.used_points) / Number(order.points)).toFixed(2),
   );
@@ -78,15 +81,8 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   const isFilled = order.used_points === order.points;
 
   const afterTGE = useMemo(() => {
-    const tgeTime = order.marketplace.tge;
-    if (tgeTime === "0") {
-      return false;
-    }
-
-    const tgeTimeNum = Number(tgeTime);
-    const now = Date.now() / 1000;
-    return now > tgeTimeNum;
-  }, [order.marketplace.tge]);
+    return checkIsAfterTge(order.marketplace.tge);
+  }, [order.marketplace.tge, checkIsAfterTge]);
 
   return {
     afterTGE,

@@ -59,7 +59,7 @@ export function TakerOrders({
     `,
     BaseCell: `
       font-size: 14px;
-      &:not(:first-child) {
+      &:not(:first-of-type) {
         text-align: right;
       }
     `,

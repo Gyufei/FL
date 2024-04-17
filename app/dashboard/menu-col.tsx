@@ -20,7 +20,10 @@ export default function MenuCol() {
       >
         <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
-      <MenuIcon href="#" isActive={pathname === "/dashboard/wallet"}>
+      <MenuIcon
+        href="/dashboard/my-balances"
+        isActive={pathname === "/dashboard/my-balances"}
+      >
         <Image src="/icons/wallet.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
       <MenuIcon href="#" isActive={pathname === "/dashboard/stats"}>

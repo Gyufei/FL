@@ -87,14 +87,14 @@ export function OrderTable({
     Row: `
     `,
     BaseCell: `
-      &:nth-last-child(2) > div,
-      &:last-child > div {
+      &:nth-last-of-type(2) > div,
+      &:last-of-type > div {
         display: flex;
         justify-content: flex-end;
         align-items: center;
       }
 
-      &:not(:first-child) > div {
+      &:not(:first-of-type) > div {
         padding-left: 10px;
       }
     `,

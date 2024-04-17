@@ -68,11 +68,11 @@ export function TradesTable({
       font-weight: 400;
       line-height: 18px;
 
-      &:nth-child(n+3) {
+      &:nth-of-type(n+3) {
         text-align: right;
       }
 
-      &:nth-child(3) {
+      &:nth-of-type(3) {
         text-align: center;
       }
     `,

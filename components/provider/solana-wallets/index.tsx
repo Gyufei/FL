@@ -7,7 +7,6 @@ import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { SolflareWalletAdapter } from "@solflare-wallet/wallet-adapter";
 import { OKXWalletAdapter } from "./okx-wallet-adapter";
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
@@ -16,7 +15,6 @@ export function SolanaWalletProviders({ children }: { children?: ReactNode }) {
   const { rpc } = useRpc();
 
   const wallets = [
-    new PhantomWalletAdapter(),
     ...(typeof window === "undefined" ? [] : [new SolflareWalletAdapter()]),
     new OKXWalletAdapter(),
   ];

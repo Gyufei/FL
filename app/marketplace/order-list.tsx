@@ -5,16 +5,14 @@ import {
   IOrderType,
   OrderTypeSelect,
 } from "../../components/share/order-type-select";
-import {
-  ISortDir,
-  ISortField,
-  SortSelect,
-} from "../../components/share/sort-select";
+import { SortSelect } from "../../components/share/sort-select";
 import SearchInput from "./search-input";
 import { OrderCard } from "./order-card";
 import { useMarketplaceOrders } from "@/lib/hooks/api/use-marketplace-orders";
 import { IMarketplace } from "@/lib/types/marketplace";
 import HoverIcon from "@/components/share/hover-icon";
+import { IOrder } from "@/lib/types/order";
+import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
 
 export default function OrderList({
   marketplace,
@@ -26,13 +24,32 @@ export default function OrderList({
   });
 
   const [orderType, setOrderType] = useState<IOrderType>("ask");
+  const [searchText, setSearchText] = useState("");
+
+  const {
+    sortField,
+    sortDir,
+    handleSortFieldChange,
+    handleSortDirChange,
+    sortOrders,
+  } = useSortOrder(orders);
 
   const filterOrders = useMemo(() => {
-    return (orders || [])?.filter((o) => o.order_type === orderType);
-  }, [orders, orderType]);
+    const typeOrders = (sortOrders || [])?.filter(
+      (o: IOrder) => o.order_type === orderType,
+    );
+    if (!searchText) {
+      return typeOrders;
+    }
 
-  const [sortField, setSortField] = useState<ISortField>("Collateral");
-  const [sortDir, setSortDir] = useState<ISortDir>("Descending");
+    return typeOrders?.filter((o: IOrder) => {
+      const isIdMatch = o.order_id
+        .toLocaleUpperCase()
+        .includes(searchText.toLocaleUpperCase());
+
+      return isIdMatch;
+    });
+  }, [sortOrders, orderType, searchText]);
 
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
@@ -40,16 +57,8 @@ export default function OrderList({
     setOrderType(t);
   }
 
-  function handleSortFieldChange(field: ISortField) {
-    setSortField(field);
-  }
-
-  function handleSortDirChange(dir: ISortDir) {
-    setSortDir(dir);
-  }
-
   function handleSearch(text: string) {
-    console.log(text);
+    setSearchText(text);
   }
 
   return (

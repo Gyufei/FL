@@ -1,10 +1,28 @@
 import { format } from "date-fns";
 import { GaugeComponent } from "./gauge";
+import { useMemo } from "react";
 
 export function TadleXp() {
   const xp = 660;
   const rank = 30;
   const updateAt = new Date().getTime();
+  const value = 50;
+  const maxValue = 100;
+
+  const ticks = useMemo(() => {
+    const step = maxValue / 20;
+    const result = [];
+
+    for (let i = 1; i < 20; i++) {
+      result.push(i * step);
+    }
+
+    const res = result.map((item) => ({
+      value: item,
+    }));
+
+    return res;
+  }, []);
 
   return (
     <div className="min-h-[210px]">
@@ -32,13 +50,24 @@ export function TadleXp() {
             ],
           }}
           pointer={{ type: "blob", animationDelay: 0 }}
-          value={50}
+          value={value}
+          maxValue={maxValue}
           labels={{
             valueLabel: {
               hide: true,
             },
             tickLabels: {
+              type: "inner",
               hideMinMax: true,
+              ticks: ticks,
+              defaultTickValueConfig: {
+                hide: true,
+              },
+              defaultTickLineConfig: {
+                distanceFromArc: 7,
+                width: 4,
+                length: 1,
+              },
             },
           }}
         />

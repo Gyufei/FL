@@ -59,7 +59,7 @@
     "react-dom": "18.2.0",
     "react-gauge-component": "^1.2.0",
     "react-modern-drawer": "^1.2.2",
-    "react-use-websocket": "^4.8.1",
+    "socket.io-client": "^4.7.5",
     "swr": "^2.2.2",
     "use-debounce": "^9.0.4",
     "use-resize-observer": "^9.1.0",

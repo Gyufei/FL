@@ -9,7 +9,7 @@ import { DateRange } from "react-day-picker";
 import { useState } from "react";
 import { format, subDays } from "date-fns";
 import { Button } from "@/components/ui/button";
-// import { GaugeComponent } from "./gauge";
+import { TadleXp } from "./tadle-xp";
 
 export default function OverviewInfo() {
   const [date, setDate] = useState<DateRange | undefined>({
@@ -142,30 +142,7 @@ export default function OverviewInfo() {
         </div>
       </div>
 
-      <div className="min-h-[210px]">
-        <div className="flex items-center space-x-2">
-          <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black">Tadle XP</div>
-        </div>
-        {/* <GaugeComponent
-          type="semicircle"
-          arc={{
-            colorArray: ["#00FF15", "#FF2121"],
-            padding: 0.02,
-            subArcs: [
-              { limit: 40 },
-              { limit: 60 },
-              { limit: 70 },
-              {},
-              {},
-              {},
-              {},
-            ],
-          }}
-          pointer={{ type: "blob", animationDelay: 0 }}
-          value={50}
-        /> */}
-      </div>
+      <TadleXp />
 
       <div className="mb-5">
         <div className="leading-[18px] text-gray">Your referral link</div>

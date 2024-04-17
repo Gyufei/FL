@@ -5,49 +5,45 @@ import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { useMemo } from "react";
 import { formatNum } from "@/lib/utils/number";
+import { ITradeType } from "./trade-type-select";
+import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { IMarketplace } from "@/lib/types/marketplace";
 
-const data = [
-  {
-    id: 1,
-    time: 60,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    amount: 12312,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-  {
-    id: 2,
-    time: 21,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    amount: 12312,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-  {
-    id: 3,
-    time: 3600,
-    no: "883104",
-    value: 2.61,
-    token: {
-      logoURI: "/icons/eth.svg",
-    },
-    amount: 12312,
-    buyer: "61djCzB4Vq37RFt3vDUr7cu7hZpmtdPBvYwsV9VLaiNi",
-  },
-];
+export function TradesTable({
+  type,
+  marketplace,
+}: {
+  type: ITradeType;
+  marketplace: IMarketplace;
+}) {
+  const { msgEvents } = useWsMsgs();
 
-const trades = new Array(10)
-  .fill(data)
-  .flat()
-  .map((item, index) => ({ ...item, id: index }));
+  const tradeMsgs = useMemo(() => {
+    const msgAll = msgEvents.filter((msg) => !!msg);
+    return msgAll;
+  }, [msgEvents]);
 
-export function TradesTable() {
+  const data = useMemo(() => {
+    const trades = tradeMsgs
+      .filter((msg) => msg.market_id === marketplace?.market_place_id)
+      .map((msg) => {
+        const time = (Date.now() - msg.timestamp) / 1000;
+        return {
+          ...msg,
+          time: time < 2 ? 2 : time,
+          token: {
+            logoURI: "/icons/usdc.svg",
+          },
+        };
+      });
+
+    const typeTrades = trades.filter(() => type === "All" || true);
+
+    return {
+      nodes: typeTrades,
+    };
+  }, [tradeMsgs, type, marketplace]);
+
   const theme = useTheme({
     Table: `
       height: 250px;
@@ -90,12 +86,6 @@ export function TradesTable() {
     `,
   });
 
-  const data = useMemo(() => {
-    return {
-      nodes: trades,
-    };
-  }, []);
-
   const COLUMNS = [
     {
       label: "",
@@ -103,14 +93,20 @@ export function TradesTable() {
     },
     {
       label: "Item Id",
-      renderCell: (trade: any) => <div>#{trade.no}</div>,
+      renderCell: (trade: any) => <div>#{trade.item_id}</div>,
     },
     {
       label: "Value",
       renderCell: (trade: any) => (
         <div className="flex items-center justify-center">
-          <span>{trade.value}</span>
-          <Image src={trade.token.logoURI} width={12} height={12} alt="token" />
+          <span>{formatNum(trade.value)}</span>
+          <Image
+            className="ml-1"
+            src={trade.token.logoURI}
+            width={12}
+            height={12}
+            alt="token"
+          />
         </div>
       ),
     },

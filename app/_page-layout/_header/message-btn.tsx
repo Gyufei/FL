@@ -11,7 +11,7 @@ import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 
 export default function MessageBtn() {
-  const { messageHistory } = useWsMsgs();
+  const { msgEvents } = useWsMsgs();
   const msgDetail = {
     avatar: "/img/token-placeholder-3.png",
     name: "Points",
@@ -33,9 +33,9 @@ export default function MessageBtn() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const showLen = useMemo(() => {
-    if (messageHistory.length < 99) return messageHistory.length;
+    if (msgEvents.length < 99) return msgEvents.length;
     return "99+";
-  }, [messageHistory]);
+  }, [msgEvents]);
 
   if (pathname === "/") return null;
 
@@ -46,7 +46,7 @@ export default function MessageBtn() {
         className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6]"
       >
         <Image src="/icons/bell.svg" width={24} height={24} alt="bell" />
-        {!!messageHistory.length && (
+        {!!msgEvents.length && (
           <Badge
             variant="destructive"
             className="absolute -right-3 -top-2 px-1"
@@ -67,7 +67,7 @@ export default function MessageBtn() {
           title="Notifications"
           onClose={() => setDrawerOpen(false)}
         />
-        {messageHistory.map((i, idx) => (
+        {msgEvents.map((i, idx) => (
           <MsgRow key={idx} msgDetail={msgDetail} />
         ))}
       </Drawer>

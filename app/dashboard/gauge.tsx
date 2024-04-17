@@ -1,5 +1,6 @@
+"use client";
 import dynamic from "next/dynamic";
 
-export const Gauge = dynamic(() => import("react-gauge-component"), {
+export const GaugeComponent = dynamic(() => import("react-gauge-component"), {
   ssr: false,
 });

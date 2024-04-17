@@ -30,7 +30,7 @@ export default function MarketTrades({
           handleTypeChange={handleTradeTypeChange}
         />
       </div>
-      <TradesTable />
+      <TradesTable type={tradeType} marketplace={marketplace} />
 
       <div className="py-6">
         <CreateOfferBtn marketplace={marketplace} />

@@ -64,7 +64,6 @@ export default function MyStocks() {
       return sortArr;
     }
   }, [orders, sortField, sortDir]);
-  console.log(sortOrders);
 
   return (
     <div className="ml-5 flex flex-1 flex-col">

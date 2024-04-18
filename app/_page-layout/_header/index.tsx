@@ -3,6 +3,7 @@ import ConnectBtn from "./connect-btn";
 import { MbNetworkSelect, NetworkSelect } from "./network-select";
 import NavigationBtns from "./navigation-btns";
 import MessageBtn from "./message-btn";
+import MobileRouterMenu from "./mobile-router-menu";
 
 export default function Header() {
   return (
@@ -21,8 +22,9 @@ export default function Header() {
         {/* Mobile */}
         <div className="flex flex-1 items-center justify-between sm:hidden">
           <MbNetworkSelect />
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             <ConnectBtn />
+            <MobileRouterMenu />
           </div>
         </div>
       </div>

@@ -49,7 +49,7 @@ export default function AskDetail({
   } = useBidTaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
-    preOrder: order.order,
+    preOrderStr: order.order,
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
@@ -75,6 +75,7 @@ export default function AskDetail({
   }
 
   async function handleDeposit() {
+    console.log(order);
     await writeAction({
       receivePoint: receivePointAmount,
     });

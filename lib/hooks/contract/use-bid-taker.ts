@@ -9,11 +9,11 @@ import { useAllOrders } from "../api/use-all-orders";
 
 export function useBidTaker({
   marketplaceStr,
-  preOrder,
+  preOrderStr,
   makerStr,
 }: {
   marketplaceStr: string;
-  preOrder: string;
+  preOrderStr: string;
   makerStr: string;
 }) {
   const { program } = useTadleProgram();
@@ -34,7 +34,7 @@ export function useBidTaker({
     } = await getAccounts();
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const perOrder = new PublicKey(preOrder);
+    const perOrder = new PublicKey(preOrderStr);
     const maker = new PublicKey(makerStr);
 
     const orderA = PublicKey.findProgramAddressSync(

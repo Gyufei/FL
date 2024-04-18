@@ -13,8 +13,9 @@ import { Skeleton } from "../../../components/ui/skeleton";
 import { useAtom } from "jotai";
 import { ClusterAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { DevnetCard } from "./devnet-card";
 
-export default function NetworkSelect() {
+function UseNetworkSelect() {
   const [cluster, setCluster] = useAtom(ClusterAtom);
 
   const [popOpen, setPopOpen] = useState(false);
@@ -24,19 +25,43 @@ export default function NetworkSelect() {
     setCluster(c);
   };
 
+  return {
+    cluster,
+    setCluster,
+    popOpen,
+    setPopOpen,
+    handleSelectNet,
+  };
+}
+
+const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
+  loading: () => <Skeleton className="h-10 w-10 rounded-full" />,
+});
+
+export default function NetworkSelect() {
+  const { cluster, popOpen, setPopOpen, handleSelectNet } = UseNetworkSelect();
+
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
-        <div className="relative flex h-12 w-40 cursor-pointer items-center justify-between rounded-full border border-[#D3D4D6] bg-transparent px-2">
+        <div className="relative flex  h-10 w-10 cursor-pointer items-center justify-between rounded-full border border-[#D3D4D6] bg-black px-2 sm:h-12 sm:w-40 sm:bg-transparent">
           <CurrChainLogo />
           <div
             data-state={popOpen ? "open" : "close"}
-            className="flex items-center justify-center data-[state=open]:rotate-180"
+            className="hidden items-center justify-center data-[state=open]:rotate-180 sm:flex"
           >
             <Image
               width={20}
               height={20}
               src="/icons/down.svg"
+              alt="down"
+            ></Image>
+          </div>
+          <div className="absolute -right-6 block items-center justify-center sm:hidden">
+            <Image
+              width={20}
+              height={20}
+              src="/icons/dot-menu.svg"
               alt="down"
             ></Image>
           </div>
@@ -105,42 +130,5 @@ export default function NetworkSelect() {
         </div>
       </PopoverContent>
     </Popover>
-  );
-}
-
-const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
-  loading: () => <Skeleton className="h-10 w-10 rounded-full" />,
-});
-
-function DevnetCard({ isActive }: { isActive: boolean }) {
-  function goClaimTestToken() {}
-
-  function goHelp() {}
-
-  return (
-    <div
-      data-active={isActive}
-      className="rounded-xl bg-[#fafafa] p-4 zoom-in-50 data-[active=false]:hidden"
-    >
-      <div className="text-sm leading-5 text-[rgba(153,160,175,0.5)]">
-        Try Testnet
-      </div>
-      <div className="mt-4 flex justify-between">
-        <div
-          onClick={goClaimTestToken}
-          className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]"
-        >
-          <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
-          <div className="text-xs leading-[18px]">Claim test tokens</div>
-        </div>
-        <div
-          onClick={goHelp}
-          className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]"
-        >
-          <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
-          <div className="text-xs leading-[18px] ">Help</div>
-        </div>
-      </div>
-    </div>
   );
 }

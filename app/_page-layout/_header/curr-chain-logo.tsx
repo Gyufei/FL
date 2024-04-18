@@ -15,9 +15,9 @@ export default function CurrChainLogo() {
         height={24}
         src="/icons/solana.svg"
         alt="current chain logo"
-        className="z-10 mr-2 bg-white"
+        className="z-10 mr-0 bg-black sm:mr-2 sm:bg-white"
       ></Image>
-      <span className="text-base leading-6 text-black">
+      <span className="hidden text-base leading-6 text-black sm:inline-block">
         {isMainnet ? "Solana" : "Solana Dev"}
       </span>
     </div>

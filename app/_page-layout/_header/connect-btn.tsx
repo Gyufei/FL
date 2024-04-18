@@ -44,10 +44,11 @@ export default function ConnectBtn() {
     return (
       <>
         <button
-          className="shadow-25 h-12 rounded-full bg-[#f0f1f5] px-[22px] text-base leading-6 transition-all"
+          className="shadow-25 h-10 rounded-full bg-[#f0f1f5] px-4 text-base leading-6 transition-all sm:h-12 sm:px-[22px]"
           onClick={() => openWalletSelectDialog()}
         >
-          Connect Wallet
+          <span className="hidden sm:inline-block">Connect Wallet</span>
+          <span className="inline-block sm:hidden">Connect</span>
         </button>
         <WalletSelectDialog />
       </>

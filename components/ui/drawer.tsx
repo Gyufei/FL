@@ -46,18 +46,15 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 flex h-[calc(100vh-44px)] w-full flex-col items-stretch space-y-2 border-t border-black bg-white p-4",
+        "fixed inset-x-0 bottom-0 z-50 flex h-[calc(100vh-44px)] w-full flex-col items-stretch space-y-2 border-none bg-white p-4 outline-none",
         className,
       )}
-      style={{
-        boxShadow: "0px -2px 0px 0px #0E043E",
-      }}
       {...props}
     >
-      <div className="mx-auto mt-4 hidden h-2 w-[100px] rounded-full bg-muted" />
+      <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] rounded-full" />
       {children}
       {showClose && (
-        <DrawerPrimitive.Close className="absolute right-4 top-1 flex h-8 w-8 items-center justify-center rounded-full border border-black text-black shadow-1 outline-0 transition-opacity hover:bg-yellow disabled:pointer-events-none">
+        <DrawerPrimitive.Close className="shadow-1 absolute right-4 top-1 flex h-8 w-8 items-center justify-center rounded-full border-none text-black outline-0 transition-opacity hover:bg-yellow disabled:pointer-events-none">
           <X className="h-4 w-4" />
         </DrawerPrimitive.Close>
       )}

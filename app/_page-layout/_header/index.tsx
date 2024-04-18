@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ConnectBtn from "./connect-btn";
-import NetworkSelect from "./network-select";
+import { MbNetworkSelect, NetworkSelect } from "./network-select";
 import NavigationBtns from "./navigation-btns";
 import MessageBtn from "./message-btn";
 
@@ -20,7 +20,7 @@ export default function Header() {
 
         {/* Mobile */}
         <div className="flex flex-1 items-center justify-between sm:hidden">
-          <NetworkSelect />
+          <MbNetworkSelect />
           <div className="flex items-center">
             <ConnectBtn />
           </div>

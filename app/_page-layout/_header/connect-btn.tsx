@@ -58,7 +58,7 @@ export default function ConnectBtn() {
   return (
     <Dialog open={showSignIn} onOpenChange={(isOpen) => setShowSignIn(isOpen)}>
       <DialogTrigger asChild>
-        <button className="shadow-25 h-12 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:brightness-75">
+        <button className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:brightness-75 sm:h-12">
           <div className="flex items-center">
             {!shortAddr || connecting ? (
               <Skeleton className="h-5 w-24" />

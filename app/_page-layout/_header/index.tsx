@@ -4,6 +4,7 @@ import { MbNetworkSelect, NetworkSelect } from "./network-select";
 import NavigationBtns from "./navigation-btns";
 import MessageBtn from "./message-btn";
 import MobileRouterMenu from "./mobile-router-menu";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -34,18 +35,22 @@ export default function Header() {
 
 function MobileLogo() {
   return (
-    <div className="flex h-11 items-center justify-center sm:hidden">
-      <div className="flex h-6 w-[70px] items-center justify-center rounded-full bg-yellow">
-        <Image src="/icons/logo.svg" alt="logo" width={37.5} height={10} />
+    <Link href="/">
+      <div className="flex h-11 cursor-pointer items-center justify-center sm:hidden">
+        <div className="flex h-6 w-[70px] items-center justify-center rounded-full bg-yellow">
+          <Image src="/icons/logo.svg" alt="logo" width={37.5} height={10} />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 function Logo() {
   return (
-    <div className="hidden flex-1 items-center justify-center justify-self-center sm:flex">
-      <Image src="/icons/logo.svg" alt="logo" width={75} height={20} />
-    </div>
+    <Link href="/">
+      <div className="hidden flex-1 cursor-pointer items-center justify-center justify-self-center sm:flex">
+        <Image src="/icons/logo.svg" alt="logo" width={75} height={20} />
+      </div>
+    </Link>
   );
 }

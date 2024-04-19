@@ -13,7 +13,7 @@ export default function MarketplaceOverview({
         <div>
           <LabelText>Floor Price</LabelText>
           <div className="flex items-center leading-6 text-black">
-            {marketplace.floor_price}
+            {formatNum(marketplace.floor_price)}
             <Image src="/icons/eth.svg" width={18} height={18} alt="token" />
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function MarketplaceOverview({
         <div className="flex flex-col items-end">
           <LabelText>Avg. Bid</LabelText>
           <div className="flex items-center leading-6 text-black">
-            ${marketplace.avg_bid}
+            ${formatNum(marketplace.avg_bid)}
           </div>
         </div>
       </div>

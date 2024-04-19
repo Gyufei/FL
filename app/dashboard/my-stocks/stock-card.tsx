@@ -13,6 +13,7 @@ import DrawerTitle from "@/components/share/drawer-title";
 import MyAskDetail from "../my-orders/my-offer-detail/my-ask-detail";
 import MyBidDetail from "../my-orders/my-offer-detail/my-bid-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 
 export default function StockCard({ order }: { order: IOrder }) {
   const {
@@ -28,6 +29,8 @@ export default function StockCard({ order }: { order: IOrder }) {
   } = useOrderFormat({
     order,
   });
+
+  const { data: subOrders } = useTakerOrders(order.pre_order, undefined);
 
   const { currentChain } = useCurrentChain();
 
@@ -48,7 +51,6 @@ export default function StockCard({ order }: { order: IOrder }) {
     order.maker_status === "virgin" &&
     order.taker_status === "initialized";
 
-  const isCanDelist = isMaker && order.maker_status === "virgin" && afterTGE;
   const isCanSettle =
     afterTGE && !["canceled", "finished"].includes(order.maker_status);
 
@@ -128,8 +130,8 @@ export default function StockCard({ order }: { order: IOrder }) {
       </div>
 
       <div className="flex justify-between pt-4">
-        {isCanList || isCanSettle ? (
-          <ManToMans num={4} />
+        {subOrders?.length ? (
+          <ManToMans num={subOrders?.length} isAsk={isAskStock} />
         ) : (
           <div className="text-xs leading-[18px] text-lightgray">
             {formatTimestamp(
@@ -138,8 +140,7 @@ export default function StockCard({ order }: { order: IOrder }) {
           </div>
         )}
         {isCanList && <ListAskStockBtn order={order} />}
-        {isListed && <div className="text-sm leading-5 text-black">Listed</div>}
-        {isCanDelist && <DelistBtn order={order} />}
+        {isListed && <DelistBtn order={order} />}
         {isCanSettle && <SettleDrawerBtn order={order} />}
       </div>
       <Drawer
@@ -164,17 +165,53 @@ export default function StockCard({ order }: { order: IOrder }) {
   );
 }
 
-function ManToMans({ num }: { num: number }) {
+function ManToMans({ num, isAsk }: { num: number; isAsk: boolean }) {
   return (
     <div className="flex items-center space-x-[6px]">
-      <Image src="/icons/man.svg" width={20} height={20} alt="man" />
+      <Image
+        src={isAsk ? "/icons/man.svg" : "/icons/man-gray.svg"}
+        width={20}
+        height={20}
+        alt="man"
+      />
       <Image
         src="/icons/arrow-right-gray.svg"
         width={20}
         height={20}
         alt="man"
       />
-      <Image src="/icons/man-group.svg" width={32} height={20} alt="mans" />
+      {num === 1 && (
+        <Image
+          src={!isAsk ? "/icons/man.svg" : "/icons/man-gray.svg"}
+          width={20}
+          height={20}
+          alt="man"
+        />
+      )}
+      {num === 2 && (
+        <Image
+          src={!isAsk ? "/icons/two-man.svg" : "/icons/two-man-gray.svg"}
+          width={24}
+          height={20}
+          alt="man"
+        />
+      )}
+      {num === 3 && (
+        <Image
+          src={!isAsk ? "/icons/three-man.svg" : "/icons/three-man-gray.svg"}
+          width={32}
+          height={20}
+          alt="man"
+        />
+      )}
+      {num >= 4 && (
+        <Image
+          src={!isAsk ? "/icons/four-man.svg" : "/icons/four-man-gray.svg"}
+          width={36}
+          height={20}
+          alt="man"
+        />
+      )}
       <div className="text-sm leading-5 text-black">{num}</div>
     </div>
   );

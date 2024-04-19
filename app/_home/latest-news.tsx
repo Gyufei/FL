@@ -22,12 +22,12 @@ export default function LatestNews() {
       `,
   };
   return (
-    <div className="mt-[120px] px-[120px]">
-      <div className="text-center text-4xl leading-[54px] text-black">
+    <div className="mt-[120px] px-4 sm:px-[120px]">
+      <div className="text-center text-xl leading-[20px] text-black sm:text-4xl sm:leading-[54px]">
         Latest from Tadle Market
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-10">
+      <div className="mt-5 flex items-stretch justify-between gap-10 overflow-x-auto overflow-y-hidden sm:grid sm:grid-cols-2 sm:overflow-x-hidden">
         <NewCard newDetail={postSummary1} key={1} />
         <NewCard newDetail={postSummary2} key={2} />
       </div>
@@ -37,7 +37,7 @@ export default function LatestNews() {
 
 function NewCard({ newDetail }: { newDetail: Record<string, any> }) {
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-fit min-w-[calc(91vw)] sm:h-full sm:w-full sm:min-w-fit">
       <div
         className="absolute -bottom-5 -right-5 h-full w-full rounded-3xl opacity-60"
         style={{
@@ -52,16 +52,16 @@ function NewCard({ newDetail }: { newDetail: Record<string, any> }) {
           background: "rgba(255, 255, 255, 0.8)",
         }}
       >
-        <div className="text-sm leading-5 text-lightgray">
+        <div className="text-xs leading-[18px] text-lightgray sm:text-sm sm:leading-5">
           {formatTimestampEn(newDetail.date)}
         </div>
-        <div className="mt-3 w-fit rounded-lg bg-yellow px-3 pt-2 pb-1 text-2xl leading-9 text-black">
+        <div className="mt-3 w-fit rounded-lg bg-yellow px-3 pt-2 pb-1 text-base leading-6 text-black sm:text-2xl sm:leading-9">
           {newDetail.title}
         </div>
-        <div className="mt-2 pr-10 text-2xl leading-9 text-black">
+        <div className="mt-2 pr-10 text-base leading-6 text-black sm:text-2xl sm:leading-9">
           {newDetail.subTitle}
         </div>
-        <div className="mt-[10px] text-sm leading-5 text-lightgray">
+        <div className="mt-[10px] text-base leading-6 text-lightgray sm:text-sm sm:leading-5">
           {newDetail.content}
         </div>
         <div className="mt-[22px] flex justify-between">

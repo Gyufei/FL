@@ -12,11 +12,11 @@ export default function Faqs() {
   const [openIdx, setOpenIdx] = useState(-1);
 
   return (
-    <div className="mt-[60px] px-[120px]">
-      <div className="text-center text-[28px] leading-10 text-lightgray">
+    <div className="mt-[60px] px-4 sm:px-[120px]">
+      <div className="text-center text-base leading-6 text-lightgray sm:text-[28px] sm:leading-10">
         FAQ&apos;s
       </div>
-      <div className="text-center text-4xl leading-[54px] text-black">
+      <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
         Find out more about Tadle Market
       </div>
 
@@ -108,15 +108,15 @@ export default function Faqs() {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Empowered by smart contracts, Tadle Market is committed to streamlining
-            on-chain transactions that benefit both buyers and sellers,
-            fostering a secure and transparent marketplace environment. One of
-            the key features enhancing security on the platform is the
+            Empowered by smart contracts, Tadle Market is committed to
+            streamlining on-chain transactions that benefit both buyers and
+            sellers, fostering a secure and transparent marketplace environment.
+            One of the key features enhancing security on the platform is the
             collateral mechanism. This mechanism acts as a safeguard for market
             participants, mitigating risks and providing an additional layer of
-            protection. By requiring collateral, Tadle Market minimizes the potential
-            for fraudulent activities and ensures that transactions proceed
-            smoothly and fairly.
+            protection. By requiring collateral, Tadle Market minimizes the
+            potential for fraudulent activities and ensures that transactions
+            proceed smoothly and fairly.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -142,7 +142,7 @@ const CollTrigger = forwardRef(
         <div className="flex items-center space-x-5">
           <CollDot />
           <div className="relative">
-            <div className="relative z-10 text-xl leading-[30px] text-[#3D3D3D]">
+            <div className="relative z-10 text-base leading-6 text-[#3D3D3D] sm:text-xl sm:leading-[30px]">
               {children}
             </div>
             {isOpen && (
@@ -165,11 +165,15 @@ const CollTrigger = forwardRef(
 CollTrigger.displayName = "CollTrigger";
 
 function CollDot() {
-  return <div className="h-[6px] w-[6px] rounded-full bg-black"></div>;
+  return (
+    <div className="h-1 w-1 rounded-full bg-black sm:h-[6px] sm:w-[6px]"></div>
+  );
 }
 
 function CollContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-[10px] pl-[26px] leading-6 text-gray">{children}</div>
+    <div className="mt-[10px] pl-[26px] text-sm leading-5 text-gray sm:text-base sm:leading-6">
+      {children}
+    </div>
   );
 }

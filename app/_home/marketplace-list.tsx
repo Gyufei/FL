@@ -11,7 +11,7 @@ export default function MarketplaceList() {
   const { data: marketplaceData } = useMarketplaces();
 
   return (
-    <div className="mt-6 grid grid-cols-4 gap-x-5 gap-y-9 px-[120px]">
+    <div className="no-scroll-bar mt-6 flex items-start gap-x-5 gap-y-9 overflow-x-auto overflow-y-visible px-4 py-5 sm:grid sm:grid-cols-4 sm:items-stretch sm:overflow-x-hidden sm:px-[120px]">
       {(marketplaceData || []).map((marketplace) => (
         <ItemCard key={marketplace.market_place_id} marketplace={marketplace} />
       ))}
@@ -28,7 +28,7 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
 
   return (
     <div
-      className="relative cursor-pointer rounded-3xl p-5 pt-3"
+      className="relative min-w-[calc(95vw)] cursor-pointer rounded-3xl p-5 pt-3 sm:w-auto sm:min-w-fit"
       onClick={handleGo}
       style={{
         background:

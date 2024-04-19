@@ -18,7 +18,7 @@ export default function OverviewInfo() {
   const { data: accountInfo } = useAccountOverview();
 
   return (
-    <div className="flex h-full flex-col justify-between px-4">
+    <div className="flex h-full max-h-[800px] flex-col justify-between px-4">
       {/* top header */}
       <div className="flex flex-col">
         <div className="flex justify-between">

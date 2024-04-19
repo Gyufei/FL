@@ -30,12 +30,12 @@ export default function SubscribeInput() {
         backgroundImage: "url(/img/yellow-bg.png)",
       }}
     >
-      <div className="text-center text-4xl leading-[54px] text-black">
+      <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
         Stay in the loop with us
       </div>
       <div className="relative mt-5 flex justify-center">
         <Input
-          className="h-12 w-[480px] rounded-xl border border-[#d8d8d8]"
+          className="h-10 w-[480px] rounded-xl border border-[#d8d8d8] sm:h-12"
           type="email"
           placeholder="Enter email address"
           value={email}
@@ -46,7 +46,7 @@ export default function SubscribeInput() {
           style={{
             left: "calc(50% + 118px)",
           }}
-          className="absolute top-1 flex h-10 items-center rounded-lg px-5 leading-[22px] text-lightgray data-[active=true]:cursor-pointer data-[active=true]:bg-yellow data-[active=true]:text-black"
+          className="absolute top-0 flex h-10 items-center rounded-lg px-5 leading-5 text-lightgray data-[active=true]:cursor-pointer data-[active=true]:bg-yellow data-[active=true]:text-black sm:top-1 sm:leading-[22px]"
           onClick={handleSubscribe}
         >
           Subscribe

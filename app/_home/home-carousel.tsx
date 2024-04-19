@@ -8,14 +8,22 @@ import {
   useCarousel,
 } from "@/components/ui/carousel";
 import { forwardRef } from "react";
+import { IMarketplace } from "@/lib/types/marketplace";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { useRouter } from "next/navigation";
 
 export default function HomeCarousel() {
+  const { data: marketplaceData } = useMarketplaces();
+
   return (
     <Carousel className="w-full px-6">
       <CarouselContent>
-        <CarouselItem key={1}>
-          <CarouselItem1 />
-        </CarouselItem>
+        {marketplaceData &&
+          marketplaceData.map((marketplace) => (
+            <CarouselItem key={marketplace.market_place_name}>
+              <CarouselItem1 marketplace={marketplace} />
+            </CarouselItem>
+          ))}
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
@@ -23,11 +31,16 @@ export default function HomeCarousel() {
   );
 }
 
-function CarouselItem1() {
+function CarouselItem1({ marketplace }: { marketplace: IMarketplace }) {
   const buyAmount = 80.99;
   const sellAmount = 77.63;
-  const dayVol = 2.644;
   const sevenChange = 77;
+
+  const router = useRouter();
+
+  function handleGo() {
+    router.push(`/marketplace/${marketplace.market_place_name}`);
+  }
 
   return (
     <div className="relative flex h-[400px] w-full flex-col justify-end overflow-hidden rounded-3xl">
@@ -46,12 +59,17 @@ function CarouselItem1() {
         }}
       >
         <div className="flex flex-col items-start">
-          <div className="text-4xl leading-[54px] text-black">Carv</div>
-          <div className="text-sm leading-5 text-gray">
+          <div className="text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
+            {marketplace.market_place_name}
+          </div>
+          <div className="text-xs leading-[18px] text-gray sm:text-sm sm:leading-5">
             CARV IS BUILDING THE LARGEST GAMING CREDENTIAL INFRASTRUCTURE
           </div>
-          <button className="mt-5 rounded-2xl bg-yellow px-[29px] pt-[13px] pb-[11px] text-black">
-            Trade Carv Points
+          <button
+            onClick={handleGo}
+            className="mt-5 rounded-2xl bg-yellow px-[29px] pt-[13px] pb-[11px] text-base text-black"
+          >
+            Trade {marketplace.market_place_name} Points
           </button>
         </div>
 
@@ -61,25 +79,21 @@ function CarouselItem1() {
               <div className="text-xl leading-[30px] text-green">
                 {buyAmount}
               </div>
-              <div className="text-xs leading-[18px] text-gray">
-                Buy now
-              </div>
+              <div className="text-xs leading-[18px] text-gray">Buy now</div>
             </div>
 
             <div className="flex flex-col items-center">
               <div className="text-xl leading-[30px] text-red">
                 {sellAmount}
               </div>
-              <div className="text-xs leading-[18px] text-gray">
-                Sell now
-              </div>
+              <div className="text-xs leading-[18px] text-gray">Sell now</div>
             </div>
           </div>
 
           <div className="mt-12 flex justify-between">
             <div className="flex items-center text-xs">
               <div className="mr-2 text-gray">24H VOL</div>
-              <div className="text-black">{dayVol}</div>
+              <div className="text-black">{marketplace.vol_24h}</div>
             </div>
             <div className="flex items-center text-xs">
               <div className="mr-2 text-gray">7D Change</div>

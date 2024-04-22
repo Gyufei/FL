@@ -52,7 +52,7 @@ export default function BidDetail({
     data: txHash,
     isLoading: isDepositLoading,
     isSuccess,
-    write: createAction,
+    write: writeAction,
   } = useAskTaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_id,
@@ -64,8 +64,7 @@ export default function BidDetail({
   }
 
   async function handleDeposit() {
-    console.log(sellPointAmount);
-    await createAction({
+    await writeAction({
       payPoint: sellPointAmount,
     });
   }

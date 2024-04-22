@@ -78,14 +78,14 @@ export function SellContent({
 
   const {
     isLoading: isCreateLoading,
-    write: createAction,
+    write: writeAction,
     isSuccess,
   } = useCreateAskMaker({
     marketplaceStr: marketplace.market_place_id,
   });
 
   async function handleDeposit() {
-    createAction({
+    writeAction({
       sellPointAmount: Number(sellPointAmount),
       receiveTokenAmount: Number(receiveTokenAmount),
       breachFee: Number(breachFee || 50) * 100,

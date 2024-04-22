@@ -31,6 +31,9 @@ export function formatTimestamp(timestamp: string | number) {
 }
 
 export function formatTimeDuration(seconds: number) {
+  if (!seconds || Number.isNaN(seconds)) {
+    return '';
+  }
   const secs = seconds % 60;
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);

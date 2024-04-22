@@ -24,4 +24,5 @@ export const Paths = {
   accountOverview: "/user/overview",
   makerOrders: "/user/maker_orders",
   tradingVol: "/user/trade_vol",
+  marketTrades: "/market_place/maker_trades_history"
 };

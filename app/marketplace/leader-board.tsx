@@ -164,7 +164,7 @@ export default function LeaderBoard() {
           handleTypeChange={handleRangeTypeChange}
         />
       </div>
-      <div className="h-[250px] w-full flex-1 overflow-y-hidden border-b border-[#eee] pb-[10px]">
+      <div className="h-[250px] w-full flex-1 overflow-y-hidden  pb-[10px]">
         <CompactTable
           columns={COLUMNS}
           data={tableData}

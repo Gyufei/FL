@@ -40,10 +40,10 @@ export default function Marketplace({ params }: { params: { name: string } }) {
           <div className="flex w-[348px] flex-col space-y-6 px-6">
             <MarketplaceCard marketplace={marketplace} />
             <LeaderBoard />
-            <div>
+            <div className="!mt-0">
               <Image
                 src="/img/ad-placeholder-1.png"
-                width={280}
+                width={300}
                 height={160}
                 alt="ad1"
                 className="rounded-2xl"

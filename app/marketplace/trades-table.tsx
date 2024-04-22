@@ -8,6 +8,7 @@ import { formatNum } from "@/lib/utils/number";
 import { ITradeType } from "./trade-type-select";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { IMarketplace } from "@/lib/types/marketplace";
+import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
 
 export function TradesTable({
   type,
@@ -16,12 +17,13 @@ export function TradesTable({
   type: ITradeType;
   marketplace: IMarketplace;
 }) {
+  const { data: history } = useMarketTrades(marketplace.market_place_id);
   const { msgEvents } = useWsMsgs();
 
-  const tradeMsgs = useMemo(() => {
+  const tradeMsgs = useMemo<any[]>(() => {
     const msgAll = msgEvents.filter((msg) => !!msg);
-    return msgAll;
-  }, [msgEvents]);
+    return (history || []).concat(msgAll);
+  }, [msgEvents, history]);
 
   const data = useMemo(() => {
     const trades = tradeMsgs

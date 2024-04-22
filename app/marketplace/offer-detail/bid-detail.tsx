@@ -64,8 +64,9 @@ export default function BidDetail({
   }
 
   async function handleDeposit() {
+    console.log(sellPointAmount);
     await createAction({
-      payPoint: offerValue,
+      payPoint: sellPointAmount,
     });
   }
 

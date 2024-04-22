@@ -17,10 +17,16 @@ export function TradesTable({
   type: ITradeType;
   marketplace: IMarketplace;
 }) {
-  const { data: history } = useMarketTrades(marketplace.market_place_id);
+  const { data: historyData } = useMarketTrades(marketplace.market_place_id);
   const { msgEvents } = useWsMsgs();
 
   const tradeMsgs = useMemo<any[]>(() => {
+    const history = (historyData || []).map((item: any) => {
+      return {
+        ...item,
+        timestamp: item.trade_at * 1000,
+      };
+    });
     const msgAll = msgEvents.filter((msg) => !!msg);
     return (history || []).concat(msgAll);
   }, [msgEvents, history]);
@@ -50,7 +56,7 @@ export function TradesTable({
     Table: `
       height: 250px;
       grid-template-rows: 40px repeat(auto-fit, 40px);
-      grid-template-columns:  30px repeat(4, minmax(0, 1fr));
+      grid-template-columns:  50px repeat(4, minmax(0, 1fr));
       font-weight: 400;
 
       &::-webkit-scrollbar {

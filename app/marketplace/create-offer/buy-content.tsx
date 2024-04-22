@@ -80,14 +80,14 @@ export function BuyContent({
 
   const {
     isLoading: isCreateLoading,
-    write: createAction,
+    write: writeAction,
     isSuccess,
   } = useCreateBidMaker({
     marketplaceStr: marketplace.market_place_id,
   });
 
   function handleDeposit() {
-    createAction({
+    writeAction({
       payTokenAmount: Number(payTokenAmount),
       receivePointAmount: Number(receivePointAmount),
       breachFee: Number(breachFee || 50) * 100,

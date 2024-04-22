@@ -23,31 +23,33 @@ export default function StockCard({ order }: { order: IOrder }) {
     offerLogo,
     pointPerPrice,
     tokenTotalPrice,
-    orderType,
     isMaker,
     forLogo,
   } = useOrderFormat({
     order,
   });
 
-  const { data: subOrders } = useTakerOrders(order.pre_order, undefined);
+  const isAskStock = order.order_type === "ask";
+
+  const { data: subOrders } = useTakerOrders(
+    isAskStock ? order.order : order.pre_order,
+    undefined,
+  );
 
   const { currentChain } = useCurrentChain();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const isAskStock = order.order_type === "ask";
-
   const isCanList =
     !afterTGE &&
-    orderType === "bid" &&
+    !isAskStock &&
     order.maker_status === "unknown" &&
     order.taker_status === "initialized";
 
   const isListed =
     !afterTGE &&
     isMaker &&
-    orderType === "ask" &&
+    isAskStock &&
     order.maker_status === "virgin" &&
     order.taker_status === "initialized";
 

@@ -28,7 +28,7 @@ export function TradesTable({
       };
     });
     const msgAll = msgEvents.filter((msg) => !!msg);
-    return (history || []).concat(msgAll);
+    return msgAll.concat(history || []);
   }, [msgEvents, history]);
 
   const data = useMemo(() => {

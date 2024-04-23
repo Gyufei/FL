@@ -104,7 +104,7 @@ export default function StockCard({ order }: { order: IOrder }) {
             />
           </div>
           <div className="text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice)} /Diamond
+            ${formatNum(pointPerPrice, 6)} /Diamond
           </div>
         </div>
         <Image

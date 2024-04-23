@@ -87,7 +87,7 @@ export function OrderCard({
           </div>
           <div className="text-xs leading-[18px] text-lightgray">
             {orderType === "ask" ? (
-              <>${formatNum(pointPerPrice)} /Diamond</>
+              <>${formatNum(pointPerPrice, 6)} /Diamond</>
             ) : (
               <>${formatNum(tokenTotalPrice)}</>
             )}
@@ -117,7 +117,7 @@ export function OrderCard({
             {orderType === "ask" ? (
               <>${formatNum(tokenTotalPrice)}</>
             ) : (
-              <>${formatNum(pointPerPrice)} /Diamond</>
+              <>${formatNum(pointPerPrice, 6)} /Diamond</>
             )}
           </div>
         </div>

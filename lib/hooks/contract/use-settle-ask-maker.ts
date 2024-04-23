@@ -20,7 +20,11 @@ export function useSettleAskMaker({
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
-  const writeAction = async () => {
+  const writeAction = async ({
+    settleAmount
+  }: {
+    settleAmount: number
+  }) => {
     const {
       tokenProgram,
       tokenProgram2022,
@@ -47,7 +51,7 @@ export function useSettleAskMaker({
     const maker = new PublicKey(makerStr);
 
     const txHash = await program.methods
-      .settleAskMaker(new BN(0))
+      .settleAskMaker(new BN(settleAmount))
       .accounts({
         authority: authority,
         systemConfig,

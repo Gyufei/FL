@@ -97,6 +97,7 @@ export default function ConfirmAskSettleDialog({
               orderStr={order.order}
               makerStr={order.maker_id}
               preOrderStr={order.pre_order}
+              settleAmount={settleAmount}
             />
           )}
           {orderRole === "Maker" && (
@@ -104,6 +105,7 @@ export default function ConfirmAskSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
+              settleAmount={settleAmount}
             />
           )}
         </div>

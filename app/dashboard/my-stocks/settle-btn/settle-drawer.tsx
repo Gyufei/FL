@@ -163,6 +163,7 @@ export default function SettleDrawer({
                 preOrderStr={order.pre_order}
                 orderStr={order.order}
                 makerStr={order.maker_id}
+                settleAmount={Number(order.points)}
                 onSuccess={onSuccess}
               />
             ) : (
@@ -170,6 +171,7 @@ export default function SettleDrawer({
                 marketplaceStr={order.marketplace.market_place_id}
                 orderStr={order.order}
                 makerStr={order.maker_id}
+                settleAmount={Number(order.points)}
                 onSuccess={onSuccess}
               />
             ))}

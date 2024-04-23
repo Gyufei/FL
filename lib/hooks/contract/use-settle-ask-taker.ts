@@ -22,7 +22,11 @@ export function useSettleAskTaker({
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
-  const writeAction = async () => {
+  const writeAction = async ({
+    settleAmount
+  }: {
+    settleAmount: number
+  }) => {
     const {
       tokenProgram,
       tokenProgram2022,
@@ -54,7 +58,7 @@ export function useSettleAskTaker({
     const bidMakerOrder = new PublicKey(preOrderStr);
 
     const txHash = await program.methods
-      .settleAskTaker(new BN(100))
+      .settleAskTaker(new BN(settleAmount))
       .accounts({
         authority,
         systemConfig,

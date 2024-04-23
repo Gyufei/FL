@@ -6,11 +6,13 @@ export default function SettleAskMaker({
   marketplaceStr,
   orderStr,
   makerStr,
+  settleAmount,
   onSuccess,
 }: {
   marketplaceStr: string;
   orderStr: string;
   makerStr: string;
+  settleAmount: number;
   onSuccess: () => void;
 }) {
   const {
@@ -24,7 +26,9 @@ export default function SettleAskMaker({
   });
 
   function handleConfirm() {
-    writeAction(undefined);
+    writeAction({
+      settleAmount: settleAmount,
+    });
   }
 
   useEffect(() => {

@@ -5,10 +5,12 @@ export default function ConfirmAskMakerSettleBtn({
   marketplaceStr,
   orderStr,
   makerStr,
+  settleAmount,
 }: {
   marketplaceStr: string;
   orderStr: string;
   makerStr: string;
+  settleAmount: number;
 }) {
   const { isLoading, write: writeAction } = useSettleAskMaker({
     marketplaceStr,
@@ -17,7 +19,9 @@ export default function ConfirmAskMakerSettleBtn({
   });
 
   function handleConfirm() {
-    writeAction(undefined);
+    writeAction({
+      settleAmount: settleAmount,
+    });
   }
 
   return <ConfirmSettleBtn disabled={isLoading} onClick={handleConfirm} />;

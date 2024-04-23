@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SellContent } from "./create-offer/sell-content";
 import { BuyContent } from "./create-offer/buy-content";
 import { IMarketplace } from "@/lib/types/marketplace";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function CreateOfferBtn({
   marketplace,
@@ -24,12 +25,14 @@ export default function CreateOfferBtn({
 
   return (
     <>
-      <button
+      <WithWalletConnectBtn
+        className="w-full"
         onClick={() => setDrawerOpen(true)}
-        className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
       >
-        Create Offer
-      </button>
+        <button className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+          Create Offer
+        </button>
+      </WithWalletConnectBtn>
       <Drawer
         open={drawerOpen}
         onClose={() => handleCloseDrawer()}

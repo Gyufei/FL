@@ -5,6 +5,7 @@ import AskDetail from "./offer-detail/ask-detail";
 import BidDetail from "./offer-detail/bid-detail";
 import { IOrder } from "@/lib/types/order";
 import OrderFillDialog from "./offer-detail/order-fill-dialog";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
   const isAsk = order.order_type === "ask";
@@ -21,12 +22,11 @@ export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
 
   return (
     <>
-      <button
-        onClick={() => setDrawerOpen(true)}
-        className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:bg-yellow"
-      >
-        Buy
-      </button>
+      <WithWalletConnectBtn onClick={() => setDrawerOpen(true)}>
+        <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:bg-yellow">
+          Buy
+        </button>
+      </WithWalletConnectBtn>
       <Drawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}

@@ -21,7 +21,8 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
     amount,
     orderTokenInfo,
     orderPointInfo,
-    afterTGE,
+    duringTGE,
+    // afterTGE,
   } = useOrderFormat({
     order,
   });
@@ -93,7 +94,7 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
             tokenLogo={orderTokenInfo.logoURI}
           />
 
-          {afterTGE ? (
+          {duringTGE ? (
             <button
               onClick={() => handleSettle()}
               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"

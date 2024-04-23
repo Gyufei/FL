@@ -7,7 +7,7 @@ import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 
 export function useOrderFormat({ order }: { order: IOrder }) {
-  const { checkIsAfterTge } = useTge();
+  const { checkIsAfterTge, checkIsDuringTge } = useTge();
 
   const progress = Number(
     (Number(order.used_points) / Number(order.points)).toFixed(2),
@@ -81,11 +81,16 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   const isFilled = order.used_points === order.points;
 
   const afterTGE = useMemo(() => {
-    return checkIsAfterTge(order.marketplace.tge);
-  }, [order.marketplace.tge, checkIsAfterTge]);
+    return checkIsAfterTge(order.marketplace.tge, Number(order.marketplace.settlement_period));
+  }, [order.marketplace.tge, order.marketplace.settlement_period, checkIsAfterTge]);
+
+  const duringTGE = useMemo(() => {
+    return checkIsDuringTge(order.marketplace.tge, Number(order.marketplace.settlement_period));
+  }, [order.marketplace.tge, order.marketplace.settlement_period, checkIsDuringTge]);
 
   return {
     afterTGE,
+    duringTGE,
     isFilled,
     amount,
     tokenPrice,

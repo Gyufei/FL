@@ -22,7 +22,10 @@ export default function Marketplace({ params }: { params: { name: string } }) {
 
   const isAfterTge = useMemo(() => {
     if (!marketplace) return false;
-    return checkIsAfterTge(marketplace.tge);
+    return checkIsAfterTge(
+      marketplace.tge,
+      Number(marketplace.settlement_period),
+    );
   }, [marketplace, checkIsAfterTge]);
 
   if (!marketplaceData) {

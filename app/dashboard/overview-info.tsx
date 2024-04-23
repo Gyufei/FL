@@ -94,7 +94,7 @@ export default function OverviewInfo() {
 
           <div className="mt-5 flex justify-between">
             <div>
-              <LabelText>Notional Value to Settle</LabelText>
+              <LabelText>Settled Value</LabelText>
               <div className="leading-6 text-black">
                 ${formatNum(accountInfo?.settled_value)}
               </div>

@@ -7,14 +7,14 @@ import { formatTimeObj } from "@/lib/utils/time";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 
 export default function MyDetailCard({ order }: { order: IOrder }) {
   const { publicKey } = useWallet();
 
-  const { orderType, orderTokenInfo, orderPointInfo, afterTGE } =
+  const { orderType, orderTokenInfo, orderPointInfo, duringTGE } =
     useOrderFormat({
       order,
     });
@@ -52,10 +52,20 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
     return fmtTax;
   }, [makerDetail, orderTokenInfo]);
 
-  const seconds = order?.create_at
-    ? Date.now() -
-      Number(new Date(order?.relist_at || order?.create_at).getTime())
-    : 0;
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!duringTGE) return;
+
+    const interval = setInterval(() => {
+      const period = Number(order.marketplace?.settlement_period) || 0;
+      const tgeTime = Number(order?.marketplace?.tge) || 0;
+      const ss = Math.floor(period - (Date.now() / 1000 - tgeTime));
+      setSeconds(ss);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex-1 px-6">
@@ -168,7 +178,7 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
         </div>
       </DetailRow>
 
-      {afterTGE && <TimeDisplay seconds={seconds} />}
+      {duringTGE && <TimeDisplay seconds={seconds} />}
     </div>
   );
 }

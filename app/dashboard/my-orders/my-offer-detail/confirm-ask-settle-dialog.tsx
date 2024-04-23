@@ -23,7 +23,7 @@ export default function ConfirmAskSettleDialog({
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
-  const settleAmount = Math.floor(amount * (sliderValue / 100));
+  const settleAmount = Math.floor(Number(order.points) * (sliderValue / 100));
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>

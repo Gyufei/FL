@@ -1,7 +1,7 @@
 "use client";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavigationBtns() {
   const pathname = usePathname();
@@ -16,12 +16,14 @@ export default function NavigationBtns() {
         icon="/icons/dashboard.svg"
         text="Dashboard"
         href="/dashboard"
+        withWallet={true}
       />
       <NavigationBtn
         active={isMarketPlace}
         icon="/icons/Marketplace.svg"
         text="Marketplace"
         href="/marketplace"
+        withWallet={false}
       />
     </div>
   );
@@ -32,21 +34,35 @@ function NavigationBtn({
   icon,
   text,
   href,
+  withWallet = false,
 }: {
   active: boolean;
   icon: string;
   text: string;
   href: string;
+  withWallet?: boolean;
 }) {
-  return (
-    <Link href={href}>
-      <div
-        data-active={active}
-        className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:brightness-75"
-      >
-        <Image src={icon} width={24} height={24} alt={text} />
-        {active && <div>{text}</div>}
-      </div>
-    </Link>
+  const router = useRouter();
+
+  function handleClick() {
+    router.push(href);
+  }
+
+  const BtnContent = (
+    <div
+      data-active={active}
+      className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:brightness-75"
+    >
+      <Image src={icon} width={24} height={24} alt={text} />
+      {active && <div>{text}</div>}
+    </div>
+  );
+
+  return withWallet ? (
+    <WithWalletConnectBtn onClick={handleClick}>
+      {BtnContent}
+    </WithWalletConnectBtn>
+  ) : (
+    <div onClick={handleClick}>{BtnContent}</div>
   );
 }

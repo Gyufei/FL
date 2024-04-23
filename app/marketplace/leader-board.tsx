@@ -32,11 +32,11 @@ export default function LeaderBoard() {
   const data = useMemo(() => {
     switch (leaderType) {
       case "Tax Income":
-        return taxIncomeData;
+        return sortBy(taxIncomeData, [(o) => Number(o.amount)]).reverse();
       case "Maker Orders":
-        return makerOrdersData;
+        return sortBy(makerOrdersData, [(o) => Number(o.count)]).reverse();
       case "Trading Vol":
-        return tradingVolData;
+        return sortBy(tradingVolData, [(o) => Number(o.amount)]).reverse();
     }
   }, [leaderType, taxIncomeData, makerOrdersData, tradingVolData]);
 
@@ -87,16 +87,14 @@ export default function LeaderBoard() {
   });
 
   const tableData = useMemo(() => {
-    const nodes = sortBy(data || [], ["amount"])
-      .reverse()
-      .map((item: any, index: number) => {
-        return {
-          id: index + 1,
-          no: index + 1,
-          wallet: item.wallet,
-          amount: item.amount,
-        };
-      });
+    const nodes = data.map((item: any, index: number) => {
+      return {
+        id: index + 1,
+        no: index + 1,
+        wallet: item.wallet,
+        amount: item.amount,
+      };
+    });
     return {
       nodes,
     };

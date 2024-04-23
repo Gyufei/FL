@@ -13,7 +13,7 @@ export default function MarketplaceOverview({
         <div>
           <LabelText>Floor Price</LabelText>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(marketplace.floor_price)}
+            {formatNum(marketplace.floor_price, 6)}
             <Image src="/icons/eth.svg" width={18} height={18} alt="token" />
           </div>
         </div>

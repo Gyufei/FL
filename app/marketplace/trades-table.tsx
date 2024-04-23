@@ -29,7 +29,7 @@ export function TradesTable({
     });
     const msgAll = msgEvents.filter((msg) => !!msg);
     return msgAll.concat(history || []);
-  }, [msgEvents, history]);
+  }, [msgEvents, historyData]);
 
   const data = useMemo(() => {
     const trades = tradeMsgs

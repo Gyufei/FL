@@ -43,7 +43,7 @@ export function LeaderRangeSelect({
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
         <div className="flex cursor-pointer items-center justify-end space-x-1 rounded-full py-[5px] outline-none">
-          <div className="text-sm leading-5 text-gray">
+          <div className="text-xs leading-5 text-gray">
             {TradeTypes.find((t) => t.value === type)?.label}
           </div>
           <Image

@@ -166,7 +166,7 @@ export function MbNetworkSelect() {
             alt="chain logo"
             className="z-10 bg-white"
           />
-          <div className="flex-1 text-sm">Solana</div>
+          <div className="flex-1 text-xs">Solana</div>
         </div>
         <div
           onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
@@ -182,7 +182,7 @@ export function MbNetworkSelect() {
             alt="chain logo"
             className="z-10 bg-white"
           />
-          <div className="flex-1 text-sm">Solana Dev</div>
+          <div className="flex-1 text-xs">Solana Dev</div>
         </div>
         <DevnetCard isActive={WalletAdapterNetwork.Devnet === cluster} />
         <div
@@ -197,7 +197,7 @@ export function MbNetworkSelect() {
             alt="evms"
             className="z-10 bg-white"
           ></Image>
-          <div className="flex-1 text-sm">EVMs</div>
+          <div className="flex-1 text-xs">EVMs</div>
           <Image
             width={32}
             height={25}

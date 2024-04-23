@@ -27,7 +27,7 @@ export default function MyStocks() {
         />
       </div>
 
-      <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {(sortOrders || []).map((order) => (
           <StockCard key={order.order_id} order={order} />
         ))}

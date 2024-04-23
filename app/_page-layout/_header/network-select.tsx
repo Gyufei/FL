@@ -21,6 +21,7 @@ import { useAtom } from "jotai";
 import { ClusterAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { DevnetCard } from "./devnet-card";
+import SolanaDevIcon from "@/components/share/solana-dev-icon";
 
 function UseNetworkSelect() {
   const [cluster, setCluster] = useAtom(ClusterAtom);
@@ -96,13 +97,7 @@ export function NetworkSelect() {
           }
           className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
         >
-          <Image
-            width={24}
-            height={24}
-            src="/icons/solana.svg"
-            alt="chain logo"
-            className="z-10 bg-white"
-          />
+          <SolanaDevIcon />
           <div className="flex-1 text-xs">Solana Dev</div>
         </div>
         <DevnetCard isActive={WalletAdapterNetwork.Devnet === cluster} />

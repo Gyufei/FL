@@ -73,7 +73,7 @@ export function OrderCard({
       </div>
 
       <div className="mt-4 flex items-center justify-between border-b border-[#F0F1F5] pb-5">
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 grow flex-col">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">Offer</div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(offerValue, 2, true)}
@@ -93,7 +93,7 @@ export function OrderCard({
             )}
           </div>
         </div>
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex grow-0 items-center justify-center">
           <Image
             src="/icons/arrow-right-gray.svg"
             width={20}
@@ -101,7 +101,7 @@ export function OrderCard({
             alt="arrow"
           />
         </div>
-        <div className="flex flex-1 flex-col items-end">
+        <div className="flex flex-1 grow flex-col items-end">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">For</div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(forValue, 2, true)}

@@ -85,7 +85,7 @@ export function OrderCard({
               className="ml-1"
             />
           </div>
-          <div className="text-xs leading-[18px] text-lightgray">
+          <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
             {orderType === "ask" ? (
               <>${formatNum(pointPerPrice, 6)} /Diamond</>
             ) : (
@@ -113,7 +113,7 @@ export function OrderCard({
               className="ml-1"
             />
           </div>
-          <div className="text-xs leading-[18px] text-lightgray">
+          <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
             {orderType === "ask" ? (
               <>${formatNum(tokenTotalPrice)}</>
             ) : (

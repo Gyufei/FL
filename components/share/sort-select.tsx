@@ -41,14 +41,14 @@ export function SortSelect({
           className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-yellow data-[open=true]:bg-yellow"
         >
           <Image src="/icons/sort.svg" width={20} height={20} alt="type icon" />
-          <div className="text-sm leading-5 text-black">{`${sortField}:${sortDir}`}</div>
+          <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">{`${sortField}:${sortDir}`}</div>
           <Image
             data-open={popOpen}
-            src="/icons/arrow-left.svg"
+            src="/icons/arrow-down.svg"
             width={16}
             height={16}
             alt="arrow"
-            className="data-[open=true]:rotate-90 data-[open=false]:-rotate-90"
+            className="data-[open=true]:rotate-180"
           />
         </div>
       </DropdownMenuTrigger>

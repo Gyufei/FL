@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import DepthChart from "./depth-chart";
 
 type IChartType = "depth" | "sales";
 
@@ -35,7 +36,7 @@ export default function KLineChart() {
   }
 
   return (
-    <div className="rounded-3xl bg-[#FAFAFA] p-5">
+    <div className="flex flex-col rounded-3xl bg-[#FAFAFA] p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-[6px]">
           <ChartSwitch
@@ -55,14 +56,18 @@ export default function KLineChart() {
         </div>
       </div>
 
-      <div className="mt-5">
-        <Image
-          src="/img/chart.jpg"
-          width={280}
-          height={260}
-          className="h-[260px]"
-          alt="chart"
-        />
+      <div className="mt-5 h-[250px]">
+        {chartType === "sales" ? (
+          <Image
+            src="/img/chart.jpg"
+            width={280}
+            height={260}
+            className="h-[260px]"
+            alt="chart"
+          />
+        ) : (
+          <DepthChart />
+        )}
       </div>
     </div>
   );

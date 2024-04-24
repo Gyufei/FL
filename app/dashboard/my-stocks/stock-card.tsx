@@ -103,7 +103,7 @@ export default function StockCard({ order }: { order: IOrder }) {
               className="ml-1"
             />
           </div>
-          <div className="text-xs leading-[18px] text-lightgray">
+          <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
             ${formatNum(pointPerPrice, 6)} /Diamond
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function StockCard({ order }: { order: IOrder }) {
         </div>
       </div>
 
-      <div className="flex justify-between pt-4">
+      <div className="flex items-center justify-between pt-4">
         {subOrders?.length ? (
           <ManToMans num={subOrders?.length} isAsk={isAskStock} />
         ) : (

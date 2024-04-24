@@ -46,6 +46,8 @@
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "embla-carousel-react": "^8.0.0",
+    "highcharts": "^11.4.1",
+    "highcharts-react-official": "^3.2.1",
     "jotai": "^2.4.1",
     "loadsh": "^0.0.4",
     "lodash": "^4.17.21",

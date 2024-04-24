@@ -45,7 +45,7 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
       <div className="flex items-start justify-between pl-20">
         <div className="flex space-x-3">
           <div className="flex flex-col">
-            <div className="text-lg leading-[26px] text-black">
+            <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-lg leading-[26px] text-black">
               {marketplace.market_place_name}
             </div>
             <div className="text-xs leading-[18px] text-gray">

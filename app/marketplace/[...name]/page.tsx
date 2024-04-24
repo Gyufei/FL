@@ -32,13 +32,13 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     return null;
   } else if (!marketplace) {
     return (
-      <div className="flex h-[calc(100vh-156px)] w-full items-center justify-center">
+      <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
         <Image src="/img/404.png" width={480} height={360} alt="404" />
       </div>
     );
   } else {
     return (
-      <div className="flex h-[calc(100vh-156px)] w-full flex-col">
+      <div className="flex h-[calc(100vh-96px)] w-full flex-col">
         <div className="flex flex-1 items-stretch">
           <div className="flex w-[348px] flex-col space-y-6 px-6">
             <MarketplaceCard marketplace={marketplace} />
@@ -53,7 +53,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               />
             </div>
           </div>
-          <div className="max-h-[748px] flex-1">
+          <div className="max-h-[calc(100vh-156px)] min-h-[748px] flex-1">
             {isAfterTge ? (
               <div className="flex h-full items-center justify-center rounded-3xl bg-[#fafafa] p-5">
                 <div className="text-center text-xl leading-8 text-gray">

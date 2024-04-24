@@ -9,7 +9,7 @@ import HomeFooter from "./home-footer";
 
 export default function Home() {
   return (
-    <div>
+    <div className="mx-0">
       <HomeCarousel />
       <TotalBanner />
       <MarketPlace />

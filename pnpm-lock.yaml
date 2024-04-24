@@ -110,6 +110,12 @@ dependencies:
   embla-carousel-react:
     specifier: ^8.0.0
     version: 8.0.0(react@18.2.0)
+  highcharts:
+    specifier: ^11.4.1
+    version: 11.4.1
+  highcharts-react-official:
+    specifier: ^3.2.1
+    version: 3.2.1(highcharts@11.4.1)(react@18.2.0)
   jotai:
     specifier: ^2.4.1
     version: 2.4.1(@types/react@18.0.26)(react@18.2.0)
@@ -8691,6 +8697,20 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       source-map: 0.7.4
+    dev: false
+
+  /highcharts-react-official@3.2.1(highcharts@11.4.1)(react@18.2.0):
+    resolution: {integrity: sha512-hyQTX7ezCxl7JqumaWiGsroGWalzh24GedQIgO3vJbkGOZ6ySRAltIYjfxhrq4HszJOySZegotEF7v+haQ75UA==}
+    peerDependencies:
+      highcharts: '>=6.0.0'
+      react: '>=16.8.0'
+    dependencies:
+      highcharts: 11.4.1
+      react: 18.2.0
+    dev: false
+
+  /highcharts@11.4.1:
+    resolution: {integrity: sha512-t+BjB4hba5rNheczCrpyDz8BJrqGdgECHaaXQrgbf1mRdPMPemlOfo08/kTMgZ/Kp/Xfj015atdXpUFdwUU12Q==}
     dev: false
 
   /hmac-drbg@1.0.1:

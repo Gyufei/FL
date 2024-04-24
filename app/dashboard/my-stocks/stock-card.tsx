@@ -6,7 +6,7 @@ import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { IOrder } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
-import { formatTimestamp } from "@/lib/utils/time";
+import { formatTimeDuration } from "@/lib/utils/time";
 import { useState } from "react";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
@@ -136,8 +136,11 @@ export default function StockCard({ order }: { order: IOrder }) {
           <ManToMans num={subOrders?.length} isAsk={isAskStock} />
         ) : (
           <div className="text-xs leading-[18px] text-lightgray">
-            {formatTimestamp(
-              new Date(order.relist_at || order.create_at).getTime(),
+            {formatTimeDuration(
+              Math.floor(
+                new Date().getTime() -
+                  new Date(order.relist_at || order.create_at).getTime() / 1000,
+              ),
             )}
           </div>
         )}

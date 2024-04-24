@@ -117,13 +117,15 @@ export default function DetailCard({ order }: { order: IOrder }) {
             #{order.preOrderDetail?.order_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(order.preOrderDetail?.maker_id || "", {
+            {truncateAddr(order.preOrderDetail?.maker_id || order.maker_id, {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(order.preOrderDetail?.maker_id || "")}
+            onClick={() =>
+              handleGoScan(order.preOrderDetail?.maker_id || order.maker_id)
+            }
             src="/icons/right-45.svg"
             width={16}
             height={16}

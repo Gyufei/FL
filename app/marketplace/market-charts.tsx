@@ -3,28 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 import DepthChart from "./depth-chart";
-// import SalesChart from "./sales-chart";
+import SalesChart, { Durations, IDurationType } from "./sales-chart";
 
 type IChartType = "depth" | "sales";
 
-type IDurationType = "hour" | "day" | "week";
-
-const Durations: { name: string; value: IDurationType }[] = [
-  {
-    name: "1H",
-    value: "hour",
-  },
-  {
-    name: "1D",
-    value: "day",
-  },
-  {
-    name: "1W",
-    value: "week",
-  },
-];
-
-export default function KLineChart() {
+export default function MarketCharts() {
   const [chartType, setChartType] = useState<IChartType>("sales");
   const [duration, setDuration] = useState<IDurationType>(Durations[0].value);
 
@@ -59,15 +42,15 @@ export default function KLineChart() {
 
       <div className="mt-5 h-[250px]">
         {chartType === "sales" ? (
-          // <SalesChart />
-          <Image
-            src="/img/chart.jpg"
-            width={280}
-            height={260}
-            className="h-[260px]"
-            alt="chart"
-          />
+          <SalesChart duration={duration} />
         ) : (
+          // <Image
+          //   src="/img/chart.jpg"
+          //   width={280}
+          //   height={260}
+          //   className="h-[260px]"
+          //   alt="chart"
+          // />
           <DepthChart />
         )}
       </div>

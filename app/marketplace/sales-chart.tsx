@@ -7,8 +7,74 @@ if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
 }
 
-export default function SalesChart(props: any) {
+export type IDurationType = "hour" | "day" | "week";
+
+export const Durations: { name: string; value: IDurationType }[] = [
+  {
+    name: "1H",
+    value: "hour",
+  },
+  {
+    name: "1D",
+    value: "day",
+  },
+  {
+    name: "1W",
+    value: "week",
+  },
+];
+
+export default function SalesChart({ duration }: { duration: IDurationType }) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
+
+  const now = new Date().getTime();
+  const twoMinutesDuration = 2 * 60 * 1000;
+  const oneHourDuration = 3600 * 1000;
+  const threeHoursDuration = 3 * oneHourDuration;
+
+  const dayColData = new Array(20).fill(1).map((_, i) => {
+    return [now - twoMinutesDuration * (24 - i), Math.floor(Math.random() * 5)];
+  });
+
+  const dayLinesData = new Array(20).fill(1).map((_, i) => {
+    return [
+      now - twoMinutesDuration * (24 - i),
+      Math.floor(Math.random() * 50),
+    ];
+  });
+
+  const dayScatterData = new Array(20).fill(1).map((_, i) => {
+    return [
+      now - twoMinutesDuration * (24 - i),
+      Math.floor(Math.random() * 50),
+    ];
+  });
+
+  const xAxisOptions = useMemo(() => {
+    if (duration === "hour") {
+      return {
+        min: now - oneHourDuration,
+        tickInterval: twoMinutesDuration,
+        dateTimeLabelFormats: {
+          minutes: "%M",
+        },
+      };
+    }
+
+    if (duration === "day") {
+      return {
+        min: now - oneHourDuration * 24,
+        tickInterval: oneHourDuration,
+      };
+    }
+
+    if (duration === "week") {
+      return {
+        min: now - oneHourDuration * 24 * 7,
+        tickInterval: threeHoursDuration,
+      };
+    }
+  }, []);
 
   const options = useMemo<Options>(
     () => ({
@@ -21,10 +87,10 @@ export default function SalesChart(props: any) {
         enabled: false,
       },
       xAxis: {
-        minPadding: 0,
-        maxPadding: 0,
+        type: "datetime",
+        ...(xAxisOptions as any),
+        max: now,
         tickWidth: 0,
-        tickLength: 0,
         title: undefined,
         lineColor: "#F0F1F5",
         lineWidth: 1,
@@ -35,47 +101,31 @@ export default function SalesChart(props: any) {
           },
         },
       },
-      yAxis: {
-        lineWidth: 1,
-        lineColor: "#F0F1F5",
-        min: 0,
-        gridLineWidth: 0,
-        title: undefined,
-        tickWidth: 0,
-        tickLength: 0,
-        tickPosition: "inside",
-        showFirstLabel: false,
-        labels: {
-          align: "left",
-          x: 4,
-          style: {
-            color: "#99A0AF",
-            fontSize: "12px",
+      yAxis: [
+        {
+          lineWidth: 1,
+          lineColor: "#F0F1F5",
+          min: 0,
+          gridLineWidth: 0,
+          title: undefined,
+          tickWidth: 0,
+          showFirstLabel: false,
+          labels: {
+            align: "left",
+            x: 4,
+            style: {
+              color: "#99A0AF",
+              fontSize: "12px",
+            },
           },
+          crosshairs: true,
         },
-      },
+      ],
       legend: {
         enabled: false,
       },
-      plotOptions: {
-        series: {
-          marker: {
-            enabled: false,
-            states: {
-              hover: {
-                enabled: false,
-              },
-            },
-          },
-        },
-        column: {
-          pointPadding: 0.8, // Adjust the height of the column
-          groupPadding: 0.1,
-        },
-      },
       tooltip: {
         shared: true,
-        crosshairs: true,
         useHTML: true,
         headerFormat: '<table><tr><th colspan="2">{point.key}</th></tr>',
         pointFormat:
@@ -89,35 +139,44 @@ export default function SalesChart(props: any) {
         {
           name: "Column",
           type: "column",
-          data: [5, 10, 15, 20, 25],
+          data: dayColData,
+          color: "#D8F36B",
+          column: {
+            borderColor: "#D8F36B",
+            borderWidth: 3,
+            borderRadius: 40,
+            shadow: true,
+          },
         },
         {
           name: "Line",
           type: "line",
-          data: [25, 20, 15, 10, 5],
-          yAxis: 0,
+          data: dayLinesData,
+          color: "#D8F36B",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
         },
         {
           name: "Scatter",
           type: "scatter",
           marker: {
             symbol: "circle",
-            fillColor: "red",
-            lineColor: "black",
-            lineWidth: 2,
-            radius: 8,
+            fillColor: "transparent",
+            lineColor: "#c0c4cc",
+            lineWidth: 1,
+            radius: 3,
           },
-          data: [
-            [1, 12],
-            [3, 14],
-            [5, 16],
-            [7, 18],
-          ],
-          yAxis: 0,
+          data: dayScatterData,
         },
       ],
     }),
-    [],
+    [xAxisOptions],
   );
 
   return (
@@ -125,7 +184,6 @@ export default function SalesChart(props: any) {
       highcharts={Highcharts}
       options={options}
       ref={chartComponentRef}
-      {...props}
     />
   );
 }

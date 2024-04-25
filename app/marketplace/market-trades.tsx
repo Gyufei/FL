@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ITradeType, TradeTypeSelect } from "./trade-type-select";
 import { TradesTable } from "./trades-table";
 import CreateOfferBtn from "./create-offer-btn";
-import KLineChart from "./k-line-chart";
+import MarketCharts from "./market-charts";
 import { IMarketplace } from "@/lib/types/marketplace";
 
 export default function MarketTrades({
@@ -36,7 +36,7 @@ export default function MarketTrades({
         <CreateOfferBtn marketplace={marketplace} />
       </div>
 
-      <KLineChart />
+      <MarketCharts />
     </div>
   );
 }

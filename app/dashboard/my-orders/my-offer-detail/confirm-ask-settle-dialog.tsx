@@ -17,13 +17,14 @@ export default function ConfirmAskSettleDialog({
   onOpenChange: (_open: boolean) => void;
   order: IOrder;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo, orderRole } = useOrderFormat(
-    { order },
-  );
+  const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
+  const orderRole = order.order_role;
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
-  const settleAmount = Math.floor(Number(order.points) * (sliderValue / 100));
+  const settleAmount = Math.floor(
+    Number(order.used_points) * (sliderValue / 100),
+  );
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
@@ -98,6 +99,7 @@ export default function ConfirmAskSettleDialog({
               makerStr={order.maker_id}
               preOrderStr={order.pre_order_include_zero}
               settleAmount={settleAmount}
+              onDone={() => onOpenChange(false)}
             />
           )}
           {orderRole === "Maker" && (
@@ -106,6 +108,7 @@ export default function ConfirmAskSettleDialog({
               orderStr={order.order}
               makerStr={order.maker_id}
               settleAmount={settleAmount}
+              onDone={() => onOpenChange(false)}
             />
           )}
         </div>

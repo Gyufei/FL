@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import DepthChart from "./depth-chart";
+// import SalesChart from "./sales-chart";
 
 type IChartType = "depth" | "sales";
 
@@ -58,6 +59,7 @@ export default function KLineChart() {
 
       <div className="mt-5 h-[250px]">
         {chartType === "sales" ? (
+          // <SalesChart />
           <Image
             src="/img/chart.jpg"
             width={280}

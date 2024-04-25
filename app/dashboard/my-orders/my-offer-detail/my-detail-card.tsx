@@ -14,12 +14,11 @@ import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 export default function MyDetailCard({ order }: { order: IOrder }) {
   const { publicKey } = useWallet();
 
-  const { orderType, orderTokenInfo, orderPointInfo, duringTGE } =
-    useOrderFormat({
-      order,
-    });
+  const { orderTokenInfo, orderPointInfo, duringTGE } = useOrderFormat({
+    order,
+  });
 
-  const isAsk = orderType === "ask";
+  const isAsk = order.order_type === "ask";
 
   const { makerDetail } = useOrderMakerDetail({
     order,

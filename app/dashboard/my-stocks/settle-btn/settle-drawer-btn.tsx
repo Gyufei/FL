@@ -1,13 +1,15 @@
 import Image from "next/image";
 import { useState } from "react";
-import SettleDrawer from "./settle-drawer";
 import { IOrder } from "@/lib/types/order";
+import ConfirmAskSettleDialog from "../../my-orders/my-offer-detail/confirm-ask-settle-dialog";
+import ConfirmBidSettleDialog from "../../my-orders/my-offer-detail/confirm-bid-settle-dialog";
 
 export default function SettleDrawerBtn({ order }: { order: IOrder }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const isAsk = order.order_type === "ask";
+  const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   function handleDrawerOpen(open: boolean) {
-    setDrawerOpen(open);
+    setSettleConfirmShow(open);
   }
 
   return (
@@ -19,11 +21,20 @@ export default function SettleDrawerBtn({ order }: { order: IOrder }) {
         <Image src="/icons/settle.svg" width={16} height={16} alt="list" />
         <span>Settle</span>
       </div>
-      <SettleDrawer
-        drawerOpen={drawerOpen}
-        handleDrawerOpen={handleDrawerOpen}
-        order={order}
-      />
+
+      {isAsk ? (
+        <ConfirmAskSettleDialog
+          order={order}
+          open={settleConfirmShow}
+          onOpenChange={setSettleConfirmShow}
+        />
+      ) : (
+        <ConfirmBidSettleDialog
+          order={order}
+          open={settleConfirmShow}
+          onOpenChange={setSettleConfirmShow}
+        />
+      )}
     </div>
   );
 }

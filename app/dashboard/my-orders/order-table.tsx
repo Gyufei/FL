@@ -322,7 +322,7 @@ function OrderFromTo({ order }: { order: IOrder }) {
 }
 
 function OrderRole({ order }: { order: IOrder }) {
-  const { orderRole } = useOrderFormat({ order });
+  const orderRole = order.order_role;
 
   return (
     <div

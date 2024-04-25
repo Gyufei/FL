@@ -23,7 +23,6 @@ export function OrderCard({
   marketplace: IMarketplace;
 }) {
   const {
-    orderType,
     progress,
     offerValue,
     forValue,
@@ -35,6 +34,8 @@ export function OrderCard({
   } = useOrderFormat({
     order,
   });
+
+  const orderType = order.order_type;
 
   const showBuy = useMemo(() => {
     return ["virgin", "ongoing"].includes(order.maker_status);

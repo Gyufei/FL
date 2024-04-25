@@ -75,7 +75,6 @@ export default function AskDetail({
   }
 
   async function handleDeposit() {
-    console.log(order);
     await writeAction({
       receivePoint: receivePointAmount,
     });

@@ -6,7 +6,6 @@ import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { IOrder } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
-import { formatTimeDuration } from "@/lib/utils/time";
 import { useState } from "react";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
@@ -23,12 +22,14 @@ export default function StockCard({ order }: { order: IOrder }) {
     offerLogo,
     pointPerPrice,
     tokenTotalPrice,
-    isMaker,
+    orderDuration,
     forLogo,
+    isCanSettle,
   } = useOrderFormat({
     order,
   });
 
+  const isMaker = order.order_role === "Maker";
   const isAskStock = order.order_type === "ask";
 
   const { data: subOrders } = useTakerOrders(
@@ -52,9 +53,6 @@ export default function StockCard({ order }: { order: IOrder }) {
     isAskStock &&
     order.maker_status === "virgin" &&
     order.taker_status === "initialized";
-
-  const isCanSettle =
-    afterTGE && !["canceled", "finished"].includes(order.maker_status);
 
   return (
     <div className="rounded-[20px] bg-white p-5">
@@ -136,12 +134,7 @@ export default function StockCard({ order }: { order: IOrder }) {
           <ManToMans num={subOrders?.length} isAsk={isAskStock} />
         ) : (
           <div className="text-xs leading-[18px] text-lightgray">
-            {formatTimeDuration(
-              Math.floor(
-                new Date().getTime() -
-                  new Date(order.relist_at || order.create_at).getTime() / 1000,
-              ),
-            )}
+            {orderDuration}
           </div>
         )}
         {isCanList && <ListAskStockBtn order={order} />}

@@ -11,9 +11,11 @@ import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 export default function DetailCard({ order }: { order: IOrder }) {
   const { handleGoScan } = useGoScan();
 
-  const { amount, orderType, orderTokenInfo, orderPointInfo } = useOrderFormat({
+  const { amount, orderTokenInfo, orderPointInfo } = useOrderFormat({
     order,
   });
+
+  const orderType = order.order_type;
 
   const { makerDetail, preOrderMakerDetail } = useOrderMakerDetail({
     order,

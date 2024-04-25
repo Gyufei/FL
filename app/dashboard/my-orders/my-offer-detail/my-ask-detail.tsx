@@ -21,8 +21,7 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
     amount,
     orderTokenInfo,
     orderPointInfo,
-    duringTGE,
-    // afterTGE,
+    isCanSettle,
   } = useOrderFormat({
     order,
   });
@@ -30,7 +29,11 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   const isClosed = useMemo(() => {
-    return order.maker_status === "filled" || order.maker_status === "canceled";
+    return (
+      order.maker_status === "filled" ||
+      order.maker_status === "canceled" ||
+      order.maker_status === "settled"
+    );
   }, [order]);
 
   const {
@@ -94,7 +97,7 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
             tokenLogo={orderTokenInfo.logoURI}
           />
 
-          {duringTGE ? (
+          {isCanSettle ? (
             <button
               onClick={() => handleSettle()}
               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"

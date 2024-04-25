@@ -50,6 +50,7 @@ export function useAllOrders() {
 
         return {
           ...order,
+          pre_order_included_zero: order.pre_order,
           pre_order: isZeroed ? "" : order.pre_order,
           preOrderDetail,
         };

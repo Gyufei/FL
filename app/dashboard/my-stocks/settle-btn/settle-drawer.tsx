@@ -160,7 +160,7 @@ export default function SettleDrawer({
             (isTaker ? (
               <SettleAskTaker
                 marketplaceStr={order.marketplace.market_place_id}
-                preOrderStr={order.pre_order}
+                preOrderStr={order.pre_order_include_zero}
                 orderStr={order.order}
                 makerStr={order.maker_id}
                 settleAmount={Number(order.points)}
@@ -179,7 +179,7 @@ export default function SettleDrawer({
             (isTaker ? (
               <SettleBidTaker
                 marketplaceStr={order.marketplace.market_place_id}
-                preOrderStr={order.pre_order}
+                preOrderStr={order.pre_order_include_zero}
                 orderStr={order.order}
                 makerStr={order.maker_id}
                 onSuccess={onSuccess}
@@ -187,7 +187,7 @@ export default function SettleDrawer({
             ) : (
               <SettleBidMaker
                 marketplaceStr={order.marketplace.market_place_id}
-                preOrderStr={order.pre_order}
+                preOrderStr={order.pre_order_include_zero}
                 orderStr={order.order}
                 makerStr={order.maker_id}
                 onSuccess={onSuccess}

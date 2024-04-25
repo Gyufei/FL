@@ -96,7 +96,7 @@ export default function ConfirmAskSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              preOrderStr={order.pre_order}
+              preOrderStr={order.pre_order_include_zero}
               settleAmount={settleAmount}
             />
           )}

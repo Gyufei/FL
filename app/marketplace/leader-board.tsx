@@ -93,6 +93,7 @@ export default function LeaderBoard() {
         no: index + 1,
         wallet: item.wallet,
         amount: item.amount,
+        count: item.count,
       };
     });
     return {

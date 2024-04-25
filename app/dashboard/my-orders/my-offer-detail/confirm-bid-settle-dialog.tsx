@@ -97,7 +97,7 @@ export default function ConfirmBidSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              preOrderStr={order.pre_order}
+              preOrderStr={order.pre_order_include_zero}
             />
           )}
           {orderRole === "Maker" && (
@@ -105,7 +105,7 @@ export default function ConfirmBidSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              preOrderStr={order.pre_order}
+              preOrderStr={order.pre_order_include_zero}
             />
           )}
         </div>

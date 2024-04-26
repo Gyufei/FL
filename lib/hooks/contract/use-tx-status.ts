@@ -40,13 +40,13 @@ export default function useTxStatus(
           message: successTip || "Successfully",
         });
       } catch (e: any) {
-        console.log(e);
+        console.error(e);
         setIsError(true);
         setError(e);
-        setGlobalMessage({
-          type: "error",
-          message: e?.message || errorTip || "Fail: Some error occur",
-        });
+        // setGlobalMessage({
+        //   type: "error",
+        //   message: e?.message || errorTip || "Fail: Some error occur",
+        // });
       } finally {
         setIsLoading(false);
       }

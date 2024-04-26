@@ -38,10 +38,5 @@ export default function ConfirmAskMakerSettleBtn({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
-  return (
-    <ConfirmSettleBtn
-      disabled={isLoading || !settleAmount}
-      onClick={handleConfirm}
-    />
-  );
+  return <ConfirmSettleBtn disabled={isLoading} onClick={handleConfirm} />;
 }

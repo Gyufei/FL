@@ -43,7 +43,7 @@ export default function ConfirmAskTakerSettleBtn({
 
   return (
     <ConfirmSettleBtn
-      disabled={isLoading || !settleAmount}
+      disabled={isLoading}
       onClick={handleConfirm}
     />
   );

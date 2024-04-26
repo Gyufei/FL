@@ -22,9 +22,10 @@ export default function ConfirmAskSettleDialog({
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(80);
-  const settleAmount = Math.floor(
-    Number(order.used_points) * (sliderValue / 100),
-  );
+
+  const pointAmount = orderRole === "Maker" ? order.used_points : order.points;
+
+  const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>

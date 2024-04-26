@@ -139,7 +139,9 @@ export function OrderTable({
                   Eq.Token
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">From/To</HeaderCell>
-                <HeaderCell className="h-10 px-1 py-[11px]">Seller</HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  {type === "ask" ? "Seller" : "Buyer"}
+                </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
                   Created Time
                 </HeaderCell>

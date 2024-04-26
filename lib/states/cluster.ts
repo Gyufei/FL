@@ -26,6 +26,12 @@ interface Cluster {
     poolUsdcTokenAccount: string;
     poolPointsTokenAccount: string;
     poolTokenAuthority: string;
+    faucet?: {
+      tadleFaucet: string;
+      systemConfig: string;
+      poolTokenAuthority: string;
+      poolTokenAccount: string;
+    }
   };
 }
 
@@ -68,6 +74,12 @@ export const DevnetCluster: Cluster = {
     poolUsdcTokenAccount: "95g3V9HsuyMG2Z7MvaaZA1q1ysVMpENYtJZBwA7MLQgT",
     poolPointsTokenAccount: "2RsKJTmhQVYmR87PaV9MdDuHVNyrKZoX1XWyT5kWZBFr",
     poolTokenAuthority: "AjUtp2QB4VdjGVzSCjZCrKGXTryBS64jncvbceF4TzM4",
+    faucet: {
+      tadleFaucet: '8F8Ygn7aHZ7tNtn4WzEfsQLporeG2ppwkBQRrK15LdqZ',
+      systemConfig: '5v4PUXM3FSitkMACQ3GsCZhqHEYdgceDkg6gE8xeJuBj',
+      poolTokenAuthority: '3ZrCod6LDxX9VDdf1uRsb2KcfYj6CTLBA2gDn7MSkHiL',
+      poolTokenAccount: 'Fn7BKg1LJLxJ55aDSCvtRZHehdx8tEzo5D6CfkJtzJRC',
+    }
   },
 };
 

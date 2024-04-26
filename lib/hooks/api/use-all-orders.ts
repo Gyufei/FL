@@ -21,9 +21,11 @@ export function useAllOrders() {
       const orderRes = await fetcher(
         `${apiEndPoint}${Paths.order}?project=${marketplace.market_place_name}`,
       );
+      console.log(orderRes.map((o: Record<string, any>) => o.order_type));
 
       let parsedRes = orderRes.map((order: Record<string, any>) => {
         const order_role = getOrderRole(order);
+        const is_relist = isRelistBothTakerMaker(order);
 
         const order_type =
           order_role === "Maker"
@@ -34,6 +36,7 @@ export function useAllOrders() {
 
         return {
           ...order,
+          is_relist,
           order_role,
           order_type,
           marketplace,
@@ -72,11 +75,17 @@ export function useAllOrders() {
   };
 }
 
+export function isRelistBothTakerMaker(order: Record<string, any>): boolean {
+  return order.maker_status !== 'unknown' && order.taker_status !== 'unknown';
+}
+
 function getOrderRole(order: Record<string, any>): "Maker" | "Taker" {
   if (order.pre_order == SolanaZeroed) {
     return "Maker";
   } else {
-    if (["unknown", "canceled"].includes(order.maker_status)) {
+    if (order.maker_status !== 'unknown') {
+      return "Maker";
+    } else if (order.taker_status !== 'unknown') {
       return "Taker";
     } else {
       return "Maker";

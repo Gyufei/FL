@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
-import { useState } from "react";
-import { Slider } from "@/components/ui/slider";
 import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle";
 import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle";
 import { IOrder } from "@/lib/types/order";
@@ -20,12 +18,7 @@ export default function ConfirmBidSettleDialog({
   const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
   const orderRole = order.order_role;
 
-  const [sliderMax] = useState(100);
-  const [sliderValue, setSliderValue] = useState(80);
-
-  const settleAmount = Math.floor(
-    Number(order.used_points) * (sliderValue / 100),
-  );
+  const settleAmount = Number(order.points);
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
@@ -73,23 +66,6 @@ export default function ConfirmBidSettleDialog({
                 height={28}
                 alt="stable token"
               />
-            </div>
-            <div className="mt-3 flex">
-              <Slider
-                value={[sliderValue]}
-                onValueChange={(val) => setSliderValue(val[0])}
-                max={sliderMax}
-                step={1}
-              />
-              <div className="ml-4 mr-3 flex h-5 items-center rounded-full border border-[#eee] px-[10px] text-[10px] leading-4 text-black">
-                {sliderValue}%
-              </div>
-              <div
-                onClick={() => setSliderValue(sliderMax)}
-                className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
-              >
-                Max
-              </div>
             </div>
           </div>
 

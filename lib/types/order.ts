@@ -33,4 +33,5 @@ export interface IOrder {
   taker_amount: string;
   taker_tx_hash: string;
   used_points: string;
+  is_relist: boolean;
 }

@@ -9,14 +9,13 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useClusterConfig } from "../web3/use-cluster-config";
 
 export function useAccounts() {
-  const { publicKey: account } = useWallet();
+  const { publicKey: authority } = useWallet();
   const { clusterConfig } = useClusterConfig();
 
   async function getAccounts() {
     const tokenProgram = TOKEN_PROGRAM_ID;
     const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
     const associatedTokenProgram = ASSOCIATED_TOKEN_PROGRAM_ID;
-    const authority = account;
     const systemProgram = SystemProgram.programId;
     const systemConfig = new PublicKey(clusterConfig.program.systemConfig);
     const seedAccount = Keypair.generate();

@@ -1,6 +1,7 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useAllOrders } from "./use-all-orders";
 import { useMemo } from "react";
+import { IOrder } from "@/lib/types/order";
 
 export function useMyOrders() {
   const { publicKey } = useWallet();
@@ -21,7 +22,7 @@ export function useMyOrders() {
             ...order,
             order_role: 'Taker',
             order_type: order.order_type === 'ask' ? 'bid' : 'ask'
-          })
+          } as IOrder)
         } else {
           newAllOrders.push(order);
         }

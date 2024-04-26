@@ -251,7 +251,7 @@ export function SellContent({
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center text-xs leading-[18px]">
-                ${sellPrice}
+                ${pointPrice}
               </div>
             </div>
 

@@ -17,13 +17,18 @@ export default function ConfirmAskSettleDialog({
   onOpenChange: (_open: boolean) => void;
   order: IOrder;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
+  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
+    useOrderFormat({ order });
   const orderRole = order.order_role;
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(100);
 
-  const pointAmount = orderRole === "Maker" ? order.used_points : order.points;
+  const pointAmount = !afterTGEPeriod
+    ? orderRole === "Maker"
+      ? order.used_points
+      : order.points
+    : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   return (

@@ -9,10 +9,18 @@ export function useMarketplaceOrders({
   const allOrdersRes = useAllOrders();
 
   const marketplaceOrders = useMemo(
-    () =>
-      (allOrdersRes.data || [])?.filter(
+    () => {
+
+      const marketOrders = (allOrdersRes.data || [])?.filter(
         (order) => order.marketplace.market_place_id === marketplaceId,
-      ),
+      );
+
+      const canBuyOrders = marketOrders?.filter(
+        (order) => ['virgin', 'ongoing'].includes(order.maker_status)
+      )
+
+      return canBuyOrders;
+    },
     [allOrdersRes.data, marketplaceId],
   );
 

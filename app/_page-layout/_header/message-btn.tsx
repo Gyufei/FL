@@ -49,7 +49,7 @@ export default function MessageBtn() {
         {!!msgEvents.length && (
           <Badge
             variant="destructive"
-            className="absolute -right-3 -top-2 px-1"
+            className="min-w-4 absolute -right-1 -top-1 h-4 px-1"
           >
             {showLen}
           </Badge>
@@ -67,7 +67,7 @@ export default function MessageBtn() {
           title="Notifications"
           onClose={() => setDrawerOpen(false)}
         />
-        {msgEvents.map((i, idx) => (
+        {(msgEvents || []).map((i, idx) => (
           <MsgRow key={idx} msgDetail={msgDetail} />
         ))}
       </Drawer>
@@ -100,7 +100,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
       </div>
 
       <div
-        className="flex flex-col py-3"
+        className="flex flex-1 flex-col space-y-1 py-3"
         style={{
           boxShadow: "inset 0px -1px 0px 0px #EEEEEE",
         }}
@@ -146,7 +146,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
                 width={16}
                 height={16}
                 alt="right"
-                className="-rotate-45 cursor-pointer"
+                className="ml-1 -rotate-45 cursor-pointer"
               />
             </div>
           </div>

@@ -28,6 +28,8 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
+  const isOriginMaker = !order.pre_order;
+
   const isClosed = useMemo(() => {
     return (
       order.maker_status === "filled" ||
@@ -104,7 +106,7 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
             >
               Settle this offer
             </button>
-          ) : isClosed ? (
+          ) : !isOriginMaker || isClosed ? (
             <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
               Waiting for Settlement
             </button>

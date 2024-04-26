@@ -5,8 +5,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils/common";
+import { TooltipArrow } from "@radix-ui/react-tooltip";
+import { CTooltipArrow } from "@/components/share/tootip-arrow";
 
-export function WithTip({ children }: { children?: React.ReactNode }) {
+export function WithTip({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -19,8 +28,11 @@ export function WithTip({ children }: { children?: React.ReactNode }) {
             className="ml-1"
           />
         </TooltipTrigger>
-        <TooltipContent className="z-[103] w-[300px]">
+        <TooltipContent className={cn(className, "z-[103] w-[300px]")}>
           <p className="text-xs leading-[18px]">{children}</p>
+          <TooltipArrow asChild>
+            <CTooltipArrow />
+          </TooltipArrow>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

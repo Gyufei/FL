@@ -17,6 +17,7 @@ import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 export default function StockCard({ order }: { order: IOrder }) {
   const {
     afterTGE,
+    afterTGEPeriod,
     offerValue,
     forValue,
     offerLogo,
@@ -43,6 +44,7 @@ export default function StockCard({ order }: { order: IOrder }) {
 
   const isCanList =
     !afterTGE &&
+    !afterTGEPeriod &&
     !isAskStock &&
     order.maker_status === "unknown" &&
     order.taker_status === "initialized";

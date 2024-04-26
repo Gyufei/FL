@@ -21,6 +21,8 @@ export default function DetailCard({ order }: { order: IOrder }) {
     order,
   });
 
+  const originOrder = order.preOrderDetail || order;
+
   return (
     <div className="flex-1 px-6">
       <div className="leading-6 text-black">Offer Details</div>
@@ -49,13 +51,13 @@ export default function DetailCard({ order }: { order: IOrder }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(order.maker_id || "", {
+            {truncateAddr(originOrder.authority || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(order.maker_id || "")}
+            onClick={() => handleGoScan(originOrder.authority || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -116,18 +118,16 @@ export default function DetailCard({ order }: { order: IOrder }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{order.preOrderDetail?.order_id}
+            #{originOrder?.order_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(order.preOrderDetail?.maker_id || order.maker_id, {
+            {truncateAddr(originOrder.maker_id, {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() =>
-              handleGoScan(order.preOrderDetail?.maker_id || order.maker_id)
-            }
+            onClick={() => handleGoScan(originOrder.maker_id)}
             src="/icons/right-45.svg"
             width={16}
             height={16}

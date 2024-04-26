@@ -14,6 +14,8 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useMemo } from "react";
+import { TooltipArrow } from "@radix-ui/react-tooltip";
+import { CTooltipArrow } from "@/components/share/tootip-arrow";
 
 export function OrderCard({
   order,
@@ -129,27 +131,32 @@ export function OrderCard({
           {orderDuration}
         </div>
         <div className="flex items-center">
-          <div
-            data-right={showBuy}
-            className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full data-[right=true]:mr-3"
-          >
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <HoverIcon
-                    src="/icons/msg-gray.svg"
-                    hoverSrc="/icons/msg-gray.svg"
-                    width={16}
-                    height={16}
-                    alt="msg"
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="w-[200px]">
-                  <p className="text-xs leading-[18px]">{order.order_note}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          {order.order_note && (
+            <div
+              data-right={showBuy}
+              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full data-[right=true]:mr-3"
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HoverIcon
+                      src="/icons/msg-gray.svg"
+                      hoverSrc="/icons/msg-gray.svg"
+                      width={16}
+                      height={16}
+                      alt="msg"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent className="w-[200px]">
+                    <p className="text-xs leading-[18px]">{order.order_note}</p>
+                    <TooltipArrow asChild>
+                      <CTooltipArrow />
+                    </TooltipArrow>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
           {showBuy && <OrderBuyBtn order={order} />}
         </div>
       </div>

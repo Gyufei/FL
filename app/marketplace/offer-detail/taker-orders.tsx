@@ -5,7 +5,7 @@ import { usePagination } from "@table-library/react-table-library/pagination";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IToken } from "@/lib/types/token";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { formatTimestamp } from "@/lib/utils/time";
+import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useTheme } from "@table-library/react-table-library/theme";
@@ -131,7 +131,7 @@ export function TakerOrders({
       label: "Time",
       renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">{`${formatTimestamp(
-          new Date(o.create_at).getTime(),
+          convertUTCToLocalStamp(o.create_at),
         )}`}</div>
       ),
     },

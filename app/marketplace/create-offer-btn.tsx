@@ -55,13 +55,13 @@ export default function CreateOfferBtn({
             className="grid w-full grid-cols-2 data-[show=false]:hidden"
           >
             <TabsTrigger
-              className="border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:text-gray data-[state=active]:text-red"
+              className="border-b-2 rounded-none data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:text-[#eee] data-[state=active]:text-red"
               value="sell"
             >
               Sell / Ask
             </TabsTrigger>
             <TabsTrigger
-              className="data-[state=inactive]:border-b data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:text-gray data-[state=active]:text-green"
+              className="data-[state=inactive]:border-b rounded-none data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:text-[#eee] data-[state=active]:text-green"
               value="buy"
             >
               Buy / Bid

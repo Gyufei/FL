@@ -28,8 +28,21 @@ export default function useTge() {
     return now > tgeTimeNum;
   }, []);
 
+  const checkIsAfterTgePeriod = useCallback((mpTge: string, period: number) => {
+    if (mpTge === "0") {
+      return false;
+    }
+
+    const tgeTimeNum = Number(mpTge);
+    const now = Date.now() / 1000;
+
+    return now > tgeTimeNum + period;
+  }, []);
+
+
   return {
     checkIsDuringTge,
     checkIsAfterTge,
+    checkIsAfterTgePeriod
   };
 }

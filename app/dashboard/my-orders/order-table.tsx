@@ -23,7 +23,7 @@ import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { IOrder } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { formatTimestamp } from "@/lib/utils/time";
+import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
@@ -200,7 +200,9 @@ export function OrderTable({
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <span className="text-sm leading-5 text-black">
-                      {formatTimestamp(new Date(ord.create_at).getTime())}
+                      {formatTimestamp(
+                        convertUTCToLocalStamp(ord.relist_at || ord.create_at),
+                      )}
                     </span>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">

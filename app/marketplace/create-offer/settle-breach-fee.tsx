@@ -8,6 +8,16 @@ export default function SettleBreachFee({
   value: string;
   onValueChange: (_v: string) => void;
 }) {
+  function handleInput(v: string) {
+    if (v && Number(v) < 1) {
+      onValueChange("1");
+    } else if (Number(v) > 100) {
+      onValueChange("100");
+    } else {
+      onValueChange(v);
+    }
+  }
+
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
@@ -22,7 +32,7 @@ export default function SettleBreachFee({
           className="h-[50px] rounded-xl border border-[#d8d8d8] p-[14px] pr-[30px] focus:border-focus"
           placeholder="50%"
           value={value}
-          onUserInput={onValueChange}
+          onUserInput={handleInput}
         />
         <div className="absolute right-4 top-[15px]">%</div>
       </div>

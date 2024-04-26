@@ -10,6 +10,14 @@ export default function TaxForSubTrades({
   onValueChange: (_v: string) => void;
   disabled?: boolean;
 }) {
+  function handleInput(v: string) {
+    if (Number(v) > 20) {
+      onValueChange("20");
+    } else {
+      onValueChange(v);
+    }
+  }
+
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
@@ -25,7 +33,7 @@ export default function TaxForSubTrades({
           className="h-[50px] w-full rounded-xl border border-[#d8d8d8] p-[14px] focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5]"
           placeholder="1%"
           value={value}
-          onUserInput={onValueChange}
+          onUserInput={handleInput}
         />
         <div className="absolute right-4 top-[15px]">%</div>
       </div>

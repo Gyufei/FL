@@ -21,7 +21,7 @@ export default function MyBidDetail({ order }: { order: IOrder }) {
     amount,
     orderTokenInfo,
     orderPointInfo,
-    afterTGE,
+    afterTGEPeriod,
   } = useOrderFormat({
     order,
   });
@@ -93,7 +93,7 @@ export default function MyBidDetail({ order }: { order: IOrder }) {
             tokenLogo={orderPointInfo.logoURI}
           />
 
-          {afterTGE ? (
+          {afterTGEPeriod ? (
             <button
               onClick={() => handleSettle()}
               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"

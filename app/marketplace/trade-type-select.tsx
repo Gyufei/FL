@@ -27,7 +27,7 @@ export function TradeTypeSelect({
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
         <div className="flex cursor-pointer items-center justify-end space-x-1 rounded-full py-[5px] outline-none">
-          <div className="text-sm leading-5 text-gray">{type}</div>
+          <div className="text-xs leading-5 text-gray">{type}</div>
           <Image
             data-open={popOpen}
             src="/icons/arrow-down-gray.svg"
@@ -39,7 +39,10 @@ export function TradeTypeSelect({
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="flex w-20 flex-col items-stretch border-0 bg-white p-1 shadow-[0px_4px_8px_9px_rgba(14,4,62,0.08)]"
+        className="flex w-20 flex-col items-stretch border-0 bg-white p-1"
+        style={{
+          boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
+        }}
       >
         {TradeTypes.map((t) => (
           <div

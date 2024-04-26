@@ -3,11 +3,11 @@ import { IOrder } from "../../types/order";
 // import { useTokensInfo } from "./api/use-token-info";
 import { useMemo } from "react";
 import { IToken } from "../../types/token";
-import { formatTimeDuration } from "../../utils/time";
+import { convertUTCToLocalStamp, formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 
 export function useOrderFormat({ order }: { order: IOrder }) {
-  const { checkIsAfterTge, checkIsDuringTge } = useTge();
+  const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
   const progress = Number(
     (Number(order.used_points) / Number(order.points)).toFixed(2),
@@ -63,7 +63,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     Math.floor(
       NP.minus(
         Date.now() / 1000,
-        new Date(order.create_at || order.relist_at).getTime() / 1000,
+        convertUTCToLocalStamp(order.relist_at || order.create_at) / 1000,
       ),
     ),
   );
@@ -78,6 +78,10 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     return checkIsDuringTge(order.marketplace.tge, Number(order.marketplace.settlement_period));
   }, [order.marketplace.tge, order.marketplace.settlement_period, checkIsDuringTge]);
 
+  const afterTGEPeriod = useMemo(() => {
+    return checkIsAfterTgePeriod(order.marketplace.tge, Number(order.marketplace.settlement_period));
+  }, [order.marketplace.tge, order.marketplace.settlement_period, checkIsAfterTgePeriod]);
+
   const isCanSettle = useMemo(() => {
     const role = order.order_role;
     if (role === 'Taker')  {
@@ -89,6 +93,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
 
   return {
     afterTGE,
+    afterTGEPeriod,
     duringTGE,
     isFilled,
     amount,

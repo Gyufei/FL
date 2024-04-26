@@ -76,11 +76,11 @@ export default function OrderList({
             handleSortDirChange={handleSortDirChange}
           />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="ml-2 flex min-w-[100px] items-center">
           <SearchInput handleSearch={handleSearch} />
           <div
             data-active={layout === "list"}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
+            className="min-w-8 ml-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
           >
             <HoverIcon
               src="/icons/menu-gray.svg"
@@ -94,7 +94,7 @@ export default function OrderList({
           </div>
           <div
             data-active={layout === "grid"}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
+            className="min-w-8 ml-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
           >
             <HoverIcon
               src="/icons/grid-gray.svg"

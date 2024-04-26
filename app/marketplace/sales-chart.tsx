@@ -32,31 +32,100 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
   const oneHourDuration = 3600 * 1000;
   const threeHoursDuration = 3 * oneHourDuration;
 
-  const dayColData = new Array(20).fill(1).map((_, i) => {
-    return [now - twoMinutesDuration * (24 - i), Math.floor(Math.random() * 5)];
-  });
+  const HourData = useMemo(() => {
+    const col = new Array(30).fill(1).map((_, i) => {
+      return [
+        now - twoMinutesDuration * (30 - i),
+        Math.floor(Math.random() * 5),
+      ];
+    });
 
-  const dayLinesData = new Array(20).fill(1).map((_, i) => {
-    return [
-      now - twoMinutesDuration * (24 - i),
-      Math.floor(Math.random() * 50),
-    ];
-  });
+    const line = new Array(30).fill(1).map((_, i) => {
+      return [
+        now - twoMinutesDuration * (30 - i),
+        Math.floor(Math.random() * 50),
+      ];
+    });
 
-  const dayScatterData = new Array(20).fill(1).map((_, i) => {
-    return [
-      now - twoMinutesDuration * (24 - i),
-      Math.floor(Math.random() * 50),
-    ];
-  });
+    const scatter = new Array(30).fill(1).map((_, i) => {
+      return [
+        now - twoMinutesDuration * (30 - i),
+        Math.floor(Math.random() * 50),
+      ];
+    });
+
+    return {
+      col,
+      line,
+      scatter,
+    };
+  }, [now]);
+
+  const DayData = useMemo(() => {
+    const col = new Array(24).fill(1).map((_, i) => {
+      return [now - oneHourDuration * (30 - i), Math.floor(Math.random() * 5)];
+    });
+
+    const line = new Array(24).fill(1).map((_, i) => {
+      return [now - oneHourDuration * (30 - i), Math.floor(Math.random() * 50)];
+    });
+
+    const scatter = new Array(24).fill(1).map((_, i) => {
+      return [now - oneHourDuration * (30 - i), Math.floor(Math.random() * 50)];
+    });
+
+    return {
+      col,
+      line,
+      scatter,
+    };
+  }, [now]);
+
+  const WeekData = useMemo(() => {
+    const col = new Array(28).fill(1).map((_, i) => {
+      return [
+        now - threeHoursDuration * (28 - i),
+        Math.floor(Math.random() * 5),
+      ];
+    });
+
+    const line = new Array(28).fill(1).map((_, i) => {
+      return [
+        now - threeHoursDuration * (28 - i),
+        Math.floor(Math.random() * 50),
+      ];
+    });
+
+    const scatter = new Array(28).fill(1).map((_, i) => {
+      return [
+        now - threeHoursDuration * (28 - i),
+        Math.floor(Math.random() * 50),
+      ];
+    });
+
+    return {
+      col,
+      line,
+      scatter,
+    };
+  }, [now]);
+
+  const cData = useMemo(() => {
+    if (duration === "hour") {
+      return HourData;
+    } else if (duration === "day") {
+      return DayData;
+    } else if (duration === "week") {
+      return WeekData;
+    }
+  }, [duration]);
 
   const xAxisOptions = useMemo(() => {
     if (duration === "hour") {
       return {
         min: now - oneHourDuration,
-        tickInterval: twoMinutesDuration,
         dateTimeLabelFormats: {
-          minutes: "%M",
+          minute: "%H:%M",
         },
       };
     }
@@ -64,23 +133,31 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
     if (duration === "day") {
       return {
         min: now - oneHourDuration * 24,
-        tickInterval: oneHourDuration,
+        // tickInterval: oneHourDuration,
+        dateTimeLabelFormats: {
+          hour: "%H:%M",
+        },
       };
     }
 
     if (duration === "week") {
       return {
         min: now - oneHourDuration * 24 * 7,
-        tickInterval: threeHoursDuration,
+        dateTimeLabelFormats: {
+          day: "%e. %b",
+        },
       };
     }
-  }, []);
+  }, [duration]);
 
   const options = useMemo<Options>(
     () => ({
       chart: {
         backgroundColor: "transparent",
         height: "249px",
+      },
+      time: {
+        useUTC: false,
       },
       title: undefined,
       exporting: {
@@ -89,6 +166,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
       xAxis: {
         type: "datetime",
         ...(xAxisOptions as any),
+        tickAmount: 5,
         max: now,
         tickWidth: 0,
         title: undefined,
@@ -100,6 +178,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
             fontSize: "12px",
           },
         },
+        showFirstLabel: false,
       },
       yAxis: [
         {
@@ -139,7 +218,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
         {
           name: "Column",
           type: "column",
-          data: dayColData,
+          data: cData?.col,
           color: "#D8F36B",
           column: {
             borderColor: "#D8F36B",
@@ -151,7 +230,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
         {
           name: "Line",
           type: "line",
-          data: dayLinesData,
+          data: cData?.line,
           color: "#D8F36B",
           marker: {
             enabled: false,
@@ -172,11 +251,11 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
             lineWidth: 1,
             radius: 3,
           },
-          data: dayScatterData,
+          data: cData?.scatter,
         },
       ],
     }),
-    [xAxisOptions],
+    [xAxisOptions, cData, now],
   );
 
   return (

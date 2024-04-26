@@ -33,7 +33,7 @@ export default function SearchInput({
   }
 
   return (
-    <div className="flex">
+    <div className="min-w-8 flex h-8">
       <Image
         onClick={handleClickSearchIcon}
         src={isActive ? "/icons/search.svg" : "/icons/search-gray.svg"}

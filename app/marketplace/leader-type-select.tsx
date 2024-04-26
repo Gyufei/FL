@@ -39,7 +39,10 @@ export function LeaderTypeSelect({
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="flex w-[110px] flex-col items-stretch border-0 bg-white p-1 shadow-[0px_4px_8px_9px_rgba(14,4,62,0.08)]"
+        className="flex w-[130px] flex-col items-stretch border-0 bg-white p-1"
+        style={{
+          boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
+        }}
       >
         {TradeTypes.map((t) => (
           <div

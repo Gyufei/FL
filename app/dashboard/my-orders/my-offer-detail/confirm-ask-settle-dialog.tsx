@@ -21,10 +21,9 @@ export default function ConfirmAskSettleDialog({
   const orderRole = order.order_role;
 
   const [sliderMax] = useState(100);
-  const [sliderValue, setSliderValue] = useState(80);
+  const [sliderValue, setSliderValue] = useState(100);
 
   const pointAmount = orderRole === "Maker" ? order.used_points : order.points;
-
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   return (

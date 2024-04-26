@@ -1,6 +1,6 @@
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useSetAtom } from "jotai";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useTxStatus(
   txFn: (_args: any) => Promise<any>,
@@ -14,6 +14,18 @@ export default function useTxStatus(
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    if (isSuccess || isError) {
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsSuccess(false);
+        setIsError(false);
+        setData(null);
+        setError(null);
+      }, 2000)
+    }
+  }, [isSuccess, isError]);
 
   const txAction = useCallback(
     async (...args: Parameters<typeof txFn>) => {

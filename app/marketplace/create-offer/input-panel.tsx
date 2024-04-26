@@ -17,7 +17,7 @@ export function InputPanel({
   isCanInput?: boolean;
 }) {
   return (
-    <div className="flex w-full justify-between rounded-2xl border border-transparent bg-[#fafafa] p-4 focus-within:border focus-within:border-focus">
+    <div className="flex w-full justify-between rounded-2xl border border-transparent bg-[#fafafa] p-4 focus-within:border focus-within:border-focus focus-within:bg-white">
       <div className="flex-1">
         <div className="text-xs leading-[18px] text-gray">{topText}</div>
         {isCanInput ? (

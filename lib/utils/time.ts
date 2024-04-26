@@ -1,30 +1,16 @@
-export function formatTimestamp(timestamp: string | number) {
-  const currentDate = new Date();
-  const date = new Date(Number(timestamp));
+import { format, isSameDay, isSameYear } from "date-fns";
 
-  const isSameDay = currentDate.toDateString() === date.toDateString();
-  const isCurrentYear = currentDate.getFullYear() === date.getFullYear();
+export function formatTimestamp(timestamp: string | number) {
+  const isCurrentDay = isSameDay(new Date(), Number(timestamp));
+  const isCurrentYear = isSameYear(new Date(), Number(timestamp));
 
   let formattedDate = "";
-  if (isSameDay) {
-    formattedDate = date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  if (isCurrentDay) {
+    formattedDate = format(Number(timestamp), 'HH:mm')
   } else if (isCurrentYear) {
-    formattedDate =
-      date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
-      " " +
-      date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    formattedDate = format(Number(timestamp), 'HH:mm MMM dd')
   } else {
-    formattedDate =
-      date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
-      " " +
-      date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+    formattedDate = format(Number(timestamp), 'HH:mm MMM dd yyyy')
   }
 
   return formattedDate;
@@ -94,4 +80,21 @@ export function formatTimestampEn(timestamp: number) {
 
   const formattedDate = `${month} ${day}, ${year}`;
   return formattedDate;
+}
+
+export function convertUTCToLocalStamp(utcDateString: string) {
+  const utcDate = new Date(utcDateString);
+
+  const timezoneOffset = utcDate.getTimezoneOffset();
+
+  const localTimestamp = utcDate.getTime() - timezoneOffset * 60000;
+
+  const localDate = localTimestamp;
+
+  return localDate;
+}
+
+export function convertUTCToLocalString(utcDateString: string) {
+  const localDate = convertUTCToLocalStamp(utcDateString);
+  return format(new Date(localDate), 'yyyy-MM-dd HH:mm:ss');
 }

@@ -26,7 +26,7 @@ export interface IOrder {
   order_type: string;
   points: string;
   pre_order: string;
-  pre_order_include_zero: string;
+  pre_order_included_zero: string;
   relist_at: string;
   settle_breach_fee: string;
   settled_points: string;

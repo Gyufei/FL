@@ -20,6 +20,8 @@ export default function ConfirmBidSettleDialog({
 
   const settleAmount = Number(order.points);
 
+  console.log(order);
+
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
       <DialogContent
@@ -74,7 +76,7 @@ export default function ConfirmBidSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              preOrderStr={order.pre_order_include_zero}
+              preOrderStr={order.pre_order_included_zero}
               onDone={() => onOpenChange(false)}
             />
           )}
@@ -83,7 +85,7 @@ export default function ConfirmBidSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              preOrderStr={order.pre_order_include_zero}
+              preOrderStr={order.pre_order_included_zero}
               onDone={() => onOpenChange(false)}
             />
           )}

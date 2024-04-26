@@ -21,7 +21,6 @@ export function useAllOrders() {
       const orderRes = await fetcher(
         `${apiEndPoint}${Paths.order}?project=${marketplace.market_place_name}`,
       );
-      console.log(orderRes.map((o: Record<string, any>) => o.order_type));
 
       let parsedRes = orderRes.map((order: Record<string, any>) => {
         const order_role = getOrderRole(order);

@@ -20,7 +20,7 @@ export default function MarketCharts() {
   }
 
   return (
-    <div className="flex flex-col rounded-3xl bg-[#FAFAFA] p-4">
+    <div className="flex h-[342px] flex-col rounded-3xl bg-[#FAFAFA] p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-[6px]">
           <ChartSwitch

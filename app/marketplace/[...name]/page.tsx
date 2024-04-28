@@ -41,9 +41,12 @@ export default function Marketplace({ params }: { params: { name: string } }) {
       <div className="flex h-[calc(100vh-96px)] w-full flex-col">
         <div className="flex flex-1 items-stretch">
           <div className="flex w-[348px] flex-col space-y-6 px-6">
-            <MarketplaceCard marketplace={marketplace} />
-            <LeaderBoard />
-            <div className="!mt-0">
+            <MarketplaceCard
+              className="basic-[300px] h-[300px] shrink-0 grow-0"
+              marketplace={marketplace}
+            />
+            <LeaderBoard className="shrink grow" />
+            <div className="shrink-0 grow-0">
               <Image
                 src="/img/ad-placeholder-1.png"
                 width={300}
@@ -53,8 +56,14 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               />
             </div>
           </div>
-          <div className="max-h-[calc(100vh-156px)] min-h-[748px] flex-1">
-            {!isAfterTge ? (
+          <div
+            className="flex-1"
+            style={{
+              minHeight: "min(calc(100vh - 156px), 648px)",
+              maxHeight: "max(calc(100vh - 156px), 648px)",
+            }}
+          >
+            {isAfterTge ? (
               <div className="flex h-full flex-col items-center justify-center rounded-3xl bg-[#fafafa] p-5">
                 <div>
                   <Image
@@ -73,7 +82,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               <OrderList marketplace={marketplace} />
             )}
           </div>
-          <div className="w-[368px] px-6">
+          <div className="w-[368px] px-6 flex flex-col">
             <MarketTrades marketplace={marketplace} />
           </div>
         </div>

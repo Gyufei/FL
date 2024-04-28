@@ -12,8 +12,9 @@ import { useTaxIncome } from "@/lib/hooks/api/use-tax-income";
 import { sortBy } from "lodash";
 import { useMakerOrders } from "@/lib/hooks/api/use-maker-orders";
 import { useTradingVol } from "@/lib/hooks/api/use-trading-vol";
+import { cn } from "@/lib/utils/common";
 
-export default function LeaderBoard() {
+export default function LeaderBoard({ className }: { className?: string }) {
   const [leaderType, setLeaderType] = useState<ILeaderType>("Tax Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("hour");
 
@@ -42,7 +43,6 @@ export default function LeaderBoard() {
 
   const theme = useTheme({
     Table: `
-      height: 250px;
       grid-template-rows: 40px repeat(auto-fit, 40px);
       grid-template-columns: 50px 150px 1fr;
       font-weight: 400;
@@ -112,7 +112,13 @@ export default function LeaderBoard() {
         }
         if (Number(item.no) === 2) {
           return (
-            <Image src="/icons/two.svg" width={24} height={24} alt="reward" />
+            <Image
+              src="/icons/two.svg"
+              width={24}
+              height={24}
+              alt="reward"
+              className="-translate-y-[1px]"
+            />
           );
         }
         if (Number(item.no) === 3) {
@@ -148,7 +154,7 @@ export default function LeaderBoard() {
   ];
 
   return (
-    <div>
+    <div className={cn(className, "flex flex-col")}>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
@@ -163,13 +169,15 @@ export default function LeaderBoard() {
           handleTypeChange={handleRangeTypeChange}
         />
       </div>
-      <div className="h-[250px] w-full flex-1 overflow-y-hidden  pb-[10px]">
-        <CompactTable
-          columns={COLUMNS}
-          data={tableData}
-          theme={theme}
-          layout={{ fixedHeader: true }}
-        />
+      <div className="max-h-auto relative min-h-[80px] w-full flex-1 flex-col overflow-y-hidden">
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
+          <CompactTable
+            columns={COLUMNS}
+            data={tableData}
+            theme={theme}
+            layout={{ fixedHeader: true }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -17,11 +17,14 @@ import { useTokens } from "@/lib/hooks/api/use-tokens";
 import TokenImg from "@/components/share/token-img";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils/common";
 
 export default function MarketplaceCard({
   marketplace,
+  className,
 }: {
   marketplace: IMarketplace;
+  className?: string;
 }) {
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
@@ -50,7 +53,12 @@ export default function MarketplaceCard({
   const handleGoDiscord = () => {};
 
   return (
-    <div className="relative mt-4 rounded-3xl bg-[#F0F1F5] p-5 pt-3">
+    <div
+      className={cn(
+        className,
+        "relative mt-4 rounded-3xl bg-[#F0F1F5] p-5 pt-3",
+      )}
+    >
       <TokenImg
         tokenAddr={marketplace.token_mint}
         width={73}

@@ -19,8 +19,8 @@ export default function MarketTrades({
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col flex-1">
+      <div className="flex h-[30px] items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
           <div className="leading-6 text-black">Market Trades</div>
@@ -30,9 +30,10 @@ export default function MarketTrades({
           handleTypeChange={handleTradeTypeChange}
         />
       </div>
+
       <TradesTable type={tradeType} marketplace={marketplace} />
 
-      <div className="py-6">
+      <div className="h-[96px] py-6">
         <CreateOfferBtn marketplace={marketplace} />
       </div>
 

@@ -47,14 +47,15 @@ export function TradesTable({
 
     const typeTrades = trades.filter(() => type === "All" || true);
 
+    const filled = new Array(10).fill(typeTrades).flat();
+
     return {
-      nodes: typeTrades,
+      nodes: filled,
     };
   }, [tradeMsgs, type, marketplace]);
 
   const theme = useTheme({
     Table: `
-      height: 250px;
       grid-template-rows: 40px repeat(auto-fit, 40px);
       grid-template-columns:  50px repeat(4, minmax(0, 1fr));
       font-weight: 400;
@@ -129,7 +130,7 @@ export function TradesTable({
   ];
 
   return (
-    <div className="overflow-y- relative h-[250px] w-full flex-1 border-b border-[#eee] pb-[10px]">
+    <div className="relative w-full flex-1 shrink grow border-b border-[#eee]">
       <Image
         src="/icons/time.svg"
         width={16}
@@ -137,12 +138,16 @@ export function TradesTable({
         alt="time"
         className="absolute left-0 top-[10px] z-10"
       />
-      <CompactTable
-        columns={COLUMNS}
-        data={data}
-        theme={theme}
-        layout={{ fixedHeader: true }}
-      />
+      <div className="max-h-auto relative min-h-[170px] w-full flex-1 flex-col overflow-y-hidden pb-0">
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
+          <CompactTable
+            columns={COLUMNS}
+            data={data}
+            theme={theme}
+            layout={{ fixedHeader: true }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

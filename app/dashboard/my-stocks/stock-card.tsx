@@ -23,7 +23,6 @@ export default function StockCard({ order }: { order: IOrder }) {
     offerLogo,
     pointPerPrice,
     tokenTotalPrice,
-    orderDuration,
     forLogo,
     isCanSettle,
   } = useOrderFormat({
@@ -132,13 +131,7 @@ export default function StockCard({ order }: { order: IOrder }) {
       </div>
 
       <div className="flex items-center justify-between pt-4">
-        {subOrders?.length ? (
-          <ManToMans num={subOrders?.length} isAsk={isAskStock} />
-        ) : (
-          <div className="text-xs leading-[18px] text-lightgray">
-            {orderDuration}
-          </div>
-        )}
+        <ManToMans num={subOrders?.length || 0} isAsk={isAskStock} />
         {isCanList && <ListAskStockBtn order={order} />}
         {isListed && <DelistBtn order={order} />}
         {isCanSettle && <SettleDrawerBtn order={order} />}

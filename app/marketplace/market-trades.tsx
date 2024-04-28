@@ -19,7 +19,7 @@ export default function MarketTrades({
   }
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-1 flex-col">
       <div className="flex h-[30px] items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
@@ -37,7 +37,7 @@ export default function MarketTrades({
         <CreateOfferBtn marketplace={marketplace} />
       </div>
 
-      <MarketCharts />
+      <MarketCharts marketplace={marketplace} />
     </div>
   );
 }

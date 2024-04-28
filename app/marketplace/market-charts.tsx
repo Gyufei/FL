@@ -4,10 +4,15 @@ import Image from "next/image";
 import { useState } from "react";
 import DepthChart from "./depth-chart";
 import SalesChart, { Durations, IDurationType } from "./sales-chart";
+import { IMarketplace } from "@/lib/types/marketplace";
 
 type IChartType = "depth" | "sales";
 
-export default function MarketCharts() {
+export default function MarketCharts({
+  marketplace,
+}: {
+  marketplace: IMarketplace;
+}) {
   const [chartType, setChartType] = useState<IChartType>("sales");
   const [duration, setDuration] = useState<IDurationType>(Durations[0].value);
 
@@ -42,7 +47,7 @@ export default function MarketCharts() {
 
       <div className="mt-5 h-[250px]">
         {chartType === "sales" ? (
-          <SalesChart duration={duration} />
+          <SalesChart duration={duration} marketplace={marketplace} />
         ) : (
           // <Image
           //   src="/img/chart.jpg"

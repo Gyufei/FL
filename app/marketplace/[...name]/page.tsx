@@ -42,7 +42,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
         <div className="flex flex-1 items-stretch">
           <div className="flex w-[348px] flex-col space-y-6 px-6">
             <MarketplaceCard
-              className="basic-[300px] h-[300px] shrink-0 grow-0"
+              className="basic-[254px] h-[254px] shrink-0 grow-0"
               marketplace={marketplace}
             />
             <LeaderBoard className="shrink grow" />
@@ -59,8 +59,8 @@ export default function Marketplace({ params }: { params: { name: string } }) {
           <div
             className="flex-1"
             style={{
-              minHeight: "min(calc(100vh - 156px), 648px)",
-              maxHeight: "max(calc(100vh - 156px), 648px)",
+              minHeight: "max(calc(100vh - 156px), 596.75px)",
+              maxHeight: "max(calc(100vh - 156px), 596.75px)",
             }}
           >
             {isAfterTge ? (
@@ -82,7 +82,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               <OrderList marketplace={marketplace} />
             )}
           </div>
-          <div className="w-[368px] px-6 flex flex-col">
+          <div className="flex w-[368px] flex-col px-6">
             <MarketTrades marketplace={marketplace} />
           </div>
         </div>

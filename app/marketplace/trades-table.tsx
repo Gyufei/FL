@@ -130,7 +130,7 @@ export function TradesTable({
   ];
 
   return (
-    <div className="relative w-full flex-1 shrink grow border-b border-[#eee]">
+    <div className="relative flex w-full flex-1 shrink grow flex-col border-b border-[#eee]">
       <Image
         src="/icons/time.svg"
         width={16}
@@ -138,7 +138,7 @@ export function TradesTable({
         alt="time"
         className="absolute left-0 top-[10px] z-10"
       />
-      <div className="max-h-auto relative min-h-[170px] w-full flex-1 flex-col overflow-y-hidden pb-0">
+      <div className="max-h-auto relative min-h-[130px] w-full flex-1 flex-col overflow-y-hidden pb-0">
         <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
           <CompactTable
             columns={COLUMNS}

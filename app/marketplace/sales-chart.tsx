@@ -1,7 +1,10 @@
+import NP from "number-precision";
 import React, { useMemo, useRef } from "react";
 import Highcharts, { Options } from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsReact from "highcharts-react-official";
+import { IMarketplace } from "@/lib/types/marketplace";
+import { useSalesVolume } from "@/lib/hooks/api/use-sales-volume";
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -24,34 +27,48 @@ export const Durations: { name: string; value: IDurationType }[] = [
   },
 ];
 
-export default function SalesChart({ duration }: { duration: IDurationType }) {
+export default function SalesChart({
+  marketplace,
+  duration,
+}: {
+  marketplace: IMarketplace;
+  duration: IDurationType;
+}) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
+  const marketId = marketplace?.market_place_id;
+
+  const { data: salesData } = useSalesVolume(marketId);
+
   const now = new Date().getTime();
-  const twoMinutesDuration = 2 * 60 * 1000;
   const oneHourDuration = 3600 * 1000;
-  const threeHoursDuration = 3 * oneHourDuration;
 
-  const HourData = useMemo(() => {
-    const col = new Array(30).fill(1).map((_, i) => {
+  const chartData = useMemo(() => {
+    const durationData = (salesData || []).filter((item) => {
+      if (duration === "hour") {
+        return item.create_at > now - oneHourDuration;
+      }
+      if (duration === "day") {
+        return item.create_at > now - oneHourDuration * 24;
+      }
+      if (duration === "week") {
+        return item.create_at > now - oneHourDuration * 24 * 7;
+      }
+    });
+
+    const col = durationData.map((item) => {
       return [
-        now - twoMinutesDuration * (30 - i),
-        Math.floor(Math.random() * 5),
+        item.create_at,
+        Number(NP.divide(NP.times(item.sales_volume, item.sales_price), 2000)),
       ];
     });
 
-    const line = new Array(30).fill(1).map((_, i) => {
-      return [
-        now - twoMinutesDuration * (30 - i),
-        Math.floor(Math.random() * 50),
-      ];
+    const line = durationData.map((item) => {
+      return [item.create_at, Number(item.sales_price)];
     });
 
-    const scatter = new Array(30).fill(1).map((_, i) => {
-      return [
-        now - twoMinutesDuration * (30 - i),
-        Math.floor(Math.random() * 50),
-      ];
+    const scatter = durationData.map((item) => {
+      return [item.create_at, Number(item.sales_price)];
     });
 
     return {
@@ -59,66 +76,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
       line,
       scatter,
     };
-  }, [now]);
-
-  const DayData = useMemo(() => {
-    const col = new Array(24).fill(1).map((_, i) => {
-      return [now - oneHourDuration * (30 - i), Math.floor(Math.random() * 5)];
-    });
-
-    const line = new Array(24).fill(1).map((_, i) => {
-      return [now - oneHourDuration * (30 - i), Math.floor(Math.random() * 50)];
-    });
-
-    const scatter = new Array(24).fill(1).map((_, i) => {
-      return [now - oneHourDuration * (30 - i), Math.floor(Math.random() * 50)];
-    });
-
-    return {
-      col,
-      line,
-      scatter,
-    };
-  }, [now]);
-
-  const WeekData = useMemo(() => {
-    const col = new Array(28).fill(1).map((_, i) => {
-      return [
-        now - threeHoursDuration * (28 - i),
-        Math.floor(Math.random() * 5),
-      ];
-    });
-
-    const line = new Array(28).fill(1).map((_, i) => {
-      return [
-        now - threeHoursDuration * (28 - i),
-        Math.floor(Math.random() * 50),
-      ];
-    });
-
-    const scatter = new Array(28).fill(1).map((_, i) => {
-      return [
-        now - threeHoursDuration * (28 - i),
-        Math.floor(Math.random() * 50),
-      ];
-    });
-
-    return {
-      col,
-      line,
-      scatter,
-    };
-  }, [now]);
-
-  const cData = useMemo(() => {
-    if (duration === "hour") {
-      return HourData;
-    } else if (duration === "day") {
-      return DayData;
-    } else if (duration === "week") {
-      return WeekData;
-    }
-  }, [duration]);
+  }, [salesData, duration]);
 
   const xAxisOptions = useMemo(() => {
     if (duration === "hour") {
@@ -218,7 +176,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
         {
           name: "Column",
           type: "column",
-          data: cData?.col,
+          data: chartData?.col,
           color: "#D8F36B",
           column: {
             borderColor: "#D8F36B",
@@ -230,7 +188,7 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
         {
           name: "Line",
           type: "line",
-          data: cData?.line,
+          data: chartData?.line,
           color: "#D8F36B",
           marker: {
             enabled: false,
@@ -251,11 +209,11 @@ export default function SalesChart({ duration }: { duration: IDurationType }) {
             lineWidth: 1,
             radius: 3,
           },
-          data: cData?.scatter,
+          data: chartData?.scatter,
         },
       ],
     }),
-    [xAxisOptions, cData, now],
+    [xAxisOptions, chartData, now],
   );
 
   return (

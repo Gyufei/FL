@@ -20,7 +20,7 @@ export function formatTimeDuration(seconds: number) {
   if (!seconds || Number.isNaN(seconds)) {
     return '';
   }
-  const secs = seconds % 60;
+  const secs = Math.floor(seconds % 60);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);

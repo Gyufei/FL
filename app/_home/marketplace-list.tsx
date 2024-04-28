@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { IMarketplace } from "@/lib/types/marketplace";
-import TokenImg from "@/components/share/token-img";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
+import { WithProjectCDN } from "@/lib/PathMap";
 
 export default function MarketplaceList() {
   const { data: marketplaceData } = useMarketplaces();
@@ -13,7 +13,7 @@ export default function MarketplaceList() {
   return (
     <div className="no-scroll-bar mt-6 flex items-start gap-x-5 gap-y-9 overflow-x-auto overflow-y-visible px-4 py-5 sm:grid sm:grid-cols-4 sm:items-stretch sm:overflow-x-hidden sm:px-[120px]">
       {(marketplaceData || []).map((marketplace) => (
-        <ItemCard key={marketplace.market_place_id} marketplace={marketplace} />
+        <ItemCard key={marketplace.market_id} marketplace={marketplace} />
       ))}
     </div>
   );
@@ -23,7 +23,7 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
   const router = useRouter();
 
   function handleGo() {
-    router.push(`/marketplace/${marketplace.market_place_name}`);
+    router.push(`/marketplace/${marketplace.market_id}`);
   }
 
   return (
@@ -35,18 +35,19 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
           "linear-gradient(180deg, #F0F1F5 0%, rgba(240, 241, 245, 0.5) 100%)",
       }}
     >
-      <TokenImg
-        tokenAddr={marketplace.token_mint}
+      <Image
+        src={WithProjectCDN(marketplace.market_id)}
         width={72}
         height={72}
         className="absolute -top-4 left-4 rounded-3xl"
+        alt="marketplace"
       />
 
       <div className="flex items-start justify-between pl-20">
         <div className="flex space-x-3">
           <div className="flex flex-col">
-            <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-lg leading-[26px] text-black">
-              {marketplace.market_place_name}
+            <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
+              {marketplace.market_name}
             </div>
             <div className="text-xs leading-[18px] text-gray">
               <span>Spread:</span>

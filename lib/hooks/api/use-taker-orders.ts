@@ -12,6 +12,7 @@ export interface TakerOrder {
   to: string;
   total_points: string;
   tx_hash: string;
+  order_id: string;
 }
 
 export function useTakerOrders(preOrderId: string, makerId?: string) {

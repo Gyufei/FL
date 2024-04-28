@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.depe.app",
+        hostname: "cdn-tadle.aggregation.top",
       },
       {
         protocol: "https",

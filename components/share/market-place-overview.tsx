@@ -8,11 +8,11 @@ export default function MarketplaceOverview({
   marketplace: IMarketplace;
 }) {
   return (
-    <div className="mt-5 flex-col space-y-4">
+    <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
         <div>
           <LabelText>Floor Price</LabelText>
-          <div className="flex items-center leading-6 text-black">
+          <div className="flex items-center text-sm leading-5 text-black">
             {formatNum(marketplace.floor_price, 6)}
             <Image src="/icons/eth.svg" width={18} height={18} alt="token" />
           </div>
@@ -20,7 +20,7 @@ export default function MarketplaceOverview({
 
         <div className="flex flex-col items-end">
           <LabelText>Total Vol.</LabelText>
-          <div className="flex items-center leading-6 text-black">
+          <div className="flex items-center text-sm leading-5 text-black">
             {formatNum(marketplace.total_vol)}
           </div>
         </div>
@@ -31,14 +31,14 @@ export default function MarketplaceOverview({
           <LabelText>24h Change</LabelText>
           <div
             data-up={Number(marketplace.change_rate_24h) > 0}
-            className="leading-6 data-[up=true]:text-green data-[up=false]:text-red"
+            className="text-sm leading-5 data-[up=true]:text-green data-[up=false]:text-red"
           >
             {marketplace.change_rate_24h}%
           </div>
         </div>
         <div className="flex flex-col items-end">
           <LabelText>24h Vol.</LabelText>
-          <div className="flex items-center leading-6 text-black">
+          <div className="flex items-center text-sm leading-5 text-black">
             ${marketplace.vol_24h}
           </div>
         </div>

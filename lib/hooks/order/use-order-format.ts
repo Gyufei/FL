@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { IToken } from "../../types/token";
 import { convertUTCToLocalStamp, formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
+import { WithPointCDN } from "@/lib/PathMap";
 
 export function useOrderFormat({ order }: { order: IOrder }) {
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
@@ -25,18 +26,18 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderPointInfo = {
     symbol: "POINTS",
-    logoURI: "/icons/point.svg",
+    logoURI: WithPointCDN(order.marketplace.market_id),
   } as IToken;
 
   // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderEqTokenInfo = {
     symbol: "TBA",
-    logoURI: "/icons/point.svg",
+    logoURI: WithPointCDN(order.marketplace.market_id),
     decimals: 9,
   } as IToken;
 
   const tokenLogo = orderTokenInfo.logoURI;
-  const pointLogo = orderPointInfo.logoURI;
+  const pointLogo = WithPointCDN(order.marketplace.market_id);
 
   const orderType = order.order_type;
 
@@ -91,6 +92,10 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     }
   }, [order.maker_status, order.taker_status, order.order_role, afterTGE]);
 
+  const isSettled = useMemo(() => {
+    return ["settled", "finished"].includes(order.maker_status)
+  }, [order.maker_status]);
+
   return {
     afterTGE,
     afterTGEPeriod,
@@ -112,5 +117,6 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     takerAmount,
     isCanSettle,
     makerAmount,
+    isSettled
   };
 }

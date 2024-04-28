@@ -1,10 +1,23 @@
 export function WithHost(path: string) {
-  return `https://demo-tadle.aggregation.top${path}`;
+  return `http://192.168.60.57:9096${path}`
+  // return `https://demo-tadle.aggregation.top${path}`;
   //return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
 }
 
-export function WithCDN(path: string) {
-  return `https://cdn.depe.app${path}`;
+function WithCDN(path: string) {
+  return `https://cdn-tadle.aggregation.top/images${path}`;
+  // return `${process.env.NEXT_PUBLIC_CDN_URL}${path}`;
+}
+
+export function WithProjectCDN(path: string) {
+  const goPath = path.endsWith(".png") ? path : `${path}.png`;
+  return WithCDN(`/project/${goPath}`)
+  // return `${process.env.NEXT_PUBLIC_CDN_URL}${path}`;
+}
+
+export function WithPointCDN(path: string) {
+  const goPath = path.endsWith(".png") ? path : `${path}.png`;
+  return WithCDN(`/point/${goPath}`)
   // return `${process.env.NEXT_PUBLIC_CDN_URL}${path}`;
 }
 

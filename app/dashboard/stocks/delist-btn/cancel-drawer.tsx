@@ -71,7 +71,7 @@ export default function CancelDrawer({
             />
 
             <div className="ml-3 text-xl leading-[30px] text-black">
-              {order.marketplace?.market_place_name}
+              {order.marketplace?.market_name}
             </div>
           </div>
 

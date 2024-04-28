@@ -71,8 +71,8 @@ export default function OverviewInfo() {
                 data-loss={accountInfo?.profit < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
               >
-                {accountInfo?.profit < 0 ? "-" : "+"} $
-                {formatNum(accountInfo?.profit)}
+                {accountInfo?.profit < 0 ? "-" : "+"}$
+                {formatNum(Math.abs(accountInfo?.profit))}
               </div>
             </div>
           </div>
@@ -105,8 +105,8 @@ export default function OverviewInfo() {
                 data-loss={accountInfo?.tax_income < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
               >
-                {accountInfo?.tax_income < 0 ? "-" : "+"} $
-                {formatNum(accountInfo?.tax_income)}
+                {accountInfo?.tax_income < 0 ? "-" : "+"}$
+                {formatNum(Math.abs(accountInfo?.tax_income))}
               </div>
             </div>
           </div>

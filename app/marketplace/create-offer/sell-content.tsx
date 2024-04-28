@@ -109,7 +109,11 @@ export function SellContent({
               value={sellPointAmount}
               onValueChange={handleSellPayChange}
               topText={<>You will sell</>}
-              bottomText={<>1 Diamond = ${pointPrice}</>}
+              bottomText={
+                <>
+                  1 {marketplace.point_name} = ${pointPrice}
+                </>
+              }
               tokenSelect={
                 <PointTokenSelectDisplay
                   token={sellPoint}
@@ -128,9 +132,9 @@ export function SellContent({
                   You&apos;d like to receive
                   <WithTip>
                     <div className="relative">
-                      When buying Diamonds, you need to wait until the diamonds
-                      convert into the protocol&apos;s tokens before you can
-                      receive tokens.
+                      When buying {marketplace.point_name}s, you need to wait
+                      until the {marketplace.point_name}s convert into the
+                      protocol&apos;s tokens before you can receive tokens.
                       <Image
                         src="/icons/info-tip.svg"
                         height={30}
@@ -197,8 +201,9 @@ export function SellContent({
             </div>
 
             <div className="mt-4 rounded-2xl bg-[#FFF6EE] p-3 text-sm leading-5 text-[#FFA95B]">
-              When buying Diamonds, you need to wait until the diamonds convert
-              into the protocol`&apos;`s tokens before you can receive tokens.
+              When buying {marketplace.point_name}s, you need to wait until the{" "}
+              {marketplace.point_name}s convert into the protocol`&apos;`s
+              tokens before you can receive tokens.
             </div>
 
             <div className="mt-4 mb-3 text-sm leading-5 text-gray">
@@ -206,7 +211,7 @@ export function SellContent({
               <span className="text-black">
                 {sellPointAmount} {sellPoint.symbol}
               </span>{" "}
-              diamonds for{" "}
+              {marketplace.point_name} for{" "}
               <span className="text-black">
                 {receiveTokenAmount} {receiveToken.symbol}
               </span>
@@ -247,7 +252,7 @@ export function SellContent({
 
             <div className="flex h-12 items-center justify-between border-b border-[#eee]">
               <div className="flex items-center space-x-1 text-sm leading-5 text-gray">
-                Price / Diamond
+                Price / {marketplace.point_name}
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center text-xs leading-[18px]">

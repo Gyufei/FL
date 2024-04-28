@@ -42,7 +42,7 @@ export function SwapItemPanel({
         <div className="text-xs leading-[18px] text-gray">{bottomText}</div>
       </div>
       <div className="flex items-center">
-        <Image src={tokenLogo} width={28} height={28} alt="token" />
+        <Image src={tokenLogo} width={28} height={28} alt="token" className="rounded-full" />
       </div>
     </div>
   );

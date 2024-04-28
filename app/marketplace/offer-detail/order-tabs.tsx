@@ -39,12 +39,12 @@ export default function OrderTabs({ order }: { order: IOrder }) {
             >
               Taker Orders
             </TabsTrigger>
-            <TabsTrigger
+            {/* <TabsTrigger
               className="w-[105px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
               value="history"
             >
               Order History
-            </TabsTrigger>
+            </TabsTrigger> */}
           </div>
           <div className="flex items-center space-x-2">
             <label

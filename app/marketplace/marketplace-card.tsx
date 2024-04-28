@@ -13,11 +13,10 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { useSetAtom } from "jotai";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { useTokens } from "@/lib/hooks/api/use-tokens";
-import TokenImg from "@/components/share/token-img";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/common";
+import { WithProjectCDN } from "@/lib/PathMap";
 
 export default function MarketplaceCard({
   marketplace,
@@ -38,9 +37,9 @@ export default function MarketplaceCard({
   }
 
   const handleCopy = () => {
-    if (!marketplace.market_place_name) return;
+    if (!marketplace.market_name) return;
 
-    navigator.clipboard.writeText(marketplace.market_place_name);
+    navigator.clipboard.writeText(marketplace.market_name);
 
     setGlobalMessage({
       type: "success",
@@ -59,18 +58,19 @@ export default function MarketplaceCard({
         "relative mt-4 rounded-3xl bg-[#F0F1F5] p-5 pt-3",
       )}
     >
-      <TokenImg
-        tokenAddr={marketplace.token_mint}
+      <Image
+        src={WithProjectCDN(marketplace.market_id)}
         width={73}
         height={73}
         className="absolute -top-4 rounded-3xl"
+        alt="marketplace"
       />
 
-      <div className="flex items-center justify-between pl-[84px]">
+      <div className="flex items-start justify-between pl-[84px]">
         <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
-            <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-lg leading-[28px] text-black">
-              {marketplace.market_place_name}
+            <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
+              {marketplace.market_name}
             </div>
             <OverviewIcons
               isStar={isStar}
@@ -156,7 +156,6 @@ function OverviewIcons({
 
 function FoldPop() {
   const { data: marketplaceData } = useMarketplaces();
-  const { data: tokens } = useTokens();
 
   const router = useRouter();
 
@@ -167,14 +166,13 @@ function FoldPop() {
   const cateList = useMemo(() => {
     return (marketplaceData || []).map((marketplace) => {
       return {
-        name: marketplace.market_place_name,
-        tokenLogo: tokens?.find((token) => {
-          token.address === marketplace.token_mint;
-        })?.logoURI,
-        link: marketplace.market_place_id,
+        name: marketplace.market_name,
+        id: marketplace.market_id,
+        tokenLogo: WithProjectCDN(marketplace.market_id),
+        link: marketplace.market_id,
       };
     });
-  }, [marketplaceData, tokens]);
+  }, [marketplaceData]);
 
   const filteredCateList = useMemo(
     () =>
@@ -188,8 +186,8 @@ function FoldPop() {
     [cateList, searchText],
   );
 
-  function handleGo(name: string) {
-    router.push(`/marketplace/${name}`);
+  function handleGo(id: string) {
+    router.push(`/marketplace/${id}`);
   }
 
   return (
@@ -230,11 +228,11 @@ function FoldPop() {
         {filteredCateList.map((cate) => (
           <div
             className="flex cursor-pointer rounded-lg px-2 py-[6px] hover:bg-[#fafafa]"
-            onClick={() => handleGo(cate.name)}
+            onClick={() => handleGo(cate.id)}
             key={cate.name}
           >
             <Image
-              src={cate.tokenLogo || "/img/token-placeholder.png"}
+              src={cate.tokenLogo}
               width={32}
               height={32}
               alt="avatar"

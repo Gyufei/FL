@@ -20,7 +20,7 @@ export default function HomeCarousel() {
       <CarouselContent>
         {marketplaceData &&
           marketplaceData.map((marketplace) => (
-            <CarouselItem key={marketplace.market_place_name}>
+            <CarouselItem key={marketplace.market_id}>
               <CarouselItem1 marketplace={marketplace} />
             </CarouselItem>
           ))}
@@ -39,7 +39,7 @@ function CarouselItem1({ marketplace }: { marketplace: IMarketplace }) {
   const router = useRouter();
 
   function handleGo() {
-    router.push(`/marketplace/${marketplace.market_place_name}`);
+    router.push(`/marketplace/${marketplace.market_id}`);
   }
 
   return (
@@ -60,7 +60,7 @@ function CarouselItem1({ marketplace }: { marketplace: IMarketplace }) {
       >
         <div className="flex flex-col items-start">
           <div className="text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
-            {marketplace.market_place_name}
+            {marketplace.market_name}
           </div>
           <div className="text-xs leading-[18px] text-gray sm:text-sm sm:leading-5">
             CARV IS BUILDING THE LARGEST GAMING CREDENTIAL INFRASTRUCTURE
@@ -69,7 +69,7 @@ function CarouselItem1({ marketplace }: { marketplace: IMarketplace }) {
             onClick={handleGo}
             className="mt-5 rounded-2xl bg-yellow px-[29px] pt-[13px] pb-[11px] text-base text-black"
           >
-            Trade {marketplace.market_place_name} Points
+            Trade {marketplace.market_name} Points
           </button>
         </div>
 

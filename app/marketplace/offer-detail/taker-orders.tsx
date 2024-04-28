@@ -104,9 +104,10 @@ export function TakerOrders({
           <span>{orderEqTokenInfo.symbol}</span>
           <Image
             src={orderEqTokenInfo.logoURI}
-            width={12}
-            height={12}
+            width={16}
+            height={16}
             alt="token"
+            className="rounded-full"
           />
         </div>
       ),
@@ -186,7 +187,7 @@ function PointsCell({
       <div>
         #{points} ({percent}%)
       </div>
-      <Image src={offerLogo} width={16} height={16} alt="token" />
+      <Image src={offerLogo} width={16} height={16} alt="token" className="rounded-full" />
     </div>
   );
 }

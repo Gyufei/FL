@@ -9,7 +9,7 @@ export function useMarketplaces() {
   const { apiEndPoint } = useEndPoint();
 
   const MarketplacesFetcher = async () => {
-    const res = await fetcher(`${apiEndPoint}${Paths.marketPlace}`);
+    const res = await fetcher(`${apiEndPoint}${Paths.marketPlace}?market_type=point`);
     return res as Array<IMarketplace>;
   };
 

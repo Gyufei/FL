@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { IOrder } from "@/lib/types/order";
-import ConfirmAskSettleDialog from "../../my-orders/my-offer-detail/confirm-ask-settle-dialog";
-import ConfirmBidSettleDialog from "../../my-orders/my-offer-detail/confirm-bid-settle-dialog";
+import ConfirmAskSettleDialog from "../../orders/my-offer-detail/confirm-ask-settle-dialog";
+import ConfirmBidSettleDialog from "../../orders/my-offer-detail/confirm-bid-settle-dialog";
 
 export default function SettleDrawerBtn({ order }: { order: IOrder }) {
   const isAsk = order.order_type === "ask";

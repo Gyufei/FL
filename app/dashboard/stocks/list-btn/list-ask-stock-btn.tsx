@@ -98,7 +98,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
               value={sellPointAmount}
               onValueChange={() => {}}
               topText={<>You will sell</>}
-              bottomText={<>1 Diamond = ${formatNum(pointPrice)}</>}
+              bottomText={<>1 {order.marketplace.point_name} = ${formatNum(pointPrice)}</>}
               isCanInput={false}
               tokenSelect={
                 <PointTokenSelectDisplay
@@ -117,7 +117,7 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
                 <div className="flex items-center">
                   You&apos;d like to receive
                   <WithTip>
-                    When buying Diamonds, you need to wait until the diamonds
+                    When buying {order.marketplace.point_name}s, you need to wait until the {order.marketplace.point_name}s
                     convert into the protocol&apos;s tokens before you can
                     receive tokens.
                   </WithTip>

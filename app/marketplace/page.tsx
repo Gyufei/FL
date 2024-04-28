@@ -8,7 +8,7 @@ export default function Marketplace() {
   const { data: marketplaceData } = useMarketplaces();
 
   if (marketplaceData) {
-    router.push(`/marketplace/${marketplaceData[0].market_place_name}`);
+    router.push(`/marketplace/${marketplaceData[0].market_id}`);
   }
 
   return null;

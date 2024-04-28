@@ -85,7 +85,6 @@ export default function ConfirmBidSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              preOrderStr={order.pre_order_included_zero}
               onDone={() => onOpenChange(false)}
             />
           )}

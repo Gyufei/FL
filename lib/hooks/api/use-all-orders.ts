@@ -19,7 +19,7 @@ export function useAllOrders() {
 
     for (const marketplace of marketplaceData) {
       const orderRes = await fetcher(
-        `${apiEndPoint}${Paths.order}?project=${marketplace.market_place_name}`,
+        `${apiEndPoint}${Paths.order}?project=${marketplace.market_id}`,
       );
 
       let parsedRes = orderRes.map((order: Record<string, any>) => {
@@ -65,7 +65,7 @@ export function useAllOrders() {
   };
 
   const res = useSWR(
-    () => marketplaceData?.map((m) => m.market_place_id),
+    () => marketplaceData?.map((m) => m.market_id),
     AllOrdersFetcher,
   );
 

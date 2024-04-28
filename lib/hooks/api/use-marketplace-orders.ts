@@ -12,7 +12,7 @@ export function useMarketplaceOrders({
     () => {
 
       const marketOrders = (allOrdersRes.data || [])?.filter(
-        (order) => order.marketplace.market_place_id === marketplaceId,
+        (order) => order.marketplace.market_id === marketplaceId,
       );
 
       const canBuyOrders = marketOrders?.filter(

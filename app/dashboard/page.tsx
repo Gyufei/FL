@@ -9,7 +9,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (pathname === "/dashboard") {
-      router.push("/dashboard/my-orders");
+      router.push("/dashboard/orders");
     }
   });
 

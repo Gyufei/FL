@@ -6,7 +6,6 @@ export default function SettleBidMaker({
   marketplaceStr,
   orderStr,
   makerStr,
-  preOrderStr,
   onSuccess,
 }: {
   marketplaceStr: string;
@@ -21,9 +20,8 @@ export default function SettleBidMaker({
     isSuccess,
   } = useSettleBidMaker({
     marketplaceStr,
-    orderStr,
     makerStr,
-    preOrderStr,
+    orderStr: orderStr,
   });
 
   function handleConfirm() {

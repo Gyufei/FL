@@ -58,7 +58,7 @@ export default function OrderFillDialog({
           </div>
         </div>
 
-        <Link href="/dashboard/my-stocks">
+        <Link href="/dashboard/stocks">
           <button className="mt-7 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
             <span className="mr-1 inline-block">Go To My Stocks</span>
             <Image

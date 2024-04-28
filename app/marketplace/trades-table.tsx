@@ -17,7 +17,7 @@ export function TradesTable({
   type: ITradeType;
   marketplace: IMarketplace;
 }) {
-  const { data: historyData } = useMarketTrades(marketplace.market_place_id);
+  const { data: historyData } = useMarketTrades(marketplace.market_id);
   const { msgEvents } = useWsMsgs();
 
   const tradeMsgs = useMemo<any[]>(() => {
@@ -138,7 +138,7 @@ export function TradesTable({
         alt="time"
         className="absolute left-0 top-[10px] z-10"
       />
-      <div className="max-h-auto relative min-h-[130px] w-full flex-1 flex-col overflow-y-hidden pb-0">
+      <div className="max-h-auto relative w-full flex-1 flex-col overflow-y-hidden pb-0">
         <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
           <CompactTable
             columns={COLUMNS}

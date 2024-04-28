@@ -26,6 +26,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { WithProjectCDN } from "@/lib/PathMap";
 
 export function OrderTable({
   role,
@@ -37,7 +38,6 @@ export function OrderTable({
   type: string;
 }) {
   const { data: orders } = useMyOrders();
-  const { handleGoScan } = useGoScan();
 
   function openDetail(ord: any) {
     setCurDetail(ord);
@@ -139,9 +139,7 @@ export function OrderTable({
                   Eq.Token
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">From/To</HeaderCell>
-                <HeaderCell className="h-10 px-1 py-[11px]">
-                  {type === "ask" ? "Seller" : "Buyer"}
-                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">Tx</HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
                   Created Time
                 </HeaderCell>
@@ -161,7 +159,7 @@ export function OrderTable({
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div>
                       <div className="text-sm leading-5 text-black">
-                        {ord.marketplace.market_place_name}
+                        {ord.marketplace.market_name}
                       </div>
                       <div className="text-[10px] leading-4 text-gray">
                         #{ord.order_id}
@@ -178,25 +176,7 @@ export function OrderTable({
                     <OrderFromTo order={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <div className="flex items-center">
-                      {ord.preOrderDetail?.maker_id && (
-                        <>
-                          <span className="text-sm leading-5 text-black">
-                            {truncateAddr(ord.preOrderDetail?.maker_id || "")}
-                          </span>
-                          <Image
-                            onClick={() =>
-                              handleGoScan(ord.preOrderDetail?.maker_id || "")
-                            }
-                            src="/icons/right-45.svg"
-                            width={16}
-                            height={16}
-                            alt="goScan"
-                            className="cursor-pointer"
-                          />
-                        </>
-                      )}
-                    </div>
+                    <OrderHash order={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <span className="text-sm leading-5 text-black">
@@ -265,13 +245,12 @@ export function OrderTable({
 }
 
 function OrderItem({ order }: { order: IOrder }) {
-  const { offerLogo } = useOrderFormat({ order });
   const { currentChain } = useCurrentChain();
 
   return (
     <div className="relative h-fit w-fit">
       <Image
-        src={offerLogo}
+        src={WithProjectCDN(order.marketplace.market_id)}
         width={32}
         height={32}
         alt="avatar"
@@ -298,9 +277,10 @@ function OrderEqToken({ order }: { order: IOrder }) {
       <span>{orderEqTokenInfo.symbol}</span>
       <Image
         src={orderEqTokenInfo.logoURI}
-        width={12}
-        height={12}
+        width={16}
+        height={16}
         alt="token"
+        className="rounded-full"
       />
     </div>
   );
@@ -312,14 +292,26 @@ function OrderFromTo({ order }: { order: IOrder }) {
   });
 
   return (
-    <div className="flex w-fit flex-col items-end">
+    <div className="flex w-fit flex-col items-start">
       <div className="flex items-center space-x-2">
+        <Image
+          src={offerLogo}
+          width={16}
+          height={16}
+          alt="token"
+          className="rounded-full"
+        />
         <span className="text-sm leading-5 text-black">{offerValue}</span>
-        <Image src={offerLogo} width={16} height={16} alt="token" />
       </div>
       <div className="flex items-center space-x-2">
+        <Image
+          src={forLogo}
+          width={16}
+          height={16}
+          alt="token"
+          className="rounded-full"
+        />
         <span className="text-sm leading-5 text-black">{forValue}</span>
-        <Image src={forLogo} width={16} height={16} alt="token" />
       </div>
     </div>
   );
@@ -334,6 +326,29 @@ function OrderRole({ order }: { order: IOrder }) {
       className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
     >
       {orderRole}
+    </div>
+  );
+}
+
+function OrderHash({ order }: { order: IOrder }) {
+  const { handleGoScan } = useGoScan();
+
+  const hash =
+    order.order_role === "Taker" ? order.taker_tx_hash : order.maker_tx_hash;
+
+  return (
+    <div className="flex items-center">
+      <span className="text-sm leading-5 text-black">
+        {truncateAddr(hash || "")}
+      </span>
+      <Image
+        onClick={() => handleGoScan(hash || "", "tx")}
+        src="/icons/right-45.svg"
+        width={16}
+        height={16}
+        alt="goScan"
+        className="cursor-pointer"
+      />
     </div>
   );
 }

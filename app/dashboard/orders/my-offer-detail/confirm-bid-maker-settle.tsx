@@ -6,11 +6,9 @@ export default function ConfirmBidMakerSettleBtn({
   marketplaceStr,
   orderStr,
   makerStr,
-  preOrderStr,
   onDone,
 }: {
   marketplaceStr: string;
-  preOrderStr: string;
   orderStr: string;
   makerStr: string;
   onDone: () => void;
@@ -21,9 +19,8 @@ export default function ConfirmBidMakerSettleBtn({
     isSuccess,
   } = useSettleBidMaker({
     marketplaceStr,
-    orderStr,
     makerStr,
-    preOrderStr,
+    orderStr,
   });
 
   function handleConfirm() {

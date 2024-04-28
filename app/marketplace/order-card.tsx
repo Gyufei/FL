@@ -16,6 +16,8 @@ import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useMemo } from "react";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { CTooltipArrow } from "@/components/share/tootip-arrow";
+import { WithProjectCDN } from "@/lib/PathMap";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export function OrderCard({
   order,
@@ -37,6 +39,8 @@ export function OrderCard({
     order,
   });
 
+  const { currentChain } = useCurrentChain();
+
   const orderType = order.order_type;
 
   const showBuy = useMemo(() => {
@@ -48,15 +52,15 @@ export function OrderCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <TokenPairImg
-            src1={offerLogo}
-            src2={forLogo}
+            src1={WithProjectCDN(marketplace.market_id)}
+            src2={currentChain.logo}
             width1={48}
             height1={48}
           />
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {marketplace.market_place_name}
+              {marketplace.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
               #{order.order_id}
@@ -90,7 +94,9 @@ export function OrderCard({
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
             {orderType === "ask" ? (
-              <>${formatNum(pointPerPrice, 6)} /Diamond</>
+              <>
+                ${formatNum(pointPerPrice, 6)} / {order.marketplace.point_name}
+              </>
             ) : (
               <>${formatNum(tokenTotalPrice)}</>
             )}
@@ -120,7 +126,9 @@ export function OrderCard({
             {orderType === "ask" ? (
               <>${formatNum(tokenTotalPrice)}</>
             ) : (
-              <>${formatNum(pointPerPrice, 6)} /Diamond</>
+              <>
+                ${formatNum(pointPerPrice, 6)} / {order.marketplace.point_name}
+              </>
             )}
           </div>
         </div>

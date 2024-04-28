@@ -36,7 +36,7 @@ export default function SalesChart({
 }) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
-  const marketId = marketplace?.market_place_id;
+  const marketId = marketplace?.market_id;
 
   const { data: salesData } = useSalesVolume(marketId);
 
@@ -162,6 +162,7 @@ export default function SalesChart({
         enabled: false,
       },
       tooltip: {
+        enabled: false,
         shared: true,
         useHTML: true,
         headerFormat: '<table><tr><th colspan="2">{point.key}</th></tr>',

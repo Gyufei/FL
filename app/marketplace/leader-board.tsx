@@ -44,7 +44,7 @@ export default function LeaderBoard({ className }: { className?: string }) {
   const theme = useTheme({
     Table: `
       grid-template-rows: 40px repeat(auto-fit, 40px);
-      grid-template-columns: 50px 150px 1fr;
+      grid-template-columns: 42px 150px 1fr;
       font-weight: 400;
 
       &::-webkit-scrollbar {
@@ -169,7 +169,7 @@ export default function LeaderBoard({ className }: { className?: string }) {
           handleTypeChange={handleRangeTypeChange}
         />
       </div>
-      <div className="max-h-auto relative min-h-[80px] w-full flex-1 flex-col overflow-y-hidden">
+      <div className="max-h-auto relative min-h-[149.5px] w-full flex-1 flex-col overflow-y-hidden">
         <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
           <CompactTable
             columns={COLUMNS}

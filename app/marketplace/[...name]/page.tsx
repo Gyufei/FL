@@ -15,7 +15,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   const { data: marketplaceData } = useMarketplaces();
 
   const marketplace = marketplaceData?.find(
-    (marketplace) => marketplace.market_place_name === marketplaceName,
+    (marketplace) => marketplace.market_id === marketplaceName,
   );
 
   const { checkIsAfterTge } = useTge();
@@ -40,16 +40,16 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     return (
       <div className="flex h-[calc(100vh-96px)] w-full flex-col">
         <div className="flex flex-1 items-stretch">
-          <div className="flex w-[348px] flex-col space-y-6 px-6">
+          <div className="flex w-[328px] flex-col space-y-6 px-6">
             <MarketplaceCard
-              className="basic-[254px] h-[254px] shrink-0 grow-0"
+              className="basic-[218px] h-[218px] shrink-0 grow-0"
               marketplace={marketplace}
             />
             <LeaderBoard className="shrink grow" />
             <div className="shrink-0 grow-0">
               <Image
                 src="/img/ad-placeholder-1.png"
-                width={300}
+                width={280}
                 height={160}
                 alt="ad1"
                 className="rounded-2xl"
@@ -59,8 +59,8 @@ export default function Marketplace({ params }: { params: { name: string } }) {
           <div
             className="flex-1"
             style={{
-              minHeight: "max(calc(100vh - 156px), 596.75px)",
-              maxHeight: "max(calc(100vh - 156px), 596.75px)",
+              minHeight: "min(calc(100vh - 156px), 619px)",
+              maxHeight: "max(calc(100vh - 156px), 619px)",
             }}
           >
             {isAfterTge ? (

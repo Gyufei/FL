@@ -6,6 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+// import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 
 export function PointTokenSelectDisplay({
   token,
@@ -14,6 +15,7 @@ export function PointTokenSelectDisplay({
   token: IToken;
   setToken: (_t: IToken) => void;
 }) {
+  // const { data: marketplaceData } = useMarketplaces();
   const tokens = [
     {
       symbol: "POINTS",

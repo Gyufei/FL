@@ -99,7 +99,7 @@ export default function AskDetail({
           <OfferInfo
             img1={offerLogo}
             img2={forLogo}
-            name={order.marketplace.market_place_name}
+            name={order.marketplace.market_name}
             no={order.order_id}
             progress={progress}
           />
@@ -117,7 +117,7 @@ export default function AskDetail({
 
           <ReceiveCard
             topText={<>You will receive</>}
-            bottomText={<>1 Diamond = ${formatNum(pointPerPrice)}</>}
+            bottomText={<>1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}</>}
             value={String(receivePointAmount)}
             tokenLogo={offerLogo}
           />

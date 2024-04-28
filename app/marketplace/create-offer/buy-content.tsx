@@ -129,13 +129,13 @@ export function BuyContent({
                 <div className="flex items-center">
                   You&apos;d like to receive
                   <WithTip>
-                    When buying Diamonds, you need to wait until the diamonds
+                    When buying {marketplace.point_name}s, you need to wait until the {marketplace.point_name}s
                     convert into the protocol&apos;s tokens before you can
                     receive tokens.
                   </WithTip>
                 </div>
               }
-              bottomText={<>1 Diamond = ${pointPrice}</>}
+              bottomText={<>1 {marketplace.point_name} = ${pointPrice}</>}
               tokenSelect={
                 <PointTokenSelectDisplay
                   token={receivePoint}
@@ -188,7 +188,7 @@ export function BuyContent({
             </div>
 
             <div className="mt-4 rounded-2xl bg-[#FFF6EE] p-3 text-sm leading-5 text-[#FFA95B]">
-              When buying Diamonds, you need to wait until the diamonds convert
+              When buying {marketplace.point_name}s, you need to wait until the {marketplace.point_name}s convert
               into the protocol&apos;s tokens before you can receive tokens.
             </div>
 
@@ -197,7 +197,7 @@ export function BuyContent({
               <span className="text-black">
                 {receivePointAmount} {receivePoint.symbol}
               </span>{" "}
-              diamonds for{" "}
+              {marketplace.point_name} for{" "}
               <span className="text-black">
                 {payTokenAmount} {payToken.symbol}
               </span>
@@ -238,7 +238,7 @@ export function BuyContent({
 
             <div className="flex h-12 items-center justify-between border-b border-[#eee]">
               <div className="flex items-center space-x-1 text-sm leading-5 text-gray">
-                Price / Diamond
+                Price / {marketplace.point_name}
                 <WithTip></WithTip>
               </div>
               <div className="flex items-center text-xs leading-[18px]">

@@ -88,14 +88,14 @@ export default function BidDetail({
           <OfferInfo
             img1={offerLogo}
             img2={forLogo}
-            name={order.marketplace.market_place_name}
+            name={order.marketplace.market_name}
             no={order.order_id}
             progress={progress}
           />
 
           <SliderCard
             topText={<>You will sell</>}
-            bottomText={<>1 Diamond = ${formatNum(pointPerPrice)}</>}
+            bottomText={<>1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}</>}
             value={String(sellPointAmount)}
             canGoMax={sliderCanMax}
             sliderMax={Number(order.points)}

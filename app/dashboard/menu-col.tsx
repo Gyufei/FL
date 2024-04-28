@@ -9,20 +9,20 @@ export default function MenuCol() {
   return (
     <div className="mt-[70px] flex flex-col  space-y-5">
       <MenuIcon
-        href="/dashboard/my-orders"
-        isActive={pathname === "/dashboard/my-orders"}
+        href="/dashboard/orders"
+        isActive={pathname === "/dashboard/orders"}
       >
         <Image src="/icons/orders.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
       <MenuIcon
-        href="/dashboard/my-stocks"
-        isActive={pathname === "/dashboard/my-stocks"}
+        href="/dashboard/stocks"
+        isActive={pathname === "/dashboard/stocks"}
       >
         <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
       <MenuIcon
-        href="/dashboard/my-balances"
-        isActive={pathname === "/dashboard/my-balances"}
+        href="/dashboard/balances"
+        isActive={pathname === "/dashboard/balances"}
       >
         <Image src="/icons/wallet.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>

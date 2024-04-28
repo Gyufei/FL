@@ -5,21 +5,25 @@ import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
 import { useAllOrders } from "../api/use-all-orders";
+import { useTakerOrders } from "../api/use-taker-orders";
 
 export function useSettleBidMaker({
   marketplaceStr,
   makerStr,
   orderStr,
-  preOrderStr,
 }: {
   marketplaceStr: string;
   makerStr: string;
   orderStr: string;
-  preOrderStr: string;
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
+
+  const { data: subOrders } = useTakerOrders(orderStr, undefined);
+
+  const subOrderStrings = subOrders?.map((o) => o.order_id) || [];
+
 
   const writeAction = async () => {
     const {
@@ -44,9 +48,16 @@ export function useSettleBidMaker({
     )[0];
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const bidOrder = new PublicKey(orderStr);
     const bidMaker = new PublicKey(makerStr);
-    const bidMakerOrder = new PublicKey(preOrderStr);
+    const bidMakerOrder = new PublicKey(orderStr);
+
+    const bidOrders = (subOrderStrings || []).map(
+      (os: string) => ({
+          pubkey: new PublicKey(os),
+          isSigner: false,
+          isWritable: true,
+      })
+    ) 
 
     const txHash = await program.methods
       .settleBidMaker()
@@ -70,13 +81,7 @@ export function useSettleBidMaker({
         associatedTokenProgram,
         systemProgram,
       })
-      .remainingAccounts([
-        {
-          pubkey: bidOrder,
-          isSigner: false,
-          isWritable: true,
-        },
-      ])
+      .remainingAccounts(bidOrders)
       .signers([])
       .rpc();
 

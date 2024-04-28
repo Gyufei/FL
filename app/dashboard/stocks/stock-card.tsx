@@ -9,10 +9,11 @@ import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useState } from "react";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
-import MyAskDetail from "../my-orders/my-offer-detail/my-ask-detail";
-import MyBidDetail from "../my-orders/my-offer-detail/my-bid-detail";
+import MyAskDetail from "../orders/my-offer-detail/my-ask-detail";
+import MyBidDetail from "../orders/my-offer-detail/my-bid-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
+import { WithProjectCDN } from "@/lib/PathMap";
 
 export default function StockCard({ order }: { order: IOrder }) {
   const {
@@ -63,7 +64,7 @@ export default function StockCard({ order }: { order: IOrder }) {
           onClick={() => setDrawerOpen(true)}
         >
           <TokenPairImg
-            src1={offerLogo}
+            src1={WithProjectCDN(order.marketplace?.market_id)}
             src2={currentChain.logo}
             width1={48}
             height1={48}
@@ -73,7 +74,7 @@ export default function StockCard({ order }: { order: IOrder }) {
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {order.marketplace?.market_place_name}
+              {order.marketplace?.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
               #{order.order_id}
@@ -99,11 +100,11 @@ export default function StockCard({ order }: { order: IOrder }) {
               width={16}
               height={16}
               alt="stable"
-              className="ml-1"
+              className="ml-1 rounded-full"
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} /Diamond
+            ${formatNum(pointPerPrice, 6)} / {order.marketplace.point_name}
           </div>
         </div>
         <Image
@@ -121,7 +122,7 @@ export default function StockCard({ order }: { order: IOrder }) {
               width={16}
               height={16}
               alt="stable"
-              className="ml-1"
+              className="ml-1 rounded-full"
             />
           </div>
           <div className="text-xs leading-[18px] text-lightgray">

@@ -10,8 +10,13 @@ import WalletSelectDialog, {
 } from "@/components/share/wallet-select-dialog";
 import toPubString from "@/lib/utils/pub-string";
 import { useAtom, useSetAtom } from "jotai";
-import { SignInBtn } from "./sign-in-btn";
-import { ShowSignAtom } from "@/lib/states/user";
+import { useUserState } from "@/lib/hooks/api/use-user-state";
+import { useSignInAction } from "@/lib/hooks/web3/use-sign-in-action";
+// import { SignInBtn } from "./sign-in-btn";
+import { ShowSignDialogAtom } from "@/lib/states/user";
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let signInFlag = false;
 
 export default function ConnectBtn() {
   const setWalletSelectDialogVisible = useSetAtom(
@@ -26,7 +31,17 @@ export default function ConnectBtn() {
 
   const address = toPubString(publicKey);
 
+  const { data: userState, mutate: refreshUserState } = useUserState(address);
+  const { signInAction } = useSignInAction();
+
   const [shortAddr, setShortAddr] = useState("");
+
+  async function signIn() {
+    signInFlag = true;
+    await signInAction();
+    refreshUserState();
+    signInFlag = false;
+  }
 
   useEffect(() => {
     if (!address) return;
@@ -36,9 +51,13 @@ export default function ConnectBtn() {
     });
 
     setShortAddr(sa);
-  }, [address]);
 
-  const [showSignIn, setShowSignIn] = useAtom(ShowSignAtom);
+    if (userState && !userState.is_sign_in && !signInFlag) {
+      signIn();
+    }
+  }, [address, userState]);
+
+  const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
 
   if (!connected) {
     return (
@@ -60,7 +79,7 @@ export default function ConnectBtn() {
       <DialogTrigger asChild>
         <button className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:brightness-75 sm:h-12">
           <div className="flex items-center">
-            {!shortAddr || connecting ? (
+            {!shortAddr || connecting || !userState?.is_sign_in ? (
               <Skeleton className="h-5 w-24" />
             ) : (
               <div>{shortAddr}</div>
@@ -72,7 +91,7 @@ export default function ConnectBtn() {
         showClose={false}
         className="flex w-[360px] flex-col items-center gap-0 rounded-3xl border-none bg-white p-6"
       >
-        <div className="text-xl leading-[30px] text-black">
+        {/* <div className="text-xl leading-[30px] text-black">
           You&apos;re signed out
         </div>
         <div className="text-center text-sm leading-5 text-black">
@@ -80,7 +99,7 @@ export default function ConnectBtn() {
           <br /> that you&apos;re the owner of the connected <br />
           address
         </div>
-        <SignInBtn />
+        <SignInBtn /> */}
         <Disconnect />
       </DialogContent>
     </Dialog>

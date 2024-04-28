@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 "use client";
 
-import { AccessTokenAtom, ShowSignAtom, UserStore } from "./states/user";
+import { AccessTokenAtom, ShowSignDialogAtom, UserStore } from "./states/user";
 
 export async function plainFetcher(
   input: URL | RequestInfo,
@@ -38,7 +38,7 @@ export default async function fetcher(
 
       if (res.status === 401) {
         UserStore.set(AccessTokenAtom, "");
-        UserStore.set(ShowSignAtom, true);
+        UserStore.set(ShowSignDialogAtom, true);
         return null;
       }
 

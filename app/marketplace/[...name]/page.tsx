@@ -54,8 +54,16 @@ export default function Marketplace({ params }: { params: { name: string } }) {
             </div>
           </div>
           <div className="max-h-[calc(100vh-156px)] min-h-[748px] flex-1">
-            {isAfterTge ? (
-              <div className="flex h-full items-center justify-center rounded-3xl bg-[#fafafa] p-5">
+            {!isAfterTge ? (
+              <div className="flex h-full flex-col items-center justify-center rounded-3xl bg-[#fafafa] p-5">
+                <div>
+                  <Image
+                    src="/img/under-settlement.svg"
+                    width={200}
+                    height={200}
+                    alt="under settlement"
+                  />
+                </div>
                 <div className="text-center text-xl leading-8 text-gray">
                   This project is under settlement. <br />
                   No offer is available.

@@ -63,7 +63,7 @@ function CarouselItem1({ marketplace }: { marketplace: IMarketplace }) {
             {marketplace.market_name}
           </div>
           <div className="text-xs leading-[18px] text-gray sm:text-sm sm:leading-5">
-            CARV IS BUILDING THE LARGEST GAMING CREDENTIAL INFRASTRUCTURE
+             {/* IS BUILDING THE LARGEST GAMING CREDENTIAL INFRASTRUCTURE */}
           </div>
           <button
             onClick={handleGo}

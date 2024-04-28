@@ -1,6 +1,6 @@
 export function WithHost(path: string) {
-  return `http://192.168.60.57:9096${path}`
-  // return `https://demo-tadle.aggregation.top${path}`;
+  // return `http://192.168.60.57:9096${path}`
+  return `https://demo-tadle.aggregation.top${path}`;
   //return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
 }
 

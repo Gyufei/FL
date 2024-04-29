@@ -10,13 +10,12 @@ import { useMemo, useState } from "react";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useCloseOriginMaker } from "@/lib/hooks/contract/use-close-origin-maker";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function MyAskDetail({ order: order }: { order: IOrder }) {
   const {
     tokenTotalPrice,
     progress,
-    offerLogo,
-    forLogo,
     pointPerPrice,
     amount,
     orderTokenInfo,
@@ -26,6 +25,8 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
   } = useOrderFormat({
     order,
   });
+
+  const { currentChain } = useCurrentChain();
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
@@ -63,8 +64,8 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={offerLogo}
-            img2={forLogo}
+            img1={order.marketplace.projectLogo}
+            img2={currentChain.logo}
             name={order.marketplace.market_name}
             no={order.order_id}
             progress={progress}
@@ -94,9 +95,9 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
               <div className="flex items-center">
                 You will receive
                 <WithTip>
-                  When buying {order.marketplace.point_name}s, you need to wait until the {order.marketplace.point_name}s
-                  convert into the protocol&apos;s tokens before you can receive
-                  tokens.
+                  When buying {order.marketplace.point_name}s, you need to wait
+                  until the {order.marketplace.point_name}s convert into the
+                  protocol&apos;s tokens before you can receive tokens.
                 </WithTip>
               </div>
             }

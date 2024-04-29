@@ -16,7 +16,6 @@ import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useMemo } from "react";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { CTooltipArrow } from "@/components/share/tootip-arrow";
-import { WithProjectCDN } from "@/lib/PathMap";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export function OrderCard({
@@ -52,7 +51,7 @@ export function OrderCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <TokenPairImg
-            src1={WithProjectCDN(marketplace.market_id)}
+            src1={marketplace.projectLogo}
             src2={currentChain.logo}
             width1={48}
             height1={48}

@@ -9,13 +9,12 @@ import ConfirmBidSettleDialog from "./confirm-bid-settle-dialog";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function MyBidDetail({ order }: { order: IOrder }) {
   const {
     tokenTotalPrice,
     progress,
-    offerLogo,
-    forLogo,
     pointPerPrice,
     amount,
     orderTokenInfo,
@@ -26,6 +25,8 @@ export default function MyBidDetail({ order }: { order: IOrder }) {
   } = useOrderFormat({
     order,
   });
+
+  const { currentChain } = useCurrentChain();
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
@@ -39,8 +40,8 @@ export default function MyBidDetail({ order }: { order: IOrder }) {
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={offerLogo}
-            img2={forLogo}
+            img1={order.marketplace.projectLogo}
+            img2={currentChain.logo}
             name={order.marketplace.market_name}
             no={order.order_id}
             progress={progress}

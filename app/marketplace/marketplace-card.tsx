@@ -16,7 +16,6 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/common";
-import { WithProjectCDN } from "@/lib/PathMap";
 
 export default function MarketplaceCard({
   marketplace,
@@ -59,7 +58,7 @@ export default function MarketplaceCard({
       )}
     >
       <Image
-        src={WithProjectCDN(marketplace.market_id)}
+        src={marketplace.projectLogo}
         width={73}
         height={73}
         className="absolute -top-4 rounded-3xl"
@@ -168,7 +167,7 @@ function FoldPop() {
       return {
         name: marketplace.market_name,
         id: marketplace.market_id,
-        tokenLogo: WithProjectCDN(marketplace.market_id),
+        tokenLogo: marketplace.projectLogo,
         link: marketplace.market_id,
       };
     });

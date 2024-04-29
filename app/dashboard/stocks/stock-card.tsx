@@ -13,7 +13,6 @@ import MyAskDetail from "../orders/my-offer-detail/my-ask-detail";
 import MyBidDetail from "../orders/my-offer-detail/my-bid-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
-import { WithProjectCDN } from "@/lib/PathMap";
 
 export default function StockCard({ order }: { order: IOrder }) {
   const {
@@ -64,7 +63,7 @@ export default function StockCard({ order }: { order: IOrder }) {
           onClick={() => setDrawerOpen(true)}
         >
           <TokenPairImg
-            src1={WithProjectCDN(order.marketplace?.market_id)}
+            src1={order.marketplace?.projectLogo}
             src2={currentChain.logo}
             width1={48}
             height1={48}

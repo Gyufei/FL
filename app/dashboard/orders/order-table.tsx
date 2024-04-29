@@ -26,7 +26,6 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
-import { WithProjectCDN } from "@/lib/PathMap";
 
 export function OrderTable({
   role,
@@ -250,7 +249,7 @@ function OrderItem({ order }: { order: IOrder }) {
   return (
     <div className="relative h-fit w-fit">
       <Image
-        src={WithProjectCDN(order.marketplace.market_id)}
+        src={order.marketplace.projectLogo}
         width={32}
         height={32}
         alt="avatar"

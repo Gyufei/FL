@@ -16,4 +16,7 @@ export interface IMarketplace {
   settlement_period: string;
   status: string;
   trade_spread: string;
+
+  projectLogo: string;
+  pointLogo: string;
 }

@@ -11,6 +11,7 @@ import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function AskDetail({
   order,
@@ -20,6 +21,7 @@ export default function AskDetail({
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const { platformFee } = useGlobalConfig();
+  const { currentChain } = useCurrentChain();
   const {
     tokenPrice,
     progress,
@@ -97,8 +99,8 @@ export default function AskDetail({
         {/* left card */}
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={offerLogo}
-            img2={forLogo}
+            img1={order.marketplace.projectLogo}
+            img2={currentChain.logo}
             name={order.marketplace.market_name}
             no={order.order_id}
             progress={progress}
@@ -117,7 +119,11 @@ export default function AskDetail({
 
           <ReceiveCard
             topText={<>You will receive</>}
-            bottomText={<>1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}</>}
+            bottomText={
+              <>
+                1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}
+              </>
+            }
             value={String(receivePointAmount)}
             tokenLogo={offerLogo}
           />

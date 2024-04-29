@@ -5,7 +5,6 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { IMarketplace } from "@/lib/types/marketplace";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
-import { WithProjectCDN } from "@/lib/PathMap";
 
 export default function MarketplaceList() {
   const { data: marketplaceData } = useMarketplaces();
@@ -36,7 +35,7 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
       }}
     >
       <Image
-        src={WithProjectCDN(marketplace.market_id)}
+        src={marketplace.projectLogo}
         width={72}
         height={72}
         className="absolute -top-4 left-4 rounded-3xl"

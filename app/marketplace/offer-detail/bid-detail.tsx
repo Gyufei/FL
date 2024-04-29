@@ -9,6 +9,7 @@ import OrderTabs from "./order-tabs";
 import { useAskTaker } from "@/lib/hooks/contract/use-ask-taker";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function BidDetail({
   order,
@@ -29,6 +30,8 @@ export default function BidDetail({
   } = useOrderFormat({
     order,
   });
+
+  const { currentChain } = useCurrentChain();
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -86,8 +89,8 @@ export default function BidDetail({
         {/* left card */}
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={offerLogo}
-            img2={forLogo}
+            img1={order.marketplace.projectLogo}
+            img2={currentChain.logo}
             name={order.marketplace.market_name}
             no={order.order_id}
             progress={progress}
@@ -95,7 +98,11 @@ export default function BidDetail({
 
           <SliderCard
             topText={<>You will sell</>}
-            bottomText={<>1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}</>}
+            bottomText={
+              <>
+                1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}
+              </>
+            }
             value={String(sellPointAmount)}
             canGoMax={sliderCanMax}
             sliderMax={Number(order.points)}

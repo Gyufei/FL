@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { IToken } from "../../types/token";
 import { convertUTCToLocalStamp, formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
-import { WithPointCDN } from "@/lib/PathMap";
 
 export function useOrderFormat({ order }: { order: IOrder }) {
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
@@ -26,18 +25,18 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderPointInfo = {
     symbol: "POINTS",
-    logoURI: WithPointCDN(order.marketplace.market_id),
+    logoURI: order.marketplace.pointLogo
   } as IToken;
 
   // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderEqTokenInfo = {
     symbol: "TBA",
-    logoURI: WithPointCDN(order.marketplace.market_id),
+    logoURI: order.marketplace.pointLogo,
     decimals: 9,
   } as IToken;
 
   const tokenLogo = orderTokenInfo.logoURI;
-  const pointLogo = WithPointCDN(order.marketplace.market_id);
+  const pointLogo = orderPointInfo.logoURI;
 
   const orderType = order.order_type;
 

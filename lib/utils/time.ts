@@ -24,17 +24,14 @@ export function formatTimeDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
+  const month = Math.floor(days / 30);
 
-  if (days > 0) {
-    if (hours % 24 === 0) {
-      return `${days}d`;
-    }
-    return `${days}d ${hours % 24}h`;
+  if (month > 0) {
+    return `${month}M`;
+  } else if (days > 0) {
+    return `${days}d`;
   } else if (hours > 0) {
-    if (minutes % 60 === 0) {
-      return `${hours}h`;
-    }
-    return `${hours}h ${minutes % 60}m`;
+    return `${hours}h`;
   } else if (minutes > 0) {
     return `${minutes}m`;
   } else {

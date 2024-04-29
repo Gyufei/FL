@@ -38,7 +38,7 @@ export function PointTokenSelectDisplay({
             height={24}
             src={token.logoURI}
             alt="select token"
-            className="mr-2"
+            className="mr-2 rounded-full"
           ></Image>
           <div className="overflow-x-hidden whitespace-nowrap pr-[4px] text-sm leading-5 text-black">
             {token.symbol}
@@ -66,7 +66,7 @@ export function PointTokenSelectDisplay({
               height={24}
               src={token.logoURI}
               alt="select token"
-              className="mr-2"
+              className="mr-2 rounded-full"
             ></Image>
             {t.symbol}
           </div>

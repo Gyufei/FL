@@ -1,15 +1,22 @@
 import Image from "next/image";
 import { useState } from "react";
-import CancelDrawer from "./cancel-drawer";
 import { IOrder } from "@/lib/types/order";
+import { useUnlistMaker } from "@/lib/hooks/contract/use-unlist-maker";
 
 export default function DelistBtn({ order }: { order: IOrder }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
   const [isHover, setIsHover] = useState(false);
 
-  function handleDrawerOpen(open: boolean) {
-    setDrawerOpen(open);
+  const {
+    isLoading,
+    write: action,
+    // isSuccess,
+  } = useUnlistMaker({
+    makerStr: order.maker_id,
+    orderStr: order.order,
+  });
+
+  function handleCancel() {
+    action(undefined);
   }
 
   return (
@@ -17,10 +24,11 @@ export default function DelistBtn({ order }: { order: IOrder }) {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      {isHover ? (
-        <div
-          onClick={() => setDrawerOpen(true)}
-          className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black"
+      {isHover || isLoading ? (
+        <button
+          disabled={isLoading}
+          onClick={handleCancel}
+          className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black disabled:opacity-70"
         >
           <Image
             src="/icons/upload.svg"
@@ -30,15 +38,10 @@ export default function DelistBtn({ order }: { order: IOrder }) {
             className="rotate-180"
           />
           <span>Delist</span>
-        </div>
+        </button>
       ) : (
         <div className="text-sm leading-5 text-black">Listed</div>
       )}
-      <CancelDrawer
-        drawerOpen={drawerOpen}
-        handleDrawerOpen={handleDrawerOpen}
-        order={order}
-      />
     </div>
   );
 }

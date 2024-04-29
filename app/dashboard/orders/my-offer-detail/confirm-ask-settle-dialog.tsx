@@ -76,6 +76,7 @@ export default function ConfirmAskSettleDialog({
                 width={28}
                 height={28}
                 alt="stable token"
+                className="h-7 w-7 rounded-full"
               />
             </div>
             <div className="mt-3 flex">

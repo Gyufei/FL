@@ -16,10 +16,7 @@ export default function CreateOfferBtn({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
 
-  const [step, setStep] = useState(0);
-
   function handleCloseDrawer() {
-    setStep(0);
     setDrawerOpen(false);
   }
 
@@ -41,7 +38,7 @@ export default function CreateOfferBtn({
         className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={step === 0 ? "Create Maker Offer" : "Create Offer"}
+          title="Create Maker Offer"
           onClose={() => handleCloseDrawer()}
         />
 
@@ -50,18 +47,15 @@ export default function CreateOfferBtn({
           className="flex flex-1 flex-col"
           onValueChange={setCurrentTab}
         >
-          <TabsList
-            data-show={step === 0}
-            className="grid w-full grid-cols-2 data-[show=false]:hidden"
-          >
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger
-              className="border-b-2 rounded-none data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:text-[#eee] data-[state=active]:text-red"
+              className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:text-[#eee] data-[state=active]:text-red"
               value="sell"
             >
               Sell / Ask
             </TabsTrigger>
             <TabsTrigger
-              className="data-[state=inactive]:border-b rounded-none data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:text-[#eee] data-[state=active]:text-green"
+              className="rounded-none data-[state=inactive]:border-b data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:text-[#eee] data-[state=active]:text-green"
               value="buy"
             >
               Buy / Bid
@@ -74,8 +68,6 @@ export default function CreateOfferBtn({
             <SellContent
               onSuccess={() => handleCloseDrawer()}
               marketplace={marketplace}
-              step={step}
-              setStep={setStep}
             />
           </TabsContent>
           <TabsContent
@@ -85,8 +77,6 @@ export default function CreateOfferBtn({
             <BuyContent
               onSuccess={() => handleCloseDrawer()}
               marketplace={marketplace}
-              step={step}
-              setStep={setStep}
             />
           </TabsContent>
         </Tabs>

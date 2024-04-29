@@ -9,6 +9,7 @@ import { ITradeType } from "./trade-type-select";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
+import { sortBy } from "lodash";
 
 export function TradesTable({
   type,
@@ -21,7 +22,8 @@ export function TradesTable({
   const { msgEvents } = useWsMsgs();
 
   const tradeMsgs = useMemo<any[]>(() => {
-    const history = (historyData || []).map((item: any) => {
+    const sortHistory = sortBy(historyData || [], "trade_at").reverse();
+    const history = sortHistory.map((item: any) => {
       return {
         ...item,
         timestamp: item.trade_at * 1000,
@@ -47,10 +49,8 @@ export function TradesTable({
 
     const typeTrades = trades.filter(() => type === "All" || true);
 
-    const filled = new Array(10).fill(typeTrades).flat();
-
     return {
-      nodes: filled,
+      nodes: typeTrades,
     };
   }, [tradeMsgs, type, marketplace]);
 
@@ -81,17 +81,22 @@ export function TradesTable({
         text-align: right;
       }
 
-      &:nth-of-type(3) {
-        text-align: center;
-      }
     `,
     HeaderCell: `
       color: #c0c4cc;
       border-bottom: 1px solid #eee;
+
+      &:nth-of-type(3) {
+        text-align: center;
+      }
     `,
     Cell: `
       color: #2d2e33;
       height: 40px;
+
+      &:nth-of-type(3) {
+        text-align: right;
+      }
     `,
   });
 
@@ -107,7 +112,7 @@ export function TradesTable({
     {
       label: "Value",
       renderCell: (trade: any) => (
-        <div className="flex items-center justify-center">
+        <div className="flex w-full items-center justify-end">
           <span>{formatNum(trade.value)}</span>
           <Image
             className="ml-1"

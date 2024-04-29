@@ -67,6 +67,7 @@ export default function ConfirmBidSettleDialog({
                 width={28}
                 height={28}
                 alt="stable token"
+                className="rounded-full w-7 h-7"
               />
             </div>
           </div>

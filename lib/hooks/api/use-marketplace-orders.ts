@@ -2,9 +2,9 @@ import { useAllOrders } from "./use-all-orders";
 import { useMemo } from "react";
 
 export function useMarketplaceOrders({
-  marketplaceId,
+  marketId: marketId,
 }: {
-  marketplaceId: string;
+  marketId: string;
 }) {
   const allOrdersRes = useAllOrders();
 
@@ -12,7 +12,7 @@ export function useMarketplaceOrders({
     () => {
 
       const marketOrders = (allOrdersRes.data || [])?.filter(
-        (order) => order.marketplace.market_id === marketplaceId,
+        (order) => order.marketplace.market_id === marketId,
       );
 
       const canBuyOrders = marketOrders?.filter(
@@ -21,7 +21,7 @@ export function useMarketplaceOrders({
 
       return canBuyOrders;
     },
-    [allOrdersRes.data, marketplaceId],
+    [allOrdersRes.data, marketId],
   );
 
   return {

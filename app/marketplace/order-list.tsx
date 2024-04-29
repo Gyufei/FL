@@ -20,7 +20,7 @@ export default function OrderList({
   marketplace: IMarketplace;
 }) {
   const { data: orders } = useMarketplaceOrders({
-    marketplaceId: marketplace.market_id,
+    marketId: marketplace.market_id,
   });
 
   const [orderType, setOrderType] = useState<IOrderType>("ask");

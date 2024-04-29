@@ -11,11 +11,11 @@ interface ISalesVolume {
   sales_volume: string;
 }
 
-export function useSalesVolume(marketId: string) {
+export function useSalesVolume(marketplaceId: string) {
   const { apiEndPoint } = useEndPoint();
 
   const res = useSWR(
-    marketId ? `${apiEndPoint}${Paths.sales_volume_history}?market_id=${marketId}` : null,
+    marketplaceId ? `${apiEndPoint}${Paths.sales_volume_history}?market_id=${marketplaceId}` : null,
     fetcher,
   );
 

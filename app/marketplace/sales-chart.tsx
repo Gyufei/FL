@@ -36,9 +36,9 @@ export default function SalesChart({
 }) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
-  const marketId = marketplace?.market_id;
+  const marketplaceId = marketplace?.market_place_id;
 
-  const { data: salesData } = useSalesVolume(marketId);
+  const { data: salesData } = useSalesVolume(marketplaceId);
 
   const now = new Date().getTime();
   const oneHourDuration = 3600 * 1000;

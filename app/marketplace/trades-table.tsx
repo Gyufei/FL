@@ -17,7 +17,7 @@ export function TradesTable({
   type: ITradeType;
   marketplace: IMarketplace;
 }) {
-  const { data: historyData } = useMarketTrades(marketplace.market_id);
+  const { data: historyData } = useMarketTrades(marketplace.market_place_id);
   const { msgEvents } = useWsMsgs();
 
   const tradeMsgs = useMemo<any[]>(() => {

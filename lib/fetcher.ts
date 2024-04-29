@@ -38,7 +38,7 @@ export default async function fetcher(
 
       if (res.status === 401) {
         UserStore.set(AccessTokenAtom, "");
-        UserStore.set(ShowSignDialogAtom, true);
+        UserStore.set(ShowSignDialogAtom, false);
         return null;
       }
 

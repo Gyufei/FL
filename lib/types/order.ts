@@ -2,7 +2,7 @@ import { IMarketplace } from "./marketplace";
 
 export interface IOrder {
   amount: string;
-
+  market_id: string,
   order_role: "Maker" | "Taker";
   marketplace: IMarketplace;
   preOrderDetail: IOrder | null;

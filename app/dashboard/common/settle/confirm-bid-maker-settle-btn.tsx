@@ -6,12 +6,12 @@ export default function ConfirmBidMakerSettleBtn({
   marketplaceStr,
   orderStr,
   makerStr,
-  onDone,
+  onSuccess,
 }: {
   marketplaceStr: string;
   orderStr: string;
   makerStr: string;
-  onDone: () => void;
+  onSuccess: () => void;
 }) {
   const {
     isLoading,
@@ -29,7 +29,7 @@ export default function ConfirmBidMakerSettleBtn({
 
   useEffect(() => {
     if (isSuccess) {
-      onDone();
+      onSuccess();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);

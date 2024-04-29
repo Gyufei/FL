@@ -1,50 +1,41 @@
 import { useEffect } from "react";
 import ConfirmSettleBtn from "./confirm-settle-btn";
-import { useSettleAskTaker } from "@/lib/hooks/contract/use-settle-ask-taker";
+import { useSettleBidTaker } from "@/lib/hooks/contract/use-settle-bid-taker";
 
-export default function ConfirmAskTakerSettleBtn({
+export default function ConfirmBidTakerSettleBtn({
   marketplaceStr,
   orderStr,
   makerStr,
   preOrderStr,
-  settleAmount,
-  onDone,
+  onSuccess,
 }: {
   marketplaceStr: string;
-  preOrderStr: string;
   orderStr: string;
   makerStr: string;
-  settleAmount: number;
-  onDone: () => void;
+  preOrderStr: string;
+  onSuccess: () => void;
 }) {
   const {
     isLoading,
     write: writeAction,
     isSuccess,
-  } = useSettleAskTaker({
+  } = useSettleBidTaker({
     marketplaceStr,
-    preOrderStr,
     orderStr,
     makerStr,
+    preOrderStr,
   });
 
   function handleConfirm() {
-    writeAction({
-      settleAmount: settleAmount,
-    });
+    writeAction(undefined);
   }
 
   useEffect(() => {
     if (isSuccess) {
-      onDone();
+      onSuccess();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
-  return (
-    <ConfirmSettleBtn
-      disabled={isLoading}
-      onClick={handleConfirm}
-    />
-  );
+  return <ConfirmSettleBtn disabled={isLoading} onClick={handleConfirm} />;
 }

@@ -3,8 +3,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
-import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle";
-import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle";
+import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
+import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
@@ -12,10 +12,12 @@ export default function ConfirmAskSettleDialog({
   open,
   onOpenChange,
   order,
+  onSuccess,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
   order: IOrder;
+  onSuccess: () => void;
 }) {
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
     useOrderFormat({ order });
@@ -30,6 +32,11 @@ export default function ConfirmAskSettleDialog({
       : order.points
     : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
+
+  function handleSuccess() {
+    onSuccess();
+    onOpenChange(false);
+  }
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
@@ -82,7 +89,7 @@ export default function ConfirmAskSettleDialog({
             <div className="mt-3 flex">
               <Slider
                 value={[sliderValue]}
-                onValueChange={(val) => setSliderValue(val[0])}
+                onValueChange={(val: any[]) => setSliderValue(val[0])}
                 max={sliderMax}
                 step={1}
               />
@@ -105,7 +112,7 @@ export default function ConfirmAskSettleDialog({
               makerStr={order.maker_id}
               preOrderStr={order.pre_order_included_zero}
               settleAmount={settleAmount}
-              onDone={() => onOpenChange(false)}
+              onSuccess={handleSuccess}
             />
           )}
           {orderRole === "Maker" && (
@@ -114,7 +121,7 @@ export default function ConfirmAskSettleDialog({
               orderStr={order.order}
               makerStr={order.maker_id}
               settleAmount={settleAmount}
-              onDone={() => onOpenChange(false)}
+              onSuccess={handleSuccess}
             />
           )}
         </div>

@@ -5,14 +5,20 @@ import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
-import ConfirmAskSettleDialog from "./confirm-ask-settle-dialog";
-import { useMemo, useState } from "react";
+import ConfirmAskSettleDialog from "../settle/confirm-ask-settle-dialog";
+import { useEffect, useMemo, useState } from "react";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useCloseOriginMaker } from "@/lib/hooks/contract/use-close-origin-maker";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
-export default function MyAskDetail({ order: order }: { order: IOrder }) {
+export default function MyAskDetail({
+  order: order,
+  onSuccess,
+}: {
+  order: IOrder;
+  onSuccess: () => void;
+}) {
   const {
     tokenTotalPrice,
     progress,
@@ -43,7 +49,7 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
   const {
     isLoading: isClosing,
     write: writeAction,
-    // isSuccess,
+    isSuccess,
   } = useCloseOriginMaker({
     makerStr: order.maker_id,
     orderStr: order.order,
@@ -57,6 +63,12 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
   function handleSettle() {
     setSettleConfirmShow(true);
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      onSuccess();
+    }
+  });
 
   return (
     <>
@@ -145,6 +157,7 @@ export default function MyAskDetail({ order: order }: { order: IOrder }) {
         order={order}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
+        onSuccess={onSuccess}
       />
     </>
   );

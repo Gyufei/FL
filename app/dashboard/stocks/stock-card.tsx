@@ -6,15 +6,17 @@ import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { IOrder } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
-import { useState } from "react";
-import Drawer from "react-modern-drawer";
-import DrawerTitle from "@/components/share/drawer-title";
-import MyAskDetail from "../orders/my-offer-detail/my-ask-detail";
-import MyBidDetail from "../orders/my-offer-detail/my-bid-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
+import { useAnchor } from "@/lib/hooks/common/use-anchor";
 
-export default function StockCard({ order }: { order: IOrder }) {
+export default function StockCard({
+  order,
+  onSuccess,
+}: {
+  order: IOrder;
+  onSuccess: () => void;
+}) {
   const {
     afterTGE,
     afterTGEPeriod,
@@ -29,6 +31,8 @@ export default function StockCard({ order }: { order: IOrder }) {
     order,
   });
 
+  const { setAnchorValue } = useAnchor();
+
   const isMaker = order.order_role === "Maker";
   const isAskStock = order.order_type === "ask";
 
@@ -38,8 +42,6 @@ export default function StockCard({ order }: { order: IOrder }) {
   );
 
   const { currentChain } = useCurrentChain();
-
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isCanList =
     !afterTGE &&
@@ -55,12 +57,16 @@ export default function StockCard({ order }: { order: IOrder }) {
     order.maker_status === "virgin" &&
     order.taker_status === "initialized";
 
+  function handleOpenDetail() {
+    setAnchorValue(order.order_id);
+  }
+
   return (
     <div className="rounded-[20px] bg-white p-5">
       <div className="flex items-start justify-between">
         <div
           className="flex cursor-pointer items-center space-x-3"
-          onClick={() => setDrawerOpen(true)}
+          onClick={handleOpenDetail}
         >
           <TokenPairImg
             src1={order.marketplace?.projectLogo}
@@ -132,28 +138,10 @@ export default function StockCard({ order }: { order: IOrder }) {
 
       <div className="flex items-center justify-between pt-4">
         <ManToMans num={subOrders?.length || 0} isAsk={isAskStock} />
-        {isCanList && <ListAskStockBtn order={order} />}
-        {isListed && <DelistBtn order={order} />}
-        {isCanSettle && <SettleDrawerBtn order={order} />}
+        {isCanList && <ListAskStockBtn order={order} onSuccess={onSuccess} />}
+        {isListed && <DelistBtn order={order} onSuccess={onSuccess} />}
+        {isCanSettle && <SettleDrawerBtn order={order} onSuccess={onSuccess} />}
       </div>
-      <Drawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        direction="right"
-        size={952}
-        className="overflow-y-auto rounded-l-2xl p-6"
-      >
-        <DrawerTitle
-          title={`My ${isAskStock ? "Ask" : "Bid"} Offer Detail`}
-          onClose={() => setDrawerOpen(false)}
-        />
-        {order &&
-          (isAskStock ? (
-            <MyAskDetail order={order} />
-          ) : (
-            <MyBidDetail order={order} />
-          ))}
-      </Drawer>
     </div>
   );
 }

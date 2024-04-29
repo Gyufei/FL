@@ -1,11 +1,12 @@
 "use client";
 import { SortSelect } from "../../../components/share/sort-select";
+import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import StockCard from "./stock-card";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
 
 export default function MyStocks() {
-  const { data: orders } = useMyOrders();
+  const { data: orders, mutate: refreshOrders } = useMyOrders();
 
   const {
     sortField,
@@ -13,7 +14,7 @@ export default function MyStocks() {
     handleSortFieldChange,
     handleSortDirChange,
     sortOrders,
-  } = useSortOrder(orders);
+  } = useSortOrder(orders || []);
 
   return (
     <div className="ml-5 flex flex-1 flex-col">
@@ -27,9 +28,15 @@ export default function MyStocks() {
         />
       </div>
 
+      <DetailDrawer orders={orders || []} onSuccess={refreshOrders} />
+
       <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {(sortOrders || []).map((order) => (
-          <StockCard key={order.order_id} order={order} />
+          <StockCard
+            key={order.order_id}
+            order={order}
+            onSuccess={refreshOrders}
+          />
         ))}
       </div>
     </div>

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./use-tx-status";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
@@ -71,12 +70,6 @@ export function useRelistMaker({
   };
 
   const wrapRes = useTxStatus(writeAction);
-
-  useEffect(() => {
-    if (wrapRes.isSuccess) {
-      return;
-    }
-  }, [wrapRes.isSuccess]);
 
   return wrapRes;
 }

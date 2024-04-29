@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
-import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle";
-import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle";
+import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle-btn";
+import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle-btn";
 import { IOrder } from "@/lib/types/order";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 
@@ -10,17 +10,22 @@ export default function ConfirmBidSettleDialog({
   open,
   onOpenChange,
   order,
+  onSuccess,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
   order: IOrder;
+  onSuccess: () => void;
 }) {
   const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
   const orderRole = order.order_role;
 
   const settleAmount = Number(order.points);
 
-  console.log(order);
+  function handleSuccess() {
+    onSuccess();
+    onOpenChange(false);
+  }
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
@@ -67,7 +72,7 @@ export default function ConfirmBidSettleDialog({
                 width={28}
                 height={28}
                 alt="stable token"
-                className="rounded-full w-7 h-7"
+                className="h-7 w-7 rounded-full"
               />
             </div>
           </div>
@@ -78,7 +83,7 @@ export default function ConfirmBidSettleDialog({
               orderStr={order.order}
               makerStr={order.maker_id}
               preOrderStr={order.pre_order_included_zero}
-              onDone={() => onOpenChange(false)}
+              onSuccess={handleSuccess}
             />
           )}
           {orderRole === "Maker" && (
@@ -86,7 +91,7 @@ export default function ConfirmBidSettleDialog({
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
               makerStr={order.maker_id}
-              onDone={() => onOpenChange(false)}
+              onSuccess={handleSuccess}
             />
           )}
         </div>

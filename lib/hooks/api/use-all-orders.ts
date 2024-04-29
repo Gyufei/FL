@@ -5,12 +5,14 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { IOrder } from "@/lib/types/order";
 import { useMarketplaces } from "./use-marketplaces";
-import { SolanaZeroed } from "@/lib/constant";
+import { useOrderResFormat } from "../order/use-order-res-format";
 
 export function useAllOrders() {
   const { apiEndPoint } = useEndPoint();
 
   const { data: marketplaceData } = useMarketplaces();
+
+  const { orderResFieldFormat, orderResPreDetailFormat } = useOrderResFormat();
 
   const AllOrdersFetcher = async () => {
     const allOrders: Array<IOrder> = [];
@@ -22,42 +24,13 @@ export function useAllOrders() {
         `${apiEndPoint}${Paths.order}?project=${marketplace.market_id}`,
       );
 
-      let parsedRes = orderRes.map((order: Record<string, any>) => {
-        const order_role = getOrderRole(order);
-        const is_relist = isRelistBothTakerMaker(order);
-
-        const order_type =
-          order_role === "Maker"
-            ? order.order_type
-            : order.order_type === "ask"
-            ? "bid"
-            : "ask";
-
-        return {
-          ...order,
-          is_relist,
-          order_role,
-          order_type,
-          marketplace,
-        };
-      });
-
-      parsedRes = parsedRes.map((order: Record<string, any>) => {
-        const isZeroed = order.pre_order === SolanaZeroed;
-        const preOrderDetail = isZeroed
-          ? null
-          : parsedRes.find(
-              (o: Record<string, any>) => o.order === order.pre_order,
-            ) || null;
-
-        return {
-          ...order,
-          pre_order_included_zero: order.pre_order,
-          pre_order: isZeroed ? "" : order.pre_order,
-          preOrderDetail,
-        };
-      });
-
+      let parsedRes  = orderRes.map(
+        (o: Record<string, any>) => {
+          o.market_id = marketplace.market_id;
+          return orderResFieldFormat(o);
+        }
+      )
+      parsedRes = parsedRes.map((o: Record<string, any>) => orderResPreDetailFormat(o, parsedRes));
       allOrders.push(...parsedRes);
     }
 
@@ -72,22 +45,4 @@ export function useAllOrders() {
   return {
     ...res,
   };
-}
-
-export function isRelistBothTakerMaker(order: Record<string, any>): boolean {
-  return order.maker_status !== 'unknown' && order.taker_status !== 'unknown';
-}
-
-function getOrderRole(order: Record<string, any>): "Maker" | "Taker" {
-  if (order.pre_order == SolanaZeroed) {
-    return "Maker";
-  } else {
-    if (order.maker_status !== 'unknown') {
-      return "Maker";
-    } else if (order.taker_status !== 'unknown') {
-      return "Taker";
-    } else {
-      return "Maker";
-    }
-  }
 }

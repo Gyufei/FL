@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
-import { useAllOrders } from "../api/use-all-orders";
 import { useTakerOrders } from "../api/use-taker-orders";
 
 export function useSettleBidMaker({
@@ -94,13 +92,6 @@ export function useSettleBidMaker({
   };
 
   const wrapRes = useTxStatus(writeAction);
-
-  const { mutate: refreshOrders } = useAllOrders();
-  useEffect(() => {
-    if (wrapRes.isSuccess) {
-      refreshOrders();
-    }
-  }, [wrapRes.isSuccess, refreshOrders]);
 
   return wrapRes;
 }

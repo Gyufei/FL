@@ -1,10 +1,16 @@
 import Image from "next/image";
 import { useState } from "react";
 import { IOrder } from "@/lib/types/order";
-import ConfirmAskSettleDialog from "../../orders/my-offer-detail/confirm-ask-settle-dialog";
-import ConfirmBidSettleDialog from "../../orders/my-offer-detail/confirm-bid-settle-dialog";
+import ConfirmAskSettleDialog from "../../common/settle/confirm-ask-settle-dialog";
+import ConfirmBidSettleDialog from "../../common/settle/confirm-bid-settle-dialog";
 
-export default function SettleDrawerBtn({ order }: { order: IOrder }) {
+export default function SettleDrawerBtn({
+  order,
+  onSuccess,
+}: {
+  order: IOrder;
+  onSuccess: () => void;
+}) {
   const isAsk = order.order_type === "ask";
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
@@ -27,12 +33,14 @@ export default function SettleDrawerBtn({ order }: { order: IOrder }) {
           order={order}
           open={settleConfirmShow}
           onOpenChange={setSettleConfirmShow}
+          onSuccess={onSuccess}
         />
       ) : (
         <ConfirmBidSettleDialog
           order={order}
           open={settleConfirmShow}
           onOpenChange={setSettleConfirmShow}
+          onSuccess={onSuccess}
         />
       )}
     </div>

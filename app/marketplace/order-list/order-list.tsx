@@ -4,25 +4,15 @@ import { useMemo, useState } from "react";
 import {
   IOrderType,
   OrderTypeSelect,
-} from "../../components/share/order-type-select";
-import { SortSelect } from "../../components/share/sort-select";
+} from "../../../components/share/order-type-select";
+import { SortSelect } from "../../../components/share/sort-select";
 import SearchInput from "./search-input";
 import { OrderCard } from "./order-card";
-import { useMarketplaceOrders } from "@/lib/hooks/api/use-marketplace-orders";
-import { IMarketplace } from "@/lib/types/marketplace";
 import HoverIcon from "@/components/share/hover-icon";
 import { IOrder } from "@/lib/types/order";
 import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
 
-export default function OrderList({
-  marketplace,
-}: {
-  marketplace: IMarketplace;
-}) {
-  const { data: orders } = useMarketplaceOrders({
-    marketId: marketplace.market_id,
-  });
-
+export default function OrderList({ orders }: { orders: Array<IOrder> }) {
   const [orderType, setOrderType] = useState<IOrderType>("ask");
   const [searchText, setSearchText] = useState("");
 
@@ -32,7 +22,7 @@ export default function OrderList({
     handleSortFieldChange,
     handleSortDirChange,
     sortOrders,
-  } = useSortOrder(orders);
+  } = useSortOrder(orders || []);
 
   const filterOrders = useMemo(() => {
     const typeOrders = (sortOrders || [])?.filter(
@@ -111,11 +101,7 @@ export default function OrderList({
 
       <div className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto xl:grid-cols-2 2xl:grid-cols-3">
         {(filterOrders || []).map((order) => (
-          <OrderCard
-            order={order}
-            marketplace={marketplace}
-            key={order.order_id}
-          />
+          <OrderCard order={order} key={order.order_id} />
         ))}
       </div>
     </div>

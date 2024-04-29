@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Drawer from "react-modern-drawer";
-import DrawerTitle from "@/components/share/drawer-title";
 
 import {
   Table,
@@ -16,9 +14,7 @@ import { useTheme } from "@table-library/react-table-library/theme";
 
 import { truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
-import { useMemo, useState } from "react";
-import MyAskDetail from "./my-offer-detail/my-ask-detail";
-import MyBidDetail from "./my-offer-detail/my-bid-detail";
+import { useMemo } from "react";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { IOrder } from "@/lib/types/order";
@@ -26,6 +22,8 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useAnchor } from "@/lib/hooks/common/use-anchor";
+import DetailDrawer from "../common/detail-drawer/detail-drawer";
 
 export function OrderTable({
   role,
@@ -36,20 +34,15 @@ export function OrderTable({
   status: IStatus;
   type: string;
 }) {
-  const { data: orders } = useMyOrders();
+  const { setAnchorValue } = useAnchor();
+  const { data: orders, mutate: refreshOrders } = useMyOrders();
 
-  function openDetail(ord: any) {
-    setCurDetail(ord);
-    setDrawerOpen(true);
+  function openDetail(oId: any) {
+    setAnchorValue(oId);
   }
 
-  const [curDetail, setCurDetail] = useState<any>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const isAsk = curDetail?.order_type === "ask";
-
   const data = useMemo(() => {
-    const orderData = orders
+    const orderData = (orders || [])
       .map((o) => {
         return {
           ...o,
@@ -186,7 +179,7 @@ export function OrderTable({
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div
-                      onClick={() => openDetail(ord)}
+                      onClick={() => openDetail(ord.order_id)}
                       className="flex h-7 w-fit cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black"
                     >
                       Detail
@@ -221,24 +214,7 @@ export function OrderTable({
         <Pagination.NextButton />
       </Pagination>
 
-      <Drawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        direction="right"
-        size={952}
-        className="overflow-y-auto rounded-l-2xl p-6"
-      >
-        <DrawerTitle
-          title={`My ${isAsk ? "Ask" : "Bid"} Offer Detail`}
-          onClose={() => setDrawerOpen(false)}
-        />
-        {curDetail &&
-          (isAsk ? (
-            <MyAskDetail order={curDetail} />
-          ) : (
-            <MyBidDetail order={curDetail} />
-          ))}
-      </Drawer>
+      <DetailDrawer orders={orders || []} onSuccess={refreshOrders} />
     </>
   );
 }

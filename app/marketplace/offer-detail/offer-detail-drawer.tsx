@@ -1,35 +1,60 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
-import AskDetail from "./offer-detail/ask-detail";
-import BidDetail from "./offer-detail/bid-detail";
+import AskDetail from "../offer-detail/ask-detail";
+import BidDetail from "../offer-detail/bid-detail";
+import OrderFillDialog from "../offer-detail/order-fill-dialog";
+import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IOrder } from "@/lib/types/order";
-import OrderFillDialog from "./offer-detail/order-fill-dialog";
-import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
-export default function OrderBuyBtn({ order: order }: { order: IOrder }) {
-  const isAsk = order.order_type === "ask";
+export default function OfferDetailDrawer({
+  orders,
+  onSuccess,
+}: {
+  orders: Array<IOrder>;
+  onSuccess: () => void;
+}) {
+  const { anchor: orderId, setAnchorValue } = useAnchor();
+
+  const order = useMemo(() => {
+    return orders?.find((o) => o.order_id === orderId);
+  }, [orders, orderId]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [orderFillDialog, setOrderFillDialog] = useState(false);
   const [resultOrder, setResultOrder] = useState<any | null>(null);
 
+  const isAsk = order?.order_type === "ask";
+
+  useEffect(() => {
+    if (order) {
+      setDrawerOpen(true);
+    }
+
+    if (!orderId) {
+      setDrawerOpen(false);
+    }
+  }, [order, orderId]);
+
   function handleSuccess(ord: Record<string, any>) {
     setDrawerOpen(false);
     setResultOrder(ord);
     setOrderFillDialog(true);
+    onSuccess();
   }
+
+  function handleDrawerClose() {
+    setDrawerOpen(false);
+    setAnchorValue("");
+  }
+
+  if (!order) return null;
 
   return (
     <>
-      <WithWalletConnectBtn onClick={() => setDrawerOpen(true)}>
-        <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:bg-yellow">
-          Buy
-        </button>
-      </WithWalletConnectBtn>
       <Drawer
         open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        onClose={handleDrawerClose}
         direction="right"
         size={952}
         className="overflow-y-auto rounded-l-2xl p-6"

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils/common";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
-import { CTooltipArrow } from "@/components/share/tootip-arrow";
+import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
 
 export function WithTip({
   className,

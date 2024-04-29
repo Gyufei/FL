@@ -21,7 +21,13 @@ import { formatNum } from "@/lib/utils/number";
 import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 import { useOrderTree } from "@/lib/hooks/order/use-order-tree";
 
-export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
+export default function ListAskStockBtn({
+  order: order,
+  onSuccess,
+}: {
+  order: IOrder;
+  onSuccess: () => void;
+}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { orderPointInfo, orderTokenInfo, tokenPrice } = useOrderFormat({
@@ -69,8 +75,9 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
   useEffect(() => {
     if (isSuccess) {
       setDrawerOpen(false);
+      onSuccess();
     }
-  }, [isSuccess]);
+  }, [isSuccess, onSuccess]);
 
   return (
     <div>
@@ -98,7 +105,11 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
               value={sellPointAmount}
               onValueChange={() => {}}
               topText={<>You will sell</>}
-              bottomText={<>1 {order.marketplace.point_name} = ${formatNum(pointPrice)}</>}
+              bottomText={
+                <>
+                  1 {order.marketplace.point_name} = ${formatNum(pointPrice)}
+                </>
+              }
               isCanInput={false}
               tokenSelect={
                 <PointTokenSelectDisplay
@@ -117,9 +128,9 @@ export default function ListAskStockBtn({ order: order }: { order: IOrder }) {
                 <div className="flex items-center">
                   You&apos;d like to receive
                   <WithTip>
-                    When buying {order.marketplace.point_name}s, you need to wait until the {order.marketplace.point_name}s
-                    convert into the protocol&apos;s tokens before you can
-                    receive tokens.
+                    When buying {order.marketplace.point_name}s, you need to
+                    wait until the {order.marketplace.point_name}s convert into
+                    the protocol&apos;s tokens before you can receive tokens.
                   </WithTip>
                 </div>
               }

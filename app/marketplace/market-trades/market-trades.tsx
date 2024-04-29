@@ -3,14 +3,16 @@
 import { useState } from "react";
 import { ITradeType, TradeTypeSelect } from "./trade-type-select";
 import { TradesTable } from "./trades-table";
-import CreateOfferBtn from "./create-offer-btn";
-import MarketCharts from "./market-charts";
+import CreateOfferBtn from "../create-offer-btn";
+import MarketCharts from "../chart/market-charts";
 import { IMarketplace } from "@/lib/types/marketplace";
 
 export default function MarketTrades({
   marketplace,
+  onCreateSuccess,
 }: {
   marketplace: IMarketplace;
+  onCreateSuccess: () => void;
 }) {
   const [tradeType, setTradeType] = useState<ITradeType>("All");
 
@@ -34,7 +36,7 @@ export default function MarketTrades({
       <TradesTable type={tradeType} marketplace={marketplace} />
 
       <div className="h-[96px] py-6">
-        <CreateOfferBtn marketplace={marketplace} />
+        <CreateOfferBtn marketplace={marketplace} onSuccess={onCreateSuccess} />
       </div>
 
       <MarketCharts marketplace={marketplace} />

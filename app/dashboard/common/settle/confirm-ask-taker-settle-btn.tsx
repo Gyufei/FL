@@ -1,15 +1,17 @@
-import { useSettleAskMaker } from "@/lib/hooks/contract/use-settle-ask-maker";
-import SettleConfirmBtn from "./settle-confirm-btn";
 import { useEffect } from "react";
+import ConfirmSettleBtn from "./confirm-settle-btn";
+import { useSettleAskTaker } from "@/lib/hooks/contract/use-settle-ask-taker";
 
-export default function SettleAskMaker({
+export default function ConfirmAskTakerSettleBtn({
   marketplaceStr,
   orderStr,
   makerStr,
+  preOrderStr,
   settleAmount,
   onSuccess,
 }: {
   marketplaceStr: string;
+  preOrderStr: string;
   orderStr: string;
   makerStr: string;
   settleAmount: number;
@@ -19,8 +21,9 @@ export default function SettleAskMaker({
     isLoading,
     write: writeAction,
     isSuccess,
-  } = useSettleAskMaker({
+  } = useSettleAskTaker({
     marketplaceStr,
+    preOrderStr,
     orderStr,
     makerStr,
   });
@@ -35,7 +38,8 @@ export default function SettleAskMaker({
     if (isSuccess) {
       onSuccess();
     }
-  }, [isSuccess, onSuccess]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
-  return <SettleConfirmBtn disabled={isLoading} onClick={handleConfirm} />;
+  return <ConfirmSettleBtn disabled={isLoading} onClick={handleConfirm} />;
 }

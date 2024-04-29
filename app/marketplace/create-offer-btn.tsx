@@ -10,14 +10,21 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function CreateOfferBtn({
   marketplace,
+  onSuccess,
 }: {
   marketplace: IMarketplace;
+  onSuccess: () => void;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
 
   function handleCloseDrawer() {
     setDrawerOpen(false);
+  }
+
+  function handleSuccess() {
+    handleCloseDrawer();
+    onSuccess();
   }
 
   return (
@@ -65,19 +72,13 @@ export default function CreateOfferBtn({
             value="sell"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
           >
-            <SellContent
-              onSuccess={() => handleCloseDrawer()}
-              marketplace={marketplace}
-            />
+            <SellContent onSuccess={handleSuccess} marketplace={marketplace} />
           </TabsContent>
           <TabsContent
             value="buy"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
           >
-            <BuyContent
-              onSuccess={() => handleCloseDrawer()}
-              marketplace={marketplace}
-            />
+            <BuyContent onSuccess={handleSuccess} marketplace={marketplace} />
           </TabsContent>
         </Tabs>
       </Drawer>

@@ -1,30 +1,25 @@
 import Image from "next/image";
-import { CircleProgress } from "../../components/share/circle-progress";
+import { CircleProgress } from "../../../components/share/circle-progress";
 import { formatNum } from "@/lib/utils/number";
-import HoverIcon from "../../components/share/hover-icon";
+import HoverIcon from "../../../components/share/hover-icon";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import OrderBuyBtn from "./order-buy-btn";
 import { IOrder } from "@/lib/types/order";
-import { IMarketplace } from "@/lib/types/marketplace";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { useMemo } from "react";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
-import { CTooltipArrow } from "@/components/share/tootip-arrow";
+import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useAnchor } from "@/lib/hooks/common/use-anchor";
 
-export function OrderCard({
-  order,
-  marketplace,
-}: {
-  order: IOrder;
-  marketplace: IMarketplace;
-}) {
+export function OrderCard({ order }: { order: IOrder }) {
+  const { setAnchorValue } = useAnchor();
   const {
     progress,
     offerValue,
@@ -46,12 +41,16 @@ export function OrderCard({
     return ["virgin", "ongoing"].includes(order.maker_status);
   }, [order]);
 
+  function handleShowOrderOffer(oId: string) {
+    setAnchorValue(oId);
+  }
+
   return (
     <div className="h-fit rounded-[20px] bg-white p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <TokenPairImg
-            src1={marketplace.projectLogo}
+            src1={order.marketplace.projectLogo}
             src2={currentChain.logo}
             width1={48}
             height1={48}
@@ -59,7 +58,7 @@ export function OrderCard({
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {marketplace.market_name}
+              {order.marketplace.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
               #{order.order_id}
@@ -164,7 +163,15 @@ export function OrderCard({
               </TooltipProvider>
             </div>
           )}
-          {showBuy && <OrderBuyBtn order={order} />}
+          {showBuy && (
+            <WithWalletConnectBtn
+              onClick={() => handleShowOrderOffer(order.order_id)}
+            >
+              <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:bg-yellow">
+                Buy
+              </button>
+            </WithWalletConnectBtn>
+          )}
         </div>
       </div>
     </div>

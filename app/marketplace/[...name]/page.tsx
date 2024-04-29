@@ -1,13 +1,17 @@
 "use client";
 import Image from "next/image";
-import MarketTrades from "@/app/marketplace/market-trades";
+import MarketTrades from "@/app/marketplace/market-trades/market-trades";
 import PageFooter from "@/app/_page-layout/_page-footer";
-import OrderList from "@/app/marketplace/order-list";
-import LeaderBoard from "@/app/marketplace/leader-board";
+import OrderList from "@/app/marketplace/order-list/order-list";
+import LeaderBoard from "@/app/marketplace/leader-board/leader-board";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceCard from "../marketplace-card";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useMemo } from "react";
+import OfferDetailDrawer from "../offer-detail/offer-detail-drawer";
+import { useAnchor } from "@/lib/hooks/common/use-anchor";
+import { useMarketplaceOrders } from "@/lib/hooks/api/use-marketplace-orders";
+import { IOrder } from "@/lib/types/order";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
@@ -17,6 +21,22 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplace = marketplaceData?.find(
     (marketplace) => marketplace.market_id === marketplaceName,
   );
+
+  const { data: orders, mutate: refreshOrders } = useMarketplaceOrders({
+    marketId: marketplace?.market_id || "",
+  });
+
+  const canBuyOrders = useMemo(() => {
+    return (orders || [])?.filter((order: IOrder) =>
+      ["virgin", "ongoing"].includes(order.maker_status),
+    );
+  }, [orders]);
+
+  const { anchor: orderId } = useAnchor();
+
+  const anchorOrder = useMemo(() => {
+    return orders?.find((o) => o.order_id === orderId);
+  }, [orders, orderId]);
 
   const { checkIsAfterTge } = useTge();
 
@@ -30,7 +50,10 @@ export default function Marketplace({ params }: { params: { name: string } }) {
 
   if (!marketplaceData) {
     return null;
-  } else if (!marketplace) {
+  } else if (
+    !marketplace ||
+    (marketplace && orders && orderId && !anchorOrder)
+  ) {
     return (
       <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
         <Image src="/img/404.png" width={480} height={360} alt="404" />
@@ -79,11 +102,20 @@ export default function Marketplace({ params }: { params: { name: string } }) {
                 </div>
               </div>
             ) : (
-              <OrderList marketplace={marketplace} />
+              <>
+                <OfferDetailDrawer
+                  orders={orders || []}
+                  onSuccess={refreshOrders}
+                />
+                <OrderList orders={canBuyOrders || []} />
+              </>
             )}
           </div>
           <div className="flex w-[368px] flex-col px-6">
-            <MarketTrades marketplace={marketplace} />
+            <MarketTrades
+              marketplace={marketplace}
+              onCreateSuccess={refreshOrders}
+            />
           </div>
         </div>
         <PageFooter />

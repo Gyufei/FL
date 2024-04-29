@@ -16,7 +16,7 @@ export default function HomeCarousel() {
   const { data: marketplaceData } = useMarketplaces();
 
   return (
-    <Carousel className="w-full px-6">
+    <Carousel className="w-full px-6 h-[400px]">
       <CarouselContent>
         {marketplaceData &&
           marketplaceData.map((marketplace) => (
@@ -111,7 +111,7 @@ const CarouselPrevious = forwardRef<HTMLButtonElement>(() => {
 
   return (
     <button
-      className="absolute top-[40%] left-10 h-12 w-12 cursor-pointer rounded-full border border-[#2D2E33]"
+      className="absolute top-[40%] left-10 h-12 w-12 cursor-pointer rounded-full"
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       style={{

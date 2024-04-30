@@ -113,7 +113,8 @@ export default function ListAskStockBtn({
               isCanInput={false}
               tokenSelect={
                 <PointTokenSelectDisplay
-                  point={orderPointInfo as IToken}
+                  points={[orderPointInfo]}
+                  point={orderPointInfo}
                   setPoint={() => {}}
                 />
               }

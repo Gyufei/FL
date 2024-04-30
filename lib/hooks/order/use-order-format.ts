@@ -2,7 +2,7 @@ import NP from "number-precision";
 import { IOrder } from "../../types/order";
 // import { useTokensInfo } from "./api/use-token-info";
 import { useMemo } from "react";
-import { IToken } from "../../types/token";
+import { IPoint, IToken } from "../../types/token";
 import { convertUTCToLocalStamp, formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 
@@ -23,10 +23,11 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   } as IToken;
 
   // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
-  const orderPointInfo = {
-    symbol: "POINTS",
-    logoURI: order.marketplace.pointLogo
-  } as IToken;
+  const orderPointInfo: IPoint = {
+    symbol: order.marketplace.point_name,
+    logoURI: order.marketplace.pointLogo,
+    marketplaceId: order.marketplace.market_place_id
+  };
 
   // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderEqTokenInfo = {

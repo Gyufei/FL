@@ -8,12 +8,12 @@ import { OrderTable } from "./order-table";
 import { FilterSelect, IRole, IStatus, Roles, Status } from "./filter-select";
 
 export default function MyOrders() {
-  const [orderType, setOrderType] = useState<IOrderType>("ask");
+  const [orderTypes, setOrderTypes] = useState<Array<IOrderType>>(["ask"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
 
-  function handleTypeChange(t: IOrderType) {
-    setOrderType(t);
+  function handleTypeChange(t: Array<IOrderType>) {
+    setOrderTypes(t);
   }
 
   function handleRoleChange(r: IRole) {
@@ -32,7 +32,7 @@ export default function MyOrders() {
         </div>
         <div className="flex items-center space-x-6">
           <OrderTypeSelect
-            type={orderType}
+            types={orderTypes}
             handleTypeChange={handleTypeChange}
           />
           <FilterSelect
@@ -44,7 +44,7 @@ export default function MyOrders() {
         </div>
       </div>
       <div className="relative mt-5 flex flex-1 flex-col justify-end border-t border-[#eee]">
-        <OrderTable type={orderType} status={status} role={role} />
+        <OrderTable types={orderTypes} status={status} role={role} />
       </div>
     </div>
   );

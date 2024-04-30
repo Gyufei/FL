@@ -13,7 +13,7 @@ import { IOrder } from "@/lib/types/order";
 import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
 
 export default function OrderList({ orders }: { orders: Array<IOrder> }) {
-  const [orderType, setOrderType] = useState<IOrderType>("ask");
+  const [orderTypes, setOrderTypes] = useState<Array<IOrderType>>(["ask"]);
   const [searchText, setSearchText] = useState("");
 
   const {
@@ -25,9 +25,10 @@ export default function OrderList({ orders }: { orders: Array<IOrder> }) {
   } = useSortOrder(orders || []);
 
   const filterOrders = useMemo(() => {
-    const typeOrders = (sortOrders || [])?.filter(
-      (o: IOrder) => o.order_type === orderType,
+    const typeOrders = (sortOrders || [])?.filter((o: IOrder) =>
+      orderTypes.includes(o.order_type as IOrderType),
     );
+
     if (!searchText) {
       return typeOrders;
     }
@@ -39,12 +40,12 @@ export default function OrderList({ orders }: { orders: Array<IOrder> }) {
 
       return isIdMatch;
     });
-  }, [sortOrders, orderType, searchText]);
+  }, [sortOrders, orderTypes, searchText]);
 
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
-  function handleTypeChange(t: IOrderType) {
-    setOrderType(t);
+  function handleTypeChange(t: Array<IOrderType>) {
+    setOrderTypes(t);
   }
 
   function handleSearch(text: string) {
@@ -56,7 +57,7 @@ export default function OrderList({ orders }: { orders: Array<IOrder> }) {
       <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-5">
         <div className="flex items-center space-x-4">
           <OrderTypeSelect
-            type={orderType}
+            types={orderTypes}
             handleTypeChange={handleTypeChange}
           />
           <SortSelect

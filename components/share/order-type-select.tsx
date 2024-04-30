@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export type IOrderType = "ask" | "bid";
 
@@ -20,19 +21,34 @@ export const OfferTypes: { label: string; value: IOrderType }[] = [
 ];
 
 export function OrderTypeSelect({
-  type,
+  types,
   handleTypeChange,
 }: {
-  type: IOrderType;
-  handleTypeChange: (_t: IOrderType) => void;
+  types: Array<IOrderType>;
+  handleTypeChange: (_ts: Array<IOrderType>) => void;
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
-  const currentTypeObj = OfferTypes.find((t) => t.value === type);
+  const currentTypeObj = useMemo(() => {
+    if (types.length === 1) {
+      return OfferTypes.find((t) => t.value === types[0]);
+    } else {
+      return {
+        label: "Sells / Buys",
+      };
+    }
+  }, [types]);
 
   function handleClickOpt(t: IOrderType) {
-    handleTypeChange(t);
-    setPopOpen(false);
+    if (types.includes(t)) {
+      if (types.includes(t) && types.length === 2) {
+        handleTypeChange(types.filter((_t) => _t !== t));
+        setPopOpen(false);
+      }
+    } else {
+      handleTypeChange([...types, t]);
+      setPopOpen(false);
+    }
   }
 
   return (
@@ -43,7 +59,7 @@ export function OrderTypeSelect({
           className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-none data-[open=true]:bg-yellow"
         >
           <Image
-            src={type === "ask" ? "/icons/buys.svg" : "/icons/sells.svg"}
+            src={types[0] === "ask" ? "/icons/buys.svg" : "/icons/sells.svg"}
             width={20}
             height={20}
             alt="type icon"
@@ -71,14 +87,16 @@ export function OrderTypeSelect({
         {OfferTypes.map((t) => (
           <div
             key={t.value}
-            data-checked={type === t.value}
+            data-checked={types.includes(t.value)}
             className="flex cursor-pointer items-center rounded-xl px-3 py-2 data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => handleClickOpt(t.value)}
           >
             {t.value === "ask" ? (
               <Image
                 src={
-                  type === "ask" ? "/icons/buys.svg" : "/icons/buys-gray.svg"
+                  types[0] === "ask"
+                    ? "/icons/buys.svg"
+                    : "/icons/buys-gray.svg"
                 }
                 width={20}
                 height={20}
@@ -96,11 +114,18 @@ export function OrderTypeSelect({
                 alt="type icon"
               />
             )}
-            <div
-              data-checked={type === t.value}
-              className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
-            >
-              {t.label}
+            <div className="flex flex-1 items-center justify-between">
+              <div
+                data-checked={types.includes(t.value)}
+                className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
+              >
+                {t.label}
+              </div>
+              <Checkbox
+                checked={types.includes(t.value)}
+                onCheckedChange={() => handleClickOpt(t.value)}
+                className="rounded-full"
+              />
             </div>
           </div>
         ))}

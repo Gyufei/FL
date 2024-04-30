@@ -24,15 +24,16 @@ import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
+import { IOrderType } from "@/components/share/order-type-select";
 
 export function OrderTable({
   role,
   status,
-  type,
+  types,
 }: {
   role: IRole;
   status: IStatus;
-  type: string;
+  types: Array<IOrderType>;
 }) {
   const { setAnchorValue } = useAnchor();
   const { data: orders, mutate: refreshOrders } = useMyOrders();
@@ -57,12 +58,12 @@ export function OrderTable({
         const isRole = role === "All" || role === oRole;
         const isStatus = status === "All" || status.toLowerCase() === oStatus;
 
-        return isRole && isStatus && oType === type;
+        return isRole && isStatus && types.includes(oType as IOrderType);
       });
     return {
       nodes: orderData,
     };
-  }, [orders, role, status, type]);
+  }, [orders, role, status, types]);
 
   const theme = useTheme({
     Table: `

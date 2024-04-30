@@ -1,6 +1,6 @@
 import NP from "number-precision";
 import { useEffect, useMemo, useState } from "react";
-import { IToken } from "@/lib/types/token";
+import { IPoint, IToken } from "@/lib/types/token";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
@@ -13,6 +13,7 @@ import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateBidMaker } from "@/lib/hooks/contract/use-create-bid-maker";
 import { IMarketplace } from "@/lib/types/marketplace";
+import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 
 export function BuyContent({
   marketplace,
@@ -21,16 +22,26 @@ export function BuyContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
+  const { data: points } = useMarketPoints();
+
   const [payTokenAmount, setPayTokenAmount] = useState("");
   const [payToken, setPayToken] = useState<IToken>({
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
     decimals: 6,
   } as IToken);
-  const [receivePoint, setReceivePoint] = useState<IToken>({
-    symbol: "POINTS",
-    logoURI: "/icons/point.svg",
-  } as IToken);
+
+  useEffect(() => {
+    if (points) {
+      setReceivePoint(
+        points.find(
+          (point) => point.marketplaceId === marketplace.market_place_id,
+        ) || null,
+      );
+    }
+  }, [points, marketplace]);
+
+  const [receivePoint, setReceivePoint] = useState<IPoint | null>(null);
   const [receivePointAmount, setReceivePointAmount] = useState("");
 
   const [breachFee, setBreachFee] = useState("");
@@ -61,11 +72,11 @@ export function BuyContent({
     write: writeAction,
     isSuccess,
   } = useCreateBidMaker({
-    marketplaceStr: marketplace.market_place_id,
+    marketplaceStr: receivePoint?.marketplaceId || "",
   });
 
   function handleDeposit() {
-    if (!payTokenAmount || !receivePointAmount) {
+    if (!receivePoint || !payToken || !payTokenAmount || !receivePointAmount) {
       return;
     }
 
@@ -119,8 +130,9 @@ export function BuyContent({
           }
           tokenSelect={
             <PointTokenSelectDisplay
-              token={receivePoint}
-              setToken={setReceivePoint}
+              points={points || []}
+              point={receivePoint}
+              setPoint={setReceivePoint}
             />
           }
         />

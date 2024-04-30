@@ -1,7 +1,7 @@
 import NP from "number-precision";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { IToken } from "@/lib/types/token";
+import { IPoint, IToken } from "@/lib/types/token";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
@@ -14,6 +14,7 @@ import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateAskMaker } from "@/lib/hooks/contract/use-create-ask-maker";
 import { IMarketplace } from "@/lib/types/marketplace";
+import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 
 export function SellContent({
   marketplace,
@@ -22,11 +23,21 @@ export function SellContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
+  const { data: points } = useMarketPoints();
+
   const [sellPointAmount, setSellPointAmount] = useState("");
-  const [sellPoint, setSellPoint] = useState<IToken>({
-    symbol: "POINTS",
-    logoURI: "/icons/point.svg",
-  } as IToken);
+  const [sellPoint, setSellPoint] = useState<IPoint | null>(null);
+
+  useEffect(() => {
+    if (points) {
+      setSellPoint(
+        points.find(
+          (point) => point.marketplaceId === marketplace.market_place_id,
+        ) || null,
+      );
+    }
+  }, [points, marketplace]);
+
   const [receiveTokenAmount, setReceiveAmount] = useState("");
   const [receiveToken, setReceiveToken] = useState<IToken>({
     symbol: "USDC",
@@ -99,8 +110,9 @@ export function SellContent({
           }
           tokenSelect={
             <PointTokenSelectDisplay
-              token={sellPoint}
-              setToken={setSellPoint}
+              points={points || []}
+              point={sellPoint}
+              setPoint={setSellPoint}
             />
           }
         />

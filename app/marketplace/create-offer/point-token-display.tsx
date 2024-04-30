@@ -1,31 +1,26 @@
 import Image from "next/image";
-import { IToken } from "@/lib/types/token";
+import { IPoint } from "@/lib/types/token";
 import { useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-// import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function PointTokenSelectDisplay({
-  token,
-  setToken,
+  points,
+  point,
+  setPoint,
 }: {
-  token: IToken;
-  setToken: (_t: IToken) => void;
+  points: Array<IPoint> | undefined;
+  point: IPoint | null;
+  setPoint: (_t: IPoint) => void;
 }) {
-  // const { data: marketplaceData } = useMarketplaces();
-  const tokens = [
-    {
-      symbol: "POINTS",
-      logoURI: "/icons/point.svg",
-    },
-  ] as Array<IToken>;
   const [popOpen, setPopOpen] = useState(false);
 
-  const handleSelectToken = (t: IToken) => {
-    setToken(t);
+  const handleSelectPoint = (t: IPoint) => {
+    setPoint(t);
     setPopOpen(false);
   };
 
@@ -33,16 +28,25 @@ export function PointTokenSelectDisplay({
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger>
         <div className="flex cursor-pointer items-center rounded-full bg-[#F0F1F5] p-2">
-          <Image
-            width={24}
-            height={24}
-            src={token.logoURI}
-            alt="select token"
-            className="mr-2 rounded-full"
-          ></Image>
-          <div className="overflow-x-hidden whitespace-nowrap pr-[4px] text-sm leading-5 text-black">
-            {token.symbol}
-          </div>
+          {point ? (
+            <>
+              <Image
+                width={24}
+                height={24}
+                src={point?.logoURI || ""}
+                alt="select token"
+                className="mr-2 rounded-full"
+              ></Image>
+              <div className="overflow-x-hidden whitespace-nowrap pr-[4px] text-sm leading-5 text-black">
+                {point?.symbol || ""}
+              </div>
+            </>
+          ) : (
+            <>
+              <Skeleton className="mr-2 h-6 w-6 rounded-full" />
+              <div className="h-5 w-6"></div>
+            </>
+          )}
           <div className="flex h-6 w-6 items-center justify-center">
             <Image src="/icons/down.svg" width={16} height={16} alt="arrow" />
           </div>
@@ -55,16 +59,16 @@ export function PointTokenSelectDisplay({
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}
       >
-        {tokens.map((t) => (
+        {(points || []).map((t) => (
           <div
             key={t.symbol}
-            onClick={() => handleSelectToken(t)}
+            onClick={() => handleSelectPoint(t)}
             className="flex h-8 cursor-pointer items-center rounded-xl px-1 text-sm text-black hover:bg-[#f5f6f7]"
           >
             <Image
               width={24}
               height={24}
-              src={token.logoURI}
+              src={t?.logoURI || ""}
               alt="select token"
               className="mr-2 rounded-full"
             ></Image>

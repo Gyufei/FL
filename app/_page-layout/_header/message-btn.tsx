@@ -43,7 +43,7 @@ export default function MessageBtn() {
     <>
       <div
         onClick={() => setDrawerOpen(true)}
-        className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6]"
+        className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6] hover:border-transparent hover:bg-yellow"
       >
         <Image src="/icons/bell.svg" width={24} height={24} alt="bell" />
         {!!msgEvents.length && (

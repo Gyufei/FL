@@ -27,6 +27,10 @@ export function useCreateBidMaker({
     taxForSub: number;
     note: string;
   }) => {
+    if (!marketplaceStr || !payTokenAmount || !receivePointAmount) {
+      return;
+    }
+
     const {
       tokenProgram,
       tokenProgram2022,

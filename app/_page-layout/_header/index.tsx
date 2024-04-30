@@ -48,7 +48,7 @@ function MobileLogo() {
 function Logo() {
   return (
     <Link href="/">
-      <div className="hidden flex-1 cursor-pointer items-center justify-center justify-self-center sm:flex">
+      <div className="hidden flex-1 cursor-pointer items-center justify-center justify-self-center sm:flex mx-4">
         <Image src="/icons/logo.svg" alt="logo" width={75} height={20} />
       </div>
     </Link>

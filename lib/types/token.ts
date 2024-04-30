@@ -8,3 +8,9 @@ export interface IToken {
   ratingScore: string;
   [key: string]: any;
 }
+
+export interface IPoint {
+  symbol: string;
+  logoURI: string;
+  marketplaceId: string;
+}

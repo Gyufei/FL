@@ -51,9 +51,16 @@ function NavigationBtn({
   const BtnContent = (
     <div
       data-active={active}
-      className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:brightness-75"
+      className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
     >
-      <Image src={icon} width={24} height={24} alt={text} />
+      <Image
+        src={icon}
+        width={24}
+        height={24}
+        alt={text}
+        data-active={active}
+        className="data-[active=true]:mr-1"
+      />
       {active && <div>{text}</div>}
     </div>
   );

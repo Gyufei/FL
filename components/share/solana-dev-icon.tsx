@@ -3,13 +3,13 @@ import Image from "next/image";
 
 export default function SolanaDevIcon({ className }: { className?: string }) {
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative rounded-full", className)}>
       <Image
         width={24}
         height={24}
         src="/icons/solana.svg"
         alt="chain logo"
-        className="z-10 bg-black sm:bg-white"
+        className="z-10 bg-black sm:bg-white rounded-full"
       />
       <Image
         width={12}

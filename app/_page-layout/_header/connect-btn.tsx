@@ -77,7 +77,7 @@ export default function ConnectBtn() {
   return (
     <Dialog open={showSignIn} onOpenChange={(isOpen) => setShowSignIn(isOpen)}>
       <DialogTrigger asChild>
-        <button className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:brightness-75 sm:h-12">
+        <button className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:border-transparent hover:bg-yellow sm:h-12">
           <div className="flex items-center">
             {!shortAddr || connecting || !userState?.is_sign_in ? (
               <Skeleton className="h-5 w-24" />

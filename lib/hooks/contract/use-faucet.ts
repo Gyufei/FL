@@ -15,6 +15,7 @@ import {
 export function useFaucet() {
   const { provider } = useProvider();
   const { clusterConfig } = useClusterConfig();
+  const { publicKey: authority } = useWallet();
 
   const programId = new PublicKey(
     clusterConfig.program?.faucet?.tadleFaucet || "",
@@ -25,8 +26,6 @@ export function useFaucet() {
     provider,
   );
   const systemProgram = anchor.web3.SystemProgram.programId;
-
-  const { publicKey: authority } = useWallet();
 
   const tokenProgram = TOKEN_PROGRAM_ID;
   const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;

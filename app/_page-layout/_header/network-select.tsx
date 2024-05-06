@@ -52,7 +52,7 @@ export function NetworkSelect() {
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
-        <div className="relative hidden h-12 w-40 cursor-pointer items-center justify-between rounded-full border border-[#D3D4D6] bg-transparent px-2 sm:flex hover:bg-yellow hover:border-transparent">
+        <div className="relative hidden h-12 w-40 cursor-pointer items-center justify-between rounded-full border border-[#D3D4D6] bg-transparent px-2 hover:border-transparent hover:bg-yellow sm:flex">
           <CurrChainLogo />
           <div
             data-state={popOpen ? "open" : "close"}
@@ -87,7 +87,7 @@ export function NetworkSelect() {
             height={24}
             src="/icons/solana.svg"
             alt="chain logo"
-            className="z-10 bg-white rounded-full"
+            className="z-10 rounded-full bg-white"
           />
           <div className="flex-1 text-xs">Solana</div>
         </div>
@@ -101,7 +101,9 @@ export function NetworkSelect() {
           <SolanaDevIcon />
           <div className="flex-1 text-xs">Solana Dev</div>
         </div>
-        <DevnetCard isActive={WalletAdapterNetwork.Devnet === cluster} />
+        {WalletAdapterNetwork.Devnet === cluster && (
+          <DevnetCard isActive={WalletAdapterNetwork.Devnet === cluster} />
+        )}
         <div
           onClick={() => {}}
           data-state={"inactive"}
@@ -112,7 +114,7 @@ export function NetworkSelect() {
             height={24}
             src="/icons/evms.svg"
             alt="evms"
-            className="z-10 bg-white rounded-full"
+            className="z-10 rounded-full bg-white"
           ></Image>
           <div className="flex-1 text-xs">EVMs</div>
           <Image

@@ -61,7 +61,7 @@ export default function AskDetail({
   }, [order]);
 
   const payTokenAmount = useMemo(() => {
-    if (!receivePointAmount) return "";
+    if (!receivePointAmount) return "0";
     const pay = NP.times(NP.divide(receivePointAmount, order.points), forValue);
     const payWithFee = NP.times(pay, 1 + platformFee + tradeFee).toFixed();
     return payWithFee;

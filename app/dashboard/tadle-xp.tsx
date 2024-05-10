@@ -4,9 +4,9 @@ import { useMemo } from "react";
 
 export function TadleXp() {
   const xp = 660;
-  const rank = 30;
+  const rank = 10;
   const updateAt = new Date().getTime();
-  const value = 50;
+  const value = 10;
   const maxValue = 100;
 
   const ticks = useMemo(() => {
@@ -42,6 +42,7 @@ export function TadleXp() {
           arc={{
             colorArray: ["#FF6162", "#FFD95C", "#FFA95B", "#4DBF87"],
             padding: 0.02,
+            cornerRadius: 14,
             subArcs: [
               { limit: 40 },
               { limit: 60 },
@@ -49,7 +50,7 @@ export function TadleXp() {
               { limit: 90 },
             ],
           }}
-          pointer={{ type: "blob", animationDelay: 0 }}
+          pointer={{ type: "blob", animationDelay: 0, color: '#fff' }}
           value={value}
           maxValue={maxValue}
           labels={{

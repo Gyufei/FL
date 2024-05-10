@@ -20,7 +20,7 @@ export default function OrderFillDialog({
       >
         <div className="flex flex-col items-center">
           <Image
-            src="/img/image-placeholder.png"
+            src="/img/taker_order_filled.png"
             width={120}
             height={120}
             alt="placeholder"
@@ -40,7 +40,7 @@ export default function OrderFillDialog({
             <div className="flex items-center space-x-1 text-black">
               <span>${res.pay}</span>
               <Image
-                src={res.token.logoURI}
+                src={res?.token?.logoURI}
                 width={16}
                 height={16}
                 alt="token"

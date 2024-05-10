@@ -41,8 +41,7 @@ export function TakerOrders({
 
   const theme = useTheme({
     Table: `
-      height: 280px;
-      grid-template-rows: 40px repeat(5, 48px);
+      grid-template-rows: 40px repeat(auto-fit, 48px);
       grid-template-columns:  60px repeat(5, minmax(0, 1fr));
       font-weight: 400;
     `,
@@ -146,27 +145,29 @@ export function TakerOrders({
         data={data}
         pagination={pagination}
       />
-      <Pagination
-        totalPages={pagination.state.getTotalPages(data.nodes)}
-        edgePageCount={3}
-        middlePagesSiblingCount={1}
-        currentPage={pagination.state.page}
-        setCurrentPage={handlePageChange}
-      >
-        <Pagination.PrevButton />
+      {pagination.state.getTotalPages(data.nodes) > 1 && (
+        <Pagination
+          totalPages={pagination.state.getTotalPages(data.nodes)}
+          edgePageCount={3}
+          middlePagesSiblingCount={1}
+          currentPage={pagination.state.page}
+          setCurrentPage={handlePageChange}
+        >
+          <Pagination.PrevButton />
 
-        <nav className="mx-2 flex items-center justify-center">
-          <ul className="flex items-center gap-2">
-            <Pagination.PageButton
-              activeClassName=""
-              inactiveClassName=""
-              className=""
-            />
-          </ul>
-        </nav>
+          <nav className="mx-2 flex items-center justify-center">
+            <ul className="flex items-center gap-2">
+              <Pagination.PageButton
+                activeClassName=""
+                inactiveClassName=""
+                className=""
+              />
+            </ul>
+          </nav>
 
-        <Pagination.NextButton />
-      </Pagination>
+          <Pagination.NextButton />
+        </Pagination>
+      )}
     </>
   );
 }
@@ -187,7 +188,13 @@ function PointsCell({
       <div>
         #{points} ({percent}%)
       </div>
-      <Image src={offerLogo} width={16} height={16} alt="token" className="rounded-full" />
+      <Image
+        src={offerLogo}
+        width={16}
+        height={16}
+        alt="token"
+        className="rounded-full"
+      />
     </div>
   );
 }

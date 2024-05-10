@@ -46,7 +46,7 @@ export function OrderCard({ order }: { order: IOrder }) {
   }
 
   return (
-    <div className="h-fit rounded-[20px] bg-white p-5">
+    <div className="h-fit rounded-[20px] bg-white p-5 hover:shadow-[4px_4px_20px_0px_rgba(45,46,51,0.05)]">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <TokenPairImg
@@ -132,7 +132,7 @@ export function OrderCard({ order }: { order: IOrder }) {
         </div>
       </div>
 
-      <div className="flex justify-between items-center pt-3">
+      <div className="flex items-center justify-between pt-3">
         <div className="text-xs leading-[18px] text-lightgray">
           {orderDuration}
         </div>
@@ -167,7 +167,7 @@ export function OrderCard({ order }: { order: IOrder }) {
             <WithWalletConnectBtn
               onClick={() => handleShowOrderOffer(order.order_id)}
             >
-              <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:bg-yellow hover:border-transparent">
+              <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 Buy
               </button>
             </WithWalletConnectBtn>

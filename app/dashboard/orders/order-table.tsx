@@ -193,27 +193,29 @@ export function OrderTable({
         )}
       </Table>
 
-      <Pagination
-        totalPages={pagination.state.getTotalPages(data.nodes)}
-        edgePageCount={3}
-        middlePagesSiblingCount={1}
-        currentPage={pagination.state.page}
-        setCurrentPage={handlePageChange}
-      >
-        <Pagination.PrevButton />
+      {pagination.state.getTotalPages(data.nodes) > 1 && (
+        <Pagination
+          totalPages={pagination.state.getTotalPages(data.nodes)}
+          edgePageCount={3}
+          middlePagesSiblingCount={1}
+          currentPage={pagination.state.page}
+          setCurrentPage={handlePageChange}
+        >
+          <Pagination.PrevButton />
 
-        <nav className="mx-2 flex items-center justify-center">
-          <ul className="flex items-center gap-2">
-            <Pagination.PageButton
-              activeClassName=""
-              inactiveClassName=""
-              className=""
-            />
-          </ul>
-        </nav>
+          <nav className="mx-2 flex items-center justify-center">
+            <ul className="flex items-center gap-2">
+              <Pagination.PageButton
+                activeClassName=""
+                inactiveClassName=""
+                className=""
+              />
+            </ul>
+          </nav>
 
-        <Pagination.NextButton />
-      </Pagination>
+          <Pagination.NextButton />
+        </Pagination>
+      )}
 
       <DetailDrawer orders={orders || []} onSuccess={refreshOrders} />
     </>
@@ -232,11 +234,11 @@ function OrderItem({ order }: { order: IOrder }) {
         alt="avatar"
         className="rounded-full"
       />
-      <div className="absolute right-0 bottom-0 flex h-3 w-3 items-center justify-center rounded-full border border-white bg-white">
+      <div className="absolute right-0 bottom-0 flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white bg-white">
         <Image
           src={currentChain.logo}
-          width={6.6}
-          height={5.4}
+          width={14}
+          height={14}
           alt="avatar"
           className="rounded-full"
         />

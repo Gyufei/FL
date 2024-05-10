@@ -29,7 +29,7 @@ export default function SettleBreachFee({
 
       <div className="relative text-sm">
         <NumericalInput
-          className="h-[50px] rounded-xl border border-[#d8d8d8] p-[14px] pr-[30px] focus:border-focus"
+          className="h-[50px] rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus"
           placeholder="50%"
           value={value}
           onUserInput={handleInput}

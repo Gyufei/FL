@@ -25,7 +25,7 @@ export default function OrderTabs({ order }: { order: IOrder }) {
   );
 
   return (
-    <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4">
+    <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4 pb-6">
       <Tabs
         value={currentTab}
         className="flex flex-1 flex-col"

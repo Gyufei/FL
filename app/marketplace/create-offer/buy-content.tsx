@@ -24,7 +24,7 @@ export function BuyContent({
 }) {
   const { data: points } = useMarketPoints();
 
-  const [payTokenAmount, setPayTokenAmount] = useState("");
+  const [payTokenAmount, setPayTokenAmount] = useState("0");
   const [payToken, setPayToken] = useState<IToken>({
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",

@@ -17,7 +17,9 @@ export default function ReceiveCard({
     <div className="mt-3  rounded-2xl bg-white p-4">
       <div className="text-xs leading-[18px] text-gray">{topText}</div>
       <div className="mt-2 flex justify-between">
-        <div className="text-2xl leading-[36px]">{formatNum(value)}</div>
+        <div className="h-[36px] text-2xl leading-[36px]">
+          {formatNum(value)}
+        </div>
         <Image
           src={tokenLogo}
           width={28}

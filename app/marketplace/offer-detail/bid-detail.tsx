@@ -40,7 +40,7 @@ export default function BidDetail({
   }, [order]);
 
   const receiveTokenAmount = useMemo(() => {
-    if (!sellPointAmount) return "";
+    if (!sellPointAmount) return "0";
     return String(
       NP.times(NP.divide(sellPointAmount, order.points), offerValue),
     );

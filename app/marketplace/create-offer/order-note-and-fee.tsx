@@ -30,7 +30,7 @@ export default function OrderNoteAndFee({
   return (
     <div className="mt-4 flex flex-col">
       <div className="mb-2 flex items-center space-x-1">
-        <div className="text-sm  leading-6 text-black">Order Note</div>
+        <div className="mr-[6px]  text-sm leading-6 text-black">Order Note</div>
         <Checkbox
           checked={showInput}
           onCheckedChange={(v) => handleShowInput(!!v)}
@@ -44,7 +44,7 @@ export default function OrderNoteAndFee({
               value={value}
               onChange={(e) => handleInputNote(e.target.value)}
               placeholder="Anything you want to inform the sellers..."
-              className="h-[66px] rounded-xl border border-[#d8d8d8] focus:border-black"
+              className="h-[66px] rounded-xl border border-[#d8d8d8] focus:border-focus"
             />
             <div className="absolute right-4 bottom-2 text-xs leading-[18px] text-gray">
               {value.length} / 50

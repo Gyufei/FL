@@ -203,9 +203,9 @@ function FoldPop() {
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="flex w-[210px] flex-col items-stretch border-none bg-white p-1"
+        className="flex w-[240px] flex-col items-stretch border-none bg-white p-2"
       >
-        <div className="relative mb-2 border-b border-[#fafafa] pb-2">
+        <div className="relative mb-3 border-b border-[#fafafa] pb-3">
           <Image
             src={
               isInputFocused ? "/icons/search.svg" : "/icons/search-gray.svg"
@@ -213,7 +213,7 @@ function FoldPop() {
             width={20}
             height={20}
             alt="search"
-            className="absolute top-[7px] left-[7px]"
+            className="absolute top-[10px] left-[7px]"
           />
           <Input
             placeholder="Search"
@@ -221,31 +221,34 @@ function FoldPop() {
             onChange={(e) => setSearchText(e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="h-8 rounded-lg border-none bg-[#fafafa] pl-8"
+            className="h-10 rounded-lg border-none bg-[#fafafa] pl-8"
           />
         </div>
-        {filteredCateList.map((cate) => (
+        {filteredCateList.map((cate, i) => (
           <div
-            className="flex cursor-pointer rounded-lg px-2 py-[6px] hover:bg-[#fafafa]"
+            className="flex cursor-pointer rounded-lg px-2 py-2 hover:bg-[#fafafa]"
             onClick={() => handleGo(cate.id)}
             key={cate.name}
+            style={{
+              marginTop: i === 0 ? 0 : 12,
+            }}
           >
             <Image
               src={cate.tokenLogo}
-              width={32}
-              height={32}
+              width={40}
+              height={40}
               alt="avatar"
               className="rounded-full"
             />
-            <div className="ml-2 flex flex-col">
-              <div className="text-xs leading-[18px] text-black">
+            <div className="ml-[10px] flex flex-col">
+              <div className="text-sm leading-[20px] text-black">
                 {cate.name}
               </div>
               <div
                 style={{
                   width: "150px",
                 }}
-                className="w-[150px] overflow-hidden text-ellipsis whitespace-nowrap text-[10px] leading-4 text-gray"
+                className="w-[150px] mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap text-[12px] leading-[18px] text-gray"
               >
                 {cate.link}
               </div>

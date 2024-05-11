@@ -27,7 +27,7 @@ export default function LatestNews() {
         Latest from Tadle Market
       </div>
 
-      <div className="mt-5 flex items-stretch justify-between gap-10 overflow-x-auto overflow-y-hidden sm:grid sm:grid-cols-2 sm:overflow-x-hidden">
+      <div className="flex items-stretch justify-between gap-10 overflow-x-auto overflow-y-hidden p-5 sm:grid sm:grid-cols-2 sm:overflow-x-hidden">
         <NewCard newDetail={postSummary1} key={1} />
         <NewCard newDetail={postSummary2} key={2} />
       </div>
@@ -41,8 +41,9 @@ function NewCard({ newDetail }: { newDetail: Record<string, any> }) {
       <div
         className="absolute -bottom-5 -right-5 h-full w-full rounded-3xl opacity-60"
         style={{
-          background:
-            "linear-gradient(180deg, #F0F1F5 0%, rgba(240, 241, 245, 0.2) 100%)",
+          background: 
+          // "#c40",
+          "linear-gradient(180deg, #F0F1F5 0%, rgba(240, 241, 245, 0.2) 100%)",
         }}
       ></div>
       <div
@@ -61,7 +62,7 @@ function NewCard({ newDetail }: { newDetail: Record<string, any> }) {
         <div className="mt-2 pr-10 text-base leading-6 text-black sm:text-2xl sm:leading-9">
           {newDetail.subTitle}
         </div>
-        <div className="mt-[10px] text-base leading-6 text-lightgray sm:text-sm sm:leading-5">
+        <div className="mt-[10px] text-base leading-6 text-lightgray line-clamp-6 sm:text-sm sm:leading-5">
           {newDetail.content}
         </div>
         <div className="mt-[22px] flex justify-between">

@@ -36,7 +36,7 @@ body {
   }
 }
 
-.new-border-image-radius::after {
+/* .new-border-image-radius::after {
   position: absolute;
   top: -4px;
   bottom: -4px;
@@ -46,7 +46,7 @@ body {
   content: "";
   z-index: -1;
   border-radius: 24px;
-}
+} */
 
 .highcharts-credits {
   display: none !important;

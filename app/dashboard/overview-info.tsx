@@ -4,18 +4,45 @@ import { formatNum } from "@/lib/utils/number";
 import { Input } from "../../components/ui/input";
 import { useAccountOverview } from "@/lib/hooks/api/use-account-overview";
 import { DateRange } from "react-day-picker";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { format, subDays } from "date-fns";
 import { TadleXp } from "./tadle-xp";
 import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
 
 export default function OverviewInfo() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
     to: undefined,
   });
 
   const { data: accountInfo } = useAccountOverview();
+
+  const [nameInputValue, setNameInputValue] = useState("");
+  const [showNameInput, setShowNameInput] = useState(false);
+
+  useEffect(() => {
+    if (accountInfo) {
+      setNameInputValue(accountInfo.user_name);
+    }
+  }, [accountInfo]);
+
+  function handleNameInputBlur() {
+    if (!accountInfo || !nameInputValue) {
+      setShowNameInput(false);
+      return;
+    }
+
+    accountInfo.user_name = nameInputValue;
+    setShowNameInput(false);
+  }
+
+  function showInput() {
+    setShowNameInput(true);
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 300);
+  }
 
   return (
     <div className="flex h-full max-h-[800px] flex-col justify-between px-4">
@@ -26,9 +53,30 @@ export default function OverviewInfo() {
             <div className="text-xs leading-6 text-gray">
               UID {accountInfo?.uid}
             </div>
-            <div className="leading-6 text-black">
-              {accountInfo?.user_name || ""}
-            </div>
+            {showNameInput ? (
+              <Input
+                ref={inputRef}
+                placeholder="userName"
+                value={nameInputValue}
+                onChange={(e) => setNameInputValue(e.target.value)}
+                className="h-6 w-40 rounded-none border-x-0 border-b border-t-0 border-[#f0f1f5] bg-white pl-0  text-black"
+                onBlur={handleNameInputBlur}
+              />
+            ) : (
+              <div className="flex items-center gap-1">
+                <div className="leading-6 text-black">
+                  {accountInfo?.user_name || ""}
+                </div>
+                <Image
+                  onClick={showInput}
+                  src="/icons/edit2.svg"
+                  width={16}
+                  height={16}
+                  alt="edit"
+                  className="cursor-pointer"
+                />
+              </div>
+            )}
           </div>
 
           <DateRangePickerDialog dateRange={date} setDateRange={setDate}>

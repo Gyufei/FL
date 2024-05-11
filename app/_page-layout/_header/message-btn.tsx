@@ -13,7 +13,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 export default function MessageBtn() {
   const { msgEvents } = useWsMsgs();
   const msgDetail = {
-    avatar: "/img/token-placeholder-3.png",
+    avatar: "/img/token-placeholder.png",
     name: "Points",
     no: 123456,
     user: "DkVN7RKTNjSSER5oyurf3vddQU2ZneSCYwXvpErvTCFA",

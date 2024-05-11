@@ -104,7 +104,7 @@ export function OrderTable({
   const pagination = usePagination(data, {
     state: {
       page: 0,
-      size: 10,
+      size: 9,
     },
     onChange: () => {},
   });

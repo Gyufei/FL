@@ -49,13 +49,6 @@ export default function MarketCharts({
         {chartType === "sales" ? (
           <SalesChart duration={duration} marketplace={marketplace} />
         ) : (
-          // <Image
-          //   src="/img/chart.jpg"
-          //   width={280}
-          //   height={260}
-          //   className="h-[260px]"
-          //   alt="chart"
-          // />
           <DepthChart />
         )}
       </div>

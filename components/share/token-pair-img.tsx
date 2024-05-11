@@ -29,8 +29,8 @@ export function TokenPairImg({
   src2,
   width1 = 56,
   height1 = 56,
-  width2 = 8.8,
-  height2 = 7.2,
+  width2 = 12,
+  height2 = 12,
 }: {
   src1: string;
   src2: string;
@@ -42,7 +42,7 @@ export function TokenPairImg({
   return (
     <div className="relative h-fit">
       <Image
-        src={src1 || "/img/token-placeholder.png"}
+        src={src1}
         width={width1}
         height={height1}
         alt="token1"

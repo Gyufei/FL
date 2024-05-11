@@ -30,7 +30,7 @@ export default function OrderFillDialog({
           </div>
         </div>
 
-        <div className="mt-[30px] text-sm leading-5">
+        <div className="mt-4 text-sm leading-5">
           <div className="flex justify-between">
             <div className="text-gray">Sub No.</div>
             <div className="text-black">#{res.no}</div>

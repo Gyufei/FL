@@ -16,14 +16,19 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/common";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MarketplaceCard({
   marketplace,
   className,
+  isLoading = false,
 }: {
-  marketplace: IMarketplace;
+  marketplace: IMarketplace | undefined;
   className?: string;
+  isLoading?: boolean;
 }) {
+  const isLoadingFlag = !marketplace || isLoading;
+
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
@@ -36,6 +41,7 @@ export default function MarketplaceCard({
   }
 
   const handleCopy = () => {
+    if (isLoadingFlag) return;
     if (!marketplace.market_name) return;
 
     navigator.clipboard.writeText(marketplace.market_name);
@@ -57,33 +63,50 @@ export default function MarketplaceCard({
         "relative mt-4 rounded-3xl bg-[#F0F1F5] p-5 pt-3",
       )}
     >
-      <Image
-        src={marketplace.projectLogo}
-        width={73}
-        height={73}
-        className="absolute -top-4 rounded-3xl"
-        alt="marketplace"
-      />
+      {isLoadingFlag ? (
+        <Skeleton className="absolute -top-4 h-[73px] w-[73px] rounded-3xl bg-[#fafafa]" />
+      ) : (
+        <Image
+          src={marketplace.projectLogo}
+          width={73}
+          height={73}
+          className="absolute -top-4 rounded-3xl"
+          alt="marketplace"
+        />
+      )}
 
       <div className="flex items-start justify-between pl-[84px]">
         <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
-            <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
-              {marketplace.market_name}
-            </div>
-            <OverviewIcons
-              isStar={isStar}
-              handleStar={handleStar}
-              handleCopy={handleCopy}
-              handleGoTwitter={handleGoTwitter}
-              handleGoDiscord={handleGoDiscord}
-            />
+            {isLoadingFlag ? (
+              <>
+                <Skeleton className="my-[2px] h-4 w-[100px] rounded-sm bg-[#fafafa]" />
+                <Skeleton className="my-[2px] h-4 w-[80px] rounded-sm bg-[#fafafa]" />
+              </>
+            ) : (
+              <>
+                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
+                  {marketplace.market_name}
+                </div>
+                <OverviewIcons
+                  isStar={isStar}
+                  handleStar={handleStar}
+                  handleCopy={handleCopy}
+                  handleGoTwitter={handleGoTwitter}
+                  handleGoDiscord={handleGoDiscord}
+                />
+              </>
+            )}
           </div>
         </div>
-        <FoldPop />
+        {isLoadingFlag ? (
+          <Skeleton className="h-8 w-8 rounded-full bg-[#fafafa]" />
+        ) : (
+          <FoldPop />
+        )}
       </div>
 
-      <MarketplaceOverview marketplace={marketplace} />
+      <MarketplaceOverview marketplace={marketplace} isLoading={isLoadingFlag} />
     </div>
   );
 }
@@ -248,7 +271,7 @@ function FoldPop() {
                 style={{
                   width: "150px",
                 }}
-                className="w-[150px] mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap text-[12px] leading-[18px] text-gray"
+                className="mt-[2px] w-[150px] overflow-hidden text-ellipsis whitespace-nowrap text-[12px] leading-[18px] text-gray"
               >
                 {cate.link}
               </div>

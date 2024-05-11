@@ -10,10 +10,13 @@ import { IMarketplace } from "@/lib/types/marketplace";
 export default function MarketTrades({
   marketplace,
   onCreateSuccess,
+  isLoading = false,
 }: {
-  marketplace: IMarketplace;
+  marketplace: IMarketplace | undefined;
   onCreateSuccess: () => void;
+  isLoading?: boolean;
 }) {
+  const isLoadingFlag = !marketplace || isLoading;
   const [tradeType, setTradeType] = useState<ITradeType>("All");
 
   function handleTradeTypeChange(t: ITradeType) {
@@ -33,13 +36,22 @@ export default function MarketTrades({
         />
       </div>
 
-      <TradesTable type={tradeType} marketplace={marketplace} />
+      <TradesTable
+        type={tradeType}
+        marketplace={marketplace}
+        isLoading={isLoadingFlag}
+      />
 
-      <div className="h-[96px] py-6">
-        <CreateOfferBtn marketplace={marketplace} onSuccess={onCreateSuccess} />
+      <div className="h-[80px] py-4">
+        {marketplace && (
+          <CreateOfferBtn
+            marketplace={marketplace}
+            onSuccess={onCreateSuccess}
+          />
+        )}
       </div>
 
-      <MarketCharts marketplace={marketplace} />
+      {marketplace && <MarketCharts marketplace={marketplace} />}
     </div>
   );
 }

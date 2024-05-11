@@ -16,13 +16,18 @@ import { IOrder } from "@/lib/types/order";
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
 
-  const { data: marketplaceData } = useMarketplaces();
+  const { data: marketplaceData, isLoading: isMarketLoading } =
+    useMarketplaces();
 
   const marketplace = marketplaceData?.find(
     (marketplace) => marketplace.market_id === marketplaceName,
   );
 
-  const { data: orders, mutate: refreshOrders } = useMarketplaceOrders({
+  const {
+    data: orders,
+    mutate: refreshOrders,
+    // isLoading: isOrdersLoading,
+  } = useMarketplaceOrders({
     marketId: marketplace?.market_id || "",
   });
 
@@ -48,11 +53,9 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     );
   }, [marketplace, checkIsAfterTge]);
 
-  if (!marketplaceData) {
-    return null;
-  } else if (
-    !marketplace ||
-    (marketplace && orders && orderId && !anchorOrder)
+  if (
+    marketplaceData &&
+    (!marketplace || (marketplace && orders && orderId && !anchorOrder))
   ) {
     return (
       <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
@@ -67,8 +70,9 @@ export default function Marketplace({ params }: { params: { name: string } }) {
             <MarketplaceCard
               className="basic-[218px] h-[218px] shrink-0 grow-0"
               marketplace={marketplace}
+              isLoading={isMarketLoading}
             />
-            <LeaderBoard className="shrink grow" />
+            <LeaderBoard isLoading={isMarketLoading} className="shrink grow" />
             <div className="shrink-0 grow-0">
               <Image
                 src="/img/ad-placeholder-1.png"
@@ -112,10 +116,11 @@ export default function Marketplace({ params }: { params: { name: string } }) {
             )}
           </div>
           <div className="flex w-[368px] flex-col px-6">
-            <MarketTrades
-              marketplace={marketplace}
-              onCreateSuccess={refreshOrders}
-            />
+              <MarketTrades
+                marketplace={marketplace}
+                onCreateSuccess={refreshOrders}
+                isLoading={isMarketLoading}
+              />
           </div>
         </div>
         <PageFooter />

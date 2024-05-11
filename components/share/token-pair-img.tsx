@@ -29,8 +29,8 @@ export function TokenPairImg({
   src2,
   width1 = 56,
   height1 = 56,
-  width2 = 12,
-  height2 = 12,
+  width2 = 14,
+  height2 = 14,
 }: {
   src1: string;
   src2: string;

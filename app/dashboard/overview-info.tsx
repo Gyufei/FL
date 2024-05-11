@@ -168,9 +168,9 @@ export default function OverviewInfo() {
         <div className="relative mt-2">
           <Input
             placeholder="https://"
-            className="h-12 border-[#d4d4d4] pl-4 pr-[52px] text-base focus:border-[#3dd866]"
+            className="h-12 border-[#d4d4d4] pl-4 pr-[52px] text-sm focus:border-[#3dd866]"
           />
-          <div className="absolute right-4 top-[13px] leading-[22px] text-lightgray">
+          <div className="text-sm absolute right-4 top-[13px] leading-[22px] text-lightgray">
             Copy
           </div>
         </div>

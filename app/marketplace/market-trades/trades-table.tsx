@@ -9,16 +9,24 @@ import { ITradeType } from "./trade-type-select";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
-import { sortBy } from "lodash";
+import { range, sortBy } from "lodash";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function TradesTable({
   type,
   marketplace,
+  isLoading,
 }: {
   type: ITradeType;
-  marketplace: IMarketplace;
+  marketplace: IMarketplace | undefined;
+  isLoading: boolean;
 }) {
-  const { data: historyData } = useMarketTrades(marketplace.market_place_id);
+  const { data: historyData, isLoading: isHistoryLoading } = useMarketTrades(
+    marketplace?.market_place_id,
+  );
+
+  const isLoadingFlag = !marketplace || isLoading || isHistoryLoading;
+
   const { msgEvents } = useWsMsgs();
 
   const tradeMsgs = useMemo<any[]>(() => {
@@ -34,6 +42,20 @@ export function TradesTable({
   }, [msgEvents, historyData]);
 
   const data = useMemo(() => {
+    if (isLoadingFlag) {
+      const nodes = range(6)
+        .fill(0)
+        .map((_: any) => {
+          return {
+            id: Math.floor(Math.random() * 100000),
+          };
+        });
+
+      return {
+        nodes,
+      };
+    }
+
     const trades = tradeMsgs
       .filter((msg) => msg.market_id === marketplace?.market_place_id)
       .map((msg) => {
@@ -52,7 +74,7 @@ export function TradesTable({
     return {
       nodes: typeTrades,
     };
-  }, [tradeMsgs, type, marketplace]);
+  }, [tradeMsgs, type, marketplace, isLoadingFlag]);
 
   const theme = useTheme({
     Table: `
@@ -103,34 +125,57 @@ export function TradesTable({
   const COLUMNS = [
     {
       label: "",
-      renderCell: (trade: any) => <div>{formatTimeDuration(trade.time)}</div>,
+      renderCell: (trade: any) =>
+        isLoadingFlag ? (
+          <Skeleton className="h-[16px] w-[50px]" />
+        ) : (
+          <div>{formatTimeDuration(trade.time)}</div>
+        ),
     },
     {
       label: "Item Id",
-      renderCell: (trade: any) => <div>#{trade.item_id}</div>,
+      renderCell: (trade: any) =>
+        isLoadingFlag ? (
+          <Skeleton className="h-[16px] w-[100px]" />
+        ) : (
+          <div>#{trade.item_id}</div>
+        ),
     },
     {
       label: "Value",
-      renderCell: (trade: any) => (
-        <div className="flex w-full items-center justify-end">
-          <span>{formatNum(trade.value)}</span>
-          <Image
-            className="ml-1"
-            src={trade.token.logoURI}
-            width={12}
-            height={12}
-            alt="token"
-          />
-        </div>
-      ),
+      renderCell: (trade: any) =>
+        isLoadingFlag ? (
+          <Skeleton className="h-[16px] w-[50px]" />
+        ) : (
+          <div className="flex w-full items-center justify-end">
+            <span>{formatNum(trade.value)}</span>
+            <Image
+              className="ml-1"
+              src={trade.token.logoURI}
+              width={12}
+              height={12}
+              alt="token"
+            />
+          </div>
+        ),
     },
     {
       label: "Amount",
-      renderCell: (trade: any) => <div>{formatNum(trade.amount)}</div>,
+      renderCell: (trade: any) =>
+        isLoadingFlag ? (
+          <Skeleton className="h-[16px] w-[50px]" />
+        ) : (
+          <div>{formatNum(trade.amount)}</div>
+        ),
     },
     {
       label: "Buyer",
-      renderCell: (trade: any) => <div>{truncateAddr(trade.buyer)}</div>,
+      renderCell: (trade: any) =>
+        isLoadingFlag ? (
+          <Skeleton className="h-[16px] w-[60px]" />
+        ) : (
+          <div>{truncateAddr(trade.buyer)}</div>
+        ),
     },
   ];
 

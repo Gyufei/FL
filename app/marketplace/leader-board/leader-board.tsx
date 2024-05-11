@@ -9,18 +9,31 @@ import { IRangeType, LeaderRangeSelect } from "./leader-range-select";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { useTaxIncome } from "@/lib/hooks/api/use-tax-income";
-import { sortBy } from "lodash";
+import { range, sortBy } from "lodash";
 import { useMakerOrders } from "@/lib/hooks/api/use-maker-orders";
 import { useTradingVol } from "@/lib/hooks/api/use-trading-vol";
 import { cn } from "@/lib/utils/common";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function LeaderBoard({ className }: { className?: string }) {
+export default function LeaderBoard({
+  className,
+  isLoading,
+}: {
+  className?: string;
+  isLoading: boolean;
+}) {
   const [leaderType, setLeaderType] = useState<ILeaderType>("Tax Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("hour");
 
-  const { data: taxIncomeData } = useTaxIncome(timeRange);
-  const { data: makerOrdersData } = useMakerOrders(timeRange);
-  const { data: tradingVolData } = useTradingVol(timeRange);
+  const { data: taxIncomeData, isLoading: taxIncomeLoading } =
+    useTaxIncome(timeRange);
+  const { data: makerOrdersData, isLoading: makerOrdersLoading } =
+    useMakerOrders(timeRange);
+  const { data: tradingVolData, isLoading: tradingVolLoading } =
+    useTradingVol(timeRange);
+
+  const isLoadingFlag =
+    isLoading || taxIncomeLoading || makerOrdersLoading || tradingVolLoading;
 
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
@@ -87,6 +100,24 @@ export default function LeaderBoard({ className }: { className?: string }) {
   });
 
   const tableData = useMemo(() => {
+    if (isLoadingFlag) {
+      const nodes = range(5)
+        .fill(0)
+        .map((_: any, index: number) => {
+          return {
+            id: Math.floor(Math.random() * 100000),
+            no: index + 1,
+            wallet: "",
+            amount: "",
+            count: "",
+          };
+        });
+
+      return {
+        nodes,
+      };
+    }
+
     const nodes = data.map((item: any, index: number) => {
       return {
         id: index + 1,
@@ -96,10 +127,11 @@ export default function LeaderBoard({ className }: { className?: string }) {
         count: item.count,
       };
     });
+
     return {
       nodes,
     };
-  }, [data]);
+  }, [data, isLoadingFlag]);
 
   const COLUMNS = [
     {
@@ -132,24 +164,32 @@ export default function LeaderBoard({ className }: { className?: string }) {
     },
     {
       label: "Wallet",
-      renderCell: (item: any) => (
-        <div>
-          {truncateAddr(item.wallet, {
-            nPrefix: 4,
-            nSuffix: 4,
-          })}
-        </div>
-      ),
+      renderCell: (item: any) =>
+        isLoadingFlag ? (
+          <Skeleton className="h-[16px] w-[150px]" />
+        ) : (
+          <div>
+            {truncateAddr(item.wallet, {
+              nPrefix: 4,
+              nSuffix: 4,
+            })}
+          </div>
+        ),
     },
     {
       label: leaderType !== "Maker Orders" ? "Amount" : "Count",
-      renderCell: (item: any) => (
-        <div>
-          {leaderType === "Maker Orders"
-            ? formatNum(item.count || 0)
-            : `$${formatNum(item.amount)}`}
-        </div>
-      ),
+      renderCell: (item: any) =>
+        isLoadingFlag ? (
+          <div className="flex justify-end">
+            <Skeleton className="h-[16px] w-[60px]" />
+          </div>
+        ) : (
+          <div>
+            {leaderType === "Maker Orders"
+              ? formatNum(item.count || 0)
+              : `$${formatNum(item.amount)}`}
+          </div>
+        ),
     },
   ];
 

@@ -31,10 +31,10 @@ export default function OrderTabs({ order }: { order: IOrder }) {
         className="flex flex-1 flex-col"
         onValueChange={setCurrentTab}
       >
-        <TabsList className="flex items-center justify-between p-0">
+        <TabsList className="flex items-end justify-between p-0">
           <div className="flex items-center justify-start space-x-10">
             <TabsTrigger
-              className="w-[105px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
+              className="w-[105px] pt-0 pl-0 pb-[10px] flex items-center leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
               value="orders"
             >
               Taker Orders

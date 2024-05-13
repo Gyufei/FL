@@ -17,6 +17,7 @@ import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function OrderCard({ order }: { order: IOrder }) {
   const { setAnchorValue } = useAnchor();
@@ -176,6 +177,59 @@ export function OrderCard({ order }: { order: IOrder }) {
             </WithWalletConnectBtn>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function OrderCardSkeleton() {
+  return (
+    <div className="h-fit rounded-[20px] bg-white p-5 hover:shadow-[4px_4px_20px_0px_rgba(45,46,51,0.05)]">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <Skeleton className="h-12 w-12 rounded-full" />
+
+          <div>
+            <Skeleton className="my-1 h-4 w-[160px]" />
+            <Skeleton className="my-1 h-4 w-[88px]" />
+          </div>
+        </div>
+
+        <div className="relative">
+          <CircleProgress percentage={0} className="scale-[1.1429]" />
+          <div
+            data-zero={true}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=true]:text-gray data-[zero=false]:text-black"
+          >
+            0%
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between border-b border-[#F0F1F5] pb-5">
+        <div className="flex flex-1 grow flex-col">
+          <Skeleton className="h-3 w-[60px]" />
+          <Skeleton className="my-2 h-4 w-[120px]" />
+          <Skeleton className="h-4 w-[60px]" />
+        </div>
+        <div className="flex grow-0 items-center justify-center">
+          <Image
+            src="/icons/arrow-right-gray.svg"
+            width={20}
+            height={20}
+            alt="arrow"
+          />
+        </div>
+        <div className="flex flex-1 grow flex-col items-end">
+          <Skeleton className="h-3 w-[60px]" />
+          <Skeleton className="my-2 h-4 w-[120px]" />
+          <Skeleton className="h-4 w-[60px]" />
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between pt-3">
+        <Skeleton className="h-4 w-[120px]" />
+        <Skeleton className="h-4 w-[120px]" />
       </div>
     </div>
   );

@@ -7,12 +7,19 @@ import {
 } from "../../../components/share/order-type-select";
 import { SortSelect } from "../../../components/share/sort-select";
 import SearchInput from "./search-input";
-import { OrderCard } from "./order-card";
+import { OrderCard, OrderCardSkeleton } from "./order-card";
 import HoverIcon from "@/components/share/hover-icon";
 import { IOrder } from "@/lib/types/order";
 import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
+import { range } from "lodash";
 
-export default function OrderList({ orders }: { orders: Array<IOrder> }) {
+export default function OrderList({
+  orders,
+  isLoading,
+}: {
+  orders: Array<IOrder>;
+  isLoading: boolean;
+}) {
   const [orderTypes, setOrderTypes] = useState<Array<IOrderType>>(["ask"]);
   const [searchText, setSearchText] = useState("");
 
@@ -101,9 +108,11 @@ export default function OrderList({ orders }: { orders: Array<IOrder> }) {
       </div>
 
       <div className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto xl:grid-cols-2 2xl:grid-cols-3">
-        {(filterOrders || []).map((order) => (
-          <OrderCard order={order} key={order.order_id} />
-        ))}
+        {isLoading
+          ? range(6).map((i) => <OrderCardSkeleton key={i} />)
+          : (filterOrders || []).map((order) => (
+              <OrderCard order={order} key={order.order_id} />
+            ))}
       </div>
     </div>
   );

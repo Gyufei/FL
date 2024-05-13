@@ -26,7 +26,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   const {
     data: orders,
     mutate: refreshOrders,
-    // isLoading: isOrdersLoading,
+    isLoading: isOrdersLoading,
   } = useMarketplaceOrders({
     marketId: marketplace?.market_id || "",
   });
@@ -111,16 +111,19 @@ export default function Marketplace({ params }: { params: { name: string } }) {
                   orders={orders || []}
                   onSuccess={refreshOrders}
                 />
-                <OrderList orders={canBuyOrders || []} />
+                <OrderList
+                  orders={canBuyOrders || []}
+                  isLoading={isMarketLoading || isOrdersLoading}
+                />
               </>
             )}
           </div>
           <div className="flex w-[368px] flex-col px-6">
-              <MarketTrades
-                marketplace={marketplace}
-                onCreateSuccess={refreshOrders}
-                isLoading={isMarketLoading}
-              />
+            <MarketTrades
+              marketplace={marketplace}
+              onCreateSuccess={refreshOrders}
+              isLoading={isMarketLoading}
+            />
           </div>
         </div>
         <PageFooter />

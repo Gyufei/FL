@@ -48,11 +48,11 @@ export const MainnetCluster: Cluster = {
   program: {
     usdcTokenMint: "BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ",
     pointTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",
-    tadleProgram: "J6Xk8q8iptHy1XaAkJN58GrspUd97GyAhkbQMc1XN37Y",
-    systemConfig: "BnshNkBtATQTENqGJaqaXdMRoegVavKNZx19aqkM9Qb5",
-    poolUsdcTokenAccount: "95g3V9HsuyMG2Z7MvaaZA1q1ysVMpENYtJZBwA7MLQgT",
-    poolPointsTokenAccount: "2RsKJTmhQVYmR87PaV9MdDuHVNyrKZoX1XWyT5kWZBFr",
-    poolTokenAuthority: "AjUtp2QB4VdjGVzSCjZCrKGXTryBS64jncvbceF4TzM4",
+    tadleProgram: "9jc3sYXMTxRKZxTyww5b2CDgDvd6RqZJhLCnecV2TdVq",
+    systemConfig: "AprdBYPGob4ksDpwznizN2kFv4Lke5fUMMgk1z5tk2JC",
+    poolUsdcTokenAccount: "Ek6abmfsBSJXe3UtgtuvK55X9hwYFiaZYJ3bfb5vMRxw",
+    poolPointsTokenAccount: "72ruiQSFdGYroAq9NVYqGtDK7gLAdqzC59SSAnGzxyDN",
+    poolTokenAuthority: "6pQTnaaEK5PHREyBdBDVYyCwPdxviYsQpoDaUoFTxfnZ",
   },
 };
 
@@ -69,11 +69,11 @@ export const DevnetCluster: Cluster = {
   program: {
     usdcTokenMint: "BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ",
     pointTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",
-    tadleProgram: "J6Xk8q8iptHy1XaAkJN58GrspUd97GyAhkbQMc1XN37Y",
-    systemConfig: "BnshNkBtATQTENqGJaqaXdMRoegVavKNZx19aqkM9Qb5",
-    poolUsdcTokenAccount: "95g3V9HsuyMG2Z7MvaaZA1q1ysVMpENYtJZBwA7MLQgT",
-    poolPointsTokenAccount: "2RsKJTmhQVYmR87PaV9MdDuHVNyrKZoX1XWyT5kWZBFr",
-    poolTokenAuthority: "AjUtp2QB4VdjGVzSCjZCrKGXTryBS64jncvbceF4TzM4",
+    tadleProgram: "9jc3sYXMTxRKZxTyww5b2CDgDvd6RqZJhLCnecV2TdVq",
+    systemConfig: "AprdBYPGob4ksDpwznizN2kFv4Lke5fUMMgk1z5tk2JC",
+    poolUsdcTokenAccount: "Ek6abmfsBSJXe3UtgtuvK55X9hwYFiaZYJ3bfb5vMRxw",
+    poolPointsTokenAccount: "72ruiQSFdGYroAq9NVYqGtDK7gLAdqzC59SSAnGzxyDN",
+    poolTokenAuthority: "6pQTnaaEK5PHREyBdBDVYyCwPdxviYsQpoDaUoFTxfnZ",
     faucet: {
       tadleFaucet: '8F8Ygn7aHZ7tNtn4WzEfsQLporeG2ppwkBQRrK15LdqZ',
       systemConfig: '5v4PUXM3FSitkMACQ3GsCZhqHEYdgceDkg6gE8xeJuBj',

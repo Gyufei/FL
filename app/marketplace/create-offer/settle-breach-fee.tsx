@@ -1,5 +1,4 @@
 import { NumericalInput } from "@/components/share/numerical-input";
-import { WithTip } from "./with-tip";
 
 export default function SettleBreachFee({
   value,
@@ -24,12 +23,11 @@ export default function SettleBreachFee({
         <div className="mr-1 text-sm leading-6 text-black">
           Settle Breach Fee
         </div>
-        <WithTip></WithTip>
       </div>
 
       <div className="relative text-sm">
         <NumericalInput
-          className="h-[50px] rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus"
+          className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus"
           placeholder="50%"
           value={value}
           onUserInput={handleInput}

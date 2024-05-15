@@ -15,6 +15,7 @@ import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateAskMaker } from "@/lib/hooks/contract/use-create-ask-maker";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
+import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 
 export function SellContent({
   marketplace,
@@ -47,6 +48,7 @@ export function SellContent({
 
   const [breachFee, setBreachFee] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
+  const [settleMode, setSettleMode] = useState(SettleModes[0]);
 
   const [note, setNote] = useState("");
 
@@ -76,7 +78,7 @@ export function SellContent({
     marketplaceStr: marketplace.market_place_id,
   });
 
-  async function handleDeposit() {
+  async function handleCreate() {
     if (!sellPointAmount || !receiveTokenAmount) {
       return;
     }
@@ -86,6 +88,7 @@ export function SellContent({
       receiveTokenAmount: Number(receiveTokenAmount),
       breachFee: Number(breachFee || 50) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
+      settleMode: settleMode,
       note: note,
     });
   }
@@ -151,6 +154,7 @@ export function SellContent({
         />
 
         <div className="mt-4 flex items-center justify-between space-x-3">
+          <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
           <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
@@ -160,7 +164,7 @@ export function SellContent({
 
       <button
         disabled={isCreateLoading}
-        onClick={handleDeposit}
+        onClick={handleCreate}
         className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
       >
         Confirm Maker Order

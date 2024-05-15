@@ -4,6 +4,7 @@ import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
+import { ISettleMode } from "@/app/marketplace/create-offer/settle-mode-select";
 
 export function useCreateAskMaker({
   marketplaceStr: marketplaceStr,
@@ -20,12 +21,14 @@ export function useCreateAskMaker({
     receiveTokenAmount,
     breachFee,
     taxForSub,
+    settleMode,
     note,
   }: {
     sellPointAmount: number;
     receiveTokenAmount: number;
     breachFee: number;
     taxForSub: number;
+    settleMode: ISettleMode,
     note: string;
   }) => {
     const {
@@ -35,7 +38,6 @@ export function useCreateAskMaker({
       systemProgram,
       systemConfig,
       userUsdcTokenAccount,
-      poolUsdcTokenAccount,
       usdcTokenMint,
       seedAccount,
       associatedTokenProgram,
@@ -47,10 +49,26 @@ export function useCreateAskMaker({
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
       program.programId,
     )[0];
-    const order = PublicKey.findProgramAddressSync(
-      [Buffer.from("order"), seedAccount.publicKey.toBuffer()],
-      program.programId,
+
+    const stockA = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("stock"),
+        seedAccount.publicKey.toBuffer()
+      ],
+      program.programId
     )[0];
+
+    const offerA = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("offer"),
+        seedAccount.publicKey.toBuffer()
+      ],
+      program.programId
+    )[0];
+
+    const settleModeArg = {
+      [settleMode]: {}
+    }
 
     const txHash = await program.methods
       .createMaker(
@@ -58,10 +76,10 @@ export function useCreateAskMaker({
         new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
         new BN(breachFee),
         new BN(taxForSub),
-        false,
         {
           ask: {},
         },
+        settleModeArg,
       )
       .accounts({
         authority,
@@ -69,15 +87,18 @@ export function useCreateAskMaker({
         marketPlace,
         systemConfig,
         maker,
-        order,
+        stock: stockA,
+        offer: offerA,
+
+        // order,
         userTokenAccount: userUsdcTokenAccount,
-        poolTokenAccount: poolUsdcTokenAccount,
+        // poolTokenAccount: poolUsdcTokenAccount,
         poolTokenAuthority,
         tokenMint: usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
-        poolTokenProgram: tokenProgram,
         associatedTokenProgram,
+        poolTokenProgram: tokenProgram,
         systemProgram,
       })
       .signers([seedAccount])

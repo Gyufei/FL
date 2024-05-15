@@ -14,6 +14,7 @@ import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateBidMaker } from "@/lib/hooks/contract/use-create-bid-maker";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
+import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 
 export function BuyContent({
   marketplace,
@@ -46,6 +47,7 @@ export function BuyContent({
 
   const [breachFee, setBreachFee] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
+  const [settleMode, setSettleMode] = useState(SettleModes[0]);
 
   const [note, setNote] = useState("");
 
@@ -85,6 +87,7 @@ export function BuyContent({
       receivePointAmount: Number(receivePointAmount),
       breachFee: Number(breachFee || 50) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
+      settleMode: settleMode,
       note: note,
     });
   }
@@ -138,6 +141,7 @@ export function BuyContent({
         />
 
         <div className="mt-4 flex items-center justify-between space-x-3">
+          <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
           <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>

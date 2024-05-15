@@ -20,6 +20,7 @@ import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
 import { formatNum } from "@/lib/utils/number";
 import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
 import { useOrderTree } from "@/lib/hooks/order/use-order-tree";
+import { SettleModeSelect } from "@/app/marketplace/create-offer/settle-mode-select";
 
 export default function ListAskStockBtn({
   order: order,
@@ -45,6 +46,7 @@ export default function ListAskStockBtn({
 
   const [breachFee, setBreachFee] = useState("");
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
+  const settleMode = "progressive";
 
   const [note, setNote] = useState("");
 
@@ -145,6 +147,11 @@ export default function ListAskStockBtn({
             />
 
             <div className="mt-4 flex items-center justify-between space-x-3">
+              <SettleModeSelect
+                disabled
+                value={settleMode}
+                onValueChange={() => {}}
+              />
               <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
               <TaxForSubTrades
                 disabled

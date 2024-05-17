@@ -42,9 +42,29 @@ export function useCreateAskMaker({
       seedAccount,
       associatedTokenProgram,
       poolTokenAuthority,
+      poolUsdcTokenAccount
     } = await getAccounts();
 
     const marketPlace = new PublicKey(marketplaceStr);
+
+    const walletABaseTokenBalance = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("token_balance"),
+        usdcTokenMint.toBuffer(),
+        authority!.toBuffer()
+      ],
+      program.programId
+    )[0];
+
+    const walletAPointTokenBalance = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("point_token_balance"),
+        marketPlace.toBuffer(),
+        authority!.toBuffer()
+      ],
+      program.programId
+    )[0];
+
     const maker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
       program.programId,
@@ -89,10 +109,7 @@ export function useCreateAskMaker({
         maker,
         stock: stockA,
         offer: offerA,
-
-        // order,
         userTokenAccount: userUsdcTokenAccount,
-        // poolTokenAccount: poolUsdcTokenAccount,
         poolTokenAuthority,
         tokenMint: usdcTokenMint,
         tokenProgram,
@@ -100,8 +117,23 @@ export function useCreateAskMaker({
         associatedTokenProgram,
         poolTokenProgram: tokenProgram,
         systemProgram,
-      })
-      .signers([seedAccount])
+      }).remainingAccounts([
+        {
+          pubkey: walletABaseTokenBalance,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: poolUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: walletAPointTokenBalance,
+          isSigner: false,
+          isWritable: true
+        },
+      ]).signers([seedAccount])
       .rpc();
 
     await recordTransaction({

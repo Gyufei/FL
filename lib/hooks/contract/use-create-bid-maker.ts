@@ -45,6 +45,7 @@ export function useCreateBidMaker({
       seedAccount,
       associatedTokenProgram,
       poolTokenAuthority,
+      poolUsdcTokenAccount
     } = await getAccounts();
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -70,6 +71,23 @@ export function useCreateBidMaker({
       program.programId
     )[0];
 
+    const walletABaseTokenBalance = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("token_balance"),
+        usdcTokenMint.toBuffer(),
+        authority!.toBuffer()
+      ],
+      program.programId
+    )[0];
+
+    const walletAPointTokenBalance = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("point_token_balance"),
+        marketPlace.toBuffer(),
+        authority!.toBuffer()
+      ],
+      program.programId
+    )[0];
 
     const settleModeArg = {
       [settleMode]: {}
@@ -94,14 +112,10 @@ export function useCreateBidMaker({
         seedAccount: seedAccount.publicKey,
         marketPlace,
         systemConfig,
-        // userPointTokenBalance: walletAPointTokenBalance,
-
         maker,
         stock: stockA,
         offer: offerA,
-
         userTokenAccount: userUsdcTokenAccount,
-        // poolTokenAccount: poolUsdcTokenAccount,
         poolTokenAuthority,
         tokenMint: usdcTokenMint,
         tokenProgram,
@@ -109,7 +123,23 @@ export function useCreateBidMaker({
         associatedTokenProgram,
         poolTokenProgram: tokenProgram,
         systemProgram,
-      })
+      }).remainingAccounts([
+        {
+          pubkey: walletABaseTokenBalance,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: poolUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: walletAPointTokenBalance,
+          isSigner: false,
+          isWritable: true
+        },
+      ])
       .signers([seedAccount])
       .rpc();
 

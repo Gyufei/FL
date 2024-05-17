@@ -33,6 +33,7 @@ export function useAccounts() {
       tokenProgram,
       associatedTokenProgram,
     );
+
     const userPointsTokenAccount = await getAssociatedTokenAddress(
       new PublicKey(clusterConfig.program.pointTokenMint),
       authority!,

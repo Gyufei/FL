@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { format, subDays } from "date-fns";
 import { TadleXp } from "./tadle-xp";
 import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
+import HoverIcon from "@/components/share/hover-icon";
 
 export default function OverviewInfo() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -170,8 +171,22 @@ export default function OverviewInfo() {
             placeholder="https://"
             className="h-12 border-[#d4d4d4] pl-4 pr-[52px] text-sm focus:border-[#3dd866]"
           />
-          <div className="text-sm absolute right-4 top-[13px] leading-[22px] text-lightgray">
-            Copy
+          <div className="absolute right-4 top-[13px] flex items-center ">
+            <HoverIcon
+              src="/icons/info-gray.svg"
+              hoverSrc="/icons/info.svg"
+              width={20}
+              height={20}
+              alt="copy"
+              className="mr-3"
+            />
+            <HoverIcon
+              src="/icons/link-copy-gray.svg"
+              hoverSrc="/icons/link-copy.svg"
+              width={20}
+              height={20}
+              alt="copy"
+            />
           </div>
         </div>
       </div>

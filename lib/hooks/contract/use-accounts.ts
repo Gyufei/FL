@@ -17,14 +17,29 @@ export function useAccounts() {
     const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
     const associatedTokenProgram = ASSOCIATED_TOKEN_PROGRAM_ID;
     const systemProgram = SystemProgram.programId;
-    const systemConfig = new PublicKey(clusterConfig.program.systemConfig);
     const seedAccount = Keypair.generate();
 
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
     const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
+
+    const systemConfig = new PublicKey(clusterConfig.program.systemConfig);
     const poolTokenAuthority = new PublicKey(
       clusterConfig.program.poolTokenAuthority,
     );
+
+    // const systemConfig = await findProgramAddress(
+    //   [
+    //     Buffer.from("system_config")
+    //   ],
+    //   program.programId
+    // )[0];
+
+    // const poolTokenAuthority = await findProgramAddress(
+    //   [
+    //     systemConfig.toBuffer()
+    //   ],
+    //   program.programId
+    // )[0];
 
     const userUsdcTokenAccount = await getAssociatedTokenAddress(
       new PublicKey(clusterConfig.program.usdcTokenMint),
@@ -42,12 +57,18 @@ export function useAccounts() {
       associatedTokenProgram,
     );
 
-    const poolUsdcTokenAccount = new PublicKey(
-      clusterConfig.program.poolUsdcTokenAccount,
+    const poolUsdcTokenAccount = await getAssociatedTokenAddress(
+      usdcTokenMint,
+      poolTokenAuthority,
+      true
     );
-    const poolPointsTokenAccount = new PublicKey(
-      clusterConfig.program.poolPointsTokenAccount,
+
+    const poolPointsTokenAccount = await getAssociatedTokenAddress(
+      pointTokenMint,
+      poolTokenAuthority,
+      true
     );
+
 
     return {
       tokenProgram,

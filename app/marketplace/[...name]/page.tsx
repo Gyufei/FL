@@ -40,7 +40,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   const { anchor: orderId } = useAnchor();
 
   const anchorOrder = useMemo(() => {
-    return orders?.find((o) => o.id === orderId);
+    return orders?.find((o) => o.offer_id === orderId);
   }, [orders, orderId]);
 
   const { checkIsAfterTge } = useTge();

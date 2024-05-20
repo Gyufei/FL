@@ -20,7 +20,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
   const [onlyMe, setOnlyMe] = useState(false);
 
   const { data: orders } = useTakerOrders(
-    order.order,
+    order.offer_account,
     onlyMe ? publicKey?.toBase58() : undefined,
   );
 
@@ -34,7 +34,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
         <TabsList className="flex items-end justify-between p-0">
           <div className="flex items-center justify-start space-x-10">
             <TabsTrigger
-              className="w-[105px] pt-0 pl-0 pb-[10px] flex items-center leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
+              className="flex w-[105px] items-center pt-0 pl-0 pb-[10px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
               value="orders"
             >
               Taker Orders

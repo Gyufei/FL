@@ -7,8 +7,8 @@ import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import ConfirmAskSettleDialog from "../settle/confirm-ask-settle-dialog";
 import { useEffect, useMemo, useState } from "react";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOriginMaker } from "@/lib/hooks/contract/use-close-origin-maker";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
@@ -16,7 +16,7 @@ export default function MyAskDetail({
   order: order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
   const {
@@ -28,7 +28,7 @@ export default function MyAskDetail({
     orderPointInfo,
     isCanSettle,
     isSettled,
-  } = useOrderFormat({
+  } = useOfferFormat({
     order,
   });
 
@@ -51,7 +51,7 @@ export default function MyAskDetail({
     write: writeAction,
     isSuccess,
   } = useCloseOriginMaker({
-    makerStr: order.maker_id,
+    makerStr: order.maker_account,
     orderStr: order.order,
   });
 

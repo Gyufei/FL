@@ -6,8 +6,8 @@ import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import { useState } from "react";
 import ConfirmBidSettleDialog from "../settle/confirm-bid-settle-dialog";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
@@ -15,7 +15,7 @@ export default function MyBidDetail({
   order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
   const {
@@ -28,7 +28,7 @@ export default function MyBidDetail({
     afterTGEPeriod,
     isCanSettle,
     isSettled,
-  } = useOrderFormat({
+  } = useOfferFormat({
     order,
   });
 

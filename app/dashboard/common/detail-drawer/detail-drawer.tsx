@@ -1,7 +1,7 @@
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 import MyAskDetail from "./my-ask-detail";
 import MyBidDetail from "./my-bid-detail";
 import { useEffect, useMemo, useState } from "react";
@@ -11,7 +11,7 @@ export default function DetailDrawer({
   orders,
   onSuccess,
 }: {
-  orders: Array<IOrder>;
+  orders: Array<IOffer>;
   onSuccess: () => void;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function DetailDrawer({
   }, [orders, orderId]);
 
   const isAsk = useMemo(() => {
-    return order?.order_type === "ask";
+    return order?.offer_type === "ask";
   }, [order]);
 
   function handleDrawerClose() {

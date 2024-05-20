@@ -10,8 +10,8 @@ import useTge from "@/lib/hooks/marketplace/useTge";
 import { useMemo } from "react";
 import OfferDetailDrawer from "../offer-detail/offer-detail-drawer";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
-import { useMarketplaceOrders } from "@/lib/hooks/api/use-marketplace-orders";
-import { IOrder } from "@/lib/types/order";
+import { useMarketplaceOffers } from "@/lib/hooks/api/use-marketplace-offers";
+import { IOffer } from "@/lib/types/order";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
@@ -27,20 +27,20 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     data: orders,
     mutate: refreshOrders,
     isLoading: isOrdersLoading,
-  } = useMarketplaceOrders({
-    marketId: marketplace?.market_id || "",
+  } = useMarketplaceOffers({
+    marketAccount: marketplace?.market_place_id || "",
   });
 
   const canBuyOrders = useMemo(() => {
-    return (orders || [])?.filter((order: IOrder) =>
-      ["virgin", "ongoing"].includes(order.maker_status),
+    return (orders || [])?.filter((order: IOffer) =>
+      ["virgin", "ongoing"].includes(order.offer_status),
     );
   }, [orders]);
 
   const { anchor: orderId } = useAnchor();
 
   const anchorOrder = useMemo(() => {
-    return orders?.find((o) => o.order_id === orderId);
+    return orders?.find((o) => o.id === orderId);
   }, [orders, orderId]);
 
   const { checkIsAfterTge } = useTge();

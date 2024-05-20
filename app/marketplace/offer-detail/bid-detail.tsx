@@ -7,15 +7,15 @@ import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
 import { useAskTaker } from "@/lib/hooks/contract/use-ask-taker";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function BidDetail({
   order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const {
@@ -27,7 +27,7 @@ export default function BidDetail({
     pointPerPrice,
     isFilled,
     orderTokenInfo,
-  } = useOrderFormat({
+  } = useOfferFormat({
     order,
   });
 
@@ -58,7 +58,7 @@ export default function BidDetail({
     write: writeAction,
   } = useAskTaker({
     marketplaceStr: order.marketplace.market_place_id,
-    makerStr: order.maker_id,
+    makerStr: order.maker_account,
     preOrderStr: order.order,
   });
 

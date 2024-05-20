@@ -15,9 +15,9 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useMemo } from "react";
-import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
-import { IOrder } from "@/lib/types/order";
+import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
+import { IOffer } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
@@ -36,7 +36,7 @@ export function OrderTable({
   types: Array<IOrderType>;
 }) {
   const { setAnchorValue } = useAnchor();
-  const { data: orders, mutate: refreshOrders } = useMyOrders();
+  const { data: orders, mutate: refreshOrders } = useMyOffers();
 
   function openDetail(oId: any) {
     setAnchorValue(oId);
@@ -52,8 +52,8 @@ export function OrderTable({
       })
       .filter((o) => {
         const oRole = o.pre_order ? "Taker" : "Maker";
-        const oStatus = o.maker_status;
-        const oType = o.order_type;
+        const oStatus = o.offer_status;
+        const oType = o.offer_type;
 
         const isRole = role === "All" || role === oRole;
         const isStatus = status === "All" || status.toLowerCase() === oStatus;
@@ -222,7 +222,7 @@ export function OrderTable({
   );
 }
 
-function OrderItem({ order }: { order: IOrder }) {
+function OrderItem({ order }: { order: IOffer }) {
   const { currentChain } = useCurrentChain();
 
   return (
@@ -247,8 +247,8 @@ function OrderItem({ order }: { order: IOrder }) {
   );
 }
 
-function OrderEqToken({ order }: { order: IOrder }) {
-  const { orderEqTokenInfo } = useOrderFormat({ order });
+function OrderEqToken({ order }: { order: IOffer }) {
+  const { orderEqTokenInfo } = useOfferFormat({ order });
 
   return (
     <div className="flex items-center space-x-1">
@@ -264,8 +264,8 @@ function OrderEqToken({ order }: { order: IOrder }) {
   );
 }
 
-function OrderFromTo({ order }: { order: IOrder }) {
-  const { offerValue, forValue, offerLogo, forLogo } = useOrderFormat({
+function OrderFromTo({ order }: { order: IOffer }) {
+  const { offerValue, forValue, offerLogo, forLogo } = useOfferFormat({
     order,
   });
 
@@ -295,7 +295,7 @@ function OrderFromTo({ order }: { order: IOrder }) {
   );
 }
 
-function OrderRole({ order }: { order: IOrder }) {
+function OrderRole({ order }: { order: IOffer }) {
   const orderRole = order.order_role;
 
   return (
@@ -308,7 +308,7 @@ function OrderRole({ order }: { order: IOrder }) {
   );
 }
 
-function OrderHash({ order }: { order: IOrder }) {
+function OrderHash({ order }: { order: IOffer }) {
   const { handleGoScan } = useGoScan();
 
   const hash =

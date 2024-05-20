@@ -3,8 +3,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
 import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle-btn";
 import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle-btn";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmBidSettleDialog({
   open,
@@ -14,10 +14,10 @@ export default function ConfirmBidSettleDialog({
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo } = useOrderFormat({ order });
+  const { amount, tokenTotalPrice, orderPointInfo } = useOfferFormat({ order });
   const orderRole = order.order_role;
 
   const settleAmount = Number(order.points);
@@ -81,7 +81,7 @@ export default function ConfirmBidSettleDialog({
             <ConfirmBidTakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
-              makerStr={order.maker_id}
+              makerStr={order.maker_account}
               preOrderStr={order.pre_order_included_zero}
               onSuccess={handleSuccess}
             />
@@ -90,7 +90,7 @@ export default function ConfirmBidSettleDialog({
             <ConfirmBidMakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
-              makerStr={order.maker_id}
+              makerStr={order.maker_account}
               onSuccess={handleSuccess}
             />
           )}

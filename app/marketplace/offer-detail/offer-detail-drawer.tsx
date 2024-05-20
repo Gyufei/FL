@@ -5,13 +5,13 @@ import AskDetail from "../offer-detail/ask-detail";
 import BidDetail from "../offer-detail/bid-detail";
 import OrderFillDialog from "../offer-detail/order-fill-dialog";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 
 export default function OfferDetailDrawer({
   orders,
   onSuccess,
 }: {
-  orders: Array<IOrder>;
+  orders: Array<IOffer>;
   onSuccess: () => void;
 }) {
   const { anchor: orderId, setAnchorValue } = useAnchor();
@@ -24,7 +24,7 @@ export default function OfferDetailDrawer({
   const [orderFillDialog, setOrderFillDialog] = useState(false);
   const [resultOrder, setResultOrder] = useState<any | null>(null);
 
-  const isAsk = order?.order_type === "ask";
+  const isAsk = order?.offer_type === "ask";
 
   useEffect(() => {
     if (order) {

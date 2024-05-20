@@ -91,7 +91,7 @@ export function useCreateAskMaker({
     }
 
     const txHash = await program.methods
-      .createMaker(
+      .createOffer(
         new BN(sellPointAmount),
         new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
         new BN(breachFee),

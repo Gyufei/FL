@@ -15,13 +15,13 @@ export interface TakerOrder {
   order_id: string;
 }
 
-export function useTakerOrders(preOrderId: string, makerId?: string) {
+export function useTakerOrders(preOfferAccount: string, makerAccount?: string) {
   const { apiEndPoint } = useEndPoint();
 
   const res = useSWR<Array<TakerOrder>>(
     `${apiEndPoint}${Paths.takerOrders}?${
-      preOrderId ? `pre_order_id=${preOrderId}` : ""
-    }${makerId ? `&maker_id=${makerId}` : ""}`,
+      preOfferAccount ? `pre_offer_account=${preOfferAccount}` : ""
+    }${makerAccount ? `&maker_account=${makerAccount}` : ""}`,
     fetcher,
   );
 

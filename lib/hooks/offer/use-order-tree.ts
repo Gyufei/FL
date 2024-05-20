@@ -1,7 +1,7 @@
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 
 export function useOrderTree() {
-  function getOrigin(order: IOrder, defaultValue: string) {
+  function getOrigin(order: IOffer, defaultValue: string) {
     if (order.preOrderDetail) {
       return getOrigin(order.preOrderDetail, order.pre_order);
     } else {

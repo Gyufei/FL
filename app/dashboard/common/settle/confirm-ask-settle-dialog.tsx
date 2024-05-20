@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmAskSettleDialog({
   open,
@@ -16,11 +16,11 @@ export default function ConfirmAskSettleDialog({
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
-    useOrderFormat({ order });
+    useOfferFormat({ order });
   const orderRole = order.order_role;
 
   const [sliderMax] = useState(100);
@@ -109,7 +109,7 @@ export default function ConfirmAskSettleDialog({
             <ConfirmAskTakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
-              makerStr={order.maker_id}
+              makerStr={order.maker_amount}
               preOrderStr={order.pre_order_included_zero}
               settleAmount={settleAmount}
               onSuccess={handleSuccess}
@@ -119,7 +119,7 @@ export default function ConfirmAskSettleDialog({
             <ConfirmAskMakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.order}
-              makerStr={order.maker_id}
+              makerStr={order.maker_account}
               settleAmount={settleAmount}
               onSuccess={handleSuccess}
             />

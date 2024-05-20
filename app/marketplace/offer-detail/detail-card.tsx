@@ -3,19 +3,19 @@ import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { WithTip } from "../create-offer/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
+import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
 
-export default function DetailCard({ order }: { order: IOrder }) {
+export default function DetailCard({ order }: { order: IOffer }) {
   const { handleGoScan } = useGoScan();
 
-  const { amount, orderTokenInfo, orderPointInfo } = useOrderFormat({
+  const { amount, orderTokenInfo, orderPointInfo } = useOfferFormat({
     order,
   });
 
-  const orderType = order.order_type;
+  const orderType = order.offer_type;
 
   const { makerDetail, preOrderMakerDetail } = useOrderMakerDetail({
     order,
@@ -121,13 +121,13 @@ export default function DetailCard({ order }: { order: IOrder }) {
             #{originOrder?.order_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOrder.maker_id, {
+            {truncateAddr(originOrder.maker_account, {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(originOrder.maker_id)}
+            onClick={() => handleGoScan(originOrder.maker_account)}
             src="/icons/right-45.svg"
             width={16}
             height={16}

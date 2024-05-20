@@ -1,7 +1,8 @@
 export function WithHost(path: string) {
-  // return `http://192.168.60.57:9096${path}`
-  return `https://demo-tadle.aggregation.top${path}`;
-  //return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+  const devHost = `https://tadle.aggregation.top`
+  const prodHost = `https://tadle.aggregation.top`
+  const host = process.env.NODE_ENV === 'production' ? prodHost : devHost
+  return `${host}${path}`
 }
 
 function WithCDN(path: string) {
@@ -28,7 +29,7 @@ export const EndPointPathMap = {
 
 export const Paths = {
   signIn: "/user/sign_in",
-  order: "/market_place/order",
+  offer: "/market_place/offer",
   myOrder: "/market_place/my_order",
   makerDetail: "/market_place/maker_detail",
   marketPlace: "/market_place",

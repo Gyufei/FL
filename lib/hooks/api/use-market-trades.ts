@@ -7,7 +7,7 @@ export function useMarketTrades(marketplaceId?: string) {
   const { apiEndPoint } = useEndPoint();
 
   const res = useSWR(
-    marketplaceId ? `${apiEndPoint}${Paths.marketTrades}?market_id=${marketplaceId}`: '',
+    marketplaceId ? `${apiEndPoint}${Paths.marketTrades}?market_place_account=${marketplaceId}`: '',
     fetcher,
   );
 

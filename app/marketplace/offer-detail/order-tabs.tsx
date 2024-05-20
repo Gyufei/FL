@@ -2,18 +2,18 @@ import { SmallSwitch } from "@/components/share/small-switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TakerOrders } from "./taker-orders";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 
-export default function OrderTabs({ order }: { order: IOrder }) {
+export default function OrderTabs({ order }: { order: IOffer }) {
   const [currentTab, setCurrentTab] = useState("orders");
 
   const { publicKey } = useWallet();
 
   const { offerLogo, forLogo, orderEqTokenInfo, orderTokenInfo } =
-    useOrderFormat({
+    useOfferFormat({
       order,
     });
 

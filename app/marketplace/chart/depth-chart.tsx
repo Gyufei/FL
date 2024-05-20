@@ -16,8 +16,6 @@ const data = new Array(20).fill(1).map((_, i) => {
 export default function DepthChart(props: any) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
-  console.log(data);
-
   const options = useMemo<Options>(
     () => ({
       chart: {

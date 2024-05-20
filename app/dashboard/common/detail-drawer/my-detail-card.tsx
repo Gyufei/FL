@@ -4,21 +4,21 @@ import { formatNum } from "@/lib/utils/number";
 import { truncateAddr } from "@/lib/utils/web3";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import { formatTimeObj } from "@/lib/utils/time";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
+import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
 
-export default function MyDetailCard({ order }: { order: IOrder }) {
+export default function MyDetailCard({ order }: { order: IOffer }) {
   const { publicKey } = useWallet();
 
-  const { orderTokenInfo, orderPointInfo, duringTGE } = useOrderFormat({
+  const { orderTokenInfo, orderPointInfo, duringTGE } = useOfferFormat({
     order,
   });
 
-  const isAsk = order.order_type === "ask";
+  const isAsk = order.offer_type === "ask";
 
   const { makerDetail, preOrderMakerDetail } = useOrderMakerDetail({
     order,
@@ -27,7 +27,7 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
   const { handleGoScan } = useGoScan();
 
   const originOrder = useMemo(() => {
-    function getOriginOrder(order: IOrder) {
+    function getOriginOrder(order: IOffer) {
       if (order.preOrderDetail) {
         return getOriginOrder(order.preOrderDetail);
       } else {
@@ -39,7 +39,7 @@ export default function MyDetailCard({ order }: { order: IOrder }) {
   }, [order]);
 
   const originMaker = useMemo(() => {
-    return originOrder.maker_id;
+    return originOrder.maker_account;
   }, [originOrder]);
 
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;

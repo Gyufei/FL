@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 import ConfirmAskSettleDialog from "../../common/settle/confirm-ask-settle-dialog";
 import ConfirmBidSettleDialog from "../../common/settle/confirm-bid-settle-dialog";
 
@@ -8,10 +8,10 @@ export default function SettleDrawerBtn({
   order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
-  const isAsk = order.order_type === "ask";
+  const isAsk = order.offer_type === "ask";
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   function handleDrawerOpen(open: boolean) {

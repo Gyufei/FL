@@ -1,12 +1,11 @@
 import NP from "number-precision";
-import { IOrder } from "../../types/order";
-// import { useTokensInfo } from "./api/use-token-info";
+import { IOffer } from "../../types/order";
 import { useMemo } from "react";
 import { IPoint, IToken } from "../../types/token";
 import { convertUTCToLocalStamp, formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 
-export function useOrderFormat({ order }: { order: IOrder }) {
+export function useOfferFormat({ order }: { order: IOffer }) {
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
   const progress = Number(
@@ -22,14 +21,12 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     decimals: 9,
   } as IToken;
 
-  // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderPointInfo: IPoint = {
     symbol: order.marketplace.point_name,
     logoURI: order.marketplace.pointLogo,
     marketplaceId: order.marketplace.market_place_id
   };
 
-  // const [orderPointInfo] = useTokensInfo([order.marketplace.token_mint]);
   const orderEqTokenInfo = {
     symbol: "TBA",
     logoURI: order.marketplace.pointLogo,
@@ -39,18 +36,12 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   const tokenLogo = orderTokenInfo.logoURI;
   const pointLogo = orderPointInfo.logoURI;
 
-  const orderType = order.order_type;
+  const orderType = order.offer_type;
 
-  const takerAmount = NP.divide(
-    order.taker_amount,
+  const amount = NP.divide(
+    order.amount,
     10 ** orderTokenInfo.decimals,
   );
-  const makerAmount = NP.divide(
-    order.maker_amount,
-    10 ** orderTokenInfo.decimals,
-  );
-
-  const amount = order.order_role !== "Maker" ? takerAmount : makerAmount;
 
   const offerValue = orderType === "ask" ? order.points : amount;
   const forValue = orderType === "ask" ? amount : order.points;
@@ -64,7 +55,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     Math.floor(
       NP.minus(
         Date.now() / 1000,
-        convertUTCToLocalStamp(order.relist_at || order.create_at) / 1000,
+        convertUTCToLocalStamp(order.create_at) / 1000,
       ),
     ),
   );
@@ -84,17 +75,12 @@ export function useOrderFormat({ order }: { order: IOrder }) {
   }, [order.marketplace.tge, order.marketplace.settlement_period, checkIsAfterTgePeriod]);
 
   const isCanSettle = useMemo(() => {
-    const role = order.order_role;
-    if (role === 'Taker')  {
-      return afterTGE && !["finished", "settled"].includes(order.taker_status)
-    } else {
-      return afterTGE && !["canceled", "settled"].includes(order.maker_status)
-    }
-  }, [order.maker_status, order.taker_status, order.order_role, afterTGE]);
+      return afterTGE && !["canceled", "settled"].includes(order.offer_status)
+  }, [order.offer_status, afterTGE]);
 
   const isSettled = useMemo(() => {
-    return ["settled", "finished"].includes(order.maker_status)
-  }, [order.maker_status]);
+    return ["settled", "finished"].includes(order.offer_status)
+  }, [order.offer_status]);
 
   return {
     afterTGE,
@@ -114,9 +100,7 @@ export function useOrderFormat({ order }: { order: IOrder }) {
     orderPointInfo,
     orderTokenInfo,
     orderEqTokenInfo,
-    takerAmount,
     isCanSettle,
-    makerAmount,
     isSettled
   };
 }

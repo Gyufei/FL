@@ -1,16 +1,14 @@
 import { IMarketplace } from "./marketplace";
 
-export interface IOrder {
+export interface IOffer {
+  offer_id: string;
   amount: string;
-  market_id: string,
-  order_role: "Maker" | "Taker";
-  marketplace: IMarketplace;
-  preOrderDetail: IOrder | null;
   authority: string;
   create_at: string;
-  maker_amount: string;
-  maker_id: string;
-  maker_status:
+  maker_account: string;
+  market_place_account: string;
+  offer_account: string;
+  offer_status: 
     | "unknown"
     | "virgin"
     | "ongoing"
@@ -18,20 +16,15 @@ export interface IOrder {
     | "filled"
     | "settling"
     | "settled";
-  taker_status: "unknown" | "initialized" | "finished" | "settled";
-  maker_tx_hash: string;
-  order: string;
-  order_id: string;
+  offer_type: string;
   order_note: string;
-  order_type: string;
   points: string;
-  pre_order: string;
-  pre_order_included_zero: string;
-  relist_at: string;
   settle_breach_fee: string;
+  settled_point_token_amount: string;
   settled_points: string;
-  taker_amount: string;
-  taker_tx_hash: string;
+  total_settled_points: string;
+  tx_hash: string;
   used_points: string;
-  is_relist: boolean;
+
+  marketplace: IMarketplace;
 }

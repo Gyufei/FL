@@ -15,23 +15,23 @@ import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fe
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { useRelistMaker } from "@/lib/hooks/contract/use-relist-maker";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { formatNum } from "@/lib/utils/number";
-import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
-import { useOrderTree } from "@/lib/hooks/order/use-order-tree";
+import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
+import { useOrderTree } from "@/lib/hooks/offer/use-order-tree";
 import { SettleModeSelect } from "@/app/marketplace/create-offer/settle-mode-select";
 
 export default function ListAskStockBtn({
   order: order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, tokenPrice } = useOrderFormat({
+  const { orderPointInfo, orderTokenInfo, tokenPrice } = useOfferFormat({
     order,
   });
 
@@ -59,7 +59,7 @@ export default function ListAskStockBtn({
     isSuccess,
   } = useRelistMaker({
     marketplaceStr: order.marketplace.market_place_id,
-    makerStr: order.maker_id,
+    makerStr: order.maker_account,
     orderStr: order.order,
   });
 

@@ -1,10 +1,10 @@
 import NP from "number-precision";
 import { ISortDir, ISortField } from "@/components/share/sort-select";
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 import { sortBy } from "lodash";
 import { useMemo, useState } from "react";
 
-export function useSortOrder(orders: IOrder[]) {
+export function useSortOrder(orders: IOffer[]) {
   const [sortField, setSortField] = useState<ISortField>("Collateral");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");
 
@@ -21,7 +21,7 @@ export function useSortOrder(orders: IOrder[]) {
 
     let sortArr = orders;
     if (sortField === "Collateral") {
-      const collateralFunc = (order: IOrder) => {
+      const collateralFunc = (order: IOffer) => {
         return order.order_role === "Taker"
           ? order.taker_amount
           : order.maker_amount;
@@ -30,7 +30,7 @@ export function useSortOrder(orders: IOrder[]) {
     }
 
     if (sortField === "Price") {
-      const priceFunc = (order: IOrder) => {
+      const priceFunc = (order: IOffer) => {
         const amount =
           order.order_role === "Taker"
             ? order.taker_amount
@@ -42,7 +42,7 @@ export function useSortOrder(orders: IOrder[]) {
     }
 
     if (sortField === "Created") {
-      const createdFunc = (order: IOrder) => {
+      const createdFunc = (order: IOffer) => {
         return new Date(order.create_at).getTime();
       };
 

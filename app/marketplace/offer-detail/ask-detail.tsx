@@ -7,17 +7,17 @@ import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
 import { useBidTaker } from "@/lib/hooks/contract/use-bid-taker";
-import { IOrder } from "@/lib/types/order";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { IOffer } from "@/lib/types/order";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useOrderMakerDetail } from "@/lib/hooks/order/use-order-maker-detail";
+import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function AskDetail({
   order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const { platformFee } = useGlobalConfig();
@@ -31,7 +31,7 @@ export default function AskDetail({
     pointPerPrice,
     isFilled,
     orderTokenInfo,
-  } = useOrderFormat({
+  } = useOfferFormat({
     order,
   });
 
@@ -50,7 +50,7 @@ export default function AskDetail({
     write: writeAction,
   } = useBidTaker({
     marketplaceStr: order.marketplace.market_place_id,
-    makerStr: order.maker_id,
+    makerStr: order.maker_account,
     preOrderStr: order.order,
   });
 

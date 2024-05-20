@@ -3,9 +3,9 @@ import Image from "next/image";
 import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
 import DelistBtn from "./delist-btn/delist-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
@@ -14,7 +14,7 @@ export default function StockCard({
   order,
   onSuccess,
 }: {
-  order: IOrder;
+  order: IOffer;
   onSuccess: () => void;
 }) {
   const {
@@ -27,14 +27,14 @@ export default function StockCard({
     tokenTotalPrice,
     forLogo,
     isCanSettle,
-  } = useOrderFormat({
+  } = useOfferFormat({
     order,
   });
 
   const { setAnchorValue } = useAnchor();
 
   const isMaker = order.order_role === "Maker";
-  const isAskStock = order.order_type === "ask";
+  const isAskStock = order.offer_type === "ask";
 
   const { data: subOrders } = useTakerOrders(
     isAskStock ? order.order : order.pre_order,
@@ -88,7 +88,7 @@ export default function StockCard({
         </div>
 
         <div
-          data-type={order.order_type}
+          data-type={order.offer_type}
           className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
         >
           {!isAskStock ? "Bid" : "Ask"}

@@ -9,15 +9,15 @@ import { SortSelect } from "../../../components/share/sort-select";
 import SearchInput from "./search-input";
 import { OrderCard, OrderCardSkeleton } from "./order-card";
 import HoverIcon from "@/components/share/hover-icon";
-import { IOrder } from "@/lib/types/order";
-import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
+import { IOffer } from "@/lib/types/order";
+import { useSortOrder } from "@/lib/hooks/offer/use-sort-order";
 import { range } from "lodash";
 
 export default function OrderList({
   orders,
   isLoading,
 }: {
-  orders: Array<IOrder>;
+  orders: Array<IOffer>;
   isLoading: boolean;
 }) {
   const [orderTypes, setOrderTypes] = useState<Array<IOrderType>>(["ask"]);
@@ -32,16 +32,16 @@ export default function OrderList({
   } = useSortOrder(orders || []);
 
   const filterOrders = useMemo(() => {
-    const typeOrders = (sortOrders || [])?.filter((o: IOrder) =>
-      orderTypes.includes(o.order_type as IOrderType),
+    const typeOrders = (sortOrders || [])?.filter((o: IOffer) =>
+      orderTypes.includes(o.offer_type as IOrderType),
     );
 
     if (!searchText) {
       return typeOrders;
     }
 
-    return typeOrders?.filter((o: IOrder) => {
-      const isIdMatch = o.order_id
+    return typeOrders?.filter((o: IOffer) => {
+      const isIdMatch = o.offer_id
         .toLocaleUpperCase()
         .includes(searchText.toLocaleUpperCase());
 
@@ -111,7 +111,7 @@ export default function OrderList({
         {isLoading
           ? range(6).map((i) => <OrderCardSkeleton key={i} />)
           : (filterOrders || []).map((order) => (
-              <OrderCard order={order} key={order.order_id} />
+              <OrderCard order={order} key={order.offer_id} />
             ))}
       </div>
     </div>

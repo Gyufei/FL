@@ -2,11 +2,11 @@
 import { SortSelect } from "../../../components/share/sort-select";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import StockCard from "./stock-card";
-import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
-import { useSortOrder } from "@/lib/hooks/order/use-sort-order";
+import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
+import { useSortOrder } from "@/lib/hooks/offer/use-sort-order";
 
 export default function MyStocks() {
-  const { data: orders, mutate: refreshOrders } = useMyOrders();
+  const { data: orders, mutate: refreshOrders } = useMyOffers();
 
   const {
     sortField,

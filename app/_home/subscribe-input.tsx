@@ -18,7 +18,6 @@ export default function SubscribeInput() {
 
   function handleSubscribe() {
     if (!isEmail) return;
-    console.log("subscribed");
   }
 
   return (

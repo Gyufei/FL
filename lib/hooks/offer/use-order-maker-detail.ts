@@ -1,13 +1,13 @@
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 import { useMakerDetail } from "../api/use-maker-detail";
 
-export function useOrderMakerDetail({ order }: { order: IOrder }) {
+export function useOrderMakerDetail({ order }: { order: IOffer }) {
   const { data: makerDetail } = useMakerDetail({
-    makerId: order.maker_id,
+    makerId: order.maker_account,
   });
 
   const { data: preOrderMakerDetail } = useMakerDetail({
-    makerId: order.preOrderDetail?.maker_id || "",
+    makerId: order.preOrderDetail?.maker_account || "",
   });
 
   return {

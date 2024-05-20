@@ -1,31 +1,32 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { IOffer } from "@/lib/types/order";
+import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
+import { Paths } from "@/lib/PathMap";
 import { useOrderResFormat } from "../offer/use-order-res-format";
 import fetcher from "@/lib/fetcher";
-import { Paths } from "@/lib/PathMap";
-import useSWR from "swr";
+import { IOffer } from "@/lib/types/order";
 
-export function useMyOrders() {
-  const { publicKey } = useWallet();
+export function useMarketplaceOffers({
+  marketAccount,
+}: {
+  marketAccount: string;
+}) {
   const { apiEndPoint } = useEndPoint();
-
   const { orderResFieldFormat } = useOrderResFormat();
 
-  const address = publicKey?.toBase58();
-
   const marketOrdersFetcher = async () => {
+      if (!marketAccount) return [];
+
       const orderRes = await fetcher(
-        `${apiEndPoint}${Paths.myOrder}?authority=${address}`,
+        `${apiEndPoint}${Paths.offer}?market_place_account=${marketAccount}`,
       );
 
-      const parsedRes = orderRes?.orderRes.map((o: Record<string, any>) => orderResFieldFormat(o));
+      const parsedRes = orderRes.map((o: Record<string, any>) => orderResFieldFormat(o));
 
       return parsedRes as Array<IOffer>;
   };
 
   const res = useSWR(
-    `my_order:${address}`,
+    `market-order:${marketAccount}`,
     marketOrdersFetcher,
   );
 

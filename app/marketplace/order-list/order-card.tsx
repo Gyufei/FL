@@ -8,9 +8,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useOrderFormat } from "@/lib/hooks/order/use-order-format";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useMemo } from "react";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
@@ -19,7 +19,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function OrderCard({ order }: { order: IOrder }) {
+export function OrderCard({ order }: { order: IOffer }) {
   const { setAnchorValue } = useAnchor();
   const {
     progress,
@@ -30,16 +30,16 @@ export function OrderCard({ order }: { order: IOrder }) {
     pointPerPrice,
     orderDuration,
     tokenTotalPrice,
-  } = useOrderFormat({
+  } = useOfferFormat({
     order,
   });
 
   const { currentChain } = useCurrentChain();
 
-  const orderType = order.order_type;
+  const orderType = order.offer_type;
 
   const showBuy = useMemo(() => {
-    return ["virgin", "ongoing"].includes(order.maker_status);
+    return ["virgin", "ongoing"].includes(order.offer_status);
   }, [order]);
 
   function handleShowOrderOffer(oId: string) {
@@ -62,7 +62,7 @@ export function OrderCard({ order }: { order: IOrder }) {
               {order.marketplace.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{order.order_id}
+              #{order.offer_id}
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@ export function OrderCard({ order }: { order: IOrder }) {
           )}
           {showBuy && (
             <WithWalletConnectBtn
-              onClick={() => handleShowOrderOffer(order.order_id)}
+              onClick={() => handleShowOrderOffer(order.offer_id)}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 Buy

@@ -11,7 +11,7 @@ import { WithTip } from "./with-tip";
 import SettleBreachFee from "./settle-breach-fee";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
-import { useCreateBidMaker } from "@/lib/hooks/contract/use-create-bid-maker";
+import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { SettleModeSelect, SettleModes } from "./settle-mode-select";
@@ -73,8 +73,9 @@ export function BuyContent({
     isLoading: isCreateLoading,
     write: writeAction,
     isSuccess,
-  } = useCreateBidMaker({
+  } = useCreateOffer({
     marketplaceStr: receivePoint?.marketplaceId || "",
+    offerType: "bid",
   });
 
   function handleDeposit() {
@@ -83,8 +84,8 @@ export function BuyContent({
     }
 
     writeAction({
-      payTokenAmount: Number(payTokenAmount),
-      receivePointAmount: Number(receivePointAmount),
+      tokenAmount: Number(payTokenAmount),
+      pointAmount: Number(receivePointAmount),
       breachFee: Number(breachFee || 50) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,

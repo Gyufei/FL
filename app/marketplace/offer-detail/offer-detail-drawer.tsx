@@ -64,7 +64,7 @@ export default function OfferDetailDrawer({
           onClose={() => setDrawerOpen(false)}
         />
         {isAsk ? (
-          <AskDetail onSuccess={(ord) => handleSuccess(ord)} order={order} />
+          <AskDetail onSuccess={(ord) => handleSuccess(ord)} offer={order} />
         ) : (
           <BidDetail onSuccess={(ord) => handleSuccess(ord)} order={order} />
         )}

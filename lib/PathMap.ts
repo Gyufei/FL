@@ -30,7 +30,7 @@ export const EndPointPathMap = {
 export const Paths = {
   signIn: "/user/sign_in",
   offer: "/market_place/offer",
-  myOrder: "/market_place/my_order",
+  myOffer: "/market_place/my_offer",
   makerDetail: "/market_place/maker_detail",
   marketPlace: "/market_place",
   addTransaction: "/transaction/add",

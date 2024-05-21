@@ -3,7 +3,7 @@ import { SortSelect } from "../../../components/share/sort-select";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import StockCard from "./stock-card";
 import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
-import { useSortOrder } from "@/lib/hooks/offer/use-sort-order";
+import { useSortOrder } from "@/lib/hooks/offer/use-sort-offer";
 
 export default function MyStocks() {
   const { data: orders, mutate: refreshOrders } = useMyOffers();

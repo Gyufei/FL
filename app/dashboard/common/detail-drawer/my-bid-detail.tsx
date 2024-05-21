@@ -29,7 +29,7 @@ export default function MyBidDetail({
     isCanSettle,
     isSettled,
   } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   const { currentChain } = useCurrentChain();

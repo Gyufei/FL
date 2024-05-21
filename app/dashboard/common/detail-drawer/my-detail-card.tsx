@@ -9,34 +9,23 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
+import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 
 export default function MyDetailCard({ order }: { order: IOffer }) {
   const { publicKey } = useWallet();
 
   const { orderTokenInfo, orderPointInfo, duringTGE } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   const isAsk = order.offer_type === "ask";
 
-  const { makerDetail, preOrderMakerDetail } = useOrderMakerDetail({
-    order,
-  });
+  const { originOrder, makerDetail, originOfferMakerDetail } =
+    useOfferMakerDetail({
+      offer: order,
+    });
 
   const { handleGoScan } = useGoScan();
-
-  const originOrder = useMemo(() => {
-    function getOriginOrder(order: IOffer) {
-      if (order.preOrderDetail) {
-        return getOriginOrder(order.preOrderDetail);
-      } else {
-        return order;
-      }
-    }
-
-    return getOriginOrder(order);
-  }, [order]);
 
   const originMaker = useMemo(() => {
     return originOrder.maker_account;
@@ -45,16 +34,13 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
 
   const taxIncome = useMemo(() => {
-    const ti =
-      order.order_role === "Maker"
-        ? makerDetail?.trade_tax
-        : preOrderMakerDetail?.trade_tax;
+    const ti = originOfferMakerDetail?.trade_tax || makerDetail?.trade_tax;
 
     const tax = Number(ti || 0);
     const fmtTax = NP.divide(tax, 10 ** orderTokenInfo.decimals);
 
     return fmtTax;
-  }, [makerDetail, preOrderMakerDetail, orderTokenInfo, order.order_role]);
+  }, [makerDetail, originOfferMakerDetail, orderTokenInfo]);
 
   const [seconds, setSeconds] = useState(0);
 
@@ -118,16 +104,18 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Inherit From</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOrder.order_id}
+            #{originOrder.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(order.preOrderDetail?.order || "", {
+            {truncateAddr(order.pre_offer_detail?.offer_account || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(order.preOrderDetail?.order || "")}
+            onClick={() =>
+              handleGoScan(order.pre_offer_detail?.offer_account || "")
+            }
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -150,7 +138,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{order.order_id}
+            #{order.offer_id}
           </div>
           <div className="text-sm leading-5 text-red">
             {isYouAreOriginMaker

@@ -31,7 +31,7 @@ export function OrderCard({ order }: { order: IOffer }) {
     orderDuration,
     tokenTotalPrice,
   } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   const { currentChain } = useCurrentChain();
@@ -76,7 +76,7 @@ export function OrderCard({ order }: { order: IOffer }) {
             data-zero={Number(progress) === 0 ? true : false}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=true]:text-gray data-[zero=false]:text-black"
           >
-            {progress * 100}%
+            {formatNum(progress * 100)}%
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ export function OrderCard({ order }: { order: IOffer }) {
               width={16}
               height={16}
               alt="stable"
-              className="ml-1"
+              className="ml-1 rounded-full"
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">

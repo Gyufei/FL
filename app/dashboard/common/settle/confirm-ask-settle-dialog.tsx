@@ -20,7 +20,7 @@ export default function ConfirmAskSettleDialog({
   onSuccess: () => void;
 }) {
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
-    useOfferFormat({ order });
+    useOfferFormat({ offer: order });
   const orderRole = order.order_role;
 
   const [sliderMax] = useState(100);
@@ -108,9 +108,9 @@ export default function ConfirmAskSettleDialog({
           {orderRole === "Taker" && (
             <ConfirmAskTakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.order}
-              makerStr={order.maker_amount}
-              preOrderStr={order.pre_order_included_zero}
+              orderStr={order.offer_account}
+              makerStr={order.maker_account}
+              preOrderStr={order.pre_offer_account}
               settleAmount={settleAmount}
               onSuccess={handleSuccess}
             />

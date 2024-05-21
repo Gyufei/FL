@@ -1,25 +1,37 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useAllOrders } from "./use-all-orders";
-import { useMemo } from "react";
 import { IOffer } from "@/lib/types/order";
+import useSWR from "swr";
+import fetcher from "@/lib/fetcher";
+import { Paths } from "@/lib/PathMap";
+import { useEndPoint } from "./use-endpoint";
+import { useOfferResFormat } from "../offer/use-offer-res-format";
 
 export function useMyOffers() {
   const { publicKey } = useWallet();
-  const allOrdersRes = useAllOrders();
+  const { apiEndPoint } = useEndPoint();
 
-  const myOrders = useMemo(
-    () => {
-      const myAllOrders = (allOrdersRes.data || [])?.filter(
-        (order) => order.authority === publicKey?.toBase58(),
-      )
+  const { orderResFieldFormat, isLoading } = useOfferResFormat();
 
-      return myAllOrders as Array<IOffer>;
-    },
-    [allOrdersRes.data, publicKey],
+  const address = publicKey?.toBase58();
+
+  const marketOrdersFetcher = async () => {
+    if (!address || isLoading) return [];
+
+    const orderRes = await fetcher(
+      `${apiEndPoint}${Paths.myOffer}?authority=${address}`,
+    );
+
+    const parsedRes = orderRes.map((o: Record<string, any>) => orderResFieldFormat(o, orderRes));
+
+    return parsedRes as Array<IOffer>;
+  };
+
+  const res = useSWR(
+    `my_offer:${address}${isLoading}`,
+    marketOrdersFetcher,
   );
 
   return {
-    ...allOrdersRes,
-    data: myOrders,
+    ...res,
   };
 }

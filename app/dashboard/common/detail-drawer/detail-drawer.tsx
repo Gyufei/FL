@@ -19,7 +19,7 @@ export default function DetailDrawer({
   const { anchor: orderId, setAnchorValue } = useAnchor();
 
   const order = useMemo(() => {
-    return orders?.find((o) => o.order_id === orderId);
+    return orders?.find((o) => o.offer_id === orderId);
   }, [orders, orderId]);
 
   const isAsk = useMemo(() => {

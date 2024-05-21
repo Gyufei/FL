@@ -2,15 +2,15 @@
 
 import { useMemo, useState } from "react";
 import {
-  IOrderType,
-  OrderTypeSelect,
-} from "../../../components/share/order-type-select";
+  IOfferType,
+  OfferTypeSelect,
+} from "../../../components/share/offer-type-select";
 import { SortSelect } from "../../../components/share/sort-select";
 import SearchInput from "./search-input";
 import { OrderCard, OrderCardSkeleton } from "./order-card";
 import HoverIcon from "@/components/share/hover-icon";
 import { IOffer } from "@/lib/types/order";
-import { useSortOrder } from "@/lib/hooks/offer/use-sort-order";
+import { useSortOrder } from "@/lib/hooks/offer/use-sort-offer";
 import { range } from "lodash";
 
 export default function OrderList({
@@ -20,7 +20,7 @@ export default function OrderList({
   orders: Array<IOffer>;
   isLoading: boolean;
 }) {
-  const [orderTypes, setOrderTypes] = useState<Array<IOrderType>>(["ask"]);
+  const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["ask"]);
   const [searchText, setSearchText] = useState("");
 
   const {
@@ -33,7 +33,7 @@ export default function OrderList({
 
   const filterOrders = useMemo(() => {
     const typeOrders = (sortOrders || [])?.filter((o: IOffer) =>
-      orderTypes.includes(o.offer_type as IOrderType),
+      orderTypes.includes(o.offer_type as IOfferType),
     );
 
     if (!searchText) {
@@ -51,7 +51,7 @@ export default function OrderList({
 
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
-  function handleTypeChange(t: Array<IOrderType>) {
+  function handleTypeChange(t: Array<IOfferType>) {
     setOrderTypes(t);
   }
 
@@ -63,7 +63,7 @@ export default function OrderList({
     <div className="flex h-full flex-col rounded-3xl bg-[#fafafa] p-5">
       <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-5">
         <div className="flex items-center space-x-4">
-          <OrderTypeSelect
+          <OfferTypeSelect
             types={orderTypes}
             handleTypeChange={handleTypeChange}
           />

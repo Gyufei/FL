@@ -17,7 +17,9 @@ export default function ConfirmBidSettleDialog({
   order: IOffer;
   onSuccess: () => void;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo } = useOfferFormat({ order });
+  const { amount, tokenTotalPrice, orderPointInfo } = useOfferFormat({
+    offer: order,
+  });
   const orderRole = order.order_role;
 
   const settleAmount = Number(order.points);
@@ -80,16 +82,16 @@ export default function ConfirmBidSettleDialog({
           {orderRole === "Taker" && (
             <ConfirmBidTakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.order}
+              orderStr={order.offer_account}
               makerStr={order.maker_account}
-              preOrderStr={order.pre_order_included_zero}
+              preOrderStr={order.pre_offer_account}
               onSuccess={handleSuccess}
             />
           )}
           {orderRole === "Maker" && (
             <ConfirmBidMakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.order}
+              orderStr={order.offer_account}
               makerStr={order.maker_account}
               onSuccess={handleSuccess}
             />

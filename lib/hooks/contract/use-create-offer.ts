@@ -6,26 +6,28 @@ import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
 import { ISettleMode } from "@/app/marketplace/create-offer/settle-mode-select";
 
-export function useCreateAskMaker({
+export function useCreateOffer({
   marketplaceStr: marketplaceStr,
+  offerType
 }: {
   marketplaceStr: string;
+  offerType: "bid" | "ask";
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccounts();
+  const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async ({
-    sellPointAmount,
-    receiveTokenAmount,
+    pointAmount,
+    tokenAmount,
     breachFee,
     taxForSub,
     settleMode,
     note,
   }: {
-    sellPointAmount: number;
-    receiveTokenAmount: number;
+    pointAmount: number;
+    tokenAmount: number;
     breachFee: number;
     taxForSub: number;
     settleMode: ISettleMode,
@@ -43,27 +45,14 @@ export function useCreateAskMaker({
       associatedTokenProgram,
       poolTokenAuthority,
       poolUsdcTokenAccount
-    } = await getAccounts();
+    } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
 
-    const walletABaseTokenBalance = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("token_balance"),
-        usdcTokenMint.toBuffer(),
-        authority!.toBuffer()
-      ],
-      program.programId
-    )[0];
-
-    const walletAPointTokenBalance = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("point_token_balance"),
-        marketPlace.toBuffer(),
-        authority!.toBuffer()
-      ],
-      program.programId
-    )[0];
+    const {
+      walletBaseTokenBalance: walletABaseTokenBalance,
+      walletPointTokenBalance: walletAPointTokenBalance
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
 
     const maker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
@@ -86,20 +75,18 @@ export function useCreateAskMaker({
       program.programId
     )[0];
 
-    const settleModeArg = {
-      [settleMode]: {}
-    }
-
     const txHash = await program.methods
       .createOffer(
-        new BN(sellPointAmount),
-        new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
+        new BN(pointAmount),
+        new BN(tokenAmount * LAMPORTS_PER_SOL),
         new BN(breachFee),
         new BN(taxForSub),
         {
-          ask: {},
+          [offerType]: {},
         },
-        settleModeArg,
+        {
+          [settleMode]: {}
+        }
       )
       .accounts({
         authority,
@@ -119,12 +106,17 @@ export function useCreateAskMaker({
         systemProgram,
       }).remainingAccounts([
         {
-          pubkey: walletABaseTokenBalance,
+          pubkey: userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },
         {
           pubkey: poolUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: walletABaseTokenBalance,
           isSigner: false,
           isWritable: true
         },

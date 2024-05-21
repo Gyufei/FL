@@ -19,12 +19,12 @@ import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { convertUTCToLocalStamp, formatTimestamp } from "@/lib/utils/time";
+import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
-import { IOrderType } from "@/components/share/order-type-select";
+import { IOfferType } from "@/components/share/offer-type-select";
 
 export function OrderTable({
   role,
@@ -33,37 +33,37 @@ export function OrderTable({
 }: {
   role: IRole;
   status: IStatus;
-  types: Array<IOrderType>;
+  types: Array<IOfferType>;
 }) {
   const { setAnchorValue } = useAnchor();
-  const { data: orders, mutate: refreshOrders } = useMyOffers();
+  const { data: offers, mutate: refreshOrders } = useMyOffers();
 
   function openDetail(oId: any) {
     setAnchorValue(oId);
   }
 
   const data = useMemo(() => {
-    const orderData = (orders || [])
+    const orderData = (offers || [])
       .map((o) => {
         return {
           ...o,
-          id: o.order_id,
+          id: o.offer_id,
         };
       })
       .filter((o) => {
-        const oRole = o.pre_order ? "Taker" : "Maker";
+        const oRole = "Maker";
         const oStatus = o.offer_status;
         const oType = o.offer_type;
 
         const isRole = role === "All" || role === oRole;
         const isStatus = status === "All" || status.toLowerCase() === oStatus;
 
-        return isRole && isStatus && types.includes(oType as IOrderType);
+        return isRole && isStatus && types.includes(oType as IOfferType);
       });
     return {
       nodes: orderData,
     };
-  }, [orders, role, status, types]);
+  }, [offers, role, status, types]);
 
   const theme = useTheme({
     Table: `
@@ -152,15 +152,15 @@ export function OrderTable({
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div>
                       <div className="text-sm leading-5 text-black">
-                        {ord.marketplace.market_name}
+                        {ord.marketplace?.market_name}
                       </div>
                       <div className="text-[10px] leading-4 text-gray">
-                        #{ord.order_id}
+                        #{ord.offer_id}
                       </div>
                     </div>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderRole order={ord} />
+                    <OrderRole offer={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <OrderEqToken order={ord} />
@@ -169,18 +169,16 @@ export function OrderTable({
                     <OrderFromTo order={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderHash order={ord} />
+                    <OrderHash offer={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <span className="text-sm leading-5 text-black">
-                      {formatTimestamp(
-                        convertUTCToLocalStamp(ord.relist_at || ord.create_at),
-                      )}
+                      {formatTimestamp(ord.create_at * 1000)}
                     </span>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div
-                      onClick={() => openDetail(ord.order_id)}
+                      onClick={() => openDetail(ord.offer_id)}
                       className="flex h-7 w-fit cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black"
                     >
                       Detail
@@ -217,7 +215,7 @@ export function OrderTable({
         </Pagination>
       )}
 
-      <DetailDrawer orders={orders || []} onSuccess={refreshOrders} />
+      <DetailDrawer orders={offers || []} onSuccess={refreshOrders} />
     </>
   );
 }
@@ -228,7 +226,7 @@ function OrderItem({ order }: { order: IOffer }) {
   return (
     <div className="relative h-fit w-fit">
       <Image
-        src={order.marketplace.projectLogo}
+        src={order.marketplace?.projectLogo}
         width={32}
         height={32}
         alt="avatar"
@@ -248,7 +246,7 @@ function OrderItem({ order }: { order: IOffer }) {
 }
 
 function OrderEqToken({ order }: { order: IOffer }) {
-  const { orderEqTokenInfo } = useOfferFormat({ order });
+  const { orderEqTokenInfo } = useOfferFormat({ offer: order });
 
   return (
     <div className="flex items-center space-x-1">
@@ -266,7 +264,7 @@ function OrderEqToken({ order }: { order: IOffer }) {
 
 function OrderFromTo({ order }: { order: IOffer }) {
   const { offerValue, forValue, offerLogo, forLogo } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   return (
@@ -295,8 +293,9 @@ function OrderFromTo({ order }: { order: IOffer }) {
   );
 }
 
-function OrderRole({ order }: { order: IOffer }) {
-  const orderRole = order.order_role;
+function OrderRole({ offer }: { offer: IOffer }) {
+  offer;
+  const orderRole = "Maker";
 
   return (
     <div
@@ -308,11 +307,10 @@ function OrderRole({ order }: { order: IOffer }) {
   );
 }
 
-function OrderHash({ order }: { order: IOffer }) {
+function OrderHash({ offer }: { offer: IOffer }) {
   const { handleGoScan } = useGoScan();
 
-  const hash =
-    order.order_role === "Taker" ? order.taker_tx_hash : order.maker_tx_hash;
+  const hash = offer.tx_hash;
 
   return (
     <div className="flex items-center">

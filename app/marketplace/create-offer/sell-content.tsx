@@ -12,7 +12,7 @@ import { WithTip } from "./with-tip";
 import SettleBreachFee from "./settle-breach-fee";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
-import { useCreateAskMaker } from "@/lib/hooks/contract/use-create-ask-maker";
+import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { SettleModeSelect, SettleModes } from "./settle-mode-select";
@@ -74,7 +74,8 @@ export function SellContent({
     isLoading: isCreateLoading,
     write: writeAction,
     isSuccess,
-  } = useCreateAskMaker({
+  } = useCreateOffer({
+    offerType: "ask",
     marketplaceStr: marketplace.market_place_id,
   });
 
@@ -84,8 +85,8 @@ export function SellContent({
     }
 
     writeAction({
-      sellPointAmount: Number(sellPointAmount),
-      receiveTokenAmount: Number(receiveTokenAmount),
+      pointAmount: Number(sellPointAmount),
+      tokenAmount: Number(receiveTokenAmount),
       breachFee: Number(breachFee || 50) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,

@@ -12,7 +12,7 @@ export function useAccounts() {
   const { publicKey: authority } = useWallet();
   const { clusterConfig } = useClusterConfig();
 
-  async function getAccounts() {
+  async function getAccounts(programId: PublicKey) {
     const tokenProgram = TOKEN_PROGRAM_ID;
     const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
     const associatedTokenProgram = ASSOCIATED_TOKEN_PROGRAM_ID;
@@ -22,24 +22,19 @@ export function useAccounts() {
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
     const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
 
-    const systemConfig = new PublicKey(clusterConfig.program.systemConfig);
-    const poolTokenAuthority = new PublicKey(
-      clusterConfig.program.poolTokenAuthority,
-    );
+    const systemConfig = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("system_config")
+      ],
+      programId
+    )[0];
 
-    // const systemConfig = await findProgramAddress(
-    //   [
-    //     Buffer.from("system_config")
-    //   ],
-    //   program.programId
-    // )[0];
-
-    // const poolTokenAuthority = await findProgramAddress(
-    //   [
-    //     systemConfig.toBuffer()
-    //   ],
-    //   program.programId
-    // )[0];
+    const poolTokenAuthority = PublicKey.findProgramAddressSync(
+      [
+        systemConfig.toBuffer()
+      ],
+      programId
+    )[0];
 
     const userUsdcTokenAccount = await getAssociatedTokenAddress(
       new PublicKey(clusterConfig.program.usdcTokenMint),
@@ -69,6 +64,10 @@ export function useAccounts() {
       true
     );
 
+    const userConfig = PublicKey.findProgramAddressSync(
+      [Buffer.from("user_config"), authority!.toBuffer()],
+      programId,
+    )[0];
 
     return {
       tokenProgram,
@@ -76,6 +75,7 @@ export function useAccounts() {
       authority,
       systemProgram,
       systemConfig,
+      userConfig,
       userUsdcTokenAccount,
       poolUsdcTokenAccount,
       usdcTokenMint,
@@ -88,7 +88,35 @@ export function useAccounts() {
     };
   }
 
+  async function getWalletBalanceAccount(programId: PublicKey,  wallet: PublicKey, marketPlace: PublicKey) {
+    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
+
+    const walletBaseTokenBalance = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("token_balance"),
+        usdcTokenMint.toBuffer(),
+        wallet.toBuffer()
+      ],
+      programId
+    )[0];
+
+    const walletPointTokenBalance = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("point_token_balance"),
+        marketPlace.toBuffer(),
+        wallet.toBuffer()
+      ],
+      programId
+    )[0];
+
+    return {
+      walletBaseTokenBalance,
+      walletPointTokenBalance,
+    }
+  }
+
   return {
     getAccounts,
+    getWalletBalanceAccount
   };
 }

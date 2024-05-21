@@ -18,8 +18,8 @@ import { useRelistMaker } from "@/lib/hooks/contract/use-relist-maker";
 import { IOffer } from "@/lib/types/order";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { formatNum } from "@/lib/utils/number";
-import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
-import { useOrderTree } from "@/lib/hooks/offer/use-order-tree";
+import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
+import { useOfferTree } from "@/lib/hooks/offer/use-offer-tree";
 import { SettleModeSelect } from "@/app/marketplace/create-offer/settle-mode-select";
 
 export default function ListAskStockBtn({
@@ -32,13 +32,13 @@ export default function ListAskStockBtn({
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { orderPointInfo, orderTokenInfo, tokenPrice } = useOfferFormat({
-    order,
+    offer: order,
   });
 
-  const { getOrigin } = useOrderTree();
+  const { getOriginOrderAccount } = useOfferTree();
 
-  const { makerDetail } = useOrderMakerDetail({
-    order,
+  const { makerDetail } = useOfferMakerDetail({
+    offer: order,
   });
 
   const [sellPointAmount] = useState(order.points);
@@ -60,7 +60,7 @@ export default function ListAskStockBtn({
   } = useRelistMaker({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
-    orderStr: order.order,
+    orderStr: order.offer_account,
   });
 
   function handleDeposit() {
@@ -98,9 +98,9 @@ export default function ListAskStockBtn({
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <ListInfo
-              id={order.order_id}
-              inherit={order.preOrderDetail?.order_id || ""}
-              origin={getOrigin(order, "")}
+              id={order.offer_id}
+              inherit={order.pre_offer_detail?.offer_id || ""}
+              origin={getOriginOrderAccount(order, "")}
             />
 
             <InputPanel

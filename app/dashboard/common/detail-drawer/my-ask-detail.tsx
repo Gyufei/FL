@@ -29,14 +29,14 @@ export default function MyAskDetail({
     isCanSettle,
     isSettled,
   } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   const { currentChain } = useCurrentChain();
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
-  const isOriginMaker = !order.pre_order;
+  const isOriginMaker = !order.pre_offer;
 
   const isClosed = useMemo(() => {
     return (

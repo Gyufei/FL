@@ -38,7 +38,7 @@ export function useSettleBidMaker({
       pointTokenMint,
       associatedTokenProgram,
       poolTokenAuthority,
-    } = await getAccounts();
+    } = await getAccounts(program.programId);
 
     const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
       [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],

@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
-import { useOrderResFormat } from "../offer/use-order-res-format";
+import { useOfferResFormat } from "../offer/use-offer-res-format";
 import fetcher from "@/lib/fetcher";
 import { IOffer } from "@/lib/types/order";
 
@@ -11,22 +11,22 @@ export function useMarketplaceOffers({
   marketAccount: string;
 }) {
   const { apiEndPoint } = useEndPoint();
-  const { orderResFieldFormat } = useOrderResFormat();
+  const { orderResFieldFormat, isLoading } = useOfferResFormat();
 
   const marketOrdersFetcher = async () => {
-      if (!marketAccount) return [];
+      if (!marketAccount || isLoading) return [];
 
       const orderRes = await fetcher(
         `${apiEndPoint}${Paths.offer}?market_place_account=${marketAccount}`,
       );
 
-      const parsedRes = orderRes.map((o: Record<string, any>) => orderResFieldFormat(o));
+      const parsedRes = orderRes.map((o: Record<string, any>) => orderResFieldFormat(o, orderRes));
 
       return parsedRes as Array<IOffer>;
   };
 
   const res = useSWR(
-    `market-order:${marketAccount}`,
+    `market-order:${marketAccount}${isLoading}`,
     marketOrdersFetcher,
   );
 

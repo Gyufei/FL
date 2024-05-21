@@ -6,18 +6,18 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import { useBidTaker } from "@/lib/hooks/contract/use-bid-taker";
+import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/order";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
+import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function AskDetail({
-  order,
+  offer,
   onSuccess,
 }: {
-  order: IOffer;
+  offer: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const { platformFee } = useGlobalConfig();
@@ -32,11 +32,11 @@ export default function AskDetail({
     isFilled,
     orderTokenInfo,
   } = useOfferFormat({
-    order,
+    offer,
   });
 
-  const { makerDetail } = useOrderMakerDetail({
-    order,
+  const { makerDetail } = useOfferMakerDetail({
+    offer: offer,
   });
 
   const tradeFee = useMemo(() => {
@@ -48,24 +48,25 @@ export default function AskDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useBidTaker({
-    marketplaceStr: order.marketplace.market_place_id,
-    makerStr: order.maker_account,
-    preOrderStr: order.order,
+  } = useCreateTaker({
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.maker_account,
+    offerStr: offer.offer_account,
+    offerAuthorityStr: offer.authority,
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return NP.minus(order.points, order.used_points);
-  }, [order]);
+    return NP.minus(offer.points, offer.used_points);
+  }, [offer]);
 
   const payTokenAmount = useMemo(() => {
     if (!receivePointAmount) return "0";
-    const pay = NP.times(NP.divide(receivePointAmount, order.points), forValue);
+    const pay = NP.times(NP.divide(receivePointAmount, offer.points), forValue);
     const payWithFee = NP.times(pay, 1 + platformFee + tradeFee).toFixed();
     return payWithFee;
-  }, [receivePointAmount, forValue, order.points, tradeFee, platformFee]);
+  }, [receivePointAmount, forValue, offer.points, tradeFee, platformFee]);
 
   const payTokenTotalPrice = useMemo(() => {
     if (!payTokenAmount) return "0";
@@ -78,7 +79,7 @@ export default function AskDetail({
 
   async function handleDeposit() {
     await writeAction({
-      receivePoint: receivePointAmount,
+      pointAmount: receivePointAmount,
     });
   }
 
@@ -99,10 +100,10 @@ export default function AskDetail({
         {/* left card */}
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={order.marketplace.projectLogo}
+            img1={offer.marketplace.projectLogo}
             img2={currentChain.logo}
-            name={order.marketplace.market_name}
-            no={order.offer_id}
+            name={offer.marketplace.market_name}
+            no={offer.offer_id}
             progress={progress}
           />
 
@@ -112,7 +113,7 @@ export default function AskDetail({
             value={payTokenAmount}
             tokenLogo={forLogo}
             canGoMax={sliderCanMax}
-            sliderMax={Number(order.points)}
+            sliderMax={Number(offer.points)}
             sliderValue={receivePointAmount}
             setSliderValue={handleSliderChange}
           />
@@ -121,7 +122,7 @@ export default function AskDetail({
             topText={<>You will receive</>}
             bottomText={
               <>
-                1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}
+                1 {offer.marketplace.point_name} = ${formatNum(pointPerPrice)}
               </>
             }
             value={String(receivePointAmount)}
@@ -158,10 +159,10 @@ export default function AskDetail({
         </div>
 
         {/* right card */}
-        <DetailCard order={order} />
+        <DetailCard offer={offer} />
       </div>
 
-      <OrderTabs order={order} />
+      <OrderTabs order={offer} />
     </>
   );
 }

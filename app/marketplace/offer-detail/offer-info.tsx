@@ -1,5 +1,6 @@
 import { CircleProgress } from "@/components/share/circle-progress";
 import { TokenPairImg } from "@/components/share/token-pair-img";
+import { formatNum } from "@/lib/utils/number";
 
 export default function OfferInfo({
   img1,
@@ -43,7 +44,7 @@ export default function OfferInfo({
           percentage={progress * 100}
         />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm leading-[20px] text-black">
-          {progress * 100}%
+          {formatNum(progress * 100)}%
         </div>
       </div>
     </div>

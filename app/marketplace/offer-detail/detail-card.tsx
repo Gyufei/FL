@@ -6,22 +6,21 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { IOffer } from "@/lib/types/order";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { useOrderMakerDetail } from "@/lib/hooks/offer/use-order-maker-detail";
+import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 
-export default function DetailCard({ order }: { order: IOffer }) {
+export default function DetailCard({ offer }: { offer: IOffer }) {
   const { handleGoScan } = useGoScan();
 
   const { amount, orderTokenInfo, orderPointInfo } = useOfferFormat({
-    order,
+    offer,
   });
 
-  const orderType = order.offer_type;
+  const orderType = offer.offer_type;
 
-  const { makerDetail, preOrderMakerDetail } = useOrderMakerDetail({
-    order,
-  });
-
-  const originOrder = order.preOrderDetail || order;
+  const { makerDetail, originOrder, originOfferMakerDetail } =
+    useOfferMakerDetail({
+      offer,
+    });
 
   return (
     <div className="flex-1 px-6">
@@ -33,7 +32,7 @@ export default function DetailCard({ order }: { order: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(order.points)} pts
+            {formatNum(offer.points)} pts
           </div>
           <Image
             src={orderPointInfo.logoURI}
@@ -84,7 +83,7 @@ export default function DetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Settlement Breach Fee</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
-            {NP.divide(order.settle_breach_fee, 100)}%
+            {NP.divide(offer.settle_breach_fee, 100)}%
           </div>
         </div>
       </DetailRow>
@@ -118,7 +117,7 @@ export default function DetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOrder?.order_id}
+            #{originOrder?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
             {truncateAddr(originOrder.maker_account, {
@@ -143,7 +142,7 @@ export default function DetailCard({ order }: { order: IOffer }) {
           <div className="text-sm leading-5 text-green">
             $
             {NP.divide(
-              preOrderMakerDetail?.trade_tax || 0,
+              originOfferMakerDetail?.trade_tax || 0,
               Math.pow(10, orderTokenInfo.decimals),
             )}
           </div>

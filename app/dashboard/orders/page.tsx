@@ -1,18 +1,18 @@
 "use client";
 import { useState } from "react";
 import {
-  IOrderType,
-  OrderTypeSelect,
-} from "../../../components/share/order-type-select";
+  IOfferType,
+  OfferTypeSelect,
+} from "../../../components/share/offer-type-select";
 import { OrderTable } from "./order-table";
 import { FilterSelect, IRole, IStatus, Roles, Status } from "./filter-select";
 
 export default function MyOrders() {
-  const [orderTypes, setOrderTypes] = useState<Array<IOrderType>>(["ask"]);
+  const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["ask"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
 
-  function handleTypeChange(t: Array<IOrderType>) {
+  function handleTypeChange(t: Array<IOfferType>) {
     setOrderTypes(t);
   }
 
@@ -31,7 +31,7 @@ export default function MyOrders() {
           <div className="text-xl leading-[30px] text-black">My Orders</div>
         </div>
         <div className="flex items-center space-x-6">
-          <OrderTypeSelect
+          <OfferTypeSelect
             types={orderTypes}
             handleTypeChange={handleTypeChange}
           />

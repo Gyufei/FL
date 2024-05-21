@@ -28,7 +28,7 @@ export default function StockCard({
     forLogo,
     isCanSettle,
   } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   const { setAnchorValue } = useAnchor();
@@ -37,7 +37,7 @@ export default function StockCard({
   const isAskStock = order.offer_type === "ask";
 
   const { data: subOrders } = useTakerOrders(
-    isAskStock ? order.order : order.pre_order,
+    isAskStock ? order.order : order.pre_offer,
     undefined,
   );
 

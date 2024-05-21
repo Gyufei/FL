@@ -6,7 +6,7 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import { useAskTaker } from "@/lib/hooks/contract/use-ask-taker";
+import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/order";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
@@ -28,7 +28,7 @@ export default function BidDetail({
     isFilled,
     orderTokenInfo,
   } = useOfferFormat({
-    order,
+    offer: order,
   });
 
   const { currentChain } = useCurrentChain();
@@ -56,10 +56,11 @@ export default function BidDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useAskTaker({
-    marketplaceStr: order.marketplace.market_place_id,
+  } = useCreateTaker({
+    marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
-    preOrderStr: order.order,
+    offerStr: order.offer_account,
+    offerAuthorityStr: order.authority,
   });
 
   function handleSliderChange(v: number) {
@@ -68,7 +69,7 @@ export default function BidDetail({
 
   async function handleDeposit() {
     await writeAction({
-      payPoint: sellPointAmount,
+      pointAmount: sellPointAmount,
     });
   }
 
@@ -92,7 +93,7 @@ export default function BidDetail({
             img1={order.marketplace.projectLogo}
             img2={currentChain.logo}
             name={order.marketplace.market_name}
-            no={order.order_id}
+            no={order.offer_id}
             progress={progress}
           />
 
@@ -134,7 +135,7 @@ export default function BidDetail({
         </div>
 
         {/* right card */}
-        <DetailCard order={order} />
+        <DetailCard offer={order} />
       </div>
 
       <OrderTabs order={order} />

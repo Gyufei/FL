@@ -14,7 +14,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
 
   const { offerLogo, forLogo, orderEqTokenInfo, orderTokenInfo } =
     useOfferFormat({
-      order,
+      offer: order,
     });
 
   const [onlyMe, setOnlyMe] = useState(false);

@@ -34,7 +34,7 @@ export function useRelistMaker({
       userUsdcTokenAccount,
       poolUsdcTokenAccount,
       usdcTokenMint,
-    } = await getAccounts();
+    } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
     const order = new PublicKey(orderStr);

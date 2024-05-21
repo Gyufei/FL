@@ -7,9 +7,9 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export type IOrderType = "ask" | "bid";
+export type IOfferType = "ask" | "bid";
 
-export const OfferTypes: { label: string; value: IOrderType }[] = [
+export const OfferTypes: { label: string; value: IOfferType }[] = [
   {
     label: "Sells / Asks",
     value: "ask",
@@ -20,12 +20,12 @@ export const OfferTypes: { label: string; value: IOrderType }[] = [
   },
 ];
 
-export function OrderTypeSelect({
+export function OfferTypeSelect({
   types,
   handleTypeChange,
 }: {
-  types: Array<IOrderType>;
-  handleTypeChange: (_ts: Array<IOrderType>) => void;
+  types: Array<IOfferType>;
+  handleTypeChange: (_ts: Array<IOfferType>) => void;
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
@@ -39,7 +39,7 @@ export function OrderTypeSelect({
     }
   }, [types]);
 
-  function handleClickOpt(t: IOrderType) {
+  function handleClickOpt(t: IOfferType) {
     if (types.includes(t)) {
       if (types.includes(t) && types.length === 2) {
         handleTypeChange(types.filter((_t) => _t !== t));

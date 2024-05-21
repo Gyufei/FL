@@ -38,7 +38,7 @@ export function useSettleAskTaker({
       poolPointsTokenAccount,
       pointTokenMint,
       associatedTokenProgram,
-    } = await getAccounts();
+    } = await getAccounts(program.programId);
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
       [systemConfig.toBuffer()],

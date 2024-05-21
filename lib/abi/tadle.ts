@@ -162,11 +162,6 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
-          "name": "userTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "tokenMint",
           "isMut": true,
           "isSigner": false
@@ -272,11 +267,6 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
-          "name": "userTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "poolTokenAccount",
           "isMut": true,
           "isSigner": false
@@ -348,11 +338,6 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
-          "name": "userTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "poolTokenAccount",
           "isMut": true,
           "isSigner": false
@@ -419,11 +404,6 @@ export const TadleAbi = {
         },
         {
           "name": "offer",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -550,11 +530,6 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
-          "name": "userTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "poolTokenAccount",
           "isMut": true,
           "isSigner": false
@@ -662,11 +637,6 @@ export const TadleAbi = {
         },
         {
           "name": "marketPlace",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -905,11 +875,6 @@ export const TadleAbi = {
         {
           "name": "systemConfig",
           "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "userTokenAccount",
-          "isMut": true,
           "isSigner": false
         },
         {
@@ -1424,7 +1389,7 @@ export const TadleAbi = {
             "name": "SalesRevenue"
           },
           {
-            "name": "LiquidatedDamages"
+            "name": "RemainingCash"
           },
           {
             "name": "MakerRefund"

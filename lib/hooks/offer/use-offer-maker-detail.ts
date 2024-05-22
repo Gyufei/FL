@@ -1,4 +1,4 @@
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useMakerDetail } from "../api/use-maker-detail";
 import { useMemo } from "react";
 import { useOfferTree } from "./use-offer-tree";

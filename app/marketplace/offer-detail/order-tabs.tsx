@@ -2,7 +2,7 @@ import { SmallSwitch } from "@/components/share/small-switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TakerOrders } from "./taker-orders";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";

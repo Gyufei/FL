@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
 import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle-btn";
 import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle-btn";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmBidSettleDialog({

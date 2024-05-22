@@ -1,12 +1,17 @@
+import { IOfferType } from "@/components/share/offer-type-select";
 import { IMarketplace } from "./marketplace";
 
 export interface IOffer {
-  offer_id: string;
   amount: string;
   authority: string;
   create_at: string;
   maker_account: string;
   market_place_account: string;
+  points: string;
+  tx_hash: string;
+
+  // offer;
+  offer_id: string;
   offer_account: string;
   offer_status: 
     | "unknown"
@@ -16,17 +21,24 @@ export interface IOffer {
     | "filled"
     | "settling"
     | "settled";
-  offer_type: string;
+  offer_type: IOfferType;
   order_note: string;
-  points: string;
   settle_breach_fee: string;
   settled_point_token_amount: string;
   settled_points: string;
   total_settled_points: string;
-  tx_hash: string;
   used_points: string;
   pre_offer_account: string;
 
+  // stock
+  stock_id: string;
+  stock_account: string;
+  stock_status: "Unknown" |
+            "Initialized" |
+            "Finished"
+  stock_type: IOfferType;
+
   marketplace: IMarketplace;
+  pre_offer: string;
   pre_offer_detail: IOffer,
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import ConfirmAskSettleDialog from "../../common/settle/confirm-ask-settle-dialog";
 import ConfirmBidSettleDialog from "../../common/settle/confirm-bid-settle-dialog";
 

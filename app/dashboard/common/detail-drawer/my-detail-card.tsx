@@ -4,7 +4,7 @@ import { formatNum } from "@/lib/utils/number";
 import { truncateAddr } from "@/lib/utils/web3";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import { formatTimeObj } from "@/lib/utils/time";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
@@ -107,15 +107,13 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
             #{originOrder.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(order.pre_offer_detail?.offer_account || "", {
+            {truncateAddr(originOrder?.offer_account || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() =>
-              handleGoScan(order.pre_offer_detail?.offer_account || "")
-            }
+            onClick={() => handleGoScan(originOrder?.offer_account || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}

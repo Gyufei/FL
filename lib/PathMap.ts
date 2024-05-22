@@ -31,6 +31,7 @@ export const Paths = {
   signIn: "/user/sign_in",
   offer: "/market_place/offer",
   myOffer: "/market_place/my_offer",
+  myStock: "/market_place/my_stock",
   makerDetail: "/market_place/maker_detail",
   marketPlace: "/market_place",
   addTransaction: "/transaction/add",

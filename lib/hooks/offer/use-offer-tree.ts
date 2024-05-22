@@ -1,4 +1,4 @@
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 
 export function useOfferTree() {
   function getOriginOrderAccount(order: IOffer, defaultValue: string) {

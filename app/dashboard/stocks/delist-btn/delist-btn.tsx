@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useUnlistMaker } from "@/lib/hooks/contract/use-unlist-maker";
 
 export default function DelistBtn({

@@ -9,7 +9,7 @@ import { SortSelect } from "../../../components/share/sort-select";
 import SearchInput from "./search-input";
 import { OrderCard, OrderCardSkeleton } from "./order-card";
 import HoverIcon from "@/components/share/hover-icon";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useSortOrder } from "@/lib/hooks/offer/use-sort-offer";
 import { range } from "lodash";
 

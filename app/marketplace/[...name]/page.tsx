@@ -11,7 +11,7 @@ import { useMemo } from "react";
 import OfferDetailDrawer from "../offer-detail/offer-detail-drawer";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { useMarketplaceOffers } from "@/lib/hooks/api/use-marketplace-offers";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);

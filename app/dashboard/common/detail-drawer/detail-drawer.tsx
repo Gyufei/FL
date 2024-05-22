@@ -1,7 +1,7 @@
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import MyAskDetail from "./my-ask-detail";
 import MyBidDetail from "./my-bid-detail";
 import { useEffect, useMemo, useState } from "react";

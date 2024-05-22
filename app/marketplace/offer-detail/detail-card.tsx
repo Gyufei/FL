@@ -3,7 +3,7 @@ import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { WithTip } from "../create-offer/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";

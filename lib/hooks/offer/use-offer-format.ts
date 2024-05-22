@@ -1,5 +1,5 @@
 import NP from "number-precision";
-import { IOffer } from "../../types/order";
+import { IOffer } from "../../types/offer";
 import { useMemo } from "react";
 import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";

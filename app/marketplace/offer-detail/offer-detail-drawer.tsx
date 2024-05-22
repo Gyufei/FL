@@ -5,7 +5,7 @@ import AskDetail from "../offer-detail/ask-detail";
 import BidDetail from "../offer-detail/bid-detail";
 import OrderFillDialog from "../offer-detail/order-fill-dialog";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 
 export default function OfferDetailDrawer({
   orders,

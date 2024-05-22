@@ -6,7 +6,7 @@ import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import { useState } from "react";
 import ConfirmBidSettleDialog from "../settle/confirm-bid-settle-dialog";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";

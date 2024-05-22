@@ -3,12 +3,12 @@ import Image from "next/image";
 import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
 import DelistBtn from "./delist-btn/delist-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
-import { IOffer } from "@/lib/types/order";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
+import { IOffer } from "@/lib/types/offer";
 
 export default function StockCard({
   order,
@@ -33,7 +33,7 @@ export default function StockCard({
 
   const { setAnchorValue } = useAnchor();
 
-  const isMaker = order.order_role === "Maker";
+  const isMaker = false;
   const isAskStock = order.offer_type === "ask";
 
   const { data: subOrders } = useTakerOrders(
@@ -47,8 +47,7 @@ export default function StockCard({
     !afterTGE &&
     !afterTGEPeriod &&
     !isAskStock &&
-    order.maker_status === "unknown" &&
-    order.taker_status === "initialized";
+    order.stock_status === "initialized";
 
   const isListed =
     !afterTGE &&
@@ -58,7 +57,7 @@ export default function StockCard({
     order.taker_status === "initialized";
 
   function handleOpenDetail() {
-    setAnchorValue(order.order_id);
+    setAnchorValue(order.stock_id);
   }
 
   return (

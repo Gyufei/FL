@@ -17,7 +17,7 @@ import { Pagination } from "@/components/ui/pagination/pagination";
 import { useMemo } from "react";
 import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";

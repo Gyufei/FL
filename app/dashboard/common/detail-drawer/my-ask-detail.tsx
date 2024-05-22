@@ -7,7 +7,7 @@ import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import ConfirmAskSettleDialog from "../settle/confirm-ask-settle-dialog";
 import { useEffect, useMemo, useState } from "react";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOriginMaker } from "@/lib/hooks/contract/use-close-origin-maker";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
@@ -39,11 +39,7 @@ export default function MyAskDetail({
   const isOriginMaker = !order.pre_offer;
 
   const isClosed = useMemo(() => {
-    return (
-      order.maker_status === "filled" ||
-      order.maker_status === "canceled" ||
-      order.maker_status === "settled"
-    );
+    return ["filled", "canceled", "settled"].includes(order.offer_status);
   }, [order]);
 
   const {
@@ -52,7 +48,7 @@ export default function MyAskDetail({
     isSuccess,
   } = useCloseOriginMaker({
     makerStr: order.maker_account,
-    orderStr: order.order,
+    orderStr: order.offer_account,
   });
 
   function handleClose() {
@@ -79,7 +75,7 @@ export default function MyAskDetail({
             img1={order.marketplace.projectLogo}
             img2={currentChain.logo}
             name={order.marketplace.market_name}
-            no={order.order_id}
+            no={order.offer_id}
             progress={progress}
           />
 

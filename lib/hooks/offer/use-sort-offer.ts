@@ -1,10 +1,10 @@
 import NP from "number-precision";
 import { ISortDir, ISortField } from "@/components/share/sort-select";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { sortBy } from "lodash";
 import { useMemo, useState } from "react";
 
-export function useSortOrder(orders: IOffer[]) {
+export function useSortOrder(orders: Array<IOffer>) {
   const [sortField, setSortField] = useState<ISortField>("Collateral");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");
 
@@ -22,19 +22,14 @@ export function useSortOrder(orders: IOffer[]) {
     let sortArr = orders;
     if (sortField === "Collateral") {
       const collateralFunc = (order: IOffer) => {
-        return order.order_role === "Taker"
-          ? order.taker_amount
-          : order.maker_amount;
+        return order.amount
       };
       sortArr = sortBy(orders, [collateralFunc]);
     }
 
     if (sortField === "Price") {
       const priceFunc = (order: IOffer) => {
-        const amount =
-          order.order_role === "Taker"
-            ? order.taker_amount
-            : order.maker_amount;
+        const amount = order.amount
         const pointPerPrice = NP.divide(amount, order.points);
         return pointPerPrice;
       };

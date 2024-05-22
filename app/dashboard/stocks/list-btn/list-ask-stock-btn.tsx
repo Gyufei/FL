@@ -15,7 +15,7 @@ import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fe
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { useRelistMaker } from "@/lib/hooks/contract/use-relist-maker";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { formatNum } from "@/lib/utils/number";
 import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";

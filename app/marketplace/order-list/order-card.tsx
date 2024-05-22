@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useMemo } from "react";

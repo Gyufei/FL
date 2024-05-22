@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
-import { IOffer } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmAskSettleDialog({

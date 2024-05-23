@@ -3,14 +3,14 @@ import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
-import { useOfferResFormat } from "../offer/use-offer-res-format";
-import { IOffer } from "@/lib/types/offer";
+import { useStockResFormat } from "../stock/use-stock-res-format";
+import { IStock } from "@/lib/types/stock";
 
 export function useMyStocks() {
   const { publicKey } = useWallet();
   const { apiEndPoint } = useEndPoint();
 
-  const { offerResFieldFormat, isLoading } = useOfferResFormat();
+  const { stockResFieldFormat, isLoading } = useStockResFormat();
 
   const address = publicKey?.toBase58();
 
@@ -21,9 +21,19 @@ export function useMyStocks() {
       `${apiEndPoint}${Paths.myStock}?authority=${address}`,
     );
 
-    const parsedRes = await Promise.all(orderRes.map((o: Record<string, any>) => offerResFieldFormat(o)));
+    const filedRes = orderRes.map((o: Record<string, any>) => {
+      const res = {
+        ...o,
+        offer_account: o.offer,
+        pre_offer_account: o.pre_offer,
+      }
 
-    return parsedRes as Array<IOffer>;
+      return res;
+    });
+
+    const parsedRes = await Promise.all(filedRes.map((o: Record<string, any>) => stockResFieldFormat(o)));
+
+    return parsedRes as Array<IStock>;
   };
 
   const res = useSWR(

@@ -14,28 +14,25 @@ import TaxForSubTrades from "../../../marketplace/create-offer/tax-for-sub-trade
 import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fee";
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
-import { useRelistMaker } from "@/lib/hooks/contract/use-relist-maker";
-import { IOffer } from "@/lib/types/offer";
-import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { formatNum } from "@/lib/utils/number";
 import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
-import { useOfferTree } from "@/lib/hooks/offer/use-offer-tree";
 import { SettleModeSelect } from "@/app/marketplace/create-offer/settle-mode-select";
+import { IStock } from "@/lib/types/stock";
+import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+import { useListStock } from "@/lib/hooks/contract/use-list-maker";
 
 export default function ListAskStockBtn({
   order: order,
   onSuccess,
 }: {
-  order: IOffer;
+  order: IStock;
   onSuccess: () => void;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, tokenPrice } = useOfferFormat({
-    offer: order,
+  const { orderPointInfo, orderTokenInfo, tokenPrice } = useStockFormat({
+    stock: order,
   });
-
-  const { getOriginOrderAccount } = useOfferTree();
 
   const { makerDetail } = useOfferMakerDetail({
     offer: order,
@@ -57,10 +54,10 @@ export default function ListAskStockBtn({
     isLoading: isDepositLoading,
     write: writeAction,
     isSuccess,
-  } = useRelistMaker({
+  } = useListStock({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
-    orderStr: order.offer_account,
+    stockStr: order.stock_account,
   });
 
   function handleDeposit() {
@@ -98,9 +95,17 @@ export default function ListAskStockBtn({
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <ListInfo
-              id={order.offer_id}
-              inherit={order.pre_offer_detail?.offer_id || ""}
-              origin={getOriginOrderAccount(order, "")}
+              id={order.stock_id}
+              inherit={
+                order?.pre_offer_detail?.offer_id ||
+                order?.offer_detail?.offer_id ||
+                ""
+              }
+              origin={
+                order?.pre_offer_detail?.offer_account ||
+                order?.offer_detail?.offer_account ||
+                ""
+              }
             />
 
             <InputPanel

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { IOffer } from "@/lib/types/offer";
 import { useUnlistMaker } from "@/lib/hooks/contract/use-unlist-maker";
+import { IStock } from "@/lib/types/stock";
 
 export default function DelistBtn({
   order,
   onSuccess,
 }: {
-  order: IOffer;
+  order: IStock;
   onSuccess: () => void;
 }) {
   const [isHover, setIsHover] = useState(false);
@@ -18,7 +18,7 @@ export default function DelistBtn({
     isSuccess,
   } = useUnlistMaker({
     makerStr: order.maker_account,
-    orderStr: order.order,
+    orderStr: order.stock_account,
   });
 
   function handleCancel() {

@@ -19,7 +19,7 @@ export function useTakerOrders(preOfferAccount: string, makerAccount?: string) {
   const { apiEndPoint } = useEndPoint();
 
   const res = useSWR<Array<TakerOrder>>(
-    `${apiEndPoint}${Paths.takerOrders}?${
+    null && `${apiEndPoint}${Paths.takerOrders}?${
       preOfferAccount ? `pre_offer_account=${preOfferAccount}` : ""
     }${makerAccount ? `&maker_account=${makerAccount}` : ""}`,
     fetcher,

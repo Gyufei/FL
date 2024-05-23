@@ -4,17 +4,17 @@ import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
 import DelistBtn from "./delist-btn/delist-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
-import { IOffer } from "@/lib/types/offer";
+import { IStock } from "@/lib/types/stock";
+import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 
 export default function StockCard({
-  order,
+  stock,
   onSuccess,
 }: {
-  order: IOffer;
+  stock: IStock;
   onSuccess: () => void;
 }) {
   const {
@@ -27,17 +27,17 @@ export default function StockCard({
     tokenTotalPrice,
     forLogo,
     isCanSettle,
-  } = useOfferFormat({
-    offer: order,
+  } = useStockFormat({
+    stock,
   });
 
   const { setAnchorValue } = useAnchor();
 
   const isMaker = false;
-  const isAskStock = order.offer_type === "ask";
+  const isAskStock = stock.stock_type === "ask";
 
   const { data: subOrders } = useTakerOrders(
-    isAskStock ? order.order : order.pre_offer,
+    isAskStock ? stock.offer_account : stock.pre_offer_account,
     undefined,
   );
 
@@ -47,17 +47,18 @@ export default function StockCard({
     !afterTGE &&
     !afterTGEPeriod &&
     !isAskStock &&
-    order.stock_status === "initialized";
+    // order.maker_status === "unknown" &&
+    stock.stock_status === "initialized";
 
   const isListed =
     !afterTGE &&
     isMaker &&
     isAskStock &&
-    order.maker_status === "virgin" &&
-    order.taker_status === "initialized";
+    // order.maker_status === "virgin" &&
+    stock.stock_status === "initialized";
 
   function handleOpenDetail() {
-    setAnchorValue(order.stock_id);
+    setAnchorValue(stock.offer_detail?.offer_id || stock.pre_offer_detail?.offer_id);
   }
 
   return (
@@ -68,7 +69,7 @@ export default function StockCard({
           onClick={handleOpenDetail}
         >
           <TokenPairImg
-            src1={order.marketplace?.projectLogo}
+            src1={stock.marketplace?.projectLogo}
             src2={currentChain.logo}
             width1={48}
             height1={48}
@@ -78,16 +79,16 @@ export default function StockCard({
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {order.marketplace?.market_name}
+              {stock.marketplace?.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{order.order_id}
+              #{stock.stock_id}
             </div>
           </div>
         </div>
 
         <div
-          data-type={order.offer_type}
+          data-type={stock.stock_type}
           className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
         >
           {!isAskStock ? "Bid" : "Ask"}
@@ -108,7 +109,7 @@ export default function StockCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} / {order.marketplace.point_name}
+            ${formatNum(pointPerPrice, 6)} / {stock.marketplace.point_name}
           </div>
         </div>
         <Image
@@ -137,9 +138,9 @@ export default function StockCard({
 
       <div className="flex items-center justify-between pt-4">
         <ManToMans num={subOrders?.length || 0} isAsk={isAskStock} />
-        {isCanList && <ListAskStockBtn order={order} onSuccess={onSuccess} />}
-        {isListed && <DelistBtn order={order} onSuccess={onSuccess} />}
-        {isCanSettle && <SettleDrawerBtn order={order} onSuccess={onSuccess} />}
+        {isCanList && <ListAskStockBtn order={stock} onSuccess={onSuccess} />}
+        {isListed && <DelistBtn order={stock} onSuccess={onSuccess} />}
+        {isCanSettle && <SettleDrawerBtn order={stock} onSuccess={onSuccess} />}
       </div>
     </div>
   );

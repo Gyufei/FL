@@ -10,7 +10,6 @@ export interface IOffer {
   points: string;
   tx_hash: string;
 
-  // offer;
   offer_id: string;
   offer_account: string;
   offer_status: 
@@ -30,15 +29,8 @@ export interface IOffer {
   used_points: string;
   pre_offer_account: string;
 
-  // stock
-  stock_id: string;
-  stock_account: string;
-  stock_status: "Unknown" |
-            "Initialized" |
-            "Finished"
-  stock_type: IOfferType;
-
   marketplace: IMarketplace;
   pre_offer: string;
   pre_offer_detail: IOffer,
+  origin_offer_detail: IOffer
 }

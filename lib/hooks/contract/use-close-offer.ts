@@ -4,57 +4,46 @@ import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
 
-export function useCloseOriginMaker({
+export function useCloseOffer({
+  marketplaceStr,
   makerStr,
-  orderStr,
+  offerStr,
 }: {
+  marketplaceStr: string;
   makerStr: string;
-  orderStr: string;
+  offerStr: string;
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccounts();
+  const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async () => {
     const {
-      tokenProgram,
-      tokenProgram2022,
       authority,
       systemProgram,
       systemConfig,
-      userUsdcTokenAccount,
-      poolUsdcTokenAccount,
-      usdcTokenMint,
-      poolTokenAuthority,
     } = await getAccounts(program.programId);
 
-    const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
-      [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
+    const marketPlace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
-    const order = new PublicKey(orderStr);
+    const offer = new PublicKey(offerStr);
+
+    const {
+      walletBaseTokenBalance: walletDBaseTokenBalance,
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
 
     const txHash = await program.methods
-      .closeOriginMaker()
+      .closeOffer()
       .accounts({
         authority,
         systemConfig,
-        order,
-        userTokenAccount: userUsdcTokenAccount,
-        poolTokenAccount: poolUsdcTokenAccount,
+        userBaseTokenBalance: walletDBaseTokenBalance,
+        offer,
         maker,
-        poolTokenAuthority,
-        wsolTmpTokenAccount,
-        tokenMint: usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
         systemProgram,
       })
-      .signers([])
-      .rpc();
+      .signers([]).rpc();
 
     await recordTransaction({
       txHash,

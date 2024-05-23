@@ -9,7 +9,7 @@ import ConfirmAskSettleDialog from "../settle/confirm-ask-settle-dialog";
 import { useEffect, useMemo, useState } from "react";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useCloseOriginMaker } from "@/lib/hooks/contract/use-close-origin-maker";
+import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function MyAskDetail({
@@ -36,7 +36,7 @@ export default function MyAskDetail({
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
-  const isOriginMaker = !order.pre_offer;
+  const isOriginMaker = !order.pre_offer_detail;
 
   const isClosed = useMemo(() => {
     return ["filled", "canceled", "settled"].includes(order.offer_status);
@@ -46,9 +46,10 @@ export default function MyAskDetail({
     isLoading: isClosing,
     write: writeAction,
     isSuccess,
-  } = useCloseOriginMaker({
+  } = useCloseOffer({
+    marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
-    orderStr: order.offer_account,
+    offerStr: order.offer_account,
   });
 
   function handleClose() {

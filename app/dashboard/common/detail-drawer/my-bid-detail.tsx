@@ -49,7 +49,7 @@ export default function MyBidDetail({
             img1={order.marketplace.projectLogo}
             img2={currentChain.logo}
             name={order.marketplace.market_name}
-            no={order.order_id}
+            no={order.offer_id}
             progress={progress}
           />
 

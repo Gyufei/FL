@@ -3,8 +3,9 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
 import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle-btn";
 import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle-btn";
+import { IStock } from "@/lib/types/stock";
+import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { IOffer } from "@/lib/types/offer";
-import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmBidSettleDialog({
   open,
@@ -14,13 +15,13 @@ export default function ConfirmBidSettleDialog({
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IOffer;
+  order: IStock | IOffer;
   onSuccess: () => void;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo } = useOfferFormat({
-    offer: order,
+  const { amount, tokenTotalPrice, orderPointInfo } = useStockFormat({
+    stock: order as IStock,
   });
-  const orderRole = order.order_role;
+  const orderRole = "Maker";
 
   const settleAmount = Number(order.points);
 
@@ -40,7 +41,7 @@ export default function ConfirmBidSettleDialog({
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">Bid Offer No.</div>
             <div className="text-sm leading-5 text-black">
-              #{order.order_id}
+              #{(order as any)?.stock_id || (order as any)?.offer_id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
@@ -79,7 +80,7 @@ export default function ConfirmBidSettleDialog({
             </div>
           </div>
 
-          {orderRole === "Taker" && (
+          {orderRole !== "Maker" && (
             <ConfirmBidTakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.offer_account}

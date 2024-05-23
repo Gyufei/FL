@@ -1,26 +1,23 @@
 import { IOffer } from "@/lib/types/offer";
 import { useMakerDetail } from "../api/use-maker-detail";
 import { useMemo } from "react";
-import { useOfferTree } from "./use-offer-tree";
+import { IStock } from "@/lib/types/stock";
 
-export function useOfferMakerDetail({ offer }: { offer: IOffer }) {
-  const { getOriginOrder } = useOfferTree();
-
+export function useOfferMakerDetail({ offer }: { offer: IOffer | IStock }) {
   const { data: makerDetail } = useMakerDetail({
     makerId: offer.maker_account,
   });
 
-
-  const originOrder = useMemo(() => {
-    return getOriginOrder(offer);
-  }, [offer, getOriginOrder]);
+  const originOffer = useMemo(() => {
+    return (offer as any).origin_offer_detail
+  }, [offer]);
 
   const { data: originOfferMakerDetail } = useMakerDetail({
-    makerId: originOrder?.maker_account || "",
+    makerId: originOffer?.maker_account || "",
   });
 
   return {
-    originOrder,
+    originOffer,
     makerDetail,
     originOfferMakerDetail,
   };

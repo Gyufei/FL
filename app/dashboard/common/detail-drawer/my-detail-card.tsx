@@ -20,7 +20,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
 
   const isAsk = order.offer_type === "ask";
 
-  const { originOrder, makerDetail, originOfferMakerDetail } =
+  const { originOffer, makerDetail, originOfferMakerDetail } =
     useOfferMakerDetail({
       offer: order,
     });
@@ -28,8 +28,8 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
   const { handleGoScan } = useGoScan();
 
   const originMaker = useMemo(() => {
-    return originOrder.maker_account;
-  }, [originOrder]);
+    return originOffer?.maker_account;
+  }, [originOffer]);
 
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
 
@@ -104,16 +104,16 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Inherit From</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOrder.offer_id}
+            #{originOffer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOrder?.offer_account || "", {
+            {truncateAddr(originOffer?.offer_account || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(originOrder?.offer_account || "")}
+            onClick={() => handleGoScan(originOffer?.offer_account || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -136,7 +136,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{order.offer_id}
+            #{order?.offer_id}
           </div>
           <div className="text-sm leading-5 text-red">
             {isYouAreOriginMaker

@@ -17,7 +17,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
 
   const orderType = offer.offer_type;
 
-  const { makerDetail, originOrder, originOfferMakerDetail } =
+  const { makerDetail, originOffer, originOfferMakerDetail } =
     useOfferMakerDetail({
       offer,
     });
@@ -50,13 +50,13 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOrder.authority || "", {
+            {truncateAddr(offer?.authority || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(originOrder.authority || "")}
+            onClick={() => handleGoScan(offer?.authority || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -117,16 +117,16 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOrder?.offer_id}
+            #{originOffer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOrder.maker_account, {
+            {truncateAddr(originOffer?.maker_account, {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(originOrder.maker_account)}
+            onClick={() => handleGoScan(originOffer?.maker_account)}
             src="/icons/right-45.svg"
             width={16}
             height={16}

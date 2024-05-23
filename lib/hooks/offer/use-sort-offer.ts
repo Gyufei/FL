@@ -4,7 +4,7 @@ import { IOffer } from "@/lib/types/offer";
 import { sortBy } from "lodash";
 import { useMemo, useState } from "react";
 
-export function useSortOrder(orders: Array<IOffer>) {
+export function useSortOffer(orders: Array<any>) {
   const [sortField, setSortField] = useState<ISortField>("Collateral");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");
 

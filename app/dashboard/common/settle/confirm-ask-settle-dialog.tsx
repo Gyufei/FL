@@ -5,8 +5,9 @@ import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
+import { IStock } from "@/lib/types/stock";
+import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { IOffer } from "@/lib/types/offer";
-import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmAskSettleDialog({
   open,
@@ -16,19 +17,19 @@ export default function ConfirmAskSettleDialog({
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IOffer;
+  order: IStock | IOffer;
   onSuccess: () => void;
 }) {
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
-    useOfferFormat({ offer: order });
-  const orderRole = order.order_role;
+    useStockFormat({ stock: order as IStock });
+  const orderRole = "Maker";
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(100);
 
   const pointAmount = !afterTGEPeriod
     ? orderRole === "Maker"
-      ? order.used_points
+      ? (order as any).used_points || (order as any).offer_detail?.used_points
       : order.points
     : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
@@ -49,7 +50,7 @@ export default function ConfirmAskSettleDialog({
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">Ask Offer No.</div>
             <div className="text-sm leading-5 text-black">
-              #{order.order_id}
+              #{(order as any).stock_id || (order as any).offer_id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
@@ -105,7 +106,7 @@ export default function ConfirmAskSettleDialog({
             </div>
           </div>
 
-          {orderRole === "Taker" && (
+          {orderRole !== "Maker" && (
             <ConfirmAskTakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
               orderStr={order.offer_account}
@@ -118,7 +119,7 @@ export default function ConfirmAskSettleDialog({
           {orderRole === "Maker" && (
             <ConfirmAskMakerSettleBtn
               marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.order}
+              orderStr={(order as any).stock_account}
               makerStr={order.maker_account}
               settleAmount={settleAmount}
               onSuccess={handleSuccess}

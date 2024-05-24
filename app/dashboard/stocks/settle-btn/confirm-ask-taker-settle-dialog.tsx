@@ -4,34 +4,29 @@ import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
-import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
-import { IOffer } from "@/lib/types/offer";
 
-export default function ConfirmAskSettleDialog({
+export default function ConfirmAskTakerSettleDialog({
   open,
   onOpenChange,
-  order,
+  stock,
   onSuccess,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IStock | IOffer;
+  stock: IStock;
   onSuccess: () => void;
 }) {
+  const orderRole = "Taker";
+
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
-    useStockFormat({ stock: order as IStock });
-  const orderRole = "Maker";
+    useStockFormat({ stock: stock });
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(100);
 
-  const pointAmount = !afterTGEPeriod
-    ? orderRole === "Maker"
-      ? (order as any).used_points || (order as any).offer_detail?.used_points
-      : order.points
-    : 0;
+  const pointAmount = !afterTGEPeriod ? stock.points : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   function handleSuccess() {
@@ -50,7 +45,7 @@ export default function ConfirmAskSettleDialog({
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">Ask Offer No.</div>
             <div className="text-sm leading-5 text-black">
-              #{(order as any).stock_id || (order as any).offer_id}
+              #{(stock as any).stock_id || (stock as any).offer_id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
@@ -106,25 +101,15 @@ export default function ConfirmAskSettleDialog({
             </div>
           </div>
 
-          {orderRole !== "Maker" && (
-            <ConfirmAskTakerSettleBtn
-              marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.offer_account}
-              makerStr={order.maker_account}
-              preOrderStr={order.pre_offer_account}
-              settleAmount={settleAmount}
-              onSuccess={handleSuccess}
-            />
-          )}
-          {orderRole === "Maker" && (
-            <ConfirmAskMakerSettleBtn
-              marketplaceStr={order.marketplace.market_place_id}
-              orderStr={(order as any).stock_account}
-              makerStr={order.maker_account}
-              settleAmount={settleAmount}
-              onSuccess={handleSuccess}
-            />
-          )}
+          <ConfirmAskTakerSettleBtn
+            marketplaceStr={stock.marketplace.market_place_id}
+            stockStr={stock.stock_account}
+            makerStr={stock.maker_account}
+            preOfferStr={stock.pre_offer_account}
+            preOfferAuthorityStr={stock.pre_offer_detail?.authority}
+            settleAmount={settleAmount}
+            onSuccess={handleSuccess}
+          />
         </div>
       </DialogContent>
     </Dialog>

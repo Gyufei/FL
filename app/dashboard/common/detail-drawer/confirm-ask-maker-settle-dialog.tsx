@@ -1,29 +1,33 @@
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
-import ConfirmBidTakerSettleBtn from "./confirm-bid-taker-settle-btn";
-import ConfirmBidMakerSettleBtn from "./confirm-bid-maker-settle-btn";
-import { IStock } from "@/lib/types/stock";
-import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
+import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOffer } from "@/lib/types/offer";
+import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 
-export default function ConfirmBidSettleDialog({
+export default function ConfirmAskMakerSettleDialog({
   open,
   onOpenChange,
-  order,
+  offer,
   onSuccess,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  order: IStock | IOffer;
+  offer: IOffer;
   onSuccess: () => void;
 }) {
-  const { amount, tokenTotalPrice, orderPointInfo } = useStockFormat({
-    stock: order as IStock,
-  });
   const orderRole = "Maker";
 
-  const settleAmount = Number(order.points);
+  const { amount, tokenTotalPrice, orderPointInfo } = useOfferFormat({
+    offer: offer,
+  });
+
+  const { data: offerStocks, isLoading } = useOfferStocks({
+    offer: offer,
+  });
+
+  const settleAmount = Number(offer.points);
 
   function handleSuccess() {
     onSuccess();
@@ -41,7 +45,7 @@ export default function ConfirmBidSettleDialog({
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">Bid Offer No.</div>
             <div className="text-sm leading-5 text-black">
-              #{(order as any)?.stock_id || (order as any)?.offer_id}
+              #{(offer as any)?.stock_id || (offer as any)?.offer_id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
@@ -80,23 +84,15 @@ export default function ConfirmBidSettleDialog({
             </div>
           </div>
 
-          {orderRole !== "Maker" && (
-            <ConfirmBidTakerSettleBtn
-              marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.offer_account}
-              makerStr={order.maker_account}
-              preOrderStr={order.pre_offer_account}
-              onSuccess={handleSuccess}
-            />
-          )}
-          {orderRole === "Maker" && (
-            <ConfirmBidMakerSettleBtn
-              marketplaceStr={order.marketplace.market_place_id}
-              orderStr={order.offer_account}
-              makerStr={order.maker_account}
-              onSuccess={handleSuccess}
-            />
-          )}
+          <ConfirmAskMakerSettleBtn
+            isStocksLoading={isLoading}
+            marketplaceStr={offer.marketplace.market_place_id}
+            orderStr={offer.offer_account}
+            makerStr={offer.maker_account}
+            settleAmount={settleAmount}
+            offerStocks={offerStocks}
+            onSuccess={handleSuccess}
+          />
         </div>
       </DialogContent>
     </Dialog>

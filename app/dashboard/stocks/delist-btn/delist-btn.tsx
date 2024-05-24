@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useUnlistMaker } from "@/lib/hooks/contract/use-unlist-maker";
+import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { IStock } from "@/lib/types/stock";
 
 export default function DelistBtn({
@@ -16,9 +16,10 @@ export default function DelistBtn({
     isLoading,
     write: action,
     isSuccess,
-  } = useUnlistMaker({
+  } = useCloseOffer({
+    marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
-    orderStr: order.stock_account,
+    offerStr: order.offer_account,
   });
 
   function handleCancel() {
@@ -52,7 +53,7 @@ export default function DelistBtn({
           <span>Delist</span>
         </button>
       ) : (
-        <div className="text-sm leading-5 text-black">Listed</div>
+        <div className="text-sm leading-7 text-black">Listed</div>
       )}
     </div>
   );

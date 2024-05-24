@@ -5,12 +5,12 @@ import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
-import ConfirmAskSettleDialog from "../settle/confirm-ask-settle-dialog";
 import { useEffect, useMemo, useState } from "react";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 
 export default function MyAskDetail({
   order: order,
@@ -150,8 +150,8 @@ export default function MyAskDetail({
         <MyDetailCard order={order} />
       </div>
       <OrderTabs order={order} />
-      <ConfirmAskSettleDialog
-        order={order}
+      <ConfirmAskMakerSettleDialog
+        offer={order}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
         onSuccess={onSuccess}

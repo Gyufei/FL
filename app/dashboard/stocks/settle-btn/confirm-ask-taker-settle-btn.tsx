@@ -1,17 +1,21 @@
-import { useSettleAskMaker } from "@/lib/hooks/contract/use-settle-ask-maker";
-import ConfirmSettleBtn from "./confirm-settle-btn";
+import ConfirmSettleBtn from "@/app/dashboard/common/settle/confirm-settle-btn";
 import { useEffect } from "react";
+import { useSettleAskTaker } from "@/lib/hooks/contract/use-settle-ask-taker";
 
 export default function ConfirmAskMakerSettleBtn({
   marketplaceStr,
-  orderStr,
+  stockStr,
   makerStr,
+  preOfferStr,
   settleAmount,
+  preOfferAuthorityStr,
   onSuccess,
 }: {
   marketplaceStr: string;
-  orderStr: string;
+  stockStr: string;
   makerStr: string;
+  preOfferStr: string;
+  preOfferAuthorityStr: string;
   settleAmount: number;
   onSuccess: () => void;
 }) {
@@ -19,9 +23,11 @@ export default function ConfirmAskMakerSettleBtn({
     isLoading,
     write: writeAction,
     isSuccess,
-  } = useSettleAskMaker({
+  } = useSettleAskTaker({
     marketplaceStr,
-    orderStr,
+    preOfferStr,
+    stockStr,
+    preOfferAuthorityStr,
     makerStr,
   });
 

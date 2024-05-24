@@ -1,11 +1,11 @@
 import { SmallSwitch } from "@/components/share/small-switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { TakerOrders } from "./taker-orders";
+import { useMemo, useState } from "react";
+import { TakerOrder, TakerOrders } from "./taker-orders";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
+import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 
 export default function OrderTabs({ order }: { order: IOffer }) {
   const [currentTab, setCurrentTab] = useState("orders");
@@ -19,10 +19,27 @@ export default function OrderTabs({ order }: { order: IOffer }) {
 
   const [onlyMe, setOnlyMe] = useState(false);
 
-  const { data: orders } = useTakerOrders(
-    order.offer_account,
-    onlyMe ? publicKey?.toBase58() : undefined,
-  );
+  const { data: stocks } = useOfferStocks({ offer: order });
+
+  const orders = useMemo(() => {
+    if (!stocks) return [];
+    const allStocks = onlyMe
+      ? stocks.filter((s: any) => s.authority === publicKey?.toBase58())
+      : stocks;
+    return allStocks.map((s: any) => {
+      return {
+        create_at: s.create_at,
+        deposits: s.amount,
+        from: "",
+        points: s.points,
+        sub_no: s.stock_id,
+        to: "",
+        total_points: s?.pre_offer_detail?.points || 0,
+        tx_hash: s.tx_hash,
+        order_id: s.stock_id,
+      };
+    }) as Array<TakerOrder>;
+  }, [stocks, onlyMe, publicKey]);
 
   return (
     <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4 pb-6">

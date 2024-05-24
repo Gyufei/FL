@@ -1,14 +1,14 @@
 import { formatNum } from "@/lib/utils/number";
 import Image from "next/image";
 import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
-import DelistBtn from "./delist-btn/delist-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
-import { useTakerOrders } from "@/lib/hooks/api/use-taker-orders";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
+import DelistBtn from "./delist-btn/delist-btn";
 
 export default function StockCard({
   stock,
@@ -33,32 +33,22 @@ export default function StockCard({
 
   const { setAnchorValue } = useAnchor();
 
-  const isMaker = false;
   const isAskStock = stock.stock_type === "ask";
 
-  const { data: subOrders } = useTakerOrders(
-    isAskStock ? stock.offer_account : stock.pre_offer_account,
-    undefined,
-  );
+  const { data: subOrders } = useOfferStocks({
+    offer: stock.pre_offer_detail,
+  });
 
   const { currentChain } = useCurrentChain();
 
-  const isCanList =
-    !afterTGE &&
-    !afterTGEPeriod &&
-    !isAskStock &&
-    // order.maker_status === "unknown" &&
-    stock.stock_status === "initialized";
+  const isCanList = !afterTGE && !afterTGEPeriod && !isAskStock && !stock.offer;
 
-  const isListed =
-    !afterTGE &&
-    isMaker &&
-    isAskStock &&
-    // order.maker_status === "virgin" &&
-    stock.stock_status === "initialized";
+  const isListed = !afterTGE && !isAskStock && stock.offer;
 
   function handleOpenDetail() {
-    setAnchorValue(stock.offer_detail?.offer_id || stock.pre_offer_detail?.offer_id);
+    setAnchorValue(
+      stock.offer_detail?.offer_id || stock.pre_offer_detail?.offer_id,
+    );
   }
 
   return (

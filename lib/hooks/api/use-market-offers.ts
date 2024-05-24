@@ -5,7 +5,7 @@ import { useOfferResFormat } from "../offer/use-offer-res-format";
 import fetcher from "@/lib/fetcher";
 import { IOffer } from "@/lib/types/offer";
 
-export function useMarketplaceOffers({
+export function useMarketOffers({
   marketAccount,
 }: {
   marketAccount: string;
@@ -13,21 +13,21 @@ export function useMarketplaceOffers({
   const { apiEndPoint } = useEndPoint();
   const { offerResFieldFormat: orderResFieldFormat, isLoading } = useOfferResFormat();
 
-  const marketOrdersFetcher = async () => {
+  const marketOffersFetcher = async () => {
       if (!marketAccount || isLoading) return [];
 
-      const orderRes = await fetcher(
+      const offerRes = await fetcher(
         `${apiEndPoint}${Paths.offer}?market_place_account=${marketAccount}`,
       );
 
-      const parsedRes = await Promise.all(orderRes.map((o: Record<string, any>) => orderResFieldFormat(o, orderRes)));
+      const parsedRes = await Promise.all(offerRes.map((o: Record<string, any>) => orderResFieldFormat(o, offerRes)));
 
       return parsedRes as Array<IOffer>;
   };
 
   const res = useSWR(
-    `market-order:${marketAccount}${isLoading}`,
-    marketOrdersFetcher,
+    `market-offer:${marketAccount}${isLoading}`,
+    marketOffersFetcher,
   );
 
   return {

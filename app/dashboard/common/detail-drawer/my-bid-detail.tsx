@@ -4,20 +4,12 @@ import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/marketplace/create-offer/arrow-between";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
-import { useState } from "react";
-import ConfirmBidSettleDialog from "../settle/confirm-bid-settle-dialog";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
-export default function MyBidDetail({
-  order,
-  onSuccess,
-}: {
-  order: IOffer;
-  onSuccess: () => void;
-}) {
+export default function MyBidDetail({ order }: { order: IOffer }) {
   const {
     tokenTotalPrice,
     progress,
@@ -25,7 +17,6 @@ export default function MyBidDetail({
     amount,
     orderTokenInfo,
     orderPointInfo,
-    afterTGEPeriod,
     isCanSettle,
     isSettled,
   } = useOfferFormat({
@@ -33,12 +24,6 @@ export default function MyBidDetail({
   });
 
   const { currentChain } = useCurrentChain();
-
-  const [settleConfirmShow, setSettleConfirmShow] = useState(false);
-
-  function handleSettle() {
-    setSettleConfirmShow(true);
-  }
 
   return (
     <>
@@ -87,15 +72,6 @@ export default function MyBidDetail({
             tokenLogo={orderPointInfo.logoURI}
           />
 
-          {isCanSettle && afterTGEPeriod && (
-            <button
-              onClick={() => handleSettle()}
-              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
-            >
-              Settle this offer
-            </button>
-          )}
-
           {isSettled && (
             <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
               Settlement Completed
@@ -113,13 +89,6 @@ export default function MyBidDetail({
         <MyDetailCard order={order} />
       </div>
       <OrderTabs order={order} />
-
-      <ConfirmBidSettleDialog
-        order={order}
-        open={settleConfirmShow}
-        onOpenChange={setSettleConfirmShow}
-        onSuccess={onSuccess}
-      />
     </>
   );
 }

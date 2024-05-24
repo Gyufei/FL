@@ -10,7 +10,7 @@ import useTge from "@/lib/hooks/marketplace/useTge";
 import { useMemo } from "react";
 import OfferDetailDrawer from "../offer-detail/offer-detail-drawer";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
-import { useMarketplaceOffers } from "@/lib/hooks/api/use-marketplace-offers";
+import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 import { IOffer } from "@/lib/types/offer";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
@@ -27,7 +27,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     data: orders,
     mutate: refreshOrders,
     isLoading: isOrdersLoading,
-  } = useMarketplaceOffers({
+  } = useMarketOffers({
     marketAccount: marketplace?.market_place_id || "",
   });
 

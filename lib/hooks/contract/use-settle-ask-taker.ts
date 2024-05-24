@@ -8,17 +8,19 @@ import { useAccounts } from "./use-accounts";
 export function useSettleAskTaker({
   marketplaceStr,
   makerStr,
-  orderStr,
-  preOrderStr,
+  stockStr,
+  preOfferStr,
+  preOfferAuthorityStr,
 }: {
   marketplaceStr: string;
   makerStr: string;
-  orderStr: string;
-  preOrderStr: string;
+  stockStr: string;
+  preOfferStr: string;
+  preOfferAuthorityStr: string;
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts } = useAccounts();
+  const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
   const writeAction = async ({
     settleAmount
@@ -51,24 +53,37 @@ export function useSettleAskTaker({
     )[0];
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const bidOrder = new PublicKey(orderStr);
+    const stock = new PublicKey(stockStr);
     const bidMaker = new PublicKey(makerStr);
-    const bidMakerOrder = new PublicKey(preOrderStr);
+    const preOffer = new PublicKey(preOfferStr);
+
+    const {
+      walletBaseTokenBalance: walletBBaseTokenBalance,
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
+
+    const preOfferAuthority = new PublicKey(preOfferAuthorityStr);
+    const {
+      walletBaseTokenBalance: walletABaseTokenBalance,
+      walletPointTokenBalance: walletAPointTokenBalance
+    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace)
+
 
     const txHash = await program.methods
       .settleAskTaker(new BN(settleAmount))
       .accounts({
+        manager: authority!,
         authority,
         systemConfig,
+        makerBaseTokenBalance: walletABaseTokenBalance,
+        makerPointTokenBalance: walletAPointTokenBalance,
+        userBaseTokenBalance: walletBBaseTokenBalance,
         maker: bidMaker,
-        order: bidOrder,
-        preOrder: bidMakerOrder,
+
+        stock,
+        preOffer,
         marketPlace,
         poolTokenAuthority,
-        userTokenAccount: userUsdcTokenAccount,
         poolTokenAccount: poolUsdcTokenAccount,
-        userPointTokenAccount: userPointsTokenAccount,
-        poolPointTokenAccount: poolPointsTokenAccount,
         wsolTmpTokenAccount,
         tokenMint: usdcTokenMint,
         pointTokenMint,
@@ -77,8 +92,29 @@ export function useSettleAskTaker({
         pointTokenProgram: tokenProgram,
         associatedTokenProgram,
         systemProgram,
+
+        userTokenAccount: userUsdcTokenAccount,
+        userPointTokenAccount: userPointsTokenAccount,
+        poolPointTokenAccount: poolPointsTokenAccount,
       })
       .signers([])
+      .remainingAccounts([
+        {
+          pubkey: userPointsTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: poolPointsTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: userUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+      ])
       .rpc();
 
     await recordTransaction({

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import ConfirmAskSettleDialog from "../../common/settle/confirm-ask-settle-dialog";
-import ConfirmBidSettleDialog from "../../common/settle/confirm-bid-settle-dialog";
+import ConfirmAskTakerSettleDialog from "./confirm-ask-taker-settle-dialog";
 import { IStock } from "@/lib/types/stock";
 
 export default function SettleDrawerBtn({
@@ -11,7 +10,6 @@ export default function SettleDrawerBtn({
   order: IStock;
   onSuccess: () => void;
 }) {
-  const isAsk = order.stock_type === "ask";
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   function handleDrawerOpen(open: boolean) {
@@ -28,21 +26,12 @@ export default function SettleDrawerBtn({
         <span>Settle</span>
       </div>
 
-      {isAsk ? (
-        <ConfirmAskSettleDialog
-          order={order}
-          open={settleConfirmShow}
-          onOpenChange={setSettleConfirmShow}
-          onSuccess={onSuccess}
-        />
-      ) : (
-        <ConfirmBidSettleDialog
-          order={order}
-          open={settleConfirmShow}
-          onOpenChange={setSettleConfirmShow}
-          onSuccess={onSuccess}
-        />
-      )}
+      <ConfirmAskTakerSettleDialog
+        stock={order}
+        open={settleConfirmShow}
+        onOpenChange={setSettleConfirmShow}
+        onSuccess={onSuccess}
+      />
     </div>
   );
 }

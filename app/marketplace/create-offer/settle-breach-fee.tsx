@@ -17,6 +17,15 @@ export default function SettleBreachFee({
     }
   }
 
+  function handleBlur() {
+    if (!value) {
+      onValueChange("");
+    }
+    if (Number(value) < 50) {
+      onValueChange("50");
+    }
+  }
+
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
@@ -31,6 +40,7 @@ export default function SettleBreachFee({
           placeholder="50%"
           value={value}
           onUserInput={handleInput}
+          onBlur={handleBlur}
         />
         <div className="absolute right-4 top-[15px]">%</div>
       </div>

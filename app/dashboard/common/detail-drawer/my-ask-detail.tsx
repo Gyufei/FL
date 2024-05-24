@@ -11,6 +11,7 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
+import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
 
 export default function MyAskDetail({
   order: order,
@@ -38,15 +39,27 @@ export default function MyAskDetail({
 
   const isOriginMaker = !order.pre_offer_detail;
 
+  const isCanceled = order.offer_status === "canceled";
+
   const isClosed = useMemo(() => {
     return ["filled", "canceled", "settled"].includes(order.offer_status);
   }, [order]);
 
   const {
     isLoading: isClosing,
-    write: writeAction,
-    isSuccess,
+    write: closeAction,
+    isSuccess: isCloseSuccess,
   } = useCloseOffer({
+    marketplaceStr: order.market_place_account,
+    makerStr: order.maker_account,
+    offerStr: order.offer_account,
+  });
+
+  const {
+    isLoading: isRelisting,
+    write: relistAction,
+    isSuccess: isRelistSuccess,
+  } = useRelistOffer({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
@@ -54,7 +67,12 @@ export default function MyAskDetail({
 
   function handleClose() {
     if (isClosing) return;
-    writeAction?.(undefined);
+    closeAction?.(undefined);
+  }
+
+  function handleRelist() {
+    if (isRelisting) return;
+    relistAction?.(undefined);
   }
 
   function handleSettle() {
@@ -62,7 +80,7 @@ export default function MyAskDetail({
   }
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isCloseSuccess || isRelistSuccess) {
       onSuccess();
     }
   });
@@ -123,7 +141,16 @@ export default function MyAskDetail({
             </button>
           )}
 
-          {!isCanSettle && !isClosed && isOriginMaker && (
+          {!isCanSettle && isCanceled && (
+            <button
+              onClick={() => handleRelist()}
+              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+            >
+              Relist this offer
+            </button>
+          )}
+
+          {!isCanSettle && !isClosed && (
             <button
               disabled={isClosing}
               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"

@@ -5,6 +5,7 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useStockResFormat } from "../stock/use-stock-res-format";
 import { IStock } from "@/lib/types/stock";
+import { SolanaZeroed } from "@/lib/constant";
 
 export function useMyStocks() {
   const { publicKey } = useWallet();
@@ -29,7 +30,9 @@ export function useMyStocks() {
       }
 
       return res;
-    });
+    }).filter(
+      (o: Record<string, any>) => o.pre_offer_account !== SolanaZeroed
+    );
 
     const parsedRes = await Promise.all(filedRes.map((o: Record<string, any>) => stockResFieldFormat(o)));
 

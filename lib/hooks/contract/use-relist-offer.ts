@@ -7,11 +7,11 @@ import { useAccounts } from "./use-accounts";
 export function useRelistOffer({
   marketplaceStr,
   makerStr,
-  orderStr,
+  offerStr,
 }: {
   marketplaceStr: string;
   makerStr: string;
-  orderStr: string;
+  offerStr: string;
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
@@ -30,7 +30,7 @@ export function useRelistOffer({
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const order = new PublicKey(orderStr);
+    const order = new PublicKey(offerStr);
     const maker = new PublicKey(makerStr);
 
     const txHash = await program.methods

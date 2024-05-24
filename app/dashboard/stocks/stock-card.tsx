@@ -129,7 +129,7 @@ export default function StockCard({
       <div className="flex items-center justify-between pt-4">
         <ManToMans num={subOrders?.length || 0} isAsk={isAskStock} />
         {isCanList && <ListAskStockBtn order={stock} onSuccess={onSuccess} />}
-        {isListed && <DelistBtn order={stock} onSuccess={onSuccess} />}
+        {isListed && <DelistBtn />}
         {isCanSettle && <SettleDrawerBtn order={stock} onSuccess={onSuccess} />}
       </div>
     </div>

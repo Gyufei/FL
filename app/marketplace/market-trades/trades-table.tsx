@@ -57,7 +57,6 @@ export function TradesTable({
     }
 
     const trades = tradeMsgs
-      .filter((msg) => msg.market_id === marketplace?.market_place_id)
       .map((msg) => {
         const time = (Date.now() - msg.timestamp) / 1000;
         return {

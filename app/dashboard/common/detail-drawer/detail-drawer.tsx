@@ -65,7 +65,7 @@ export default function DetailDrawer({
         (isAsk ? (
           <MyAskDetail order={order} onSuccess={handleSuccess} />
         ) : (
-          <MyBidDetail order={order} onSuccess={handleSuccess} />
+          <MyBidDetail order={order} />
         ))}
     </Drawer>
   );

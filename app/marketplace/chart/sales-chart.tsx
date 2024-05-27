@@ -44,7 +44,13 @@ export default function SalesChart({
   const oneHourDuration = 3600 * 1000;
 
   const chartData = useMemo(() => {
-    const durationData = (salesData || []).filter((item) => {
+    const salesParsedData = (salesData || []).map((item) => {
+      return {
+        ...item,
+        create_at: item.create_at * 1000,
+      };
+    });
+    const durationData = (salesParsedData || []).filter((item) => {
       if (duration === "hour") {
         return item.create_at > now - oneHourDuration;
       }

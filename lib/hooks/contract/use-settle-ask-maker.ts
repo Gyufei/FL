@@ -34,9 +34,6 @@ export function useSettleAskMaker({
       authority,
       systemProgram,
       systemConfig,
-      userUsdcTokenAccount,
-      poolUsdcTokenAccount,
-      usdcTokenMint,
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
@@ -102,19 +99,13 @@ export function useSettleAskMaker({
         offer: offerA,
         marketPlace,
         poolTokenAuthority,
-        poolTokenAccount: poolUsdcTokenAccount,
         wsolTmpTokenAccount,
-        tokenMint: usdcTokenMint,
         pointTokenMint,
         tokenProgram,
         tokenProgram2022,
         pointTokenProgram: tokenProgram,
         associatedTokenProgram,
         systemProgram,
-
-        userTokenAccount: userUsdcTokenAccount,
-        userPointTokenAccount: userPointsTokenAccount,
-        poolPointTokenAccount: poolPointsTokenAccount,
       }).remainingAccounts([
         {
           pubkey: userPointsTokenAccount,
@@ -123,11 +114,6 @@ export function useSettleAskMaker({
         },
         {
           pubkey: poolPointsTokenAccount,
-          isSigner: false,
-          isWritable: true
-        },
-        {
-          pubkey: userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },

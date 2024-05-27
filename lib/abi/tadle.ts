@@ -290,11 +290,6 @@ export const TadleAbi = {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "userBaseTokenBalance",
-          "isMut": true,
-          "isSigner": false
         }
       ],
       "args": [
@@ -366,11 +361,6 @@ export const TadleAbi = {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "userBaseTokenBalance",
-          "isMut": true,
-          "isSigner": false
         }
       ],
       "args": [
@@ -404,6 +394,11 @@ export const TadleAbi = {
         },
         {
           "name": "offer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "stock",
           "isMut": true,
           "isSigner": false
         },
@@ -464,7 +459,17 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
+          "name": "stock",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "maker",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketPlace",
           "isMut": true,
           "isSigner": false
         },
@@ -526,16 +531,6 @@ export const TadleAbi = {
         },
         {
           "name": "marketPlace",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenMint",
           "isMut": true,
           "isSigner": false
         },
@@ -637,16 +632,6 @@ export const TadleAbi = {
         },
         {
           "name": "marketPlace",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenMint",
           "isMut": true,
           "isSigner": false
         },
@@ -1841,8 +1826,5 @@ export const TadleAbi = {
       "name": "WrongRange",
       "msg": "wrong params range"
     }
-  ],
-  "metadata": {
-    "address": "V2hUyeFz8NwR6QXYxFo3ixJNK5GtFvTGSifsM2RCwEJ"
-  }
+  ]
 }

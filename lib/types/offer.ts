@@ -28,6 +28,7 @@ export interface IOffer {
   total_settled_points: string;
   used_points: string;
   pre_offer_account: string;
+  stock_account: string;
 
   marketplace: IMarketplace;
   pre_offer: string;

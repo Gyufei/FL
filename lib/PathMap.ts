@@ -40,6 +40,7 @@ export const Paths = {
   takerOrders: "/market_place/taker_orders",
   accountOverview: "/user/overview",
   makerOrders: "/user/maker_orders",
+  userBalance: "/user/token_balance",
   tradingVol: "/user/trade_vol",
   marketTrades: "/market_place/maker_trades_history",
   userState: "/user/state",

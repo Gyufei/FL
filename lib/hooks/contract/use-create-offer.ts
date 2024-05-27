@@ -96,13 +96,11 @@ export function useCreateOffer({
         maker,
         stock: stockA,
         offer: offerA,
-        userTokenAccount: userUsdcTokenAccount,
         poolTokenAuthority,
         tokenMint: usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         associatedTokenProgram,
-        poolTokenProgram: tokenProgram,
         systemProgram,
       }).remainingAccounts([
         {

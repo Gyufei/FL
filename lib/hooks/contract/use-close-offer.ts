@@ -8,10 +8,12 @@ export function useCloseOffer({
   marketplaceStr,
   makerStr,
   offerStr,
+  stockStr,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
+  stockStr: string;
 }) {
   const { program } = useTadleProgram();
   const { getAccounts, getWalletBalanceAccount } = useAccounts();
@@ -27,7 +29,8 @@ export function useCloseOffer({
 
     const marketPlace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
-    const offer = new PublicKey(offerStr);
+    const offerD = new PublicKey(offerStr);
+    const stockD = new PublicKey(stockStr);
 
     const {
       walletBaseTokenBalance: walletDBaseTokenBalance,
@@ -39,7 +42,9 @@ export function useCloseOffer({
         authority,
         systemConfig,
         userBaseTokenBalance: walletDBaseTokenBalance,
-        offer,
+        offer: offerD,
+        stock: stockD,
+        marketPlace,
         maker,
         systemProgram,
       })

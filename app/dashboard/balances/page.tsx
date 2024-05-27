@@ -1,7 +1,8 @@
 "use client";
 
+import NP from "number-precision";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   Accordion,
@@ -10,24 +11,118 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
+import { useWallet } from "@solana/wallet-adapter-react";
+import toPubString from "@/lib/utils/pub-string";
+import {
+  IBalance,
+  useUserBalance,
+} from "@/lib/hooks/api/use-user-balance";
+import { IToken } from "@/lib/types/token";
+
+const TokenListMap: Record<string, IToken> = {
+  BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
+    symbol: "USDC",
+    logoURI: "/icons/usdc.svg",
+    decimals: 9,
+  } as IToken,
+};
 
 export default function MyBalances() {
   const [openPanel, setOpenPanel] = useState("1");
 
-  const taxIncomeData = {
-    walletCount: 6,
-    totalAmount: 91230,
-  };
+  const { publicKey } = useWallet();
+  const wallet = toPubString(publicKey);
 
-  const referralData = {
-    walletCount: 5,
-    totalAmount: 30280,
-  };
+  const { data: balanceData } = useUserBalance(wallet);
 
-  const feesData = {
-    walletCount: 3,
-    totalAmount: 30270,
-  };
+  const getDataFormat = useCallback(
+    (bData: IBalance | undefined, firstKey: keyof IBalance, key: string) => {
+      if (!bData) return [];
+
+      const tBalances = bData[firstKey];
+      const taxIncomes = tBalances?.map((t) => {
+        const tokenInfo = TokenListMap[t.token_address];
+        const amount = NP.divide((t as any)[key], 10 ** tokenInfo.decimals);
+        return {
+          amount: Number(amount),
+          tokenInfo,
+        };
+      });
+
+      return taxIncomes;
+    },
+    [],
+  );
+
+  const taxIncomeData = useMemo(() => {
+    const data = getDataFormat(balanceData, "token_balance_list", "tax_income");
+    return data;
+  }, [balanceData, getDataFormat]);
+
+  const taxIncomeTotal = useMemo(() => {
+    return taxIncomeData.reduce((acc, t) => acc + t.amount, 0);
+  }, [taxIncomeData]);
+
+  const realizedAssetsData = useMemo(() => {
+    const data = getDataFormat(
+      balanceData,
+      "point_token_balance_list",
+      "realized_asset",
+    );
+    return data;
+  }, [balanceData, getDataFormat]);
+
+  const realizedAssetsTotal = useMemo(() => {
+    return realizedAssetsData.reduce((acc, t) => acc + t.amount, 0);
+  }, [realizedAssetsData]);
+
+  const referralData = useMemo(() => {
+    const data = getDataFormat(balanceData, "token_balance_list", "tax_income");
+    return data;
+  }, [balanceData, getDataFormat]);
+
+  const referralTotal = useMemo(() => {
+    return referralData.reduce((acc, t) => acc + t.amount, 0);
+  }, [taxIncomeData]);
+
+  const salesRevenueData = useMemo(() => {
+    const data = getDataFormat(
+      balanceData,
+      "token_balance_list",
+      "sales_revenue",
+    );
+    return data;
+  }, [balanceData, getDataFormat]);
+
+  const salesRevenueTotal = useMemo(() => {
+    return salesRevenueData.reduce((acc, t) => acc + t.amount, 0);
+  }, [salesRevenueData]);
+
+  const remainingCashData = useMemo(() => {
+    const data = getDataFormat(
+      balanceData,
+      "token_balance_list",
+      "remaining_cash",
+    );
+    return data;
+  }, [balanceData, getDataFormat]);
+
+  const remainingCashTotal = useMemo(() => {
+    return remainingCashData.reduce((acc, t) => acc + t.amount, 0);
+  }, [remainingCashData]);
+
+  const makerRefundData = useMemo(() => {
+    const data = getDataFormat(
+      balanceData,
+      "token_balance_list",
+      "maker_refund",
+    );
+    return data;
+  }, [balanceData, getDataFormat]);
+
+  const makerRefundTotal = useMemo(() => {
+    return makerRefundData.reduce((acc, t) => acc + t.amount, 0);
+  }, [makerRefundData]);
 
   function handleOpenPanel(panelIndex: string) {
     if (!panelIndex) return;
@@ -46,67 +141,133 @@ export default function MyBalances() {
           value={openPanel}
           onValueChange={(v) => handleOpenPanel(v)}
         >
-          <AccordionItem value="1">
+          <AccordionItem value="taxIncomeData">
             <AccordionTrigger showIcon={false}>
               <AcHeader
-                open={openPanel === "1"}
+                open={openPanel === "taxIncomeData"}
                 name="Tax Income"
-                walletCount={taxIncomeData.walletCount}
-                totalAmount={taxIncomeData.totalAmount}
+                walletCount={taxIncomeData?.length || 0}
+                totalAmount={taxIncomeTotal}
               />
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-wrap gap-5">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
+                {taxIncomeData.map((i, index) => (
                   <TokenGetCard
-                    key={i}
-                    name="BNB"
-                    logo="/img/token-placeholder.png"
-                    amount={100}
+                    key={index}
+                    name={i.tokenInfo?.symbol}
+                    logo={i.tokenInfo?.logoURI}
+                    amount={i.amount}
                   />
                 ))}
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="2">
+          <AccordionItem value="realizedAssetsData">
             <AccordionTrigger showIcon={false}>
               <AcHeader
-                open={openPanel === "2"}
+                open={openPanel === "realizedAssetsData"}
+                name="Realized Assets"
+                walletCount={realizedAssetsData?.length || 0}
+                totalAmount={realizedAssetsTotal}
+              />
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-wrap gap-5">
+                {realizedAssetsData.map((i, index) => (
+                  <TokenGetCard
+                    key={index}
+                    name={i.tokenInfo?.symbol}
+                    logo={i.tokenInfo?.logoURI}
+                    amount={i.amount}
+                  />
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="referralData">
+            <AccordionTrigger showIcon={false}>
+              <AcHeader
+                open={openPanel === "referralData"}
                 name="Referral Bonus"
-                walletCount={referralData.walletCount}
-                totalAmount={referralData.totalAmount}
+                walletCount={referralData?.length || 0}
+                totalAmount={referralTotal}
               />
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-wrap gap-5">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
+                {referralData.map((i, index) => (
                   <TokenGetCard
-                    key={i}
-                    name="BNB"
-                    logo="/img/token-placeholder.png"
-                    amount={100}
+                    key={index}
+                    name={i.tokenInfo?.symbol}
+                    logo={i.tokenInfo?.logoURI}
+                    amount={i.amount}
                   />
                 ))}
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="3">
+          <AccordionItem value="salesRevenueData">
             <AccordionTrigger showIcon={false}>
               <AcHeader
-                open={openPanel === "3"}
-                name="Fees"
-                walletCount={feesData.walletCount}
-                totalAmount={feesData.totalAmount}
+                open={openPanel === "salesRevenueData"}
+                name="Sales Revenue"
+                walletCount={salesRevenueData?.length || 0}
+                totalAmount={salesRevenueTotal}
               />
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-wrap gap-5">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
+                {salesRevenueData.map((i, index) => (
                   <TokenGetCard
-                    key={i}
-                    name="BNB"
-                    logo="/img/token-placeholder.png"
-                    amount={100}
+                    key={index}
+                    name={i.tokenInfo?.symbol}
+                    logo={i.tokenInfo?.logoURI}
+                    amount={i.amount}
+                  />
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="remainingCashData">
+            <AccordionTrigger showIcon={false}>
+              <AcHeader
+                open={openPanel === "remainingCashData"}
+                name="Remaining Cash"
+                walletCount={remainingCashData?.length || 0}
+                totalAmount={remainingCashTotal}
+              />
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-wrap gap-5">
+                {remainingCashData.map((i, index) => (
+                  <TokenGetCard
+                    key={index}
+                    name={i.tokenInfo?.symbol}
+                    logo={i.tokenInfo?.logoURI}
+                    amount={i.amount}
+                  />
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="makerRefundData">
+            <AccordionTrigger showIcon={false}>
+              <AcHeader
+                open={openPanel === "makerRefundData"}
+                name="Maker Refund"
+                walletCount={makerRefundData?.length || 0}
+                totalAmount={makerRefundTotal}
+              />
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="flex flex-wrap gap-5">
+                {makerRefundData.map((i, index) => (
+                  <TokenGetCard
+                    key={index}
+                    name={i.tokenInfo?.symbol}
+                    logo={i.tokenInfo?.logoURI}
+                    amount={i.amount}
                   />
                 ))}
               </div>

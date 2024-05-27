@@ -33,9 +33,6 @@ export function useSettleAskTaker({
       authority,
       systemProgram,
       systemConfig,
-      userUsdcTokenAccount,
-      poolUsdcTokenAccount,
-      usdcTokenMint,
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
@@ -78,24 +75,17 @@ export function useSettleAskTaker({
         makerPointTokenBalance: walletAPointTokenBalance,
         userBaseTokenBalance: walletBBaseTokenBalance,
         maker: bidMaker,
-
         stock,
         preOffer,
         marketPlace,
         poolTokenAuthority,
-        poolTokenAccount: poolUsdcTokenAccount,
         wsolTmpTokenAccount,
-        tokenMint: usdcTokenMint,
         pointTokenMint,
         tokenProgram,
         tokenProgram2022,
         pointTokenProgram: tokenProgram,
         associatedTokenProgram,
         systemProgram,
-
-        userTokenAccount: userUsdcTokenAccount,
-        userPointTokenAccount: userPointsTokenAccount,
-        poolPointTokenAccount: poolPointsTokenAccount,
       })
       .signers([])
       .remainingAccounts([
@@ -106,11 +96,6 @@ export function useSettleAskTaker({
         },
         {
           pubkey: poolPointsTokenAccount,
-          isSigner: false,
-          isWritable: true
-        },
-        {
-          pubkey: userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },

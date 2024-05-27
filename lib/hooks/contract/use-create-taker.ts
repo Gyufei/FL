@@ -63,7 +63,6 @@ export function useCreateTaker({
       .accounts({
         authority: authority,
         systemConfig,
-        userBaseTokenBalance: walletBBaseTokenBalance,
         originMarkerBaseTokenBalance: walletABaseTokenBalance,
         preOfferBaseTokenBalance: walletABaseTokenBalance,
         seedAccount: seedAccount.publicKey,
@@ -77,6 +76,11 @@ export function useCreateTaker({
         tokenProgram2022,
         systemProgram,
       }).remainingAccounts([
+        {
+          pubkey: walletBBaseTokenBalance,
+          isSigner: false,
+          isWritable: true
+        },
         {
           pubkey: walletBPointTokenBalance,
           isSigner: false,

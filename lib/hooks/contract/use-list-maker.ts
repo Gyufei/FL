@@ -16,7 +16,7 @@ export function useListStock({
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts, getWalletBalanceAccount } = useAccounts();
+  const { getAccounts } = useAccounts();
 
   const writeAction = async ({
     receiveTokenAmount,
@@ -49,26 +49,6 @@ export function useListStock({
       program.programId
     )[0];
 
-    const {
-      walletBaseTokenBalance: walletDBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
-
-    console.log(Object.values({
-        authority: authority,
-        seedAccount: seedAccount.publicKey,
-        systemConfig,
-        stock: stockD,
-        offer: offerD,
-        poolTokenAccount: poolUsdcTokenAccount,
-        maker,
-        marketPlace,
-        tokenMint: usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-        userBaseTokenBalance: walletDBaseTokenBalance,
-    }).map(v => v?.toBase58()))
-
     const txHash = await program.methods
       .list(
         new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
@@ -87,7 +67,6 @@ export function useListStock({
         tokenProgram,
         tokenProgram2022,
         systemProgram,
-        userBaseTokenBalance: walletDBaseTokenBalance,
       }).signers([seedAccount]).remainingAccounts([
         {
           pubkey: walletDUsdcTokenAccount,

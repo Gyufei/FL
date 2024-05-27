@@ -29,6 +29,7 @@ export default function MyAskDetail({
     orderPointInfo,
     isCanSettle,
     isSettled,
+    afterTGE,
   } = useOfferFormat({
     offer: order,
   });
@@ -53,6 +54,7 @@ export default function MyAskDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
+    stockStr: order.stock_account,
   });
 
   const {
@@ -63,6 +65,7 @@ export default function MyAskDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
+    stockStr: order.stock_account,
   });
 
   function handleClose() {
@@ -83,7 +86,7 @@ export default function MyAskDetail({
     if (isCloseSuccess || isRelistSuccess) {
       onSuccess();
     }
-  });
+  }, [isCloseSuccess, isRelistSuccess, onSuccess]);
 
   return (
     <>
@@ -141,14 +144,23 @@ export default function MyAskDetail({
             </button>
           )}
 
-          {!isCanSettle && isCanceled && (
-            <button
-              onClick={() => handleRelist()}
-              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
-            >
-              Relist this offer
-            </button>
-          )}
+          {!isCanSettle &&
+            isCanceled &&
+            (!afterTGE ? (
+              <button
+                onClick={() => handleRelist()}
+                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+              >
+                Relist this offer
+              </button>
+            ) : (
+              <button
+                disabled={true}
+                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl leading-6 text-white bg-[#99A0AF]"
+              >
+                Offer Closed
+              </button>
+            ))}
 
           {!isCanSettle && !isCanceled && !isClosed && (
             <button

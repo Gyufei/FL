@@ -8,8 +8,16 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
+import { useEffect, useMemo } from "react";
 
-export default function MyBidDetail({ order }: { order: IOffer }) {
+export default function MyBidDetail({
+  order,
+  onSuccess,
+}: {
+  order: IOffer;
+  onSuccess: () => void;
+}) {
   const {
     tokenTotalPrice,
     progress,
@@ -19,11 +27,37 @@ export default function MyBidDetail({ order }: { order: IOffer }) {
     orderPointInfo,
     isCanSettle,
     isSettled,
+    afterTGE,
   } = useOfferFormat({
     offer: order,
   });
 
   const { currentChain } = useCurrentChain();
+
+  const {
+    isLoading: isClosing,
+    write: closeAction,
+    isSuccess: isCloseSuccess,
+  } = useCloseBidOffer({
+    marketplaceStr: order.market_place_account,
+    makerStr: order.maker_account,
+    offerStr: order.offer_account,
+  });
+
+  function handleClose() {
+    if (isClosing) return;
+    closeAction?.(undefined);
+  }
+
+  const isClosed = useMemo(() => {
+    return ["filled", "canceled", "settled"].includes(order.offer_status);
+  }, [order]);
+
+  useEffect(() => {
+    if (isCloseSuccess) {
+      onSuccess();
+    }
+  }, [isCloseSuccess, onSuccess]);
 
   return (
     <>
@@ -71,6 +105,16 @@ export default function MyBidDetail({ order }: { order: IOffer }) {
             value={order.points}
             tokenLogo={orderPointInfo.logoURI}
           />
+
+          {afterTGE && !isClosed && (
+            <button
+              disabled={isClosing}
+              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+              onClick={handleClose}
+            >
+              Close this offer
+            </button>
+          )}
 
           {isSettled && (
             <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">

@@ -10,8 +10,6 @@ export default function SettleBreachFee({
   function handleInput(v: string) {
     if (v && Number(v) < 1) {
       onValueChange("1");
-    } else if (Number(v) > 100) {
-      onValueChange("100");
     } else {
       onValueChange(v);
     }

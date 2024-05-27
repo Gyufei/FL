@@ -257,6 +257,11 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
+          "name": "originOffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "maker",
           "isMut": true,
           "isSigner": false
@@ -324,6 +329,11 @@ export const TadleAbi = {
         },
         {
           "name": "stock",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "originOffer",
           "isMut": true,
           "isSigner": false
         },
@@ -984,8 +994,8 @@ export const TadleAbi = {
             "type": "publicKey"
           },
           {
-            "name": "tradeTax",
-            "type": "u64"
+            "name": "originOffer",
+            "type": "publicKey"
           },
           {
             "name": "platformFee",
@@ -1059,6 +1069,10 @@ export const TadleAbi = {
           },
           {
             "name": "usedPoints",
+            "type": "u64"
+          },
+          {
+            "name": "tradeTax",
             "type": "u64"
           },
           {
@@ -1826,5 +1840,8 @@ export const TadleAbi = {
       "name": "WrongRange",
       "msg": "wrong params range"
     }
-  ]
+  ],
+  "metadata": {
+    "address": "V2hUyeFz8NwR6QXYxFo3ixJNK5GtFvTGSifsM2RCwEJ"
+  }
 }

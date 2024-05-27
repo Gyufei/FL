@@ -10,6 +10,7 @@ import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 
 export default function BidDetail({
   order,
@@ -51,6 +52,10 @@ export default function BidDetail({
     return NP.times(receiveTokenAmount || 0, tokenPrice);
   }, [receiveTokenAmount, tokenPrice]);
 
+  const { makerDetail } = useOfferMakerDetail({
+    offer: order,
+  });
+
   const {
     data: txHash,
     isLoading: isDepositLoading,
@@ -61,6 +66,7 @@ export default function BidDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     offerAuthorityStr: order.authority,
+    originOfferStr: makerDetail!.origin_offer,
   });
 
   function handleSliderChange(v: number) {
@@ -68,6 +74,7 @@ export default function BidDetail({
   }
 
   async function handleDeposit() {
+    if (!sellPointAmount || !makerDetail) return;
     await writeAction({
       pointAmount: sellPointAmount,
     });

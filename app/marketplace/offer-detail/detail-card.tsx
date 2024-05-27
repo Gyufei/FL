@@ -17,10 +17,9 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
 
   const orderType = offer.offer_type;
 
-  const { makerDetail, originOffer, originOfferMakerDetail } =
-    useOfferMakerDetail({
-      offer,
-    });
+  const { makerDetail, originOffer } = useOfferMakerDetail({
+    offer,
+  });
 
   return (
     <div className="flex-1 px-6">
@@ -142,7 +141,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
           <div className="text-sm leading-5 text-green">
             $
             {NP.divide(
-              originOfferMakerDetail?.trade_tax || 0,
+              offer?.trade_tax || 0,
               Math.pow(10, orderTokenInfo.decimals),
             )}
           </div>

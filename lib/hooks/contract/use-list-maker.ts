@@ -9,10 +9,12 @@ export function useListStock({
   marketplaceStr,
   makerStr,
   stockStr,
+  originOfferStr
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
+  originOfferStr: string;
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
@@ -40,6 +42,7 @@ export function useListStock({
     const marketPlace = new PublicKey(marketplaceStr);
     const stockD = new PublicKey(stockStr);
     const maker = new PublicKey(makerStr);
+    const originOffer = new PublicKey(originOfferStr);
 
     const offerD = PublicKey.findProgramAddressSync(
       [
@@ -60,6 +63,7 @@ export function useListStock({
         systemConfig,
         stock: stockD,
         offer: offerD,
+        originOffer,
         poolTokenAccount: poolUsdcTokenAccount,
         maker,
         marketPlace,

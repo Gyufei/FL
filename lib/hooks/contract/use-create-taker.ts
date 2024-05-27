@@ -10,11 +10,13 @@ export function useCreateTaker({
   offerStr,
   makerStr,
   offerAuthorityStr,
+  originOfferStr,
 }: {
   marketplaceStr: string;
   offerStr: string;
   makerStr: string;
   offerAuthorityStr: string,
+  originOfferStr: string
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
@@ -37,6 +39,7 @@ export function useCreateTaker({
     const marketPlace = new PublicKey(marketplaceStr);
     const offerA = new PublicKey(offerStr);
     const maker = new PublicKey(makerStr);
+    const originOffer = new PublicKey(originOfferStr);
 
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
@@ -68,6 +71,7 @@ export function useCreateTaker({
         seedAccount: seedAccount.publicKey,
         stock: stockB,
         preOffer: offerA,
+        originOffer: originOffer,
         maker,
         marketPlace,
         poolTokenAccount: poolUsdcTokenAccount,

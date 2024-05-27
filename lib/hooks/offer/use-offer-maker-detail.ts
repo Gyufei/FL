@@ -12,13 +12,8 @@ export function useOfferMakerDetail({ offer }: { offer: IOffer | IStock }) {
     return (offer as any).origin_offer_detail
   }, [offer]);
 
-  const { data: originOfferMakerDetail } = useMakerDetail({
-    makerId: originOffer?.maker_account || "",
-  });
-
   return {
     originOffer,
     makerDetail,
-    originOfferMakerDetail,
   };
 }

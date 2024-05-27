@@ -20,7 +20,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
 
   const isAsk = order.offer_type === "ask";
 
-  const { originOffer, makerDetail, originOfferMakerDetail } =
+  const { originOffer, makerDetail } =
     useOfferMakerDetail({
       offer: order,
     });
@@ -34,13 +34,13 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
 
   const taxIncome = useMemo(() => {
-    const ti = originOfferMakerDetail?.trade_tax || makerDetail?.trade_tax;
+    const ti = order?.trade_tax || makerDetail?.trade_tax;
 
     const tax = Number(ti || 0);
     const fmtTax = NP.divide(tax, 10 ** orderTokenInfo.decimals);
 
     return fmtTax;
-  }, [makerDetail, originOfferMakerDetail, orderTokenInfo]);
+  }, [makerDetail, order, orderTokenInfo]);
 
   const [seconds, setSeconds] = useState(0);
 

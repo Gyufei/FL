@@ -53,6 +53,7 @@ export default function AskDetail({
     makerStr: offer.maker_account,
     offerStr: offer.offer_account,
     offerAuthorityStr: offer.authority,
+    originOfferStr: makerDetail!.origin_offer,
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
@@ -78,6 +79,7 @@ export default function AskDetail({
   }
 
   async function handleDeposit() {
+    if (!receivePointAmount || !makerDetail) return;
     await writeAction({
       pointAmount: receivePointAmount,
     });

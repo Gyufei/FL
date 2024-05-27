@@ -66,7 +66,7 @@ export default function BidDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     offerAuthorityStr: order.authority,
-    originOfferStr: makerDetail!.origin_offer,
+    originOfferStr: makerDetail?.origin_offer || "",
   });
 
   function handleSliderChange(v: number) {

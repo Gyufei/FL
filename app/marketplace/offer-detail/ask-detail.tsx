@@ -53,7 +53,7 @@ export default function AskDetail({
     makerStr: offer.maker_account,
     offerStr: offer.offer_account,
     offerAuthorityStr: offer.authority,
-    originOfferStr: makerDetail!.origin_offer,
+    originOfferStr: makerDetail?.origin_offer || '',
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);

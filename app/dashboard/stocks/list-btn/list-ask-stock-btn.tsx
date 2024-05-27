@@ -58,7 +58,7 @@ export default function ListAskStockBtn({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
     stockStr: order.stock_account,
-    originOfferStr: makerDetail!.origin_offer,
+    originOfferStr: makerDetail?.origin_offer || '',
   });
 
   function handleDeposit() {

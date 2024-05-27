@@ -20,16 +20,15 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
 
   const isAsk = order.offer_type === "ask";
 
-  const { originOffer, makerDetail } =
-    useOfferMakerDetail({
-      offer: order,
-    });
+  const { originOffer, makerDetail } = useOfferMakerDetail({
+    offer: order,
+  });
 
   const { handleGoScan } = useGoScan();
 
   const originMaker = useMemo(() => {
-    return originOffer?.maker_account;
-  }, [originOffer]);
+    return originOffer?.maker_account || order.maker_account;
+  }, [originOffer, order]);
 
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
 
@@ -104,16 +103,23 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Inherit From</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOffer?.offer_id}
+            #{originOffer?.offer_id || order?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOffer?.offer_account || "", {
-              nPrefix: 4,
-              nSuffix: 4,
-            })}
+            {truncateAddr(
+              originOffer?.offer_account || order.maker_account || "",
+              {
+                nPrefix: 4,
+                nSuffix: 4,
+              },
+            )}
           </div>
           <Image
-            onClick={() => handleGoScan(originOffer?.offer_account || "")}
+            onClick={() =>
+              handleGoScan(
+                originOffer?.offer_account || order.maker_account || "",
+              )
+            }
             src="/icons/right-45.svg"
             width={16}
             height={16}

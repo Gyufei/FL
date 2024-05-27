@@ -116,10 +116,12 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOffer?.offer_id}
+            #{originOffer?.offer_id || offer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOffer?.maker_account, {
+            {truncateAddr(
+              originOffer?.offer_account || offer.maker_account || "",
+              {
               nPrefix: 4,
               nSuffix: 4,
             })}

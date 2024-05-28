@@ -57,7 +57,6 @@ export default function AskDetail({
     originOfferAuthStr: offer.origin_offer_detail?.authority,
   });
 
-  console.log(offer.offer_id, offer);
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {

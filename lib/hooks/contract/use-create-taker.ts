@@ -66,24 +66,6 @@ export function useCreateTaker({
       program.programId
     )[0];
 
-    console.log(Object.values({
-        authority: authority,
-        systemConfig,
-        originMarkerBaseTokenBalance,
-        preOfferBaseTokenBalance,
-        seedAccount: seedAccount.publicKey,
-        stock: stockB,
-        preOffer: offerA,
-        originOffer: originOffer,
-        maker,
-        marketPlace,
-        poolTokenAccount: poolUsdcTokenAccount,
-        tokenMint: usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-    }).map(v => v?.toBase58()))
-
     const txHash = await program.methods
       .createTaker(new BN(pointAmount))
       .accounts({

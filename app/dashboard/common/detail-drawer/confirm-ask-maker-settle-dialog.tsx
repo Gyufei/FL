@@ -5,6 +5,8 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOffer } from "@/lib/types/offer";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
+import { useState } from "react";
+import { Slider } from "@/components/ui/slider";
 
 export default function ConfirmAskMakerSettleDialog({
   open,
@@ -19,15 +21,20 @@ export default function ConfirmAskMakerSettleDialog({
 }) {
   const orderRole = "Maker";
 
-  const { amount, tokenTotalPrice, orderPointInfo } = useOfferFormat({
-    offer: offer,
-  });
+  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
+    useOfferFormat({
+      offer: offer,
+    });
 
   const { data: offerStocks, isLoading } = useOfferStocks({
     offer: offer,
   });
 
-  const settleAmount = Number(offer.points);
+  const [sliderMax] = useState(100);
+  const [sliderValue, setSliderValue] = useState(100);
+
+  const pointAmount = !afterTGEPeriod ? offer.used_points : 0;
+  const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   function handleSuccess() {
     onSuccess();
@@ -40,10 +47,10 @@ export default function ConfirmAskMakerSettleDialog({
         overlayClassName="z-[110]"
         className="z-[110] flex w-[400px] flex-col items-center gap-0 rounded-3xl border-none bg-white p-6"
       >
-        <DialogTitle>Settle Bid Offer</DialogTitle>
+        <DialogTitle>Settle Ask Offer</DialogTitle>
         <div className="mt-[30px] w-full">
           <div className="flex justify-between">
-            <div className="text-sm leading-5 text-gray">Bid Offer No.</div>
+            <div className="text-sm leading-5 text-gray">Ask Offer No.</div>
             <div className="text-sm leading-5 text-black">
               #{(offer as any)?.stock_id || (offer as any)?.offer_id}
             </div>
@@ -81,6 +88,23 @@ export default function ConfirmAskMakerSettleDialog({
                 alt="stable token"
                 className="h-7 w-7 rounded-full"
               />
+            </div>
+            <div className="mt-3 flex">
+              <Slider
+                value={[sliderValue]}
+                onValueChange={(val: any[]) => setSliderValue(val[0])}
+                max={sliderMax}
+                step={1}
+              />
+              <div className="ml-4 mr-3 flex h-5 items-center rounded-full border border-[#eee] px-[10px] text-[10px] leading-4 text-black">
+                {sliderValue}%
+              </div>
+              <div
+                onClick={() => setSliderValue(sliderMax)}
+                className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
+              >
+                Max
+              </div>
             </div>
           </div>
 

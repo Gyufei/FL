@@ -3,7 +3,7 @@ import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { truncateAddr } from "@/lib/utils/web3";
 import { WithTip } from "@/app/marketplace/create-offer/with-tip";
-import { formatTimeObj } from "@/lib/utils/time";
+import { formatTimeObj, formatTimestamp } from "@/lib/utils/time";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
@@ -59,6 +59,15 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
     return () => clearInterval(interval);
   }, []);
+
+  const tgeTime = useMemo(() => {
+    const tge = Number(offer?.marketplace?.tge) || null;
+
+    if (!tge) return null;
+
+    const period = Number(offer.marketplace?.settlement_period) || 0;
+    return (tge + period) * 1000;
+  }, [offer]);
 
   return (
     <div className="flex-1 px-6">
@@ -137,7 +146,11 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         <DetailRow>
           <DetailLabel tipText="">Est. Settling At</DetailLabel>
           <div className="flex items-center space-x-1">
-            <div className="text-sm leading-5 text-gray">Not Started</div>
+            {tgeTime ? (
+              formatTimestamp(tgeTime)
+            ) : (
+              <div className="text-sm leading-5 text-gray">Not Started</div>
+            )}
           </div>
         </DetailRow>
       )}

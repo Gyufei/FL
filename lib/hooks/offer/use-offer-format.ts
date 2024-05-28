@@ -75,8 +75,8 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   }, [offer.marketplace.tge, offer.marketplace.settlement_period, checkIsAfterTgePeriod]);
 
   const isCanSettle = useMemo(() => {
-      return afterTGE && !["canceled", "settled"].includes(offer.offer_status)
-  }, [offer.offer_status, afterTGE]);
+      return afterTGE && (!["canceled", "settled"].includes(offer.offer_status) || offer.offer_status === 'canceled' && Number(offer.used_points) > 0)
+  }, [offer.offer_status, afterTGE, offer.used_points]);
 
   const isSettled = useMemo(() => {
     return ["settled", "finished"].includes(offer.offer_status)

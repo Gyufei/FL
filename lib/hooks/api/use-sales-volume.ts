@@ -2,7 +2,6 @@ import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
-import { convertUTCToLocalStamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 
 interface ISalesVolume {
@@ -25,7 +24,7 @@ export function useSalesVolume(marketplaceId: string) {
     return res.data.map((item: Record<string, any>) => {
       return {
         ...item,
-        create_at: convertUTCToLocalStamp(item.create_at),
+        create_at: item.create_at * 1000,
       } as ISalesVolume;
     });
   }, [res.data])

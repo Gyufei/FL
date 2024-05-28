@@ -44,13 +44,7 @@ export default function SalesChart({
   const oneHourDuration = 3600 * 1000;
 
   const chartData = useMemo(() => {
-    const salesParsedData = (salesData || []).map((item) => {
-      return {
-        ...item,
-        create_at: item.create_at * 1000,
-      };
-    });
-    const durationData = (salesParsedData || []).filter((item) => {
+    const durationData = (salesData || []).filter((item) => {
       if (duration === "hour") {
         return item.create_at > now - oneHourDuration;
       }
@@ -65,7 +59,7 @@ export default function SalesChart({
     const col = durationData.map((item) => {
       return [
         item.create_at,
-        Number(NP.divide(NP.times(item.sales_volume, item.sales_price), 2000)),
+        Number(NP.divide(NP.times(item.sales_volume, item.sales_price), 500)),
       ];
     });
 
@@ -183,7 +177,6 @@ export default function SalesChart({
         {
           name: "Column",
           type: "column",
-          data: chartData?.col,
           color: "#D8F36B",
           column: {
             borderColor: "#D8F36B",
@@ -191,6 +184,15 @@ export default function SalesChart({
             borderRadius: 40,
             shadow: true,
           },
+          data: chartData?.col,
+          // data: [
+          //   [Date.now(), 150],
+          //   [Date.now() - 10 * 60000, 150],
+          //   [Date.now() - 20 * 60000, 50],
+          //   [Date.now() - 30 * 60020, 250],
+          //   [Date.now() - 40 * 60000, 350],
+          //   [Date.now() - 50 * 60000, 350],
+          // ],
         },
         {
           name: "Line",

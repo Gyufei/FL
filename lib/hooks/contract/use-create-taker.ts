@@ -9,14 +9,16 @@ export function useCreateTaker({
   marketplaceStr,
   offerStr,
   makerStr,
-  offerAuthorityStr,
   originOfferStr,
+  originOfferAuthStr,
+  preOfferAuthStr,
 }: {
   marketplaceStr: string;
   offerStr: string;
   makerStr: string;
-  offerAuthorityStr: string,
   originOfferStr: string
+  originOfferAuthStr: string,
+  preOfferAuthStr: string,
 }) {
   const { program } = useTadleProgram();
   const { recordTransaction } = useTransactionRecord();
@@ -40,7 +42,8 @@ export function useCreateTaker({
     const offerA = new PublicKey(offerStr);
     const maker = new PublicKey(makerStr);
     const originOffer = new PublicKey(originOfferStr);
-    const offerAuthority = new PublicKey(offerAuthorityStr);
+    const originOfferAuthority = new PublicKey(originOfferAuthStr);
+    const preOfferAuthority = new PublicKey(preOfferAuthStr);
 
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
@@ -48,8 +51,12 @@ export function useCreateTaker({
     } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
 
     const {
-      walletBaseTokenBalance: walletABaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, offerAuthority, marketPlace)
+      walletBaseTokenBalance: originMarkerBaseTokenBalance,
+    } = await getWalletBalanceAccount(program.programId, originOfferAuthority, marketPlace)
+
+    const {
+      walletBaseTokenBalance: preOfferBaseTokenBalance,
+    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace)
 
     const stockB = PublicKey.findProgramAddressSync(
       [
@@ -59,13 +66,31 @@ export function useCreateTaker({
       program.programId
     )[0];
 
+    console.log(Object.values({
+        authority: authority,
+        systemConfig,
+        originMarkerBaseTokenBalance,
+        preOfferBaseTokenBalance,
+        seedAccount: seedAccount.publicKey,
+        stock: stockB,
+        preOffer: offerA,
+        originOffer: originOffer,
+        maker,
+        marketPlace,
+        poolTokenAccount: poolUsdcTokenAccount,
+        tokenMint: usdcTokenMint,
+        tokenProgram,
+        tokenProgram2022,
+        systemProgram,
+    }).map(v => v?.toBase58()))
+
     const txHash = await program.methods
       .createTaker(new BN(pointAmount))
       .accounts({
         authority: authority,
         systemConfig,
-        originMarkerBaseTokenBalance: walletABaseTokenBalance,
-        preOfferBaseTokenBalance: walletABaseTokenBalance,
+        originMarkerBaseTokenBalance,
+        preOfferBaseTokenBalance,
         seedAccount: seedAccount.publicKey,
         stock: stockB,
         preOffer: offerA,

@@ -20,15 +20,19 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
   const isAsk = offer.offer_type === "ask";
 
-  const { originOffer, makerDetail } = useOfferMakerDetail({
-    offer: offer,
+  const { makerDetail } = useOfferMakerDetail({
+    makerId: offer.maker_account,
   });
+
+  const originOffer = useMemo(() => {
+    return (offer as any).origin_offer_detail;
+  }, [offer]);
 
   const { handleGoScan } = useGoScan();
 
   const originMaker = useMemo(() => {
-    return originOffer?.maker_account || offer.maker_account;
-  }, [originOffer, offer]);
+    return offer.origin_offer_detail?.maker_account || offer.maker_account;
+  }, [offer]);
 
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
 

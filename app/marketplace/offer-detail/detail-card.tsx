@@ -28,9 +28,13 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
 
   const orderType = offer.offer_type;
 
-  const { makerDetail, originOffer } = useOfferMakerDetail({
-    offer,
+  const { makerDetail } = useOfferMakerDetail({
+    makerId: offer.maker_account,
   });
+
+  const originOffer = useMemo(() => {
+    return (offer as any).origin_offer_detail;
+  }, [offer]);
 
   return (
     <div className="flex-1 px-6">

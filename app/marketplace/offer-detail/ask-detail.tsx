@@ -36,7 +36,7 @@ export default function AskDetail({
   });
 
   const { makerDetail } = useOfferMakerDetail({
-    offer: offer,
+    makerId: offer.maker_account,
   });
 
   const tradeFee = useMemo(() => {
@@ -52,10 +52,12 @@ export default function AskDetail({
     marketplaceStr: offer.market_place_account,
     makerStr: offer.maker_account,
     offerStr: offer.offer_account,
-    offerAuthorityStr: offer.pre_offer_detail?.authority,
     originOfferStr: makerDetail?.origin_offer || "",
+    preOfferAuthStr: offer.authority,
+    originOfferAuthStr: offer.origin_offer_detail?.authority,
   });
 
+  console.log(offer.offer_id, offer);
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {

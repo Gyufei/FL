@@ -35,7 +35,7 @@ export default function ListAskStockBtn({
   });
 
   const { makerDetail } = useOfferMakerDetail({
-    offer: order,
+    makerId: order.maker_account,
   });
 
   const [sellPointAmount] = useState(order.points);

@@ -1,19 +1,11 @@
-import { IOffer } from "@/lib/types/offer";
 import { useMakerDetail } from "../api/use-maker-detail";
-import { useMemo } from "react";
-import { IStock } from "@/lib/types/stock";
 
-export function useOfferMakerDetail({ offer }: { offer: IOffer | IStock }) {
+export function useOfferMakerDetail({ makerId }: {makerId: string}) {
   const { data: makerDetail } = useMakerDetail({
-    makerId: offer.maker_account,
+    makerId
   });
 
-  const originOffer = useMemo(() => {
-    return (offer as any).origin_offer_detail
-  }, [offer]);
-
   return {
-    originOffer,
     makerDetail,
   };
 }

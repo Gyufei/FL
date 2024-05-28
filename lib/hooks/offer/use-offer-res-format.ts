@@ -38,11 +38,10 @@ export function useOfferResFormat() {
           (o: Record<string, any>) => o.offer_account === offer.pre_offer_account,
       ) || null;
 
-      if (preOfferDetail.pre_offer_account !== SolanaZeroed) {
-        originOfferDetail = getOriginOffer(offers, preOfferDetail);
-      } else {
-        originOfferDetail = offer
-      }
+      originOfferDetail = getOriginOffer(offers, preOfferDetail);
+    } else {
+      preOfferDetail = offer
+      originOfferDetail = offer
     }
 
     return {

@@ -53,7 +53,7 @@ export default function BidDetail({
   }, [receiveTokenAmount, tokenPrice]);
 
   const { makerDetail } = useOfferMakerDetail({
-    offer: order,
+    makerId: order.maker_account,
   });
 
   const {
@@ -65,8 +65,9 @@ export default function BidDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
-    offerAuthorityStr: order.authority,
+    preOfferAuthStr: order.authority,
     originOfferStr: makerDetail?.origin_offer || "",
+    originOfferAuthStr: order.origin_offer_detail?.authority,
   });
 
   function handleSliderChange(v: number) {

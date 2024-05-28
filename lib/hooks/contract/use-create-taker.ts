@@ -40,13 +40,12 @@ export function useCreateTaker({
     const offerA = new PublicKey(offerStr);
     const maker = new PublicKey(makerStr);
     const originOffer = new PublicKey(originOfferStr);
+    const offerAuthority = new PublicKey(offerAuthorityStr);
 
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
       walletPointTokenBalance: walletBPointTokenBalance
     } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
-
-    const offerAuthority = new PublicKey(offerAuthorityStr);
 
     const {
       walletBaseTokenBalance: walletABaseTokenBalance,
@@ -59,6 +58,24 @@ export function useCreateTaker({
       ],
       program.programId
     )[0];
+
+    console.log(Object.values({
+      authority: authority,
+      systemConfig,
+      originMarkerBaseTokenBalance: walletABaseTokenBalance,
+      preOfferBaseTokenBalance: walletABaseTokenBalance,
+      seedAccount: seedAccount.publicKey,
+      stock: stockB,
+      preOffer: offerA,
+      originOffer: originOffer,
+      maker,
+      marketPlace,
+      poolTokenAccount: poolUsdcTokenAccount,
+      tokenMint: usdcTokenMint,
+      tokenProgram,
+      tokenProgram2022,
+      systemProgram,
+    }).map(x => x?.toBase58()))
 
     // Bid Taker: 1000 USDC -> 200 point
     const txHash = await program.methods

@@ -5,8 +5,7 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import Image from "next/image";
-
-export type ISettleMode = "progressive" | "direct";
+import { ISettleMode } from "@/lib/types/maker-detail";
 
 export const SettleModes: Array<ISettleMode> = ["progressive", "direct"];
 

@@ -52,10 +52,11 @@ export default function AskDetail({
     marketplaceStr: offer.market_place_account,
     makerStr: offer.maker_account,
     offerStr: offer.offer_account,
-    offerAuthorityStr: offer.authority,
-    originOfferStr: makerDetail?.origin_offer || '',
+    offerAuthorityStr: offer.pre_offer_detail?.authority,
+    originOfferStr: makerDetail?.origin_offer || "",
   });
 
+  console.log(offer.offer_id, offer);
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {

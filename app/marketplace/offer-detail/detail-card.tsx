@@ -7,6 +7,7 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
+import { useMemo } from "react";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const { handleGoScan } = useGoScan();
@@ -14,6 +15,16 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
   const { amount, orderTokenInfo, orderPointInfo } = useOfferFormat({
     offer,
   });
+
+  const totalColl = useMemo(() => {
+    if (Number(offer.settle_breach_fee) <= 100) {
+      return amount;
+    } else {
+      return NP.times(amount, Number(offer.settle_breach_fee) / 10 ** 4);
+    }
+
+    return amount;
+  }, [amount, offer.settle_breach_fee]);
 
   const orderType = offer.offer_type;
 
@@ -93,7 +104,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(amount)}
+            {formatNum(totalColl)}
           </div>
           <Image
             src={orderTokenInfo.logoURI}

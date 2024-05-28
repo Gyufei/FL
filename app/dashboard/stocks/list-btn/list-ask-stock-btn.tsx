@@ -41,9 +41,11 @@ export default function ListAskStockBtn({
   const [sellPointAmount] = useState(order.points);
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
-  const [breachFee, setBreachFee] = useState("");
+  const [breachFee, setBreachFee] = useState(
+    String(Number(order.pre_offer_detail.settle_breach_fee) / 100),
+  );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
-  const settleMode = "progressive";
+  const settleMode = makerDetail?.offer_settle_type || "progressive";
 
   const [note, setNote] = useState("");
 
@@ -58,7 +60,7 @@ export default function ListAskStockBtn({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
     stockStr: order.stock_account,
-    originOfferStr: makerDetail?.origin_offer || '',
+    originOfferStr: makerDetail?.origin_offer || "",
   });
 
   function handleDeposit() {
@@ -158,7 +160,11 @@ export default function ListAskStockBtn({
                 value={settleMode}
                 onValueChange={() => {}}
               />
-              <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
+              <SettleBreachFee
+                disabled={settleMode === "direct"}
+                value={breachFee}
+                onValueChange={setBreachFee}
+              />
               <TaxForSubTrades
                 disabled
                 value={taxForSub}

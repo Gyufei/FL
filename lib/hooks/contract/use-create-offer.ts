@@ -4,7 +4,7 @@ import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
-import { ISettleMode } from "@/app/marketplace/create-offer/settle-mode-select";
+import { ISettleMode } from "@/lib/types/maker-detail";
 
 export function useCreateOffer({
   marketplaceStr: marketplaceStr,

@@ -38,8 +38,6 @@ export default function MyAskDetail({
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
-  const isOriginMaker = !order.pre_offer_detail;
-
   const isCanceled = order.offer_status === "canceled";
 
   const isClosed = useMemo(() => {
@@ -135,53 +133,57 @@ export default function MyAskDetail({
             tokenLogo={orderTokenInfo.logoURI}
           />
 
-          {isCanSettle && (
+          {isCanSettle ? (
             <button
               onClick={() => handleSettle()}
               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
             >
               Settle this offer
             </button>
-          )}
-
-          {!isCanSettle &&
-            isCanceled &&
-            (!afterTGE ? (
-              <button
-                onClick={() => handleRelist()}
-                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
-              >
-                Relist this offer
-              </button>
-            ) : (
-              <button
-                disabled={true}
-                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl leading-6 text-white bg-[#99A0AF]"
-              >
-                Offer Closed
-              </button>
-            ))}
-
-          {!isCanSettle && !isCanceled && !isClosed && (
-            <button
-              disabled={isClosing}
-              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
-              onClick={handleClose}
-            >
-              Close this offer
-            </button>
-          )}
-
-          {!isOriginMaker && isSettled && (
-            <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-              Settlement Completed
-            </button>
-          )}
-
-          {!isCanSettle && !isOriginMaker && !isSettled && (
-            <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-              Awaiting settlement...
-            </button>
+          ) : (
+            <>
+              {isSettled ? (
+                <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                  Settlement Completed
+                </button>
+              ) : (
+                <>
+                  {isCanceled ? (
+                    !afterTGE ? (
+                      <button
+                        onClick={() => handleRelist()}
+                        className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+                      >
+                        Relist this offer
+                      </button>
+                    ) : (
+                      <button
+                        disabled={true}
+                        className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                      >
+                        Offer Closed
+                      </button>
+                    )
+                  ) : (
+                    <>
+                      {!isClosed ? (
+                        <button
+                          disabled={isClosing}
+                          className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                          onClick={handleClose}
+                        >
+                          Close this offer
+                        </button>
+                      ) : (
+                        <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                          Awaiting settlement...
+                        </button>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
           )}
         </div>
 

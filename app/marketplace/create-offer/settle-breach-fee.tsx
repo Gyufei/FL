@@ -2,9 +2,11 @@ import { NumericalInput } from "@/components/share/numerical-input";
 
 export default function SettleBreachFee({
   value,
+  disabled = false,
   onValueChange,
 }: {
   value: string;
+  disabled?: boolean;
   onValueChange: (_v: string) => void;
 }) {
   function handleInput(v: string) {
@@ -34,7 +36,8 @@ export default function SettleBreachFee({
 
       <div className="relative text-sm">
         <NumericalInput
-          className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus"
+          disabled={disabled}
+          className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus disabled:bg-[#f0f1f5]"
           placeholder="50%"
           value={value}
           onUserInput={handleInput}

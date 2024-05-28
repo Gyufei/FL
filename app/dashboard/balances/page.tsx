@@ -2,7 +2,7 @@
 
 import NP from "number-precision";
 import Image from "next/image";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   Accordion,
@@ -13,11 +13,14 @@ import {
 import { formatNum } from "@/lib/utils/number";
 import { useWallet } from "@solana/wallet-adapter-react";
 import toPubString from "@/lib/utils/pub-string";
-import {
-  IBalance,
-  useUserBalance,
-} from "@/lib/hooks/api/use-user-balance";
+import { IBalance, useUserBalance } from "@/lib/hooks/api/use-user-balance";
 import { IToken } from "@/lib/types/token";
+import {
+  IBalanceType,
+  useWithdrawBaseToken,
+} from "@/lib/hooks/contract/use-with-draw-base-token";
+import { useWithdrawPointToken } from "@/lib/hooks/contract/use-with-draw-point-token";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -33,7 +36,26 @@ export default function MyBalances() {
   const { publicKey } = useWallet();
   const wallet = toPubString(publicKey);
 
-  const { data: balanceData } = useUserBalance(wallet);
+  const { data: balanceData, mutate: refetchBalanceData } =
+    useUserBalance(wallet);
+
+  const {
+    isLoading: isWdTokenLoading,
+    write: wdTokenAction,
+    isSuccess: isWdTokenSuccess,
+  } = useWithdrawBaseToken();
+
+  const {
+    isLoading: isWdPointLoading,
+    write: wdPointAction,
+    isSuccess: isWdPointSuccess,
+  } = useWithdrawPointToken();
+
+  useEffect(() => {
+    if (isWdTokenSuccess || isWdPointSuccess) {
+      refetchBalanceData();
+    }
+  }, [isWdTokenSuccess, isWdPointSuccess, refetchBalanceData]);
 
   const getDataFormat = useCallback(
     (bData: IBalance | undefined, firstKey: keyof IBalance, key: string) => {
@@ -77,13 +99,17 @@ export default function MyBalances() {
   }, [realizedAssetsData]);
 
   const referralData = useMemo(() => {
-    const data = getDataFormat(balanceData, "token_balance_list", "tax_income");
+    const data = getDataFormat(
+      balanceData,
+      "token_balance_list",
+      "referral_bonus",
+    );
     return data;
   }, [balanceData, getDataFormat]);
 
   const referralTotal = useMemo(() => {
     return referralData.reduce((acc, t) => acc + t.amount, 0);
-  }, [taxIncomeData]);
+  }, [referralData]);
 
   const salesRevenueData = useMemo(() => {
     const data = getDataFormat(
@@ -129,6 +155,20 @@ export default function MyBalances() {
     setOpenPanel(panelIndex);
   }
 
+  function handleWithdrawToken(mode: IBalanceType) {
+    if (isWdTokenLoading) return;
+    wdTokenAction({
+      mode,
+    });
+  }
+
+  function handleWithdrawPoint(market: string) {
+    if (isWdPointLoading) return;
+    wdPointAction({
+      market,
+    });
+  }
+
   return (
     <div className="ml-5 flex h-full flex-1 flex-col">
       <div className="flex items-center space-x-5">
@@ -158,6 +198,7 @@ export default function MyBalances() {
                     name={i.tokenInfo?.symbol}
                     logo={i.tokenInfo?.logoURI}
                     amount={i.amount}
+                    onClick={() => handleWithdrawToken("taxIncome")}
                   />
                 ))}
               </div>
@@ -180,6 +221,7 @@ export default function MyBalances() {
                     name={i.tokenInfo?.symbol}
                     logo={i.tokenInfo?.logoURI}
                     amount={i.amount}
+                    onClick={() => handleWithdrawPoint("")}
                   />
                 ))}
               </div>
@@ -202,6 +244,7 @@ export default function MyBalances() {
                     name={i.tokenInfo?.symbol}
                     logo={i.tokenInfo?.logoURI}
                     amount={i.amount}
+                    onClick={() => handleWithdrawToken("referralBonus")}
                   />
                 ))}
               </div>
@@ -224,6 +267,7 @@ export default function MyBalances() {
                     name={i.tokenInfo?.symbol}
                     logo={i.tokenInfo?.logoURI}
                     amount={i.amount}
+                    onClick={() => handleWithdrawToken("salesRevenue")}
                   />
                 ))}
               </div>
@@ -246,6 +290,7 @@ export default function MyBalances() {
                     name={i.tokenInfo?.symbol}
                     logo={i.tokenInfo?.logoURI}
                     amount={i.amount}
+                    onClick={() => handleWithdrawToken("remainingCash")}
                   />
                 ))}
               </div>
@@ -268,6 +313,7 @@ export default function MyBalances() {
                     name={i.tokenInfo?.symbol}
                     logo={i.tokenInfo?.logoURI}
                     amount={i.amount}
+                    onClick={() => handleWithdrawToken("makerRefund")}
                   />
                 ))}
               </div>
@@ -318,10 +364,12 @@ function TokenGetCard({
   name,
   logo,
   amount,
+  onClick,
 }: {
   name: string;
   logo: string;
   amount: number;
+  onClick: () => void;
 }) {
   return (
     <div className="flex w-[220px] flex-col items-stretch justify-between rounded-xl bg-white px-4 py-3">
@@ -340,9 +388,11 @@ function TokenGetCard({
             {formatNum(amount)}
           </div>
         </div>
-        <div className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow">
-          Get
-        </div>
+        <WithWalletConnectBtn onClick={onClick}>
+          <div className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow">
+            Get
+          </div>
+        </WithWalletConnectBtn>
       </div>
     </div>
   );

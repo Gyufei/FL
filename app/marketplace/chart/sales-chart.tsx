@@ -82,7 +82,7 @@ export default function SalesChart({
       line,
       scatter,
     };
-  }, [salesData, duration]);
+  }, [salesData, duration, now, oneHourDuration]);
 
   const xAxisOptions = useMemo(() => {
     if (duration === "hour") {

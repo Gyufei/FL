@@ -21,12 +21,15 @@ export function useSettleAskMaker({
   const writeAction = async ({
     settleAmount,
     stockArr,
+    isDirect,
   }: {
     settleAmount: number
     stockArr: Array<{
       stock_account: string,
+      offer: string,
       authority: string,
-    }>
+    }>,
+    isDirect: boolean,
   }) => {
     const {
       tokenProgram,
@@ -57,10 +60,28 @@ export function useSettleAskMaker({
 
     const stockAccountP = await Promise.all(stockArr.map(async (s: {
       stock_account: string,
+      offer: string,
       authority: string,
     }) => {
       const stock = new PublicKey(s.stock_account);
       const stockAuth = new PublicKey(s.authority);
+
+      const stockArr = [
+        {
+          pubkey: stock,
+          isSigner: false,
+          isWritable: true
+        },
+      ]
+
+      if (isDirect) {
+        const offer = new PublicKey(s.offer);
+        stockArr.push({
+          pubkey: offer,
+          isSigner: false,
+          isWritable: true
+        })
+      }
 
       const {
         walletBaseTokenBalance,
@@ -68,11 +89,7 @@ export function useSettleAskMaker({
       } = await getWalletBalanceAccount(program.programId, stockAuth, marketPlace)
 
       return [
-        {
-          pubkey: stock,
-          isSigner: false,
-          isWritable: true
-        },
+        ...stockArr,
         {
           pubkey: walletBaseTokenBalance,
           isSigner: false,

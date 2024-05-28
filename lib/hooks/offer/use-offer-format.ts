@@ -90,7 +90,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
         return false;
       }
 
-      return (!["canceled", "settled"].includes(offer.offer_status) || offer.offer_status === 'canceled' && Number(offer.used_points) > 0)
+      return !["canceled", "settled"].includes(offer.offer_status) || (offer.offer_status === 'canceled' && Number(offer.used_points) > 0)
   }, [offer.offer_status, afterTGE, offer.used_points, makerDetail, isLoadingMakerDetail, offer.pre_offer]);
 
   const isSettled = useMemo(() => {

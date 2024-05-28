@@ -2,7 +2,7 @@ import ConfirmSettleBtn from "@/app/dashboard/common/settle/confirm-settle-btn";
 import { useEffect } from "react";
 import { useSettleAskTaker } from "@/lib/hooks/contract/use-settle-ask-taker";
 
-export default function ConfirmAskMakerSettleBtn({
+export default function ConfirmAskTakerSettleBtn({
   marketplaceStr,
   stockStr,
   makerStr,

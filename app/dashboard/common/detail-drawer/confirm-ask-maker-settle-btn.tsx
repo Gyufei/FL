@@ -9,6 +9,7 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr,
   settleAmount,
   offerStocks,
+  isDirect,
   onSuccess,
 }: {
   isStocksLoading: boolean;
@@ -17,6 +18,7 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr: string;
   settleAmount: number;
   offerStocks: Array<Record<string, any>>;
+  isDirect: boolean;
   onSuccess: () => void;
 }) {
   const {
@@ -29,10 +31,11 @@ export default function ConfirmAskMakerSettleBtn({
     makerStr,
   });
 
-  const stocksArr = useMemo(() => {
+  const stockArr = useMemo(() => {
     return offerStocks.map((s) => {
       return {
         stock_account: s.stock_account,
+        offer: s.offer,
         authority: s.authority,
       };
     });
@@ -42,8 +45,9 @@ export default function ConfirmAskMakerSettleBtn({
     if (isStocksLoading) return;
 
     writeAction({
-      settleAmount: settleAmount,
-      stockArr: stocksArr,
+      settleAmount,
+      stockArr,
+      isDirect,
     });
   }
 

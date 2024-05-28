@@ -21,10 +21,17 @@ export default function ConfirmAskMakerSettleDialog({
 }) {
   const orderRole = "Maker";
 
-  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
-    useOfferFormat({
-      offer: offer,
-    });
+  const {
+    amount,
+    tokenTotalPrice,
+    orderPointInfo,
+    afterTGEPeriod,
+    makerDetail,
+  } = useOfferFormat({
+    offer: offer,
+  });
+
+  const isDirect = makerDetail?.offer_settle_type === "direct";
 
   const { data: offerStocks, isLoading } = useOfferStocks({
     offer: offer,
@@ -116,6 +123,7 @@ export default function ConfirmAskMakerSettleDialog({
             settleAmount={settleAmount}
             offerStocks={offerStocks}
             onSuccess={handleSuccess}
+            isDirect={isDirect}
           />
         </div>
       </DialogContent>

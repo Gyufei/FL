@@ -59,25 +59,6 @@ export function useCreateTaker({
       program.programId
     )[0];
 
-    console.log(Object.values({
-      authority: authority,
-      systemConfig,
-      originMarkerBaseTokenBalance: walletABaseTokenBalance,
-      preOfferBaseTokenBalance: walletABaseTokenBalance,
-      seedAccount: seedAccount.publicKey,
-      stock: stockB,
-      preOffer: offerA,
-      originOffer: originOffer,
-      maker,
-      marketPlace,
-      poolTokenAccount: poolUsdcTokenAccount,
-      tokenMint: usdcTokenMint,
-      tokenProgram,
-      tokenProgram2022,
-      systemProgram,
-    }).map(x => x?.toBase58()))
-
-    // Bid Taker: 1000 USDC -> 200 point
     const txHash = await program.methods
       .createTaker(new BN(pointAmount))
       .accounts({

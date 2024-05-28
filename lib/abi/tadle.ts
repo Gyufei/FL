@@ -1787,18 +1787,18 @@ export const TadleAbi = {
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidMangerAccount",
-      "msg": "invaild system manager account"
+      "name": "AuthorityMismatch",
+      "msg": "authority mismatch"
     },
     {
       "code": 6001,
-      "name": "InvaildAuthorityAccount",
-      "msg": "invaild user authority account"
+      "name": "AlreadyInitialized",
+      "msg": "account already initialized"
     },
     {
       "code": 6002,
-      "name": "AlreadyInitialized",
-      "msg": "account already initialized"
+      "name": "MarketPlaceStatusMismatch",
+      "msg": "market_palce status mismatch"
     },
     {
       "code": 6003,
@@ -1807,38 +1807,73 @@ export const TadleAbi = {
     },
     {
       "code": 6004,
-      "name": "MarketPlaceStatusMismatch",
-      "msg": "market_palce status mismatch"
+      "name": "TokenMintMismatch",
+      "msg": "token mint mismatch"
     },
     {
       "code": 6005,
-      "name": "MarketPlaceTypeMismatch",
-      "msg": "market_palce type mismatch"
+      "name": "TokenOwnerMismatch",
+      "msg": "token owner mismatch"
     },
     {
       "code": 6006,
+      "name": "AlreadyListed",
+      "msg": "already listed"
+    },
+    {
+      "code": 6007,
+      "name": "OfferTypeMismatch",
+      "msg": "offer type mismatch"
+    },
+    {
+      "code": 6008,
       "name": "OfferStatusMismatch",
       "msg": "offer status mismatch"
     },
     {
-      "code": 6007,
+      "code": 6009,
       "name": "StockStatusMismatch",
       "msg": "stock status mismatch"
     },
     {
-      "code": 6008,
-      "name": "OrderTypeMismatch",
-      "msg": "order type mismatch"
-    },
-    {
-      "code": 6009,
-      "name": "InvaildOrder",
-      "msg": "order mismatch"
-    },
-    {
       "code": 6010,
+      "name": "MarketPlaceIsFixedRatio",
+      "msg": "market place is fixed ratio"
+    },
+    {
+      "code": 6011,
+      "name": "SettleBreachFeeMismatch",
+      "msg": "settle breach fee mismatch"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidSettledPoints",
+      "msg": "invalid settled points"
+    },
+    {
+      "code": 6013,
+      "name": "OfferMismatch",
+      "msg": "offer mismatch"
+    },
+    {
+      "code": 6014,
+      "name": "MakerMismatch",
+      "msg": "maker account mismatch"
+    },
+    {
+      "code": 6015,
       "name": "WrongRange",
       "msg": "wrong params range"
+    },
+    {
+      "code": 6016,
+      "name": "AccountIsNotWritable",
+      "msg": "account is not writable"
+    },
+    {
+      "code": 6017,
+      "name": "InvaildRemainingAccounts",
+      "msg": "invaild remaining accounts"
     }
   ],
   "metadata": {

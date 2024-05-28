@@ -28,7 +28,7 @@ export function useWithdrawBaseToken() {
       systemConfig,
       usdcTokenMint,
       poolTokenAuthority,
-      userUsdcTokenAccount,
+      // userUsdcTokenAccount,
       poolUsdcTokenAccount,
     } = await getAccounts(program.programId);
 
@@ -57,7 +57,7 @@ export function useWithdrawBaseToken() {
       wsolTmpTokenAccount,
       userBaseTokenBalance,
       systemConfig,
-      userTokenAccount: userUsdcTokenAccount,
+      // userTokenAccount: userUsdcTokenAccount,
       poolTokenAccount: poolUsdcTokenAccount,
       tokenMint: usdcTokenMint,
       tokenProgram,

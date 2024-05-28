@@ -15,7 +15,6 @@ import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fe
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { formatNum } from "@/lib/utils/number";
-import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 import { SettleModeSelect } from "@/app/marketplace/create-offer/settle-mode-select";
 import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
@@ -30,13 +29,10 @@ export default function ListAskStockBtn({
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, tokenPrice } = useStockFormat({
-    stock: order,
-  });
-
-  const { makerDetail } = useOfferMakerDetail({
-    makerId: order.maker_account,
-  });
+  const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail } =
+    useStockFormat({
+      stock: order,
+    });
 
   const [sellPointAmount] = useState(order.points);
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");

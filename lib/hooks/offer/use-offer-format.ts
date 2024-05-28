@@ -4,8 +4,13 @@ import { useMemo } from "react";
 import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
+import { useMakerDetail } from "../api/use-maker-detail";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
+  const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail({
+    makerId: offer.maker_account
+  });
+
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
   const progress = Number(
@@ -75,8 +80,18 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   }, [offer.marketplace.tge, offer.marketplace.settlement_period, checkIsAfterTgePeriod]);
 
   const isCanSettle = useMemo(() => {
-      return afterTGE && (!["canceled", "settled"].includes(offer.offer_status) || offer.offer_status === 'canceled' && Number(offer.used_points) > 0)
-  }, [offer.offer_status, afterTGE, offer.used_points]);
+      if (!afterTGE) return false;
+      if (isLoadingMakerDetail) return false;
+
+      const offerType = makerDetail?.offer_settle_type;
+      const isDirect = offerType === 'direct'
+
+      if (isDirect && offer.pre_offer) {
+        return false;
+      }
+
+      return (!["canceled", "settled"].includes(offer.offer_status) || offer.offer_status === 'canceled' && Number(offer.used_points) > 0)
+  }, [offer.offer_status, afterTGE, offer.used_points, makerDetail, isLoadingMakerDetail, offer.pre_offer]);
 
   const isSettled = useMemo(() => {
     return ["settled", "finished"].includes(offer.offer_status)
@@ -101,6 +116,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     orderTokenInfo,
     orderEqTokenInfo,
     isCanSettle,
-    isSettled
+    isSettled,
+    makerDetail
   };
 }

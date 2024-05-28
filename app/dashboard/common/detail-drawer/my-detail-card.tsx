@@ -9,20 +9,16 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const { publicKey } = useWallet();
 
-  const { orderTokenInfo, orderPointInfo, duringTGE } = useOfferFormat({
-    offer: offer,
-  });
+  const { orderTokenInfo, orderPointInfo, duringTGE, makerDetail } =
+    useOfferFormat({
+      offer: offer,
+    });
 
   const isAsk = offer.offer_type === "ask";
-
-  const { makerDetail } = useOfferMakerDetail({
-    makerId: offer.maker_account,
-  });
 
   const originOffer = useMemo(() => {
     return (offer as any).origin_offer_detail;

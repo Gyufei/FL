@@ -10,7 +10,6 @@ import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 
 export default function AskDetail({
@@ -31,12 +30,9 @@ export default function AskDetail({
     pointPerPrice,
     isFilled,
     orderTokenInfo,
+    makerDetail
   } = useOfferFormat({
     offer,
-  });
-
-  const { makerDetail } = useOfferMakerDetail({
-    makerId: offer.maker_account,
   });
 
   const tradeFee = useMemo(() => {

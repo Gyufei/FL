@@ -6,15 +6,15 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
-import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 import { useMemo } from "react";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const { handleGoScan } = useGoScan();
 
-  const { amount, orderTokenInfo, orderPointInfo } = useOfferFormat({
-    offer,
-  });
+  const { amount, orderTokenInfo, orderPointInfo, makerDetail } =
+    useOfferFormat({
+      offer,
+    });
 
   const totalColl = useMemo(() => {
     if (Number(offer.settle_breach_fee) <= 100) {
@@ -27,10 +27,6 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
   }, [amount, offer.settle_breach_fee]);
 
   const orderType = offer.offer_type;
-
-  const { makerDetail } = useOfferMakerDetail({
-    makerId: offer.maker_account,
-  });
 
   const originOffer = useMemo(() => {
     return (offer as any).origin_offer_detail;

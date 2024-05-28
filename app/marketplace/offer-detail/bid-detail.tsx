@@ -10,7 +10,6 @@ import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
-import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 
 export default function BidDetail({
   order,
@@ -28,6 +27,7 @@ export default function BidDetail({
     pointPerPrice,
     isFilled,
     orderTokenInfo,
+    makerDetail
   } = useOfferFormat({
     offer: order,
   });
@@ -51,10 +51,6 @@ export default function BidDetail({
     if (!receiveTokenAmount) return "0";
     return NP.times(receiveTokenAmount || 0, tokenPrice);
   }, [receiveTokenAmount, tokenPrice]);
-
-  const { makerDetail } = useOfferMakerDetail({
-    makerId: order.maker_account,
-  });
 
   const {
     data: txHash,

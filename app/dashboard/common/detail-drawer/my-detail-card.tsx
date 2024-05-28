@@ -11,35 +11,35 @@ import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useOfferMakerDetail } from "@/lib/hooks/offer/use-offer-maker-detail";
 
-export default function MyDetailCard({ order }: { order: IOffer }) {
+export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const { publicKey } = useWallet();
 
   const { orderTokenInfo, orderPointInfo, duringTGE } = useOfferFormat({
-    offer: order,
+    offer: offer,
   });
 
-  const isAsk = order.offer_type === "ask";
+  const isAsk = offer.offer_type === "ask";
 
   const { originOffer, makerDetail } = useOfferMakerDetail({
-    offer: order,
+    offer: offer,
   });
 
   const { handleGoScan } = useGoScan();
 
   const originMaker = useMemo(() => {
-    return originOffer?.maker_account || order.maker_account;
-  }, [originOffer, order]);
+    return originOffer?.maker_account || offer.maker_account;
+  }, [originOffer, offer]);
 
   const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
 
   const taxIncome = useMemo(() => {
-    const ti = order?.trade_tax || makerDetail?.trade_tax;
+    const ti = offer?.trade_tax || makerDetail?.trade_tax;
 
     const tax = Number(ti || 0);
     const fmtTax = NP.divide(tax, 10 ** orderTokenInfo.decimals);
 
     return fmtTax;
-  }, [makerDetail, order, orderTokenInfo]);
+  }, [makerDetail, offer, orderTokenInfo]);
 
   const [seconds, setSeconds] = useState(0);
 
@@ -47,8 +47,8 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
     if (!duringTGE) return;
 
     const interval = setInterval(() => {
-      const period = Number(order.marketplace?.settlement_period) || 0;
-      const tgeTime = Number(order?.marketplace?.tge) || 0;
+      const period = Number(offer.marketplace?.settlement_period) || 0;
+      const tgeTime = Number(offer?.marketplace?.tge) || 0;
       const ss = Math.floor(period - (Date.now() / 1000 - tgeTime));
       setSeconds(ss);
     }, 1000);
@@ -66,8 +66,8 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(order.used_points, 2, true)} /{" "}
-            {formatNum(order.points, 2, true)} pts
+            {formatNum(offer.used_points, 2, true)} /{" "}
+            {formatNum(offer.points, 2, true)} pts
           </div>
           <Image
             src={orderPointInfo.logoURI}
@@ -94,7 +94,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Settlement Breach Fee</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
-            {Number(order.settle_breach_fee) / 100}%
+            {Number(offer.settle_breach_fee) / 100}%
           </div>
         </div>
       </DetailRow>
@@ -103,11 +103,11 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Inherit From</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOffer?.offer_id || order?.offer_id}
+            #{originOffer?.offer_id || offer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
             {truncateAddr(
-              originOffer?.offer_account || order.maker_account || "",
+              originOffer?.offer_account || offer.maker_account || "",
               {
                 nPrefix: 4,
                 nSuffix: 4,
@@ -117,7 +117,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
           <Image
             onClick={() =>
               handleGoScan(
-                originOffer?.offer_account || order.maker_account || "",
+                originOffer?.offer_account || offer.maker_account || "",
               )
             }
             src="/icons/right-45.svg"
@@ -142,7 +142,7 @@ export default function MyDetailCard({ order }: { order: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{order?.offer_id}
+            #{offer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-red">
             {isYouAreOriginMaker

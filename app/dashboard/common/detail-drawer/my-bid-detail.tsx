@@ -130,7 +130,7 @@ export default function MyBidDetail({
         </div>
 
         {/* right card */}
-        <MyDetailCard order={order} />
+        <MyDetailCard offer={order} />
       </div>
       <OrderTabs order={order} />
     </>

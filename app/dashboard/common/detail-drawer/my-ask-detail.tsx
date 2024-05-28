@@ -186,7 +186,7 @@ export default function MyAskDetail({
         </div>
 
         {/* right card */}
-        <MyDetailCard order={order} />
+        <MyDetailCard offer={order} />
       </div>
       <OrderTabs order={order} />
       <ConfirmAskMakerSettleDialog

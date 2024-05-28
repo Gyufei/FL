@@ -28,7 +28,7 @@ export function useWithdrawBaseToken() {
       systemConfig,
       usdcTokenMint,
       poolTokenAuthority,
-      // userUsdcTokenAccount,
+      userUsdcTokenAccount,
       poolUsdcTokenAccount,
     } = await getAccounts(program.programId);
 
@@ -57,13 +57,18 @@ export function useWithdrawBaseToken() {
       wsolTmpTokenAccount,
       userBaseTokenBalance,
       systemConfig,
-      // userTokenAccount: userUsdcTokenAccount,
       poolTokenAccount: poolUsdcTokenAccount,
       tokenMint: usdcTokenMint,
       tokenProgram,
       tokenProgram2022,
       systemProgram
-    }).signers([]).rpc();
+    }).remainingAccounts([
+      {
+        pubkey: userUsdcTokenAccount,
+        isSigner: false,
+        isWritable: true
+      }
+    ]).signers([]).rpc();
 
     await recordTransaction({
       txHash,

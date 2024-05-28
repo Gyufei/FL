@@ -166,7 +166,7 @@ export default function MyAskDetail({
                     )
                   ) : (
                     <>
-                      {!isClosed ? (
+                      {!isClosed && !afterTGE ? (
                         <button
                           disabled={isClosing}
                           className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"

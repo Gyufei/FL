@@ -38,19 +38,23 @@ export function useWithdrawPointToken() {
     )[0];
 
     const txHash = await program.methods.withdrawPointToken().accounts({
-
       authority,
       userPointTokenBalance,
       poolTokenAuthority,
       marketPlace,
       systemConfig,
-      userTokenAccount: userPointsTokenAccount,
       poolTokenAccount: poolPointsTokenAccount,
       tokenMint: pointTokenMint,
       tokenProgram,
       tokenProgram2022,
       systemProgram
-    }).signers([]).rpc();
+    }).remainingAccounts([
+      {
+        pubkey: userPointsTokenAccount,
+        isSigner: false,
+        isWritable: true
+      }
+    ]).signers([]).rpc();
 
     await recordTransaction({
       txHash,

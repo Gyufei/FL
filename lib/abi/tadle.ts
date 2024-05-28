@@ -776,11 +776,6 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
-          "name": "userTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "poolTokenAccount",
           "isMut": true,
           "isSigner": false
@@ -797,6 +792,16 @@ export const TadleAbi = {
         },
         {
           "name": "tokenProgram2022",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -893,6 +898,11 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -936,11 +946,6 @@ export const TadleAbi = {
           "isSigner": false
         },
         {
-          "name": "userTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "poolTokenAccount",
           "isMut": true,
           "isSigner": false
@@ -957,6 +962,11 @@ export const TadleAbi = {
         },
         {
           "name": "tokenProgram2022",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
           "isMut": false,
           "isSigner": false
         },

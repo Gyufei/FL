@@ -4,6 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./use-accounts";
+import { SolanaZeroed } from "@/lib/constant";
 
 export function useSettleAskMaker({
   marketplaceStr,
@@ -75,7 +76,7 @@ export function useSettleAskMaker({
       ]
 
       if (isDirect) {
-        const offer = new PublicKey(s.offer);
+        const offer = s.offer ? new PublicKey(s.offer) : new PublicKey(SolanaZeroed);
         stockArr.push({
           pubkey: offer,
           isSigner: false,

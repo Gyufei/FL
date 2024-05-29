@@ -9,8 +9,9 @@ export interface IBalance {
 }
 
 export interface IPointBalance {
-  realized_assets: string;
-  token_address: string;
+  amount: string;
+  market_place_account: string;
+  token_mint: string;
 }
 
 export interface ITokenBalance {

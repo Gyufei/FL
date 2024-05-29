@@ -21,6 +21,7 @@ import {
 } from "@/lib/hooks/contract/use-with-draw-base-token";
 import { useWithdrawPointToken } from "@/lib/hooks/contract/use-with-draw-point-token";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -38,6 +39,8 @@ export default function MyBalances() {
 
   const { data: balanceData, mutate: refetchBalanceData } =
     useUserBalance(wallet);
+
+  const { data: marketplaceData } = useMarketplaces();
 
   const {
     isLoading: isWdTokenLoading,
@@ -57,12 +60,12 @@ export default function MyBalances() {
     }
   }, [isWdTokenSuccess, isWdPointSuccess, refetchBalanceData]);
 
-  const getDataFormat = useCallback(
-    (bData: IBalance | undefined, firstKey: keyof IBalance, key: string) => {
+  const getTokenDataFormat = useCallback(
+    (bData: IBalance | undefined, key: string) => {
       if (!bData) return [];
 
-      const tBalances = bData[firstKey];
-      const taxIncomes = tBalances?.map((t) => {
+      const tBalances = bData.token_balance_list;
+      const itemData = tBalances?.map((t) => {
         const tokenInfo = TokenListMap[t.token_address];
         const amount = NP.divide((t as any)[key], 10 ** tokenInfo.decimals);
         return {
@@ -71,80 +74,89 @@ export default function MyBalances() {
         };
       });
 
-      return taxIncomes;
+      return itemData;
     },
     [],
   );
 
+  const getPointDataFormat = useCallback(
+    (bData: IBalance | undefined) => {
+      if (!bData) return [];
+
+      const tBalances = bData.point_token_balance_list;
+
+      const taxIncomes = tBalances?.map((t) => {
+        const market = marketplaceData?.find(
+          (m) => m.market_place_id === t.market_place_account,
+        );
+
+        const tokenInfo = {
+          symbol: market?.point_name,
+          logoURI: market?.pointLogo,
+          marketplaceId: t.market_place_account,
+        };
+        const amount = NP.divide(t.amount, 10 ** 9);
+
+        return {
+          amount: Number(amount),
+          tokenInfo,
+        };
+      });
+
+      return taxIncomes;
+    },
+    [marketplaceData],
+  );
+
   const taxIncomeData = useMemo(() => {
-    const data = getDataFormat(balanceData, "token_balance_list", "tax_income");
+    const data = getTokenDataFormat(balanceData, "tax_income");
     return data;
-  }, [balanceData, getDataFormat]);
+  }, [balanceData, getTokenDataFormat]);
 
   const taxIncomeTotal = useMemo(() => {
     return taxIncomeData.reduce((acc, t) => acc + t.amount, 0);
   }, [taxIncomeData]);
 
   const realizedAssetsData = useMemo(() => {
-    const data = getDataFormat(
-      balanceData,
-      "point_token_balance_list",
-      "realized_asset",
-    );
+    const data = getPointDataFormat(balanceData);
     return data;
-  }, [balanceData, getDataFormat]);
+  }, [getPointDataFormat, balanceData]);
 
   const realizedAssetsTotal = useMemo(() => {
     return realizedAssetsData.reduce((acc, t) => acc + t.amount, 0);
   }, [realizedAssetsData]);
 
   const referralData = useMemo(() => {
-    const data = getDataFormat(
-      balanceData,
-      "token_balance_list",
-      "referral_bonus",
-    );
+    const data = getTokenDataFormat(balanceData, "referral_bonus");
     return data;
-  }, [balanceData, getDataFormat]);
+  }, [balanceData, getTokenDataFormat]);
 
   const referralTotal = useMemo(() => {
     return referralData.reduce((acc, t) => acc + t.amount, 0);
   }, [referralData]);
 
   const salesRevenueData = useMemo(() => {
-    const data = getDataFormat(
-      balanceData,
-      "token_balance_list",
-      "sales_revenue",
-    );
+    const data = getTokenDataFormat(balanceData, "sales_revenue");
     return data;
-  }, [balanceData, getDataFormat]);
+  }, [balanceData, getTokenDataFormat]);
 
   const salesRevenueTotal = useMemo(() => {
     return salesRevenueData.reduce((acc, t) => acc + t.amount, 0);
   }, [salesRevenueData]);
 
   const remainingCashData = useMemo(() => {
-    const data = getDataFormat(
-      balanceData,
-      "token_balance_list",
-      "remaining_cash",
-    );
+    const data = getTokenDataFormat(balanceData, "remaining_cash");
     return data;
-  }, [balanceData, getDataFormat]);
+  }, [balanceData, getTokenDataFormat]);
 
   const remainingCashTotal = useMemo(() => {
     return remainingCashData.reduce((acc, t) => acc + t.amount, 0);
   }, [remainingCashData]);
 
   const makerRefundData = useMemo(() => {
-    const data = getDataFormat(
-      balanceData,
-      "token_balance_list",
-      "maker_refund",
-    );
+    const data = getTokenDataFormat(balanceData, "maker_refund");
     return data;
-  }, [balanceData, getDataFormat]);
+  }, [balanceData, getTokenDataFormat]);
 
   const makerRefundTotal = useMemo(() => {
     return makerRefundData.reduce((acc, t) => acc + t.amount, 0);
@@ -165,7 +177,7 @@ export default function MyBalances() {
   function handleWithdrawPoint(market: string) {
     if (isWdPointLoading) return;
     wdPointAction({
-      market,
+      marketplaceStr: market
     });
   }
 
@@ -218,10 +230,12 @@ export default function MyBalances() {
                 {realizedAssetsData.map((i, index) => (
                   <TokenGetCard
                     key={index}
-                    name={i.tokenInfo?.symbol}
-                    logo={i.tokenInfo?.logoURI}
+                    name={i.tokenInfo?.symbol || ""}
+                    logo={i.tokenInfo?.logoURI || ""}
                     amount={i.amount}
-                    onClick={() => handleWithdrawPoint("")}
+                    onClick={() =>
+                      handleWithdrawPoint(i.tokenInfo.marketplaceId || "")
+                    }
                   />
                 ))}
               </div>

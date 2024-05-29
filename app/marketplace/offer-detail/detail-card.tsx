@@ -131,13 +131,10 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
             #{originOffer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(
-              originOffer?.offer_account || "",
-              {
-                nPrefix: 4,
-                nSuffix: 4,
-              },
-            )}
+            {truncateAddr(originOffer?.offer_account || "", {
+              nPrefix: 4,
+              nSuffix: 4,
+            })}
           </div>
           <Image
             onClick={() => handleGoScan(originOffer?.maker_account)}

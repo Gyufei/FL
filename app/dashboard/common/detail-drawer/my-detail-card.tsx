@@ -11,7 +11,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
-  console.log(offer, "123");
   const { publicKey } = useWallet();
 
   const { orderTokenInfo, orderPointInfo, duringTGE, makerDetail } =

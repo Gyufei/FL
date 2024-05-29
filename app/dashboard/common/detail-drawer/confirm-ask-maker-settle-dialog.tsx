@@ -7,6 +7,7 @@ import { IOffer } from "@/lib/types/offer";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
+import useMakerSettleAccount from "@/lib/hooks/api/use-maker-settle-account";
 
 export default function ConfirmAskMakerSettleDialog({
   open,
@@ -33,9 +34,15 @@ export default function ConfirmAskMakerSettleDialog({
 
   const isDirect = makerDetail?.offer_settle_type === "direct";
 
-  const { data: offerStocks, isLoading } = useOfferStocks({
+  const { data: offerStocks, isLoading: isOfferStockLoading } = useOfferStocks({
     offer: offer,
   });
+
+  const { data: makerSettleAccount, isLoading: isSettleAccountLoading } =
+    useMakerSettleAccount({
+      makerId: offer.maker_account,
+      isDirect,
+    });
 
   const [sliderMax] = useState(100);
   const [sliderValue, setSliderValue] = useState(100);
@@ -116,12 +123,12 @@ export default function ConfirmAskMakerSettleDialog({
           </div>
 
           <ConfirmAskMakerSettleBtn
-            isStocksLoading={isLoading}
+            isStocksLoading={isOfferStockLoading || isSettleAccountLoading}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_account}
             makerStr={offer.maker_account}
             settleAmount={settleAmount}
-            offerStocks={offerStocks}
+            offerStocks={isDirect ? makerSettleAccount : offerStocks}
             onSuccess={handleSuccess}
             isDirect={isDirect}
           />

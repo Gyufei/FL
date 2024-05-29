@@ -35,7 +35,7 @@ export default function ConfirmAskMakerSettleBtn({
     return offerStocks.map((s) => {
       return {
         stock_account: s.stock_account,
-        offer: s.offer,
+        offer: s?.offer || s?.offer_account,
         authority: s.authority,
       };
     });

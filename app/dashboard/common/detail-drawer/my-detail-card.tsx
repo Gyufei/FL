@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
+  console.log(offer, "123");
   const { publicKey } = useWallet();
 
   const { orderTokenInfo, orderPointInfo, duringTGE, makerDetail } =
@@ -155,7 +156,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{offer?.offer_id}
+            #{originOffer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-red">
             {isYouAreOriginMaker

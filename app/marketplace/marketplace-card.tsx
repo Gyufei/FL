@@ -17,6 +17,7 @@ import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
+import useTge from "@/lib/hooks/marketplace/useTge";
 
 export default function MarketplaceCard({
   marketplace,
@@ -106,7 +107,10 @@ export default function MarketplaceCard({
         )}
       </div>
 
-      <MarketplaceOverview marketplace={marketplace} isLoading={isLoadingFlag} />
+      <MarketplaceOverview
+        marketplace={marketplace}
+        isLoading={isLoadingFlag}
+      />
     </div>
   );
 }
@@ -185,16 +189,22 @@ function FoldPop() {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [searchText, setSearchText] = useState("");
 
+  const { checkIsAfterTge } = useTge();
+
   const cateList = useMemo(() => {
-    return (marketplaceData || []).map((marketplace) => {
-      return {
-        name: marketplace.market_name,
-        id: marketplace.market_id,
-        tokenLogo: marketplace.projectLogo,
-        link: marketplace.market_id,
-      };
-    });
-  }, [marketplaceData]);
+    return (marketplaceData || [])
+      .filter((m) => {
+        return !checkIsAfterTge(m.tge, Number(m.settlement_period));
+      })
+      .map((marketplace) => {
+        return {
+          name: marketplace.market_name,
+          id: marketplace.market_id,
+          tokenLogo: marketplace.projectLogo,
+          link: marketplace.market_id,
+        };
+      });
+  }, [marketplaceData, checkIsAfterTge]);
 
   const filteredCateList = useMemo(
     () =>

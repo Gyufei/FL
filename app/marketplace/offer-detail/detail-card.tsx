@@ -91,7 +91,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">Settlement Breach Fee</DetailLabel>
+        <DetailLabel tipText="">Collateral Rate</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
             {NP.divide(offer.settle_breach_fee, 100)}%

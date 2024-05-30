@@ -19,6 +19,7 @@ import { SettleModeSelect } from "@/app/marketplace/create-offer/settle-mode-sel
 import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { useListStock } from "@/lib/hooks/contract/use-list-maker";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function ListAskStockBtn({
   order: order,
@@ -79,7 +80,12 @@ export default function ListAskStockBtn({
 
   return (
     <div>
-      <ListBtn onClick={() => setDrawerOpen(true)} />
+      <WithWalletConnectBtn
+        onClick={() => setDrawerOpen(true)}
+        shouldSignIn={true}
+      >
+        <ListBtn />
+      </WithWalletConnectBtn>
       <Drawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
@@ -171,13 +177,14 @@ export default function ListAskStockBtn({
             <OrderNoteAndFee value={note} onValueChange={setNote} />
           </div>
 
-          <button
-            disabled={isDepositLoading}
-            onClick={handleDeposit}
-            className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
-          >
-            Confirm Maker Order
-          </button>
+          <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
+            <button
+              disabled={isDepositLoading}
+              className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
+            >
+              Confirm Maker Order
+            </button>
+          </WithWalletConnectBtn>
         </div>
       </Drawer>
     </div>

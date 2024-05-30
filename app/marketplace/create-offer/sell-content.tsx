@@ -16,6 +16,7 @@ import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { SettleModeSelect, SettleModes } from "./settle-mode-select";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export function SellContent({
   marketplace,
@@ -163,13 +164,18 @@ export function SellContent({
         <OrderNoteAndFee value={note} onValueChange={setNote} />
       </div>
 
-      <button
-        disabled={isCreateLoading}
+      <WithWalletConnectBtn
+        className="w-full"
         onClick={handleCreate}
-        className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
+        shouldSignIn={true}
       >
-        Confirm Maker Order
-      </button>
+        <button
+          disabled={isCreateLoading}
+          className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
+        >
+          Confirm Maker Order
+        </button>
+      </WithWalletConnectBtn>
     </div>
   );
 }

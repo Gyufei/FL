@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import ConfirmAskTakerSettleDialog from "./confirm-ask-taker-settle-dialog";
 import { IStock } from "@/lib/types/stock";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function SettleDrawerBtn({
   order,
@@ -18,13 +19,15 @@ export default function SettleDrawerBtn({
 
   return (
     <div>
-      <div
+      <WithWalletConnectBtn
         onClick={() => handleDrawerOpen(true)}
-        className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black data-[disabled=true]:bg-gray"
+        shouldSignIn={true}
       >
-        <Image src="/icons/settle.svg" width={16} height={16} alt="list" />
-        <span>Settle</span>
-      </div>
+        <div className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black data-[disabled=true]:bg-gray">
+          <Image src="/icons/settle.svg" width={16} height={16} alt="list" />
+          <span>Settle</span>
+        </div>
+      </WithWalletConnectBtn>
 
       <ConfirmAskTakerSettleDialog
         stock={order}

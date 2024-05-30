@@ -25,6 +25,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export function OrderTable({
   role,
@@ -177,12 +178,9 @@ export function OrderTable({
                     </span>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <div
+                    <DetailBtn
                       onClick={() => openDetail(ord.offer_id)}
-                      className="flex h-7 w-fit cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black"
-                    >
-                      Detail
-                    </div>
+                    ></DetailBtn>
                   </Cell>
                 </Row>
               ))}
@@ -326,5 +324,19 @@ function OrderHash({ offer }: { offer: IOffer }) {
         className="cursor-pointer"
       />
     </div>
+  );
+}
+
+function DetailBtn({ onClick }: { onClick: () => void }) {
+  return (
+    <WithWalletConnectBtn
+      className="flex w-fit"
+      onClick={onClick}
+      shouldSignIn={true}
+    >
+      <div className="flex h-7 w-full cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black">
+        Detail
+      </div>
+    </WithWalletConnectBtn>
   );
 }

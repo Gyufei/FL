@@ -12,6 +12,7 @@ import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function MyAskDetail({
   order: order,
@@ -134,12 +135,11 @@ export default function MyAskDetail({
           />
 
           {isCanSettle ? (
-            <button
-              onClick={() => handleSettle()}
-              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
-            >
-              Settle this offer
-            </button>
+            <WithWalletConnectBtn onClick={handleSettle} shouldSignIn={true}>
+              <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                Settle this offer
+              </button>
+            </WithWalletConnectBtn>
           ) : (
             <>
               {isSettled ? (
@@ -150,12 +150,14 @@ export default function MyAskDetail({
                 <>
                   {isCanceled ? (
                     !afterTGE ? (
-                      <button
-                        onClick={() => handleRelist()}
-                        className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+                      <WithWalletConnectBtn
+                        onClick={handleRelist}
+                        shouldSignIn={true}
                       >
-                        Relist this offer
-                      </button>
+                        <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                          Relist this offer
+                        </button>
+                      </WithWalletConnectBtn>
                     ) : (
                       <button
                         disabled={true}
@@ -167,13 +169,17 @@ export default function MyAskDetail({
                   ) : (
                     <>
                       {!isClosed && !afterTGE ? (
-                        <button
-                          disabled={isClosing}
-                          className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                        <WithWalletConnectBtn
                           onClick={handleClose}
+                          shouldSignIn={true}
                         >
-                          Close this offer
-                        </button>
+                          <button
+                            disabled={isClosing}
+                            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                          >
+                            Close this offer
+                          </button>
+                        </WithWalletConnectBtn>
                       ) : (
                         <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                           Awaiting settlement...

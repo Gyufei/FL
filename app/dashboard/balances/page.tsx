@@ -177,7 +177,7 @@ export default function MyBalances() {
   function handleWithdrawPoint(market: string) {
     if (isWdPointLoading) return;
     wdPointAction({
-      marketplaceStr: market
+      marketplaceStr: market,
     });
   }
 
@@ -402,7 +402,7 @@ function TokenGetCard({
             {formatNum(amount)}
           </div>
         </div>
-        <WithWalletConnectBtn onClick={onClick}>
+        <WithWalletConnectBtn onClick={onClick} shouldSignIn={true}>
           <div className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow">
             Get
           </div>

@@ -3,8 +3,6 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { EndPointPathMap } from "../PathMap";
 
 export const RPCS = {
-  // solanaFm: "https://solana-api.solana.fm/",
-  // solanaFmDevnet: "https://solana-api.solana.fm/?network=devnet",
   solanaFm: process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
   solanaFmDevnet: "https://rpc.ankr.com/solana_devnet",
   solanaDevnet: "https://api.devnet.solana.com/",

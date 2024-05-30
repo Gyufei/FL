@@ -3,7 +3,7 @@ import { useSignIn } from "../api/use-sign-in";
 import { useCallback } from "react";
 import base58 from "bs58";
 import { useSetAtom } from "jotai";
-import { AccessTokenAtom } from "@/lib/states/user";
+import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
 
 export function useSignInAction() {
   const { publicKey, signMessage } = useWallet();
@@ -11,6 +11,7 @@ export function useSignInAction() {
   const { trigger: signInApiAction } = useSignIn();
 
   const setToken = useSetAtom(AccessTokenAtom);
+  const setShowSignInDialog = useSetAtom(ShowSignDialogAtom)
 
   const signInAction = useCallback(async () => {
     try {
@@ -32,13 +33,15 @@ export function useSignInAction() {
         ts: String(Math.floor(Date.now() / 1000)),
       });
 
-      if (res.data?.access_token) {
-        setToken(res.data.access_token);
+      console.log(res);
+      if (res?.access_token) {
+        setToken(res.access_token);
+        setShowSignInDialog(false);
       }
     } catch (error: any) {
       console.log("error", `Sign Message failed! ${error?.message}`);
     }
-  }, [publicKey, signMessage, signInApiAction, setToken]);
+  }, [publicKey, signMessage, signInApiAction, setToken, setShowSignInDialog]);
 
   return {
     signInAction,

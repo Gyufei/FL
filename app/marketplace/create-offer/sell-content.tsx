@@ -87,7 +87,7 @@ export function SellContent({
     writeAction({
       pointAmount: Number(sellPointAmount),
       tokenAmount: Number(receiveTokenAmount),
-      breachFee: Number(breachFee || 50) * 100,
+      breachFee: Number(breachFee || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,

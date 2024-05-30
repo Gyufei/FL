@@ -66,7 +66,7 @@ export default function ListAskStockBtn({
 
     writeAction({
       receiveTokenAmount: Number(receiveTokenAmount),
-      breachFee: Number(breachFee || 50) * 100,
+      breachFee: Number(breachFee || 100) * 100,
     });
   }
 

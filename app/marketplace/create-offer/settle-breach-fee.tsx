@@ -21,8 +21,8 @@ export default function SettleBreachFee({
     if (!value) {
       onValueChange("");
     }
-    if (Number(value) < 50) {
-      onValueChange("50");
+    if (Number(value) < 100) {
+      onValueChange("100");
     }
   }
 
@@ -38,7 +38,7 @@ export default function SettleBreachFee({
         <NumericalInput
           disabled={disabled}
           className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus disabled:bg-[#f0f1f5]"
-          placeholder="50%"
+          placeholder="100%"
           value={value}
           onUserInput={handleInput}
           onBlur={handleBlur}

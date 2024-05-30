@@ -12,12 +12,10 @@ import toPubString from "@/lib/utils/pub-string";
 import { useAtom, useSetAtom } from "jotai";
 import { useUserState } from "@/lib/hooks/api/use-user-state";
 import { useSignInAction } from "@/lib/hooks/web3/use-sign-in-action";
-// import { SignInBtn } from "./sign-in-btn";
+import { SignInBtn } from "./sign-in-btn";
 import { ShowSignDialogAtom } from "@/lib/states/user";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let signInFlag = false;
-
 export default function ConnectBtn() {
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
@@ -31,16 +29,17 @@ export default function ConnectBtn() {
 
   const address = toPubString(publicKey);
 
+  const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
+
   const { data: userState, mutate: refreshUserState } = useUserState(address);
+
   const { signInAction } = useSignInAction();
 
   const [shortAddr, setShortAddr] = useState("");
 
   async function signIn() {
-    signInFlag = true;
     await signInAction();
     refreshUserState();
-    signInFlag = false;
   }
 
   useEffect(() => {
@@ -52,12 +51,10 @@ export default function ConnectBtn() {
 
     setShortAddr(sa);
 
-    if (userState && !userState.is_sign_in && !signInFlag) {
+    if (userState && !userState.is_sign_in) {
       signIn();
     }
   }, [address, userState]);
-
-  const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
 
   if (!connected) {
     return (
@@ -91,16 +88,16 @@ export default function ConnectBtn() {
         showClose={false}
         className="flex w-[360px] flex-col items-center gap-0 rounded-3xl border-none bg-white p-6"
       >
-        {/* <div className="text-xl leading-[30px] text-black">
-          You&apos;re signed out
+        <div className="text-xl leading-[30px] mb-3 text-black">
+          {userState?.is_sign_in ? "You're signed out" : "You're signed in"}
         </div>
         <div className="text-center text-sm leading-5 text-black">
           Sign a message in your wallet to verify
           <br /> that you&apos;re the owner of the connected <br />
           address
         </div>
-        <SignInBtn /> */}
-        <Disconnect />
+        <SignInBtn />
+        {/* <Disconnect /> */}
       </DialogContent>
     </Dialog>
   );

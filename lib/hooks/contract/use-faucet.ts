@@ -1,5 +1,5 @@
 import * as anchor from "@coral-xyz/anchor";
-import useTxStatus from "./use-tx-status";
+import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import useProvider from "../web3/use-provider";
 import { useWallet } from "@solana/wallet-adapter-react";

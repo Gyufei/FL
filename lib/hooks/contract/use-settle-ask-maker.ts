@@ -1,9 +1,9 @@
 import useTadleProgram from "../web3/use-tadle-program";
-import useTxStatus from "./use-tx-status";
+import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
-import { useAccounts } from "./use-accounts";
+import { useAccounts } from "./help/use-accounts";
 import { SolanaZeroed } from "@/lib/constant";
 
 export function useSettleAskMaker({

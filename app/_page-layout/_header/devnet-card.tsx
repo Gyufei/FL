@@ -26,7 +26,7 @@ export function DevnetCard({ isActive }: { isActive: boolean }) {
         Try Testnet
       </div>
       <div className="mt-4 flex justify-between">
-        <WithWalletConnectBtn onClick={handleClaim}>
+        <WithWalletConnectBtn onClick={handleClaim} shouldSignIn={true}>
           <div className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]">
             <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
             <div className="text-xs leading-[18px]">Claim test tokens</div>

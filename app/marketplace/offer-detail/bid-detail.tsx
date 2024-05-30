@@ -10,6 +10,7 @@ import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function BidDetail({
   order,
@@ -27,7 +28,7 @@ export default function BidDetail({
     pointPerPrice,
     isFilled,
     orderTokenInfo,
-    makerDetail
+    makerDetail,
   } = useOfferFormat({
     offer: order,
   });
@@ -71,7 +72,7 @@ export default function BidDetail({
   }
 
   async function handleDeposit() {
-    if (!sellPointAmount || !makerDetail) return;
+    if (isDepositLoading || !sellPointAmount || !makerDetail) return;
     await writeAction({
       pointAmount: sellPointAmount,
     });
@@ -128,13 +129,15 @@ export default function BidDetail({
               Offer 100% Filled
             </button>
           ) : (
-            <button
-              disabled={isDepositLoading || !sellPointAmount}
-              onClick={handleDeposit}
-              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
-            >
-              Confirm Taker Order
-            </button>
+            <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
+              <button
+                disabled={isDepositLoading || !sellPointAmount}
+                onClick={handleDeposit}
+                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
+              >
+                Confirm Taker Order
+              </button>
+            </WithWalletConnectBtn>
           )}
         </div>
 

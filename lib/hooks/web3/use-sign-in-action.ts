@@ -2,17 +2,15 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useSignIn } from "../api/use-sign-in";
 import { useCallback } from "react";
 import base58 from "bs58";
-import { useUserState } from "../api/use-user-state";
-import toPubString from "@/lib/utils/pub-string";
+import { useSetAtom } from "jotai";
+import { AccessTokenAtom } from "@/lib/states/user";
 
 export function useSignInAction() {
   const { publicKey, signMessage } = useWallet();
 
-  const address = toPubString(publicKey);
-
   const { trigger: signInApiAction } = useSignIn();
 
-  const { mutate: refreshUserState } = useUserState(address);
+  const setToken = useSetAtom(AccessTokenAtom);
 
   const signInAction = useCallback(async () => {
     try {
@@ -28,19 +26,19 @@ export function useSignInAction() {
       // Verify that the bytes were signed using the private key that matches the known public key
       const signatureStr = base58.encode(signature);
 
-      await signInApiAction({
+      const res = await signInApiAction({
         wallet: publicKey.toBase58(),
         signature: signatureStr,
         ts: String(Math.floor(Date.now() / 1000)),
       });
 
-      refreshUserState();
-
-      console.log(signatureStr);
+      if (res.data?.access_token) {
+        setToken(res.data.access_token);
+      }
     } catch (error: any) {
       console.log("error", `Sign Message failed! ${error?.message}`);
     }
-  }, [publicKey, signMessage, signInApiAction, refreshUserState]);
+  }, [publicKey, signMessage, signInApiAction, setToken]);
 
   return {
     signInAction,

@@ -6,7 +6,7 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useClusterConfig } from "../web3/use-cluster-config";
+import { useClusterConfig } from "../../web3/use-cluster-config";
 
 export function useAccounts() {
   const { publicKey: authority } = useWallet();

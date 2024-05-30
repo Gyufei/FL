@@ -11,6 +11,7 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function AskDetail({
   offer,
@@ -30,7 +31,7 @@ export default function AskDetail({
     pointPerPrice,
     isFilled,
     orderTokenInfo,
-    makerDetail
+    makerDetail,
   } = useOfferFormat({
     offer,
   });
@@ -76,7 +77,7 @@ export default function AskDetail({
   }
 
   async function handleDeposit() {
-    if (!receivePointAmount || !makerDetail) return;
+    if (isDepositLoading || !receivePointAmount || !makerDetail) return;
     await writeAction({
       pointAmount: receivePointAmount,
     });
@@ -139,13 +140,14 @@ export default function AskDetail({
             </>
           ) : (
             <>
-              <button
-                disabled={isDepositLoading || !receivePointAmount}
-                onClick={handleDeposit}
-                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:bg-gray"
-              >
-                Confirm Taker Order
-              </button>
+              <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
+                <button
+                  disabled={isDepositLoading || !receivePointAmount}
+                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:bg-gray"
+                >
+                  Confirm Taker Order
+                </button>
+              </WithWalletConnectBtn>
               <div className="mt-3 text-xs leading-5 text-gray">
                 You will automatically receive the{" "}
                 <span className="text-black">

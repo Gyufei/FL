@@ -32,6 +32,7 @@ export default function CreateOfferBtn({
       <WithWalletConnectBtn
         className="w-full"
         onClick={() => setDrawerOpen(true)}
+        shouldSignIn={true}
       >
         <button className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
           Create Offer

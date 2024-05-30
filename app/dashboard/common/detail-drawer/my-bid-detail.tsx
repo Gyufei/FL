@@ -10,6 +10,7 @@ import OrderTabs from "@/app/marketplace/offer-detail/order-tabs";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useEffect, useMemo } from "react";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 export default function MyBidDetail({
   order,
@@ -107,13 +108,14 @@ export default function MyBidDetail({
           />
 
           {afterTGE && !isClosed && (
-            <button
-              disabled={isClosing}
-              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
-              onClick={handleClose}
-            >
-              Close this offer
-            </button>
+            <WithWalletConnectBtn onClick={handleClose} shouldSignIn={true}>
+              <button
+                disabled={isClosing}
+                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+              >
+                Close this offer
+              </button>
+            </WithWalletConnectBtn>
           )}
 
           {isSettled && (

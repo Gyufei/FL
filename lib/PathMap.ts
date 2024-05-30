@@ -1,6 +1,6 @@
 export function WithHost(path: string) {
-  const devHost = `https://tadle.aggregation.top`
-  const prodHost = `https://tadle.aggregation.top`
+  const devHost = `https://preview-data.tadle.com`
+  const prodHost = `https://data.tadle.com`
   const host = process.env.NODE_ENV === 'production' ? prodHost : devHost
   return `${host}${path}`
 }

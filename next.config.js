@@ -10,6 +10,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "cdn.tadle.com",
+      },
+      {
+        protocol: "https",
         hostname: "explorer-api.walletconnect.com",
       },
       {

@@ -5,6 +5,7 @@ import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useMakerDetail } from "../api/use-maker-detail";
+// import { useTokensInfo } from "../api/use-token-info";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail({

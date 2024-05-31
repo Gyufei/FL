@@ -11,17 +11,17 @@ function WithCDN(path: string) {
   const devCDN = `https://preview-cdn.tadle.com`
   const prodCDN = `https://cdn.tadle.com`
   const cdn = isProduction ? prodCDN : devCDN
-  return `${cdn}/images${path}`;
+  return `${cdn}${path}`;
 }
 
 export function WithProjectCDN(path: string) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/project/${goPath}`)
+  return WithCDN(`/images/project/${goPath}`)
 }
 
 export function WithPointCDN(path: string) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/point/${goPath}`)
+  return WithCDN(`/images/point/${goPath}`)
 }
 
 export function WithWss() {

@@ -33,7 +33,6 @@ export function useSignInAction() {
         ts: String(Math.floor(Date.now() / 1000)),
       });
 
-      console.log(res);
       if (res?.access_token) {
         setToken(res.access_token);
         setShowSignInDialog(false);

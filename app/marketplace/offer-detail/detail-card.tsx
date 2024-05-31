@@ -9,7 +9,6 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useMemo } from "react";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
-  console.log(offer);
   const { handleGoScan } = useGoScan();
 
   const { amount, orderTokenInfo, orderPointInfo, makerDetail } =

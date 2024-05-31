@@ -11,6 +11,8 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useEffect, useMemo } from "react";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
+import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
 
 export default function MyBidDetail({
   order,
@@ -26,9 +28,9 @@ export default function MyBidDetail({
     amount,
     orderTokenInfo,
     orderPointInfo,
-    isCanSettle,
     isSettled,
     afterTGE,
+    afterTGEPeriod,
   } = useOfferFormat({
     offer: order,
   });
@@ -39,6 +41,28 @@ export default function MyBidDetail({
     isLoading: isClosing,
     write: closeAction,
     isSuccess: isCloseSuccess,
+  } = useCloseOffer({
+    marketplaceStr: order.market_place_account,
+    makerStr: order.maker_account,
+    offerStr: order.offer_account,
+    stockStr: order.stock_account,
+  });
+
+  const {
+    isLoading: isRelisting,
+    write: relistAction,
+    isSuccess: isRelistSuccess,
+  } = useRelistOffer({
+    marketplaceStr: order.market_place_account,
+    makerStr: order.maker_account,
+    offerStr: order.offer_account,
+    stockStr: order.stock_account,
+  });
+
+  const {
+    isLoading: isBidClosing,
+    write: bidCloseAction,
+    isSuccess: isBidCloseSuccess,
   } = useCloseBidOffer({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
@@ -50,15 +74,27 @@ export default function MyBidDetail({
     closeAction?.(undefined);
   }
 
+  function handleBidClose() {
+    if (isBidClosing) return;
+    bidCloseAction?.(undefined);
+  }
+
+  function handleRelist() {
+    if (isRelisting) return;
+    relistAction?.(undefined);
+  }
+
+  const isCanceled = order.offer_status === "canceled";
+
   const isClosed = useMemo(() => {
     return ["filled", "canceled", "settled"].includes(order.offer_status);
   }, [order]);
 
   useEffect(() => {
-    if (isCloseSuccess) {
+    if (isBidCloseSuccess || isCloseSuccess || isRelistSuccess) {
       onSuccess();
     }
-  }, [isCloseSuccess, onSuccess]);
+  }, [isBidCloseSuccess, isCloseSuccess, isRelistSuccess, onSuccess]);
 
   return (
     <>
@@ -107,27 +143,68 @@ export default function MyBidDetail({
             tokenLogo={orderPointInfo.logoURI}
           />
 
-          {afterTGE && !isClosed && (
-            <WithWalletConnectBtn onClick={handleClose} shouldSignIn={true}>
-              <button
-                disabled={isClosing}
-                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
-              >
-                Close this offer
-              </button>
-            </WithWalletConnectBtn>
-          )}
-
-          {isSettled && (
+          {isSettled || afterTGEPeriod ? (
             <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
               Settlement Completed
             </button>
-          )}
-
-          {!isCanSettle && !isSettled && (
-            <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-              Awaiting settlement...
-            </button>
+          ) : (
+            <>
+              {isCanceled ? (
+                !afterTGE ? (
+                  <WithWalletConnectBtn
+                    onClick={handleRelist}
+                    shouldSignIn={true}
+                  >
+                    <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                      Relist this offer
+                    </button>
+                  </WithWalletConnectBtn>
+                ) : (
+                  <button
+                    disabled={true}
+                    className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                  >
+                    Offer Closed
+                  </button>
+                )
+              ) : (
+                <>
+                  {isClosed ? (
+                    <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                      Awaiting settlement...
+                    </button>
+                  ) : (
+                    <>
+                      {afterTGE ? (
+                        <WithWalletConnectBtn
+                          onClick={handleBidClose}
+                          shouldSignIn={true}
+                        >
+                          <button
+                            disabled={isBidClosing}
+                            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                          >
+                            Close bid offer
+                          </button>
+                        </WithWalletConnectBtn>
+                      ) : (
+                        <WithWalletConnectBtn
+                          onClick={handleClose}
+                          shouldSignIn={true}
+                        >
+                          <button
+                            disabled={isClosing}
+                            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                          >
+                            Close this offer
+                          </button>
+                        </WithWalletConnectBtn>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
           )}
         </div>
 

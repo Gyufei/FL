@@ -31,6 +31,7 @@ export default function MyAskDetail({
     isCanSettle,
     isSettled,
     afterTGE,
+    afterTGEPeriod
   } = useOfferFormat({
     offer: order,
   });
@@ -142,7 +143,7 @@ export default function MyAskDetail({
             </WithWalletConnectBtn>
           ) : (
             <>
-              {isSettled ? (
+              {(isSettled || afterTGEPeriod) ? (
                 <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                   Settlement Completed
                 </button>

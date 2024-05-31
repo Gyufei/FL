@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn-tadle.aggregation.top",
+        hostname: "preview-cdn.tadle.com",
       },
       {
         protocol: "https",

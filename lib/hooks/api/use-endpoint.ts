@@ -9,8 +9,8 @@ export function useEndPoint() {
   }, [clusterConfig]);
 
   const tokenEndPoint = useMemo(() => {
-    return "https://token.jup.ag/strict";
-  }, []);
+    return clusterConfig?.api.tokenApi;
+  }, [clusterConfig]);
 
   return {
     apiEndPoint,

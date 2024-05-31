@@ -8,6 +8,7 @@ export function useTokens() {
 
   async function tFetcher() {
     const tokens = await fetcher(tokenEndPoint);
+    console.log(tokens);
 
     return {
       tokens,

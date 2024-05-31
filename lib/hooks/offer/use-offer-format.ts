@@ -5,7 +5,6 @@ import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useMakerDetail } from "../api/use-maker-detail";
-import { useTokensInfo } from "../api/use-token-info";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail({
@@ -20,8 +19,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const tokenPrice = 1;
 
-  const [orderTokenInfo1] = useTokensInfo([makerDetail?.token_mint || null]);
-  console.log(orderTokenInfo1);
+  // const [orderTokenInfo1] = useTokensInfo([makerDetail?.token_mint || null]);
   const orderTokenInfo = {
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",

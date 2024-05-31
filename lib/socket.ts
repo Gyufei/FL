@@ -1,6 +1,7 @@
 
 import { io } from 'socket.io-client';
+import { WithWss } from './PathMap';
 
-const URL = "wss://wss-tadle.aggregation.top"
+const URL = WithWss();
 
 export const socket = io(URL);

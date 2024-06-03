@@ -2,10 +2,10 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
-import { Slider } from "@/components/ui/slider";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+// import { Slider } from "@/components/ui/slider";
 
 export default function ConfirmAskTakerSettleDialog({
   open,
@@ -23,8 +23,9 @@ export default function ConfirmAskTakerSettleDialog({
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
     useStockFormat({ stock: stock });
 
-  const [sliderMax] = useState(100);
-  const [sliderValue, setSliderValue] = useState(100);
+  // const [sliderMax] = useState(100);
+  // const [sliderValue, setSliderValue] = useState(100);
+  const [sliderValue] = useState(100);
 
   const pointAmount = !afterTGEPeriod ? stock.points : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
@@ -32,6 +33,10 @@ export default function ConfirmAskTakerSettleDialog({
   function handleSuccess() {
     onSuccess();
     onOpenChange(false);
+  }
+
+  if (open) {
+    console.log(stock, 123);
   }
 
   return (
@@ -82,7 +87,7 @@ export default function ConfirmAskTakerSettleDialog({
                 className="h-7 w-7 rounded-full"
               />
             </div>
-            <div className="mt-3 flex">
+            {/* <div className="mt-3 flex">
               <Slider
                 value={[sliderValue]}
                 onValueChange={(val: any[]) => setSliderValue(val[0])}
@@ -98,7 +103,7 @@ export default function ConfirmAskTakerSettleDialog({
               >
                 Max
               </div>
-            </div>
+            </div> */}
           </div>
 
           <ConfirmAskTakerSettleBtn

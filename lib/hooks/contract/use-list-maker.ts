@@ -22,10 +22,10 @@ export function useListStock({
 
   const writeAction = async ({
     receiveTokenAmount,
-    breachFee,
+    collateralRate,
   }: {
     receiveTokenAmount: number;
-    breachFee: number;
+    collateralRate: number;
   }) => {
     const {
       tokenProgram,
@@ -55,7 +55,7 @@ export function useListStock({
     const txHash = await program.methods
       .list(
         new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
-        new BN(breachFee),
+        new BN(collateralRate),
       )
       .accounts({
         authority: authority,

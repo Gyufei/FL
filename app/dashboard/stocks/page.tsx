@@ -29,6 +29,8 @@ export default function MyStocks() {
     return uniqBy(offs, "offer_id");
   }, [stocks]);
 
+  console.log(stocks, sortOrders);
+
   return (
     <div className="ml-5 flex flex-1 flex-col">
       <div className="flex items-center justify-between">

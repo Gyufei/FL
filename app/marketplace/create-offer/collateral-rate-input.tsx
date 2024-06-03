@@ -1,6 +1,6 @@
 import { NumericalInput } from "@/components/share/numerical-input";
 
-export default function SettleBreachFee({
+export default function CollateralRateInput({
   value,
   disabled = false,
   onValueChange,

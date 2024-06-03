@@ -21,14 +21,14 @@ export function useCreateOffer({
   const writeAction = async ({
     pointAmount,
     tokenAmount,
-    breachFee,
+    collateralRate,
     taxForSub,
     settleMode,
     note,
   }: {
     pointAmount: number;
     tokenAmount: number;
-    breachFee: number;
+    collateralRate: number;
     taxForSub: number;
     settleMode: ISettleMode,
     note: string;
@@ -79,7 +79,7 @@ export function useCreateOffer({
       .createOffer(
         new BN(pointAmount),
         new BN(tokenAmount * LAMPORTS_PER_SOL),
-        new BN(breachFee),
+        new BN(collateralRate),
         new BN(taxForSub),
         {
           [offerType]: {},

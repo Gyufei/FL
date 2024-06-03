@@ -6,8 +6,8 @@ import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOffer } from "@/lib/types/offer";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useState } from "react";
-import { Slider } from "@/components/ui/slider";
 import useMakerSettleAccount from "@/lib/hooks/api/use-maker-settle-account";
+// import { Slider } from "@/components/ui/slider";
 
 export default function ConfirmAskMakerSettleDialog({
   open,
@@ -44,8 +44,9 @@ export default function ConfirmAskMakerSettleDialog({
       isTurbo,
     });
 
-  const [sliderMax] = useState(100);
-  const [sliderValue, setSliderValue] = useState(100);
+  // const [sliderMax] = useState(100);
+  // const [sliderValue, setSliderValue] = useState(100);
+  const [sliderValue] = useState(100);
 
   const pointAmount = !afterTGEPeriod ? offer.used_points : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
@@ -103,7 +104,7 @@ export default function ConfirmAskMakerSettleDialog({
                 className="h-7 w-7 rounded-full"
               />
             </div>
-            <div className="mt-3 flex">
+            {/* <div className="mt-3 flex">
               <Slider
                 value={[sliderValue]}
                 onValueChange={(val: any[]) => setSliderValue(val[0])}
@@ -119,7 +120,7 @@ export default function ConfirmAskMakerSettleDialog({
               >
                 Max
               </div>
-            </div>
+            </div> */}
           </div>
 
           <ConfirmAskMakerSettleBtn

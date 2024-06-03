@@ -9,7 +9,7 @@ import { PointTokenSelectDisplay } from "./point-token-display";
 
 import ArrowBetween from "./arrow-between";
 import { WithTip } from "./with-tip";
-import SettleBreachFee from "./settle-breach-fee";
+import CollateralRateInput from "./collateral-rate-input";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
 import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
@@ -47,7 +47,7 @@ export function SellContent({
     decimals: 6,
   } as IToken);
 
-  const [breachFee, setBreachFee] = useState("");
+  const [collateralRate, setCollateralRate] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
   const [settleMode, setSettleMode] = useState(SettleModes[0]);
 
@@ -88,7 +88,7 @@ export function SellContent({
     writeAction({
       pointAmount: Number(sellPointAmount),
       tokenAmount: Number(receiveTokenAmount),
-      breachFee: Number(breachFee || 100) * 100,
+      collateralRate: Number(collateralRate || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
@@ -157,7 +157,7 @@ export function SellContent({
 
         <div className="mt-4 flex items-center justify-between space-x-3">
           <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
-          <SettleBreachFee value={breachFee} onValueChange={setBreachFee} />
+          <CollateralRateInput value={collateralRate} onValueChange={setCollateralRate} />
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
 

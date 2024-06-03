@@ -9,7 +9,7 @@ import { WithTip } from "../../../marketplace/create-offer/with-tip";
 import ArrowBetween from "../../../marketplace/create-offer/arrow-between";
 import { StableTokenSelectDisplay } from "../../../marketplace/create-offer/stable-token-display";
 import { PointTokenSelectDisplay } from "../../../marketplace/create-offer/point-token-display";
-import SettleBreachFee from "../../../marketplace/create-offer/settle-breach-fee";
+import CollateralRateInput from "../../../marketplace/create-offer/collateral-rate-input";
 import TaxForSubTrades from "../../../marketplace/create-offer/tax-for-sub-trades";
 import OrderNoteAndFee from "../../../marketplace/create-offer/order-note-and-fee";
 import ListBtn from "./list-btn";
@@ -38,7 +38,7 @@ export default function ListAskStockBtn({
   const [sellPointAmount] = useState(order.points);
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
-  const [breachFee, setBreachFee] = useState(
+  const [collateralRate, setCollateralRate] = useState(
     String(Number(order.pre_offer_detail.settle_breach_fee) / 100),
   );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
@@ -67,7 +67,7 @@ export default function ListAskStockBtn({
 
     writeAction({
       receiveTokenAmount: Number(receiveTokenAmount),
-      breachFee: Number(breachFee || 100) * 100,
+      collateralRate: Number(collateralRate || 100) * 100,
     });
   }
 
@@ -162,10 +162,10 @@ export default function ListAskStockBtn({
                 value={settleMode}
                 onValueChange={() => {}}
               />
-              <SettleBreachFee
+              <CollateralRateInput
                 disabled={settleMode === "turbo"}
-                value={breachFee}
-                onValueChange={setBreachFee}
+                value={collateralRate}
+                onValueChange={setCollateralRate}
               />
               <TaxForSubTrades
                 disabled

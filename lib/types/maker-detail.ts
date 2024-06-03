@@ -1,4 +1,4 @@
-export type ISettleMode = "progressive" | "direct";
+export type ISettleMode = "protected" | "turbo";
 
 export interface IMakerDetail {
   authority: string;

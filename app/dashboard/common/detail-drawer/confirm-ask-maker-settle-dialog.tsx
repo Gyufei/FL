@@ -32,7 +32,7 @@ export default function ConfirmAskMakerSettleDialog({
     offer: offer,
   });
 
-  const isDirect = makerDetail?.offer_settle_type === "direct";
+  const isTurbo = makerDetail?.offer_settle_type === "turbo";
 
   const { data: offerStocks, isLoading: isOfferStockLoading } = useOfferStocks({
     offer: offer,
@@ -41,7 +41,7 @@ export default function ConfirmAskMakerSettleDialog({
   const { data: makerSettleAccount, isLoading: isSettleAccountLoading } =
     useMakerSettleAccount({
       makerId: offer.maker_account,
-      isDirect,
+      isTurbo,
     });
 
   const [sliderMax] = useState(100);
@@ -128,9 +128,9 @@ export default function ConfirmAskMakerSettleDialog({
             orderStr={offer.offer_account}
             makerStr={offer.maker_account}
             settleAmount={settleAmount}
-            offerStocks={isDirect ? makerSettleAccount : offerStocks}
+            offerStocks={isTurbo ? makerSettleAccount : offerStocks}
             onSuccess={handleSuccess}
-            isDirect={isDirect}
+            isTurbo={isTurbo}
           />
         </div>
       </DialogContent>

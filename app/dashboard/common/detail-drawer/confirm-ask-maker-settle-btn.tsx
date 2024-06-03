@@ -9,7 +9,7 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr,
   settleAmount,
   offerStocks,
-  isDirect,
+  isTurbo,
   onSuccess,
 }: {
   isStocksLoading: boolean;
@@ -18,7 +18,7 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr: string;
   settleAmount: number;
   offerStocks: Array<Record<string, any>>;
-  isDirect: boolean;
+  isTurbo: boolean;
   onSuccess: () => void;
 }) {
   const {
@@ -47,7 +47,7 @@ export default function ConfirmAskMakerSettleBtn({
     writeAction({
       settleAmount,
       stockArr,
-      isDirect,
+      isTurbo,
     });
   }
 

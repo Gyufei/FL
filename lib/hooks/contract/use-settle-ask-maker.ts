@@ -22,7 +22,7 @@ export function useSettleAskMaker({
   const writeAction = async ({
     settleAmount,
     stockArr,
-    isDirect,
+    isTurbo,
   }: {
     settleAmount: number
     stockArr: Array<{
@@ -30,7 +30,7 @@ export function useSettleAskMaker({
       offer: string,
       authority: string,
     }>,
-    isDirect: boolean,
+    isTurbo: boolean,
   }) => {
     const {
       tokenProgram,
@@ -75,7 +75,7 @@ export function useSettleAskMaker({
         },
       ]
 
-      if (isDirect) {
+      if (isTurbo) {
         const offer = s.offer ? new PublicKey(s.offer) : new PublicKey(SolanaZeroed);
         stockArr.push({
           pubkey: offer,

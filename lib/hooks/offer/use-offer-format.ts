@@ -85,9 +85,9 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
       if (isLoadingMakerDetail) return false;
 
       const offerType = makerDetail?.offer_settle_type;
-      const isDirect = offerType === 'direct'
+      const isTurbo = offerType === 'turbo'
 
-      if (isDirect && offer.pre_offer) {
+      if (isTurbo && offer.pre_offer) {
         return false;
       }
 

@@ -7,7 +7,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ISettleMode } from "@/lib/types/maker-detail";
 
-export const SettleModes: Array<ISettleMode> = ["progressive", "direct"];
+export const SettleModes: Array<ISettleMode> = ["protected", "turbo"];
 
 export function SettleModeSelect({
   value,

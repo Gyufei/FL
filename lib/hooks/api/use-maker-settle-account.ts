@@ -5,15 +5,15 @@ import { Paths } from "@/lib/PathMap";
 
 export default function useMakerSettleAccount({
   makerId,
-  isDirect
+  isTurbo
 }: {
   makerId: string
-  isDirect: boolean
+  isTurbo: boolean
 }) {
   const { apiEndPoint } = useEndPoint();
   
   const MakerAccountFetcher = async () => {
-    if (!makerId || !isDirect ) return null;
+    if (!makerId || !isTurbo ) return null;
 
     const res = await fetcher(
       `${apiEndPoint}${Paths.makerSettleAccount}?maker_account=${makerId}`,

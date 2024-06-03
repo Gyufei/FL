@@ -11,6 +11,7 @@ import {
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
+import { SolanaZeroed } from "@/lib/constant";
 
 export function useFaucet() {
   const { provider } = useProvider();
@@ -18,7 +19,7 @@ export function useFaucet() {
   const { publicKey: authority } = useWallet();
 
   const programId = new PublicKey(
-    clusterConfig.program?.faucet?.tadleFaucet || "",
+    clusterConfig.program?.faucet?.tadleFaucet || SolanaZeroed,
   );
   const program = new anchor.Program(
     TadleFaucetAbi as any,
@@ -31,16 +32,16 @@ export function useFaucet() {
   const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
   const associatedTokenProgram = ASSOCIATED_TOKEN_PROGRAM_ID;
   const systemConfig = new PublicKey(
-    clusterConfig.program.faucet?.systemConfig || "",
+    clusterConfig.program.faucet?.systemConfig || SolanaZeroed,
   );
   const poolTokenAuthority = new PublicKey(
-    clusterConfig.program.faucet?.poolTokenAuthority || "",
+    clusterConfig.program.faucet?.poolTokenAuthority || SolanaZeroed
   );
 
   const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
 
   const poolUsdcTokenAccount = new PublicKey(
-    clusterConfig.program.faucet?.poolTokenAccount || '',
+    clusterConfig.program.faucet?.poolTokenAccount || SolanaZeroed,
   )
 
   const writeAction = async () => {

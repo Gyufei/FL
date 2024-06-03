@@ -42,7 +42,7 @@ export default function ListAskStockBtn({
     String(Number(order.pre_offer_detail.settle_breach_fee) / 100),
   );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
-  const settleMode = makerDetail?.offer_settle_type || "progressive";
+  const settleMode = makerDetail?.offer_settle_type || "protected";
 
   const [note, setNote] = useState("");
 
@@ -163,7 +163,7 @@ export default function ListAskStockBtn({
                 onValueChange={() => {}}
               />
               <SettleBreachFee
-                disabled={settleMode === "direct"}
+                disabled={settleMode === "turbo"}
                 value={breachFee}
                 onValueChange={setBreachFee}
               />

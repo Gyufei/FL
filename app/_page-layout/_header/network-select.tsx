@@ -20,8 +20,7 @@ import { Skeleton } from "../../../components/ui/skeleton";
 import { useAtom } from "jotai";
 import { ClusterAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { DevnetCard } from "./devnet-card";
-import SolanaDevIcon from "@/components/share/solana-dev-icon";
+import { DevnetRow } from "./devnet-row";
 
 function UseNetworkSelect() {
   const [cluster, setCluster] = useAtom(ClusterAtom);
@@ -91,19 +90,10 @@ export function NetworkSelect() {
           />
           <div className="flex-1 text-xs">Solana</div>
         </div>
-        <div
+        <DevnetRow
           onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
-          data-state={
-            WalletAdapterNetwork.Devnet === cluster ? "active" : "inactive"
-          }
-          className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
-        >
-          <SolanaDevIcon />
-          <div className="flex-1 text-xs">Solana Dev</div>
-        </div>
-        {WalletAdapterNetwork.Devnet === cluster && (
-          <DevnetCard isActive={WalletAdapterNetwork.Devnet === cluster} />
-        )}
+          isActive={cluster === WalletAdapterNetwork.Devnet}
+        />
         <div
           onClick={() => {}}
           data-state={"inactive"}
@@ -166,23 +156,10 @@ export function MbNetworkSelect() {
           />
           <div className="flex-1 text-xs">Solana</div>
         </div>
-        <div
+        <DevnetRow
           onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
-          data-state={
-            WalletAdapterNetwork.Devnet === cluster ? "active" : "inactive"
-          }
-          className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
-        >
-          <Image
-            width={24}
-            height={24}
-            src="/icons/solana.svg"
-            alt="chain logo"
-            className="z-10 bg-white"
-          />
-          <div className="flex-1 text-xs">Solana Dev</div>
-        </div>
-        <DevnetCard isActive={WalletAdapterNetwork.Devnet === cluster} />
+          isActive={WalletAdapterNetwork.Devnet === cluster}
+        />
         <div
           onClick={() => {}}
           data-state={"inactive"}

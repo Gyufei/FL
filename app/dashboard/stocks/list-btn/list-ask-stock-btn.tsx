@@ -39,7 +39,7 @@ export default function ListAskStockBtn({
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [collateralRate, setCollateralRate] = useState(
-    String(Number(order.pre_offer_detail.settle_breach_fee) / 100),
+    String(Number(order.pre_offer_detail.collateral_rate) / 100),
   );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
   const settleMode = makerDetail?.offer_settle_type || "protected";

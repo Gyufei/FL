@@ -17,14 +17,14 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
     });
 
   const totalColl = useMemo(() => {
-    if (Number(offer.settle_breach_fee) <= 100) {
+    if (Number(offer.collateral_rate) <= 100) {
       return amount;
     } else {
-      return NP.times(amount, Number(offer.settle_breach_fee) / 10 ** 4);
+      return NP.times(amount, Number(offer.collateral_rate) / 10 ** 4);
     }
 
     return amount;
-  }, [amount, offer.settle_breach_fee]);
+  }, [amount, offer.collateral_rate]);
 
   const orderType = offer.offer_type;
 
@@ -93,7 +93,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel tipText="">Collateral Rate</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
-            {NP.divide(offer.settle_breach_fee, 100)}%
+            {NP.divide(offer.collateral_rate, 100)}%
           </div>
         </div>
       </DetailRow>

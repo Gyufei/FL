@@ -103,7 +103,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel tipText="">Collateral Rate</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
-            {Number(offer.settle_breach_fee) / 100}%
+            {Number(offer.collateral_rate) / 100}%
           </div>
         </div>
       </DetailRow>

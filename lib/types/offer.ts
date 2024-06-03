@@ -22,7 +22,7 @@ export interface IOffer {
     | "settled";
   offer_type: IOfferType;
   order_note: string;
-  settle_breach_fee: string;
+  collateral_rate: string;
   settled_point_token_amount: string;
   settled_points: string;
   total_settled_points: string;

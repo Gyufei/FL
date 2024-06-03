@@ -23,19 +23,19 @@ export default function MenuCol() {
         href="/dashboard/orders"
         isActive={pathname === "/dashboard/orders"}
       >
-        <Image src="/icons/orders.svg" width={24} height={24} alt="orders" />
+        <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
       <MenuIcon
         href="/dashboard/stocks"
         isActive={pathname === "/dashboard/stocks"}
       >
-        <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
+        <Image src="/icons/stocks.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
       <MenuIcon
         href="/dashboard/balances"
         isActive={pathname === "/dashboard/balances"}
       >
-        <Image src="/icons/wallet.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/wallet.svg" width={24} height={24} alt="balances" />
       </MenuIcon>
       {/* <div
         onClick={handleComingSoon}

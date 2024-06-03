@@ -197,7 +197,7 @@ export const TadleAbi = {
           "type": "u64"
         },
         {
-          "name": "settleBreachFee",
+          "name": "collateralRate",
           "type": "u64"
         },
         {
@@ -379,7 +379,7 @@ export const TadleAbi = {
           "type": "u64"
         },
         {
-          "name": "settleBreachFee",
+          "name": "collateralRate",
           "type": "u64"
         }
       ]
@@ -1074,7 +1074,7 @@ export const TadleAbi = {
             "type": "u64"
           },
           {
-            "name": "settleBreachFee",
+            "name": "collateralRate",
             "type": "u64"
           },
           {
@@ -1281,10 +1281,10 @@ export const TadleAbi = {
         "kind": "enum",
         "variants": [
           {
-            "name": "Progressive"
+            "name": "Protected"
           },
           {
-            "name": "Direct"
+            "name": "Turbo"
           }
         ]
       }
@@ -1622,7 +1622,7 @@ export const TadleAbi = {
           "index": false
         },
         {
-          "name": "settleBreachFee",
+          "name": "collateralRate",
           "type": "u64",
           "index": false
         },
@@ -1672,7 +1672,7 @@ export const TadleAbi = {
           "index": false
         },
         {
-          "name": "settleBreachFee",
+          "name": "collateralRate",
           "type": "u64",
           "index": false
         },
@@ -1752,46 +1752,6 @@ export const TadleAbi = {
           "index": false
         }
       ]
-    },
-    {
-      "name": "SettleBidTakerEvent",
-      "fields": [
-        {
-          "name": "authority",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "maker",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "stock",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "preOffer",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "marketId",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "settleBreachFee",
-          "type": "u64",
-          "index": false
-        },
-        {
-          "name": "pointTokenAmount",
-          "type": "u64",
-          "index": false
-        }
-      ]
     }
   ],
   "errors": [
@@ -1853,7 +1813,7 @@ export const TadleAbi = {
     {
       "code": 6011,
       "name": "SettleBreachFeeMismatch",
-      "msg": "settle breach fee mismatch"
+      "msg": "collateral rate mismatch"
     },
     {
       "code": 6012,
@@ -1884,6 +1844,11 @@ export const TadleAbi = {
       "code": 6017,
       "name": "InvaildRemainingAccounts",
       "msg": "invaild remaining accounts"
+    },
+    {
+      "code": 6018,
+      "name": "InvaildTokenBalanceAccount",
+      "msg": "token balance account mismatch"
     }
   ],
   "metadata": {

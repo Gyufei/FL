@@ -1,6 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { EndPointPathMap } from "../PathMap";
+import { EndPointPathMap, isPreview } from "../PathMap";
 
 export const RPCS = {
   solanaFm: process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
@@ -83,7 +83,7 @@ export const DevnetCluster: Cluster = {
 
 export const ClusterAtom = atomWithStorage<WalletAdapterNetwork>(
   "cluster",
-  WalletAdapterNetwork.Mainnet,
+  isPreview ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet,
 );
 
 export const GlobalRpcsAtom = atomWithStorage<

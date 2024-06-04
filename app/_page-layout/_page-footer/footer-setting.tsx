@@ -15,6 +15,7 @@ import { useClusterConfig } from "@/lib/hooks/web3/use-cluster-config";
 import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
 import { Connection } from "@solana/web3.js";
+import { isPreview, isProduction } from "@/lib/PathMap";
 
 export default function FooterSetting() {
   const { setClusterType, clusterConfig } = useClusterConfig();
@@ -139,42 +140,48 @@ export default function FooterSetting() {
 
         <div className="mt-4 flex flex-col space-y-2">
           <div className="text-sm leading-5 text-black">Networks</div>
-          <NetItem
-            name="SolanaFM's RPC"
-            label="Mainnet"
-            rpc={RPCS.solanaFm}
-            checked={checkedRpc === RPCS.solanaFm}
-            onCheckedChange={() =>
-              handleCheck(RPCS.solanaFm, WalletAdapterNetwork.Mainnet)
-            }
-          />
-          <NetItem
-            name="SolanaFM's Devnet RPC"
-            label="Devnet"
-            rpc={RPCS.solanaFmDevnet}
-            checked={checkedRpc === RPCS.solanaFmDevnet}
-            onCheckedChange={() =>
-              handleCheck(RPCS.solanaFmDevnet, WalletAdapterNetwork.Devnet)
-            }
-          />
-          <NetItem
-            name="Solana"
-            label="Devnet"
-            rpc={RPCS.solanaDevnet}
-            checked={checkedRpc === RPCS.solanaDevnet}
-            onCheckedChange={() =>
-              handleCheck(RPCS.solanaDevnet, WalletAdapterNetwork.Devnet)
-            }
-          />
-          <NetItem
-            name="Solana"
-            label="Testnet"
-            rpc={RPCS.solanaTestnet}
-            checked={checkedRpc === RPCS.solanaTestnet}
-            onCheckedChange={() =>
-              handleCheck(RPCS.solanaTestnet, WalletAdapterNetwork.Testnet)
-            }
-          />
+          {!isPreview && (
+            <NetItem
+              name="SolanaFM's RPC"
+              label="Mainnet"
+              rpc={RPCS.solanaFm}
+              checked={checkedRpc === RPCS.solanaFm}
+              onCheckedChange={() =>
+                handleCheck(RPCS.solanaFm, WalletAdapterNetwork.Mainnet)
+              }
+            />
+          )}
+          {!isProduction && (
+            <>
+              <NetItem
+                name="SolanaFM's Devnet RPC"
+                label="Devnet"
+                rpc={RPCS.solanaFmDevnet}
+                checked={checkedRpc === RPCS.solanaFmDevnet}
+                onCheckedChange={() =>
+                  handleCheck(RPCS.solanaFmDevnet, WalletAdapterNetwork.Devnet)
+                }
+              />
+              <NetItem
+                name="Solana"
+                label="Devnet"
+                rpc={RPCS.solanaDevnet}
+                checked={checkedRpc === RPCS.solanaDevnet}
+                onCheckedChange={() =>
+                  handleCheck(RPCS.solanaDevnet, WalletAdapterNetwork.Devnet)
+                }
+              />
+              {/* <NetItem
+                name="Solana"
+                label="Testnet"
+                rpc={RPCS.solanaTestnet}
+                checked={checkedRpc === RPCS.solanaTestnet}
+                onCheckedChange={() =>
+                  handleCheck(RPCS.solanaTestnet, WalletAdapterNetwork.Testnet)
+                }
+              /> */}
+            </>
+          )}
         </div>
 
         <div className="relative mt-4 border-t border-dashed border-[#eee] pt-4">

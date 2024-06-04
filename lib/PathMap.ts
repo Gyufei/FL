@@ -1,4 +1,5 @@
-const isProduction = process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_IS_PREVIEW
+export const isProduction = process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_IS_PREVIEW
+export const isPreview = process.env.NEXT_PUBLIC_IS_PREVIEW
 
 export function WithHost(path: string) {
   const devHost = `https://preview-api.tadle.com`

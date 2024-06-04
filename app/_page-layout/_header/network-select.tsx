@@ -21,6 +21,7 @@ import { useAtom } from "jotai";
 import { ClusterAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { DevnetRow } from "./devnet-row";
+import { isPreview, isProduction } from "@/lib/PathMap";
 
 function UseNetworkSelect() {
   const [cluster, setCluster] = useAtom(ClusterAtom);
@@ -74,26 +75,30 @@ export function NetworkSelect() {
         }}
         align="start"
       >
-        <div
-          onClick={() => handleSelectNet(WalletAdapterNetwork.Mainnet)}
-          data-state={
-            WalletAdapterNetwork.Mainnet === cluster ? "active" : "inactive"
-          }
-          className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
-        >
-          <Image
-            width={24}
-            height={24}
-            src="/icons/solana.svg"
-            alt="chain logo"
-            className="z-10 rounded-full bg-white"
+        {!isPreview && (
+          <div
+            onClick={() => handleSelectNet(WalletAdapterNetwork.Mainnet)}
+            data-state={
+              WalletAdapterNetwork.Mainnet === cluster ? "active" : "inactive"
+            }
+            className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
+          >
+            <Image
+              width={24}
+              height={24}
+              src="/icons/solana.svg"
+              alt="chain logo"
+              className="z-10 rounded-full bg-white"
+            />
+            <div className="flex-1 text-xs">Solana</div>
+          </div>
+        )}
+        {!isProduction && (
+          <DevnetRow
+            onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
+            isActive={cluster === WalletAdapterNetwork.Devnet}
           />
-          <div className="flex-1 text-xs">Solana</div>
-        </div>
-        <DevnetRow
-          onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
-          isActive={cluster === WalletAdapterNetwork.Devnet}
-        />
+        )}
         <div
           onClick={() => {}}
           data-state={"inactive"}

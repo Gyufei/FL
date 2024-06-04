@@ -123,7 +123,7 @@ export default function MyAskDetail({
             }
             topText={
               <div className="flex items-center">
-                You will receive
+                You Get
                 <WithTip>
                   When buying {order.marketplace.point_name}s, you need to wait
                   until the {order.marketplace.point_name}s convert into the

@@ -109,14 +109,14 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">Inherit From</DetailLabel>
+        <DetailLabel tipText="">Previous Maker / Taker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
             #{originOffer?.offer_id || offer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
             {truncateAddr(
-              originOffer?.offer_account || offer.maker_account || "",
+              originOffer?.maker_account || offer.maker_account || "",
               {
                 nPrefix: 4,
                 nSuffix: 4,
@@ -126,7 +126,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
           <Image
             onClick={() =>
               handleGoScan(
-                originOffer?.offer_account || offer.maker_account || "",
+                originOffer?.maker_account || offer.maker_account || "",
               )
             }
             src="/icons/right-45.svg"
@@ -140,7 +140,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
       {isAsk && (
         <DetailRow>
-          <DetailLabel tipText="">Est. Settling At</DetailLabel>
+          <DetailLabel tipText="">Est. Settlement Time</DetailLabel>
           <div className="flex items-center space-x-1">
             {tgeTime ? (
               formatTimestamp(tgeTime)
@@ -152,7 +152,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       )}
 
       <DetailRow>
-        <DetailLabel tipText="">Origin Offer Maker</DetailLabel>
+        <DetailLabel tipText="">Initial Offer Maker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
             #{originOffer?.offer_id}
@@ -178,7 +178,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
       <DetailRow showBottomLine={false}>
         <DetailLabel tipText="">
-          {isAsk ? "Origin Offer Maker Tax Income" : "Your Tax Income"}
+          {isAsk ? "Initial Offer Maker Bonus" : "Your Bonus"}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">

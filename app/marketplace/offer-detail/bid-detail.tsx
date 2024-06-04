@@ -118,7 +118,7 @@ export default function BidDetail({
           />
 
           <ReceiveCard
-            topText={<>You will receive</>}
+            topText={<>You Get</>}
             bottomText={<>~${formatNum(receiveTokenTotalPrice)} </>}
             value={receiveTokenAmount}
             tokenLogo={offerLogo}

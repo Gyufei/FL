@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import Image from "next/image";
 import { ISettleMode } from "@/lib/types/maker-detail";
+import { capitalize } from "lodash";
 
 export const SettleModes: Array<ISettleMode> = ["protected", "turbo"];
 
@@ -40,7 +41,7 @@ export function SettleModeSelect({
               className="flex h-[50px] w-full cursor-pointer  items-center justify-between space-x-1 rounded-xl border border-[#D3D4D6] px-[16px] outline-none data-[disabled=true]:pointer-events-none data-[open=true]:border-focus data-[disabled=true]:bg-[#f0f1f5]"
             >
               <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">
-                {value}
+                {capitalize(value)}
               </div>
               <Image
                 data-open={popOpen}
@@ -70,7 +71,7 @@ export function SettleModeSelect({
                   data-checked={value === t}
                   className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
                 >
-                  {t}
+                  {capitalize(t)}
                 </div>
               </div>
             ))}

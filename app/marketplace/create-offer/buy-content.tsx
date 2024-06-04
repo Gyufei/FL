@@ -151,7 +151,7 @@ export function BuyContent({
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
 
-        <OrderNoteAndFee value={note} onValueChange={setNote} />
+        <OrderNoteAndFee value={note} onValueChange={setNote} type={"buy"} />
       </div>
 
       <WithWalletConnectBtn

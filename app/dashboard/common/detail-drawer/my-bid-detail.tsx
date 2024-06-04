@@ -111,7 +111,7 @@ export default function MyBidDetail({
 
           <SwapItemPanel
             className="mt-5"
-            topText={<>You have to pay</>}
+            topText={<>You Pay</>}
             bottomText={
               <>
                 1 {order.marketplace.point_name} = ${pointPerPrice}
@@ -131,7 +131,7 @@ export default function MyBidDetail({
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             topText={
               <div className="flex items-center">
-                You will receive
+                You Get
                 <WithTip>
                   When buying {order.marketplace.point_name}s, you need to wait
                   until the {order.marketplace.point_name}s convert into the

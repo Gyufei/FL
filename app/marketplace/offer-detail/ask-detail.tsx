@@ -119,7 +119,7 @@ export default function AskDetail({
           />
 
           <ReceiveCard
-            topText={<>You will receive</>}
+            topText={<>You Get</>}
             bottomText={
               <>
                 1 {offer.marketplace.point_name} = ${formatNum(pointPerPrice)}

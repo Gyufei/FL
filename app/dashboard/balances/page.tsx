@@ -197,7 +197,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "taxIncomeData"}
-                name="Tax Income"
+                name="Bonus Income"
                 walletCount={taxIncomeData?.length || 0}
                 totalAmount={taxIncomeTotal}
               />

@@ -149,7 +149,7 @@ export default function OverviewInfo() {
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>Tax Income</LabelText>
+              <LabelText>Bonus Income</LabelText>
               <div
                 data-loss={accountInfo?.tax_income < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"

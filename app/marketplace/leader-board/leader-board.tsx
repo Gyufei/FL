@@ -22,7 +22,7 @@ export default function LeaderBoard({
   className?: string;
   isLoading: boolean;
 }) {
-  const [leaderType, setLeaderType] = useState<ILeaderType>("Tax Income");
+  const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("hour");
 
   const { data: taxIncomeData, isLoading: taxIncomeLoading } =
@@ -45,7 +45,7 @@ export default function LeaderBoard({
 
   const data = useMemo(() => {
     switch (leaderType) {
-      case "Tax Income":
+      case "Bonus Income":
         return sortBy(taxIncomeData, [(o) => Number(o.amount)]).reverse();
       case "Maker Orders":
         return sortBy(makerOrdersData, [(o) => Number(o.count)]).reverse();

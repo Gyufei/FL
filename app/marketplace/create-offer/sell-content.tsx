@@ -157,11 +157,14 @@ export function SellContent({
 
         <div className="mt-4 flex items-center justify-between space-x-3">
           <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
-          <CollateralRateInput value={collateralRate} onValueChange={setCollateralRate} />
+          <CollateralRateInput
+            value={collateralRate}
+            onValueChange={setCollateralRate}
+          />
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
 
-        <OrderNoteAndFee value={note} onValueChange={setNote} />
+        <OrderNoteAndFee value={note} onValueChange={setNote} type={"sell"} />
       </div>
 
       <WithWalletConnectBtn

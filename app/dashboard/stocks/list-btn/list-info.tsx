@@ -14,7 +14,7 @@ export default function ListInfo({
         <div className="leading-6 text-black">#{id}</div>
       </div>
       <div className="flex-1 rounded-2xl bg-[#fafafa] p-4">
-        <div className="text-xs leading-[18px] text-gray">Inherit from</div>
+        <div className="text-xs leading-[18px] text-gray">Prev Maker/Taker</div>
         <div className="leading-6 text-black">#{inherit}</div>
       </div>
       <div className="flex-1 rounded-2xl bg-[#fafafa] p-4">

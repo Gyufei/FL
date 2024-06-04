@@ -6,8 +6,8 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
-export type ILeaderType = "Tax Income" | "Maker Orders" | "Trading Vol";
-const TradeTypes: ILeaderType[] = ["Tax Income", "Maker Orders", "Trading Vol"];
+export type ILeaderType = "Bonus Income" | "Maker Orders" | "Trading Vol";
+const TradeTypes: ILeaderType[] = ["Bonus Income", "Maker Orders", "Trading Vol"];
 
 export function LeaderTypeSelect({
   type,

@@ -6,9 +6,11 @@ import FeeDisplay from "./fee-display";
 export default function OrderNoteAndFee({
   value,
   onValueChange,
+  type,
 }: {
   value: string;
   onValueChange: (_v: string) => void;
+  type: "buy" | "sell";
 }) {
   const [showInput, setShowInput] = useState(false);
 
@@ -43,7 +45,9 @@ export default function OrderNoteAndFee({
             <Textarea
               value={value}
               onChange={(e) => handleInputNote(e.target.value)}
-              placeholder="Anything you want to inform the sellers..."
+              placeholder={`Anything you want to inform the ${
+                type === "buy" ? "seller" : "buyer"
+              }...`}
               className="h-[66px] rounded-xl border border-[#d8d8d8] focus:border-focus"
             />
             <div className="absolute right-4 bottom-2 text-xs leading-[18px] text-gray">

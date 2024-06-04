@@ -174,7 +174,7 @@ export default function ListAskStockBtn({
               />
             </div>
 
-            <OrderNoteAndFee value={note} onValueChange={setNote} />
+            <OrderNoteAndFee value={note} onValueChange={setNote} type="sell" />
           </div>
 
           <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>

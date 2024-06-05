@@ -1,13 +1,12 @@
 "use client";
 
+import { handleGoTwitter } from "@/lib/utils/social";
 import HoverIcon from "../../../components/share/hover-icon";
 import FooterSetting from "./footer-setting";
 import LanguageSetting from "./language-setting";
 import { LiveMs } from "./live-ms";
 
 export default function PageFooter() {
-  function handleGoTwitter() {}
-
   return (
     <div className="flex items-center justify-between px-6 pt-5 pb-4">
       <LiveMs />

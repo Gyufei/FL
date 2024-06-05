@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import useTge from "@/lib/hooks/marketplace/useTge";
+import { handleGoTwitter} from "@/lib/utils/social";
 
 export default function MarketplaceCard({
   marketplace,
@@ -52,8 +53,6 @@ export default function MarketplaceCard({
       message: "Copied to clipboard",
     });
   };
-
-  const handleGoTwitter = () => {};
 
   const handleGoDiscord = () => {};
 

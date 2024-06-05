@@ -1,9 +1,8 @@
 "use client";
+import { handleGoTwitter } from "@/lib/utils/social";
 import HoverIcon from "../../components/share/hover-icon";
 
 export default function HomeFooter() {
-  const handleGoTwitter = () => {};
-
   const handleGoDiscord = () => {};
 
   return (

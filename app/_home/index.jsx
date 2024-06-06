@@ -1,4 +1,4 @@
-import HomeCarousel from "./home-carousel";
+import HomeBanner from "./home-carousel";
 import TotalBanner from "./total-banner";
 import MarketPlace from "./marketplace-list";
 import Faqs from "./faqs";
@@ -10,7 +10,7 @@ import HomeFooter from "./home-footer";
 export default function Home() {
   return (
     <div className="mx-0">
-      <HomeCarousel />
+      <HomeBanner />
       <TotalBanner />
       <MarketPlace />
       <Faqs />

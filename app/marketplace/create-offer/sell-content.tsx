@@ -17,6 +17,7 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { isProduction } from "@/lib/PathMap";
 
 export function SellContent({
   marketplace,
@@ -44,7 +45,7 @@ export function SellContent({
   const [receiveToken, setReceiveToken] = useState<IToken>({
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
-    decimals: 6,
+    decimals: isProduction ? 6 : 9,
   } as IToken);
 
   const [collateralRate, setCollateralRate] = useState("");
@@ -87,7 +88,7 @@ export function SellContent({
 
     writeAction({
       pointAmount: Number(sellPointAmount),
-      tokenAmount: Number(receiveTokenAmount),
+      tokenAmount: Number(receiveTokenAmount) * 10 ** receiveToken.decimals,
       collateralRate: Number(collateralRate || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,

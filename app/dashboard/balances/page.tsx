@@ -22,6 +22,7 @@ import {
 import { useWithdrawPointToken } from "@/lib/hooks/contract/use-with-draw-point-token";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { isProduction } from "@/lib/PathMap";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -95,7 +96,7 @@ export default function MyBalances() {
           logoURI: market?.pointLogo,
           marketplaceId: t.market_place_account,
         };
-        const amount = NP.divide(t.amount, 10 ** 9);
+        const amount = NP.divide(t.amount, isProduction ? 10 ** 6 : 10 ** 9);
 
         return {
           amount: Number(amount),

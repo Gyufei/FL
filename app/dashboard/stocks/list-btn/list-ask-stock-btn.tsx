@@ -66,7 +66,8 @@ export default function ListAskStockBtn({
     }
 
     writeAction({
-      receiveTokenAmount: Number(receiveTokenAmount),
+      receiveTokenAmount:
+        Number(receiveTokenAmount) * 10 ** orderTokenInfo.decimals,
       collateralRate: Number(collateralRate || 100) * 100,
     });
   }

@@ -1,6 +1,6 @@
 import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./help/use-tx-status";
-import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
@@ -78,7 +78,7 @@ export function useCreateOffer({
     const txHash = await program.methods
       .createOffer(
         new BN(pointAmount),
-        new BN(tokenAmount * LAMPORTS_PER_SOL),
+        new BN(tokenAmount),
         new BN(collateralRate),
         new BN(taxForSub),
         {

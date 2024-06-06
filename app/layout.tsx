@@ -21,7 +21,7 @@ export const metadata = {
     description: "The First Pre SuperMarket",
     url: `https://${process.env.VERCEL_DOMAIN}`,
     siteName: "Tadle Market",
-    images: "/img/GGzCP6QaAAAm9Ye.png",
+    images: "/img/GGzCP6QaAAAm9YG.png",
     locale: "en_US",
     type: "website",
   },
@@ -49,7 +49,7 @@ export const metadata = {
     title: "Tadle Market",
     description: "The First Pre SuperMarket",
     creator: "@TadleMarket",
-    images: ["/img/GGzCP6QaAAAm9Ye.png"],
+    images: ["/img/GGzCP6QaAAAm9YG.png"],
   },
 };
 

@@ -31,6 +31,7 @@ export default function MyBidDetail({
     isSettled,
     afterTGE,
     afterTGEPeriod,
+    isFilled,
   } = useOfferFormat({
     offer: order,
   });
@@ -188,17 +189,27 @@ export default function MyBidDetail({
                           </button>
                         </WithWalletConnectBtn>
                       ) : (
-                        <WithWalletConnectBtn
-                          onClick={handleClose}
-                          shouldSignIn={true}
-                        >
-                          <button
-                            disabled={isClosing}
-                            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                        <>
+                          <WithWalletConnectBtn
+                            onClick={handleClose}
+                            shouldSignIn={true}
                           >
-                            Close this offer
-                          </button>
-                        </WithWalletConnectBtn>
+                            <button
+                              disabled={isClosing}
+                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                            >
+                              Close this offer
+                            </button>
+                          </WithWalletConnectBtn>
+                          <>
+                            {isFilled && (
+                              <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
+                                You have the option to close the offer before it
+                                is 100% filled.
+                              </div>
+                            )}
+                          </>
+                        </>
                       )}
                     </>
                   )}

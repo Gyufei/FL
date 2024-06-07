@@ -103,13 +103,13 @@ export default function ListAskStockBtn({
             <ListInfo
               id={order.stock_id}
               inherit={
-                order?.pre_offer_detail?.offer_id ||
-                order?.offer_detail?.offer_id ||
+                order?.pre_offer_detail?.maker_account ||
+                order?.offer_detail?.maker_account ||
                 ""
               }
               origin={
-                order?.pre_offer_detail?.offer_account ||
-                order?.offer_detail?.offer_account ||
+                order?.pre_offer_detail?.offer_id ||
+                order?.offer_detail?.offer_id ||
                 ""
               }
             />

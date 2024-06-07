@@ -31,7 +31,8 @@ export default function MyAskDetail({
     isCanSettle,
     isSettled,
     afterTGE,
-    afterTGEPeriod
+    afterTGEPeriod,
+    isFilled,
   } = useOfferFormat({
     offer: order,
   });
@@ -143,7 +144,7 @@ export default function MyAskDetail({
             </WithWalletConnectBtn>
           ) : (
             <>
-              {(isSettled || afterTGEPeriod) ? (
+              {isSettled || afterTGEPeriod ? (
                 <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                   Settlement Completed
                 </button>
@@ -170,17 +171,27 @@ export default function MyAskDetail({
                   ) : (
                     <>
                       {!isClosed && !afterTGE ? (
-                        <WithWalletConnectBtn
-                          onClick={handleClose}
-                          shouldSignIn={true}
-                        >
-                          <button
-                            disabled={isClosing}
-                            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                        <>
+                          <WithWalletConnectBtn
+                            onClick={handleClose}
+                            shouldSignIn={true}
                           >
-                            Close this offer
-                          </button>
-                        </WithWalletConnectBtn>
+                            <button
+                              disabled={isClosing}
+                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                            >
+                              Close this offer
+                            </button>
+                          </WithWalletConnectBtn>
+                          <>
+                            {isFilled && (
+                              <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
+                                You have the option to close the offer before it
+                                is 100% filled.
+                              </div>
+                            )}
+                          </>
+                        </>
                       ) : (
                         <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                           Awaiting settlement...

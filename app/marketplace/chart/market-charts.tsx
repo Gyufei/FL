@@ -63,11 +63,11 @@ function ChartSwitch({
   chartType: IChartType;
   handleChangeType: (_type: IChartType) => void;
 }) {
-  const isDepth = chartType === "depth";
+  // const isDepth = chartType === "depth";
   const isSales = chartType === "sales";
   return (
     <div className="flex space-x-1 rounded-full bg-[#F0F1F5] p-1">
-      <div
+      {/* <div
         data-checked={isDepth}
         className="flex cursor-pointer items-center rounded-full bg-transparent data-[checked=true]:bg-[#FAFAFA] data-[checked=true]:px-3 data-[checked=false]:px-[6px] data-[checked=true]:py-[6px]"
         onClick={() => handleChangeType("depth")}
@@ -81,7 +81,7 @@ function ChartSwitch({
         {isDepth && (
           <div className="ml-[6px] text-sm leading-5 text-black">Depth</div>
         )}
-      </div>
+      </div> */}
       <div
         data-checked={isSales}
         className="flex cursor-pointer items-center rounded-full bg-transparent data-[checked=true]:bg-[#FAFAFA] data-[checked=true]:px-3 data-[checked=false]:px-[6px] data-[checked=true]:py-[6px]"

@@ -4,6 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useCreateTaker({
   marketplaceStr,
@@ -21,6 +22,7 @@ export function useCreateTaker({
   preOfferAuthStr: string,
 }) {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
@@ -66,7 +68,7 @@ export function useCreateTaker({
       program.programId
     )[0];
 
-    const txHash = await program.methods
+    const methodTransaction = await program.methods
       .createTaker(new BN(pointAmount))
       .accounts({
         authority: authority,
@@ -106,9 +108,9 @@ export function useCreateTaker({
           isSigner: false,
           isWritable: true
         }
-      ])
-      .signers([seedAccount])
-      .rpc();
+      ]).transaction();
+
+    const txHash = await buildTransaction(methodTransaction, program, [seedAccount], authority!);
 
     await recordTransaction({
       txHash,

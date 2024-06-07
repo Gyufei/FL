@@ -3,6 +3,7 @@ import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useRelistOffer({
   marketplaceStr,
@@ -16,6 +17,7 @@ export function useRelistOffer({
   stockStr: string;
 }) {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
@@ -36,7 +38,7 @@ export function useRelistOffer({
     const maker = new PublicKey(makerStr);
     const stockD = new PublicKey(stockStr);
 
-    const txHash = await program.methods
+    const methodTransaction = await program.methods
       .relist()
       .accounts({
         authority: authority,
@@ -51,16 +53,15 @@ export function useRelistOffer({
         tokenProgram,
         tokenProgram2022,
         systemProgram,
-      })
-      .signers([])
-      .remainingAccounts([
+      }).remainingAccounts([
         {
           pubkey: userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         }
-      ])
-      .rpc();
+      ]).transaction();
+
+    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
 
     await recordTransaction({
       txHash,

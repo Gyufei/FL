@@ -16,6 +16,7 @@ import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
 import { Connection } from "@solana/web3.js";
 import { isPreview, isProduction } from "@/lib/PathMap";
+import { getDomainName } from "@/lib/utils/common";
 
 export default function FooterSetting() {
   const { setClusterType, clusterConfig } = useClusterConfig();
@@ -30,6 +31,7 @@ export default function FooterSetting() {
   const [inputRpcActive, setInputRpcActive] = useState(false);
   const [inputRpcError, setInputRpcError] = useState(false);
   const [showInput, setShowInput] = useState(true);
+  const [inputRpcLatency, setInputRpcLatency] = useState(0);
 
   useEffect(() => {
     if (customRpc[clusterConfig.network]) {
@@ -94,6 +96,19 @@ export default function FooterSetting() {
     }
   }
 
+  useEffect(() => {
+    if (!inputRpc || !inputRpcActive) {
+      return;
+    }
+
+    async function getRpcMs() {
+      const latency = await testRpcLatency(inputRpc);
+      setInputRpcLatency(latency);
+    }
+
+    getRpcMs();
+  }, [inputRpc, inputRpcActive]);
+
   async function testRpcLatency(testRpc: string) {
     const connection = new Connection(testRpc);
 
@@ -104,6 +119,10 @@ export default function FooterSetting() {
     const latency = endTimestamp - startTimestamp;
 
     return latency;
+  }
+
+  function handleCheckCustomRpc() {
+    return;
   }
 
   return (
@@ -142,28 +161,28 @@ export default function FooterSetting() {
           <div className="text-sm leading-5 text-black">Networks</div>
           {!isPreview && (
             <NetItem
-              name="SolanaFM's RPC"
+              name="Tadle RPC 1"
               label="Mainnet"
-              rpc={RPCS.solanaFm}
-              checked={checkedRpc === RPCS.solanaFm}
+              rpc={RPCS.TadleRPC1}
+              checked={checkedRpc === RPCS.TadleRPC1}
               onCheckedChange={() =>
-                handleCheck(RPCS.solanaFm, WalletAdapterNetwork.Mainnet)
+                handleCheck(RPCS.TadleRPC1, WalletAdapterNetwork.Mainnet)
               }
             />
           )}
           {!isProduction && (
             <>
               <NetItem
-                name="SolanaFM's Devnet RPC"
+                name="Tadle Devnet RPC 1"
                 label="Devnet"
-                rpc={RPCS.solanaFmDevnet}
-                checked={checkedRpc === RPCS.solanaFmDevnet}
+                rpc={RPCS.TadleDevRPC1}
+                checked={checkedRpc === RPCS.TadleDevRPC1}
                 onCheckedChange={() =>
-                  handleCheck(RPCS.solanaFmDevnet, WalletAdapterNetwork.Devnet)
+                  handleCheck(RPCS.TadleDevRPC1, WalletAdapterNetwork.Devnet)
                 }
               />
               <NetItem
-                name="Solana"
+                name="Solana Devnet RPC"
                 label="Devnet"
                 rpc={RPCS.solanaDevnet}
                 checked={checkedRpc === RPCS.solanaDevnet}
@@ -171,15 +190,6 @@ export default function FooterSetting() {
                   handleCheck(RPCS.solanaDevnet, WalletAdapterNetwork.Devnet)
                 }
               />
-              {/* <NetItem
-                name="Solana"
-                label="Testnet"
-                rpc={RPCS.solanaTestnet}
-                checked={checkedRpc === RPCS.solanaTestnet}
-                onCheckedChange={() =>
-                  handleCheck(RPCS.solanaTestnet, WalletAdapterNetwork.Testnet)
-                }
-              /> */}
             </>
           )}
         </div>
@@ -192,7 +202,7 @@ export default function FooterSetting() {
                 placeholder="Input your custom RPC URL here..."
                 value={inputRpc}
                 onChange={(e) => setInputRpc(e.target.value)}
-                className="h-10 rounded-lg border-none bg-[#fafafa] pl-3 data-[error]:border-red"
+                className="h-10 rounded-lg border-none bg-[#fafafa] pl-3 pr-[50px] data-[error]:border-red"
               />
               <Image
                 onClick={handleLinkCustomRpc}
@@ -208,20 +218,29 @@ export default function FooterSetting() {
               />
             </>
           ) : (
-            <div className="flex items-center">
-              <div className="w-[240px] break-all">{inputRpc}</div>
-              <div
-                className="flex cursor-pointer items-center space-x-1"
-                onClick={() => setShowInput(true)}
-              >
-                <Image
-                  src="/icons/edit.svg"
-                  width={20}
-                  height={20}
-                  alt="edit"
-                />
-                <div className="text-sm leading-5 text-gray">Edit</div>
+            <div className="flex items-center rounded-lg bg-[#fafafa] px-3 py-2">
+              <div className="flex w-[240px] flex-col">
+                <div className="flex items-center justify-between text-xs leading-[18px]">
+                  <div className="text-clip">{getDomainName(inputRpc)}</div>
+                  <MsDisplay ms={inputRpcLatency} />
+                </div>
+                <div className="text-[10px] leading-4 text-gray">
+                  {isProduction ? "Mainnet" : "Devnet"}
+                </div>
               </div>
+              <Image
+                onClick={() => setShowInput(true)}
+                src="/icons/edit.svg"
+                width={20}
+                height={20}
+                alt="edit"
+                className="mx-2 cursor-pointer"
+              />
+              <Checkbox
+                checked={inputRpcActive}
+                onCheckedChange={() => handleCheckCustomRpc()}
+                className="rounded-full"
+              />
             </div>
           )}
           {inputRpcError && (
@@ -250,38 +269,16 @@ function NetItem({
 }) {
   const { data: ms } = useRpcLatency(rpc);
 
-  const msColor = useMemo(() => {
-    if (!ms) return "#3DD866";
-    if (ms < 100) return "#3DD866";
-    if (ms > 99 && ms < 200) return "#FFA95B";
-    if (ms > 200) return "#FF6262";
-  }, [ms]);
-
   return (
     <div
       data-active={checked}
       className="flex items-center justify-between rounded-lg px-3 py-2 data-[active=true]:bg-[#fafafa]"
     >
       <div className="flex items-center justify-start">
-        <Image
-          src="/img/token-placeholder.png"
-          width={32}
-          height={32}
-          className="rounded-full"
-          alt="net"
-        />
         <div className="ml-2 flex flex-col text-xs leading-[18px] text-black">
           <div className="flex items-center space-x-1">
             <div>{name}</div>
-            {ms && (
-              <div
-                style={{
-                  color: msColor,
-                }}
-              >
-                {ms}ms
-              </div>
-            )}
+            <MsDisplay ms={ms} />
           </div>
           <div className="text-[10px] leading-4 text-gray">{label}</div>
         </div>
@@ -292,6 +289,27 @@ function NetItem({
         onCheckedChange={(v) => onCheckedChange(!!v)}
         className="rounded-full"
       />
+    </div>
+  );
+}
+
+function MsDisplay({ ms }: { ms: number | undefined }) {
+  const msColor = useMemo(() => {
+    if (!ms) return "#3DD866";
+    if (ms < 100) return "#3DD866";
+    if (ms > 99 && ms < 200) return "#FFA95B";
+    if (ms > 200) return "#FF6262";
+  }, [ms]);
+
+  if (!ms) return null;
+
+  return (
+    <div
+      style={{
+        color: msColor,
+      }}
+    >
+      {ms}ms
     </div>
   );
 }

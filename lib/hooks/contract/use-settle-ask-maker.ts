@@ -5,6 +5,7 @@ import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
 import { SolanaZeroed } from "@/lib/constant";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useSettleAskMaker({
   marketplaceStr,
@@ -16,6 +17,7 @@ export function useSettleAskMaker({
   offerStr: string;
 }) {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
@@ -106,7 +108,7 @@ export function useSettleAskMaker({
 
     const stockAccounts = stockAccountP.flat();
 
-    const txHash = await program.methods
+    const methodTransaction = await program.methods
       .settleAskMaker(new BN(settleAmount))
       .accounts({
         manager: authority,
@@ -136,9 +138,9 @@ export function useSettleAskMaker({
           isWritable: true
         },
         ...stockAccounts,
-      ])
-      .signers([])
-      .rpc();
+      ]).transaction();
+
+    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
 
     await recordTransaction({
       txHash,

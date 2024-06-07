@@ -3,6 +3,7 @@ import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export type IBalanceType = "taxIncome" |
       "referralBonus" |
@@ -12,6 +13,7 @@ export type IBalanceType = "taxIncome" |
 
 export function useWithdrawBaseToken() {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
@@ -47,7 +49,7 @@ export function useWithdrawBaseToken() {
     )[0];
 
 
-    const txHash = await program.methods.withdrawBaseToken(
+    const methodTransaction = await program.methods.withdrawBaseToken(
       {
         [mode]: {}
       }
@@ -68,7 +70,9 @@ export function useWithdrawBaseToken() {
         isSigner: false,
         isWritable: true
       }
-    ]).signers([]).rpc();
+    ]).transaction()
+
+    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
 
     await recordTransaction({
       txHash,

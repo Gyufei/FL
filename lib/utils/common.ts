@@ -18,3 +18,13 @@ export function calculateTime(seconds: number) {
     hours,
   };
 }
+
+export function getDomainName(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.hostname;
+  } catch (error) {
+    console.error('Invalid URL:', error);
+    return url;
+  }
+}

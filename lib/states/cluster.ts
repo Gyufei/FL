@@ -3,8 +3,8 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { EndPointPathMap, isPreview } from "../PathMap";
 
 export const RPCS = {
-  solanaFm: process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
-  solanaFmDevnet: "https://rpc.ankr.com/solana_devnet",
+  TadleRPC1: process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
+  TadleDevRPC1: "https://rpc.ankr.com/solana_devnet",
   solanaDevnet: "https://api.devnet.solana.com/",
   solanaTestnet: "https://api.testnet.solana.com/",
 };
@@ -69,7 +69,7 @@ export const ClusterAtom = atomWithStorage<WalletAdapterNetwork>(
 export const GlobalRpcsAtom = atomWithStorage<
   Record<WalletAdapterNetwork, string | null>
 >("gRpc", {
-  [WalletAdapterNetwork.Mainnet]: RPCS.solanaFm,
+  [WalletAdapterNetwork.Mainnet]: RPCS.TadleRPC1,
   [WalletAdapterNetwork.Devnet]: RPCS.solanaDevnet,
   [WalletAdapterNetwork.Testnet]: RPCS.solanaTestnet,
 });

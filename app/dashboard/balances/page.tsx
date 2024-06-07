@@ -30,6 +30,11 @@ const TokenListMap: Record<string, IToken> = {
     logoURI: "/icons/usdc.svg",
     decimals: 9,
   } as IToken,
+  EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v: {
+    symbol: "USDC",
+    logoURI: "/icons/usdc.svg",
+    decimals: 6,
+  } as IToken,
 };
 
 export default function MyBalances() {
@@ -404,7 +409,10 @@ function TokenGetCard({
           </div>
         </div>
         <WithWalletConnectBtn onClick={onClick} shouldSignIn={true}>
-          <div className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow">
+          <div
+            data-active={amount > 0}
+            className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow data-[active=false]:pointer-events-none data-[active=false]:opacity-70"
+          >
             Get
           </div>
         </WithWalletConnectBtn>

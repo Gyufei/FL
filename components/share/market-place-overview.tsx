@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { formatNum } from "@/lib/utils/number";
 import { Skeleton } from "../ui/skeleton";

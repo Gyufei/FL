@@ -5,7 +5,7 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { IMakerDetail } from "@/lib/types/maker-detail";
 
-export function useMakerDetail({ makerId }: { makerId: string }) {
+export function useMakerDetail({ makerId }: { makerId: string | undefined }) {
   const { apiEndPoint } = useEndPoint();
 
   const MakerFetcher = async () => {

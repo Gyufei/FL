@@ -6,6 +6,8 @@ import MyAskDetail from "./my-ask-detail";
 import MyBidDetail from "./my-bid-detail";
 import { useEffect, useMemo, useState } from "react";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
+import { upperFirst } from "lodash";
+import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 
 export default function DetailDrawer({
   orders,
@@ -21,6 +23,12 @@ export default function DetailDrawer({
   const order = useMemo(() => {
     return orders?.find((o) => o.offer_id === orderId);
   }, [orders, orderId]);
+
+  const { data: makerDetail } = useMakerDetail({
+    makerId: order?.maker_account,
+  });
+
+  const settleMode = upperFirst(makerDetail?.offer_settle_type);
 
   const isAsk = useMemo(() => {
     return order?.offer_type === "ask";
@@ -58,7 +66,7 @@ export default function DetailDrawer({
       customIdSuffix="detail-drawer"
     >
       <DrawerTitle
-        title={`My ${isAsk ? "Ask" : "Bid"} Offer Detail`}
+        title={`My ${isAsk ? "Ask" : "Bid"} Offer Detail [${settleMode}]`}
         onClose={() => setDrawerOpen(false)}
       />
       {order &&

@@ -42,7 +42,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offer.points)} pts
+            {formatNum(offer.points)} Vol
           </div>
           <Image
             src={orderPointInfo.logoURI}

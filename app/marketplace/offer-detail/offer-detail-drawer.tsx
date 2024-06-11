@@ -6,6 +6,8 @@ import BidDetail from "../offer-detail/bid-detail";
 import OrderFillDialog from "../offer-detail/order-fill-dialog";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IOffer } from "@/lib/types/offer";
+import { upperFirst } from "lodash";
+import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 
 export default function OfferDetailDrawer({
   orders,
@@ -19,6 +21,12 @@ export default function OfferDetailDrawer({
   const order = useMemo(() => {
     return orders?.find((o) => o.offer_id === orderId);
   }, [orders, orderId]);
+
+  const { data: makerDetail } = useMakerDetail({
+    makerId: order?.maker_account,
+  });
+
+  const settleMode = upperFirst(makerDetail?.offer_settle_type);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [orderFillDialog, setOrderFillDialog] = useState(false);
@@ -60,7 +68,7 @@ export default function OfferDetailDrawer({
         className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={`${isAsk ? "Ask" : "Bid"} Offer Detail`}
+          title={`${isAsk ? "Ask" : "Bid"} Offer Detail [${settleMode}]`}
           onClose={() => setDrawerOpen(false)}
         />
         {isAsk ? (

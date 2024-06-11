@@ -44,8 +44,12 @@ export default function MarketplaceOverview({
             <ValueSkeleton />
           ) : (
             <div
-              data-up={Number(marketplace!.change_rate_24h) > 0}
-              className="text-sm leading-5 data-[up=true]:text-green data-[up=false]:text-red"
+              data-up={
+                Number(marketplace!.change_rate_24h) === 0
+                  ? "zero"
+                  : Number(marketplace!.change_rate_24h) > 0
+              }
+              className="text-sm leading-5 data-[up=zero]:text-black data-[up=true]:text-green data-[up=false]:text-red"
             >
               {marketplace!.change_rate_24h}%
             </div>

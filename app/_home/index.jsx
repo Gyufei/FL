@@ -1,4 +1,4 @@
-import HomeBanner from "./home-carousel";
+import HomeBanner from "./home-banner";
 import TotalBanner from "./total-banner";
 import MarketPlace from "./marketplace-list";
 import Faqs from "./faqs";

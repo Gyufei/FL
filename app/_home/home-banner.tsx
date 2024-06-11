@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import NewestItemCard from "./newest-item-card";
 
 export default function HomeBanner() {
   return (
@@ -27,6 +28,8 @@ export default function HomeBanner() {
           <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
         </div>
       </div>
+
+      <NewestItemCard />
 
     </div>
   );

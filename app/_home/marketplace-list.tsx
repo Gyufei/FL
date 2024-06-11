@@ -10,10 +10,13 @@ export default function MarketplaceList() {
   const { data: marketplaceData } = useMarketplaces();
 
   return (
-    <div className="no-scroll-bar mt-6 flex items-start gap-x-5 gap-y-9 overflow-x-auto overflow-y-visible px-4 py-5 sm:grid sm:grid-cols-4 sm:items-stretch sm:overflow-x-hidden sm:px-[120px]">
-      {(marketplaceData || []).map((marketplace) => (
-        <ItemCard key={marketplace.market_id} marketplace={marketplace} />
-      ))}
+    <div className="flex flex-col items-center pt-20">
+      <div className="text-[40px] leading-10 text-black">Trending Projects</div>
+      <div className="no-scroll-bar mt-6 flex w-full items-start gap-x-5 gap-y-9 overflow-x-auto overflow-y-visible px-4 py-5 sm:grid sm:grid-cols-4 sm:items-stretch sm:overflow-x-hidden">
+        {(marketplaceData || []).map((marketplace) => (
+          <ItemCard key={marketplace.market_id} marketplace={marketplace} />
+        ))}
+      </div>
     </div>
   );
 }

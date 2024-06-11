@@ -12,12 +12,16 @@ export default function Faqs() {
   const [openIdx, setOpenIdx] = useState(-1);
 
   return (
-    <div className="mt-[60px] px-4 sm:px-[120px]">
-      <div className="text-center text-base leading-6 text-lightgray sm:text-[28px] sm:leading-10">
-        FAQ&apos;s
-      </div>
-      <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
-        Find out more about Tadle Market
+    <div className="mt-[60px] bg-[rgba(224,255,98,0.1)] px-4 py-20 sm:px-[120px]">
+      <div className="flex items-start justify-between">
+        <div />
+        <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
+          FAQ
+        </div>
+        <div className="flex cursor-pointer items-center space-x-1">
+          <div className="text-lg leading-6 text-black">More</div>
+          <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+        </div>
       </div>
 
       <Collapsible
@@ -29,16 +33,17 @@ export default function Faqs() {
         }}
       >
         <CollapsibleTrigger asChild>
-          <CollTrigger isOpen={openIdx === 0}>
-            What is Tadle Market?
-          </CollTrigger>
+          <CollTrigger isOpen={openIdx === 0}>What is Point?</CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Tadle Market, built on Tadle Application Layer, is the inaugural pre
-            supermarket where users can trade points and future tokens from
-            different projects across various blockchains all in one convenient
-            platform.
+            Our audit contests are extremely cost-effective. Clients pay a small
+            fixed fee to post a bounty for community participation. The more
+            issues found, the more the rewards paid from that bounty. We handle
+            verifying issues and payouts to make it simple. The collective
+            insights greatly outweigh the small fixed cost. Ready to tap into
+            community expertise and boost your security? Request an audit today
+            to get started.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -52,7 +57,9 @@ export default function Faqs() {
         }}
       >
         <CollapsibleTrigger asChild>
-          <CollTrigger isOpen={openIdx === 1}>What are “Points”?</CollTrigger>
+          <CollTrigger isOpen={openIdx === 1}>
+            What is Point Market?
+          </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
@@ -74,7 +81,7 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 2}>
-            What makes Tadle Market stand out?
+            How do I start to trade?
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
@@ -89,34 +96,6 @@ export default function Faqs() {
             stages. Tadle Market employs funds with exceptional efficiency,
             ensuring that buyers and sellers can engage in transactions with
             confidence, safety, and optimal efficiency.
-          </CollContent>
-        </CollapsibleContent>
-      </Collapsible>
-
-      <Collapsible
-        open={openIdx === 3}
-        onOpenChange={(open) => setOpenIdx(open ? 3 : -1)}
-        className="py-6"
-        style={{
-          boxShadow: "inset 0px -2px 0px 0px #F0F1F5",
-        }}
-      >
-        <CollapsibleTrigger asChild>
-          <CollTrigger isOpen={openIdx === 3}>
-            How does Tadle Market work?
-          </CollTrigger>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <CollContent>
-            Empowered by smart contracts, Tadle Market is committed to
-            streamlining on-chain transactions that benefit both buyers and
-            sellers, fostering a secure and transparent marketplace environment.
-            One of the key features enhancing security on the platform is the
-            collateral mechanism. This mechanism acts as a safeguard for market
-            participants, mitigating risks and providing an additional layer of
-            protection. By requiring collateral, Tadle Market minimizes the
-            potential for fraudulent activities and ensures that transactions
-            proceed smoothly and fairly.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>

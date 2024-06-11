@@ -3,6 +3,7 @@ import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useCloseBidOffer({
   marketplaceStr,
@@ -16,6 +17,7 @@ export function useCloseBidOffer({
   const { program } = useTadleProgram();
   const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async () => {
@@ -33,7 +35,7 @@ export function useCloseBidOffer({
       walletBaseTokenBalance: walletDBaseTokenBalance,
     } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
 
-    const txHash = await program.methods
+    const methodTransaction = await program.methods
       .closeBidOffer()
       .accounts({
         authority,
@@ -43,8 +45,9 @@ export function useCloseBidOffer({
         maker,
         marketPlace,
         systemProgram,
-      })
-      .signers([]).rpc();
+      }).transaction();
+
+    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
 
     await recordTransaction({
       txHash,

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { formatNum } from "@/lib/utils/number";
 import { Skeleton } from "../ui/skeleton";
@@ -22,7 +21,6 @@ export default function MarketplaceOverview({
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
               {formatNum(marketplace!.floor_price, 6)}
-              <Image src="/icons/eth.svg" width={18} height={18} alt="token" />
             </div>
           )}
         </div>
@@ -33,7 +31,7 @@ export default function MarketplaceOverview({
             <ValueSkeleton />
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
-              {formatNum(marketplace!.total_vol)}
+              ${formatNum(marketplace!.total_vol)}
             </div>
           )}
         </div>

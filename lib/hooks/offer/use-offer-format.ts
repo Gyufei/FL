@@ -5,6 +5,7 @@ import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useMakerDetail } from "../api/use-maker-detail";
+import { isProduction } from "@/lib/PathMap";
 // import { useTokensInfo } from "../api/use-token-info";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
@@ -24,7 +25,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const orderTokenInfo = {
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
-    decimals: 9,
+    decimals: isProduction ? 6 : 9,
   } as IToken;
 
   const orderPointInfo: IPoint = {

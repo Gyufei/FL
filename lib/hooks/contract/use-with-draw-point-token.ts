@@ -3,9 +3,11 @@ import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useWithdrawPointToken() {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
@@ -37,7 +39,7 @@ export function useWithdrawPointToken() {
       program.programId
     )[0];
 
-    const txHash = await program.methods.withdrawPointToken().accounts({
+    const methodTransaction = await program.methods.withdrawPointToken().accounts({
       authority,
       userPointTokenBalance,
       poolTokenAuthority,
@@ -54,7 +56,9 @@ export function useWithdrawPointToken() {
         isSigner: false,
         isWritable: true
       }
-    ]).signers([]).rpc();
+    ]).transaction();
+
+    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
 
     await recordTransaction({
       txHash,

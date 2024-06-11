@@ -4,6 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useSettleAskTaker({
   marketplaceStr,
@@ -19,6 +20,7 @@ export function useSettleAskTaker({
   preOfferAuthorityStr: string;
 }) {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
@@ -65,7 +67,7 @@ export function useSettleAskTaker({
     } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace)
 
 
-    const txHash = await program.methods
+    const methodTransaction = await program.methods
       .settleAskTaker(new BN(settleAmount))
       .accounts({
         manager: authority!,
@@ -87,7 +89,6 @@ export function useSettleAskTaker({
         associatedTokenProgram,
         systemProgram,
       })
-      .signers([])
       .remainingAccounts([
         {
           pubkey: userPointsTokenAccount,
@@ -99,8 +100,10 @@ export function useSettleAskTaker({
           isSigner: false,
           isWritable: true
         },
-      ])
-      .rpc();
+      ]).transaction();
+
+      
+    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
 
     await recordTransaction({
       txHash,

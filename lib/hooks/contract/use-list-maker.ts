@@ -1,9 +1,10 @@
 import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./help/use-tx-status";
-import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
+import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useListStock({
   marketplaceStr,
@@ -17,6 +18,7 @@ export function useListStock({
   originOfferStr: string;
 }) {
   const { program } = useTadleProgram();
+  const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
@@ -52,9 +54,9 @@ export function useListStock({
       program.programId
     )[0];
 
-    const txHash = await program.methods
+    const methodTransaction = await program.methods
       .list(
-        new BN(receiveTokenAmount * LAMPORTS_PER_SOL),
+        new BN(receiveTokenAmount),
         new BN(collateralRate),
       )
       .accounts({
@@ -71,14 +73,15 @@ export function useListStock({
         tokenProgram,
         tokenProgram2022,
         systemProgram,
-      }).signers([seedAccount]).remainingAccounts([
+      }).remainingAccounts([
         {
           pubkey: walletDUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         }
-      ])
-      .rpc();
+      ]).transaction();
+
+    const txHash = await buildTransaction(methodTransaction, program, [seedAccount], authority!);
 
     await recordTransaction({
       txHash,

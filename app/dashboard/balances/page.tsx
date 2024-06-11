@@ -22,12 +22,18 @@ import {
 import { useWithdrawPointToken } from "@/lib/hooks/contract/use-with-draw-point-token";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { isProduction } from "@/lib/PathMap";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
     decimals: 9,
+  } as IToken,
+  EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v: {
+    symbol: "USDC",
+    logoURI: "/icons/usdc.svg",
+    decimals: 6,
   } as IToken,
 };
 
@@ -95,7 +101,7 @@ export default function MyBalances() {
           logoURI: market?.pointLogo,
           marketplaceId: t.market_place_account,
         };
-        const amount = NP.divide(t.amount, 10 ** 9);
+        const amount = NP.divide(t.amount, isProduction ? 10 ** 6 : 10 ** 9);
 
         return {
           amount: Number(amount),
@@ -403,7 +409,10 @@ function TokenGetCard({
           </div>
         </div>
         <WithWalletConnectBtn onClick={onClick} shouldSignIn={true}>
-          <div className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow">
+          <div
+            data-active={amount > 0}
+            className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow data-[active=false]:pointer-events-none data-[active=false]:opacity-70"
+          >
             Get
           </div>
         </WithWalletConnectBtn>

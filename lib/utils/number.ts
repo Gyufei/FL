@@ -164,11 +164,15 @@ export function dealDecimals(num: NumberType, decimals: NumberType) {
     const point = isDealPoint[1];
 
     if (point?.length) {
-      const subDecimalsNum = decimals ? Number(decimals) + 1 : 0;
+      const match = point.match(/^0+/);
+      const firstNotZero =  (match ? match[0].length : 0) + 1;
+      const len = firstNotZero > Number(decimals) ? firstNotZero : decimals;
+      const subDecimalsNum = len ? Number(len) + 1 : 0;
       const maxLength = subDecimalsNum + integer.length;
       return notExpNum.substring(0, maxLength);
     }
   }
+
 
   return notExpNum;
 }

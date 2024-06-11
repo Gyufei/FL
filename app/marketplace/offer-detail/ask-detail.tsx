@@ -134,9 +134,6 @@ export default function AskDetail({
               <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black">
                 Offer 100% Filled
               </button>
-              <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                You have the option to close the offer before it is 100% filled.
-              </div>
             </>
           ) : (
             <>

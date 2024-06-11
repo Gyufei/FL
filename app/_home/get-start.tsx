@@ -1,16 +1,16 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function GetStart() {
-  const [activeTab, setActiveTab] = useState("individuals");
+  // const [activeTab, setActiveTab] = useState("individuals");
 
   return (
     <div className="flex flex-col items-center bg-[rgba(224,255,98,0.1)] px-[120px] py-20">
       <div className="text-[40px] leading-10 text-black">
         How to get started with Tadle
       </div>
-      <div className="mt-5 mb-[60px] flex items-center justify-between space-x-12">
+      {/* <div className="mt-5 mb-[60px] flex items-center justify-between space-x-12">
         <div
           onClick={() => setActiveTab("individuals")}
           data-active={activeTab === "individuals"}
@@ -25,7 +25,7 @@ export default function GetStart() {
         >
           For Developers
         </div>
-      </div>
+      </div> */}
       <div className="flex items-center justify-between space-x-10">
         <div className="flex flex-col">
           <div className="relative h-[280px] w-[374px] overflow-hidden rounded-[20px] bg-yellow px-[30px] pt-[40px] pb-6 pl-6">

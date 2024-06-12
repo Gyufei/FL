@@ -51,20 +51,20 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
             <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
               {marketplace.market_name}
             </div>
-            <div className="text-xs leading-[18px] text-gray">
+            {/* <div className="text-xs leading-[18px] text-gray">
               <span>Spread:</span>
               <span>{marketplace.trade_spread}%</span>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        <Image
+        {/* <Image
           src="/icons/star.svg"
           width={20}
           height={20}
           alt="star"
           className="mt-[3px]"
-        />
+        /> */}
       </div>
 
       <MarketplaceOverview marketplace={marketplace} />

@@ -10,7 +10,7 @@ export default function HomeBanner() {
       }}
     >
       <div className="relative text-[50px] leading-[72px] text-black">
-        Decentralized Pre-Market Infrastructure
+        Decentralized Pre-market Infrastructure
         <Image
           src="/img/home/home-title-path.png"
           width={220}
@@ -26,7 +26,7 @@ export default function HomeBanner() {
 
       <div className="mt-10 flex items-center space-x-5">
         <div className="flex h-12 w-[160px] items-center justify-center rounded-xl bg-yellow text-lg leading-6">
-          Get Start
+          Getting started
         </div>
         <div className="flex cursor-pointer items-center space-x-1">
           <div className="text-lg leading-6 text-black">Read the docs</div>

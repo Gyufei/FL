@@ -21,7 +21,7 @@ export default function ModeDesc() {
           onClick={() => setMode("turbo")}
           className="flex h-12 w-40 cursor-pointer items-center justify-center rounded-xl data-[active=true]:bg-yellow"
         >
-          Turbo Model
+          Turbo Mode
         </div>
         <div
           data-active={mode === "protected"}
@@ -35,7 +35,7 @@ export default function ModeDesc() {
         {mode === "turbo" && (
           <div className="flex flex-col space-y-4 text-base leading-[30px] text-gray">
             <div>
-              The unique feature of Turbo Model is that only the original trader
+              The unique feature of Turbo Mode is that only the original trader
               is required to deposit crypto as collateral, while subsequent
               traders can buy and sell points without needing collateral. Upon
               settlement, the original seller will directly transfer the token

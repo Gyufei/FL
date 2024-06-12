@@ -13,7 +13,7 @@ export default function Faqs() {
 
   return (
     <div className="mt-[60px] bg-[rgba(224,255,98,0.1)] px-4 py-20 sm:px-[120px]">
-      <div className="flex items-start justify-between">
+      <div className="flex items-center justify-between">
         <div />
         <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
           FAQ

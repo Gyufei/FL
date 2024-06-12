@@ -30,15 +30,15 @@ export default function ContactUs() {
   }
 
   return (
-    <div className="bg-[#F9FAF2] px-[120px] pt-[60px]">
-      <div className="flex items-end justify-between">
-        <div className="flex flex-col items-start">
-          <div className="text-center text-[40px] leading-[54px] text-black sm:text-4xl sm:leading-[54px]">
+    <div className="bg-[#F9FAF2] px-4 sm:px-[120px] pt-[60px]">
+      <div className="flex flex-col sm:flex-row items-end justify-between">
+        <div className="flex flex-col w-full sm:w-fit sm:items-start items-center">
+          <div className="text-center text-2xl leading-9 sm:text-[40px] text-black sm:text-4xl sm:leading-[54px]">
             Stay in the loop with us
           </div>
-          <div className="relative mt-5 flex justify-center">
+          <div className="relative w-full sm:w-fit mt-5 flex justify-center">
             <Input
-              className="h-10 w-[480px] rounded-xl border border-[#d8d8d8] sm:h-12"
+              className="h-10 w-full sm:w-[480px] rounded-xl border border-[#d8d8d8] sm:h-12"
               type="email"
               placeholder="Enter email address"
               value={email}
@@ -47,7 +47,7 @@ export default function ContactUs() {
             <div
               data-active={isEmail}
               style={{
-                left: "calc(50% + 118px)",
+                left: "calc(50% + 116px)",
               }}
               className="absolute top-0 flex h-10 items-center rounded-lg px-5 leading-5 text-lightgray data-[active=true]:cursor-pointer data-[active=true]:bg-yellow data-[active=true]:text-black sm:top-1 sm:leading-[22px]"
               onClick={handleSubscribe}
@@ -56,8 +56,8 @@ export default function ContactUs() {
             </div>
           </div>
         </div>
-        <div className="flex items-center space-x-5">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-gray">
+        <div className="flex sm:w-fit w-full mt-5 sm:mt-0 justify-start items-center space-x-5">
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
             <HoverIcon
               onClick={handleGoDiscord}
               src="/icons/discord-gray.svg"
@@ -67,7 +67,7 @@ export default function ContactUs() {
               alt="discord"
             />
           </div>
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-gray">
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
             <HoverIcon
               onClick={handleGoTwitter}
               src="/icons/twitter-gray.svg"
@@ -77,7 +77,7 @@ export default function ContactUs() {
               alt="x"
             />
           </div>
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-gray">
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
             <HoverIcon
               onClick={handleGoGithub}
               src="/icons/github.svg"
@@ -87,7 +87,7 @@ export default function ContactUs() {
               alt="discord"
             />
           </div>
-          <div className="flex h-14 w-14  items-center justify-center rounded-xl border border-gray">
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
             <HoverIcon
               onClick={handleGoTg}
               src="/icons/telegram.svg"
@@ -100,7 +100,7 @@ export default function ContactUs() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between py-[60px] px-4 sm:flex-row sm:px-[120px] 2xl:px-0">
+      <div className="flex flex-col items-start sm:items-center justify-between py-[60px] px-0 sm:flex-row">
         <Image
           src="/icons/logo.svg"
           width={75}
@@ -108,7 +108,7 @@ export default function ContactUs() {
           alt="logo"
           className="mb-8 sm:mb-0"
         />
-        <div className="flex flex-wrap items-center space-x-10 sm:flex-nowrap">
+        <div className="flex flex-wrap justify-between items-center gap-x-10 sm:flex-nowrap">
           <LinkItem href="">Submit ticket</LinkItem>
           <LinkItem href="">Listing proposal</LinkItem>
           <LinkItem href="">Contact us</LinkItem>
@@ -117,7 +117,7 @@ export default function ContactUs() {
       </div>
 
       <div
-        className="flex h-10 items-center justify-between px-2 py-[24px] sm:px-[120px] 2xl:px-0"
+        className="flex h-10 items-center justify-between py-[24px] px-0"
         style={{
           boxShadow: "inset 0px 1px 0px 0px #EEEEEE",
         }}

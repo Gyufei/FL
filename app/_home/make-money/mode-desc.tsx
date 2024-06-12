@@ -8,14 +8,14 @@ export default function ModeDesc() {
 
   return (
     <div
-      className="flex flex-1 flex-col pt-[60px]"
+      className="flex flex-1 flex-col pt-[40px] sm:pt-[60px]"
       style={{
         backgroundImage: "url(/img/home/make-money.png)",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right bottom",
       }}
     >
-      <div className="mb-7 flex items-center justify-start space-x-10 text-lg leading-6">
+      <div className="mb-7 flex items-center justify-center sm:justify-start space-x-10 text-lg leading-6">
         <div
           data-active={mode === "turbo"}
           onClick={() => setMode("turbo")}
@@ -63,7 +63,7 @@ export default function ModeDesc() {
           </div>
         )}
 
-        <div className="flex cursor-pointer items-center space-x-1">
+        <div className="flex cursor-pointer items-center space-x-1 mt-[50px] sm:mt-0">
           <div className="text-lg leading-6 text-black">Start Trading</div>
           <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
         </div>

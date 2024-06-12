@@ -10,8 +10,8 @@ export default function BigPicture() {
   const [videoIsPlay, setVideoIsPlay] = useState(false);
 
   return (
-    <div className="mx-[259px] flex flex-col items-center py-20">
-      <div className="text-[40px] leading-[60px] text-black">
+    <div className="mx-4 flex flex-col items-center py-20 sm:mx-[259px]">
+      <div className="text-[24px] leading-9 text-black sm:text-[40px] sm:leading-[60px]">
         See the big picture
       </div>
       <div
@@ -20,11 +20,9 @@ export default function BigPicture() {
       >
         <video
           id="video"
-          className="h-[562px] w-[1000px]"
+          className="h-[192px] w-full sm:h-[562px] sm:w-[1000px]"
           preload="none"
           controls
-          width="640"
-          height="268"
           onPlay={() => setVideoIsPlay(true)}
           onPause={() => setVideoIsPlay(false)}
           onEnded={() => setVideoIsPlay(false)}

@@ -10,7 +10,7 @@ export default function HomeBanner() {
       }}
     >
       <div className="relative hidden text-[50px] leading-[72px] text-black sm:flex sm:flex-col">
-        Decentralized Pre-Market Infrastructure
+        Decentralized Pre-market Infrastructure
         <Image
           src="/img/home/home-title-path.png"
           width={220}
@@ -27,12 +27,12 @@ export default function HomeBanner() {
         Bridging liquidity between primary and secondary markets
       </div>
       <div className="mt-[10px] block text-sm leading-[20px] text-lightgray sm:hidden">
-        FASTEST DATA · DEEPEST LIQUIDITY · FUN REWARDS
+        Bridging liquidity between primary and secondary markets
       </div>
 
       <div className="mt-10 flex w-full flex-col items-center space-x-5 px-4 sm:w-fit sm:flex-row sm:px-0">
         <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow text-lg leading-6 sm:w-[160px]">
-          Get Start
+          Getting Started
         </div>
         <div className="mt-[22px] flex cursor-pointer items-center space-x-1 sm:mt-0">
           <div className="text-lg leading-6 text-black">Read the docs</div>

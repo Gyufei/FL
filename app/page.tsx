@@ -1,5 +1,5 @@
-import Home from "@/app/_home";
+import { redirect } from "next/navigation";
 
-export default async function MainPage() {
-  return <Home />;
+export default function RootPage() {
+  redirect("/en");
 }

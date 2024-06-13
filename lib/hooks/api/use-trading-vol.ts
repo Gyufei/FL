@@ -1,4 +1,4 @@
-import { IRangeType } from "@/app/marketplace/leader-board/leader-range-select";
+import { IRangeType } from "@/app/[locale]/marketplace/leader-board/leader-range-select";
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";

@@ -37,13 +37,10 @@ export default function Faqs() {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Our audit contests are extremely cost-effective. Clients pay a small
-            fixed fee to post a bounty for community participation. The more
-            issues found, the more the rewards paid from that bounty. We handle
-            verifying issues and payouts to make it simple. The collective
-            insights greatly outweigh the small fixed cost. Ready to tap into
-            community expertise and boost your security? Request an audit today
-            to get started.
+            Before issuing tokens, various Web3 projects conduct a series of
+            operational activities to encourage user interaction. Points are
+            awarded for users’ participation. In the future, these points may be
+            exchanged for the corresponding tokens.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -63,10 +60,11 @@ export default function Faqs() {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            More and more projects are adopting a “points system” where users
-            earn points for their contributions to the community. These
-            accumulated points could potentially be exchanged for the project’s
-            token, as observed in recent notable airdrops.
+            A Point Market is a marketplace for users to buy and sell points
+            among themselves. Since the project has not yet issued tokens, users
+            have various reasons for needing liquidity for the points they have
+            already acquired. Therefore, the Point Market service has emerged to
+            meet this demand.
           </CollContent>
         </CollapsibleContent>
       </Collapsible>
@@ -86,16 +84,14 @@ export default function Faqs() {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            Tadle Market presents a cutting-edge point marketplace boasting
-            unparalleled speed in data processing, extensive liquidity, and fun
-            rewards. Serving as the ultimate nexus for early investors, Key
-            Opinion Leaders, and airdrop farmers, Tadle Market curates the
-            finest deals available in the market. <br /> Here, points sellers
-            can secure their early profits, while points buyers gain access to
-            exclusive opportunities to engage with projects in their nascent
-            stages. Tadle Market employs funds with exceptional efficiency,
-            ensuring that buyers and sellers can engage in transactions with
-            confidence, safety, and optimal efficiency.
+            1. Connect to your wallet
+            <br />
+            2. Discover the projects whose points you want to trade
+            <br />
+            3. Place a buy or sell order
+            <br />
+            4. View your trading history and earnings in your personal dashboard
+            <br />
           </CollContent>
         </CollapsibleContent>
       </Collapsible>

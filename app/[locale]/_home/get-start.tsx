@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function GetStart() {
-  const [activeTab, setActiveTab] = useState("individuals");
+  // const [activeTab, setActiveTab] = useState("individuals");
 
   return (
     <div className="flex flex-col items-center bg-[rgba(224,255,98,0.1)] px-4 py-20 sm:px-[120px]">
@@ -13,7 +13,7 @@ export default function GetStart() {
       <div className="flex text-[24px] leading-9 text-black sm:hidden">
         Product advantages
       </div>
-      <div className="mt-5 mb-[60px] flex items-center justify-between space-x-12">
+      {/* <div className="mt-5 mb-[60px] flex items-center justify-between space-x-12">
         <div
           onClick={() => setActiveTab("individuals")}
           data-active={activeTab === "individuals"}
@@ -29,7 +29,8 @@ export default function GetStart() {
           For Developers
         </div>
       </div>
-      <div className="flex flex-col items-center justify-between space-x-0 space-y-6 sm:space-y-0 sm:space-x-10 sm:flex-row">
+      </div> */}
+      <div className="flex flex-col items-center justify-between space-x-0 space-y-6 sm:flex-row sm:space-y-0 sm:space-x-10">
         <div className="flex flex-col">
           <div className="relative h-[280px] w-[374px] overflow-hidden rounded-[20px] bg-yellow px-[30px] pt-[40px] pb-6 pl-6">
             <div className="flex h-full flex-col justify-between">
@@ -93,7 +94,7 @@ export default function GetStart() {
         </div>
 
         <div
-          className="relative h-[280px] sm:h-[400px] w-[374px] overflow-hidden rounded-[20px] bg-white px-[30px] pt-[40px] pb-6 pl-6"
+          className="relative h-[280px] w-[374px] overflow-hidden rounded-[20px] bg-white px-[30px] pt-[40px] pb-6 pl-6 sm:h-[400px]"
           style={{
             backgroundImage: "url(/img/home/home-buy-sell-order.png)",
             backgroundSize: "cover",

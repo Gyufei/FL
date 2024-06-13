@@ -29,7 +29,7 @@ export function SettleModeSelect({
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
-        <div className="mr-1 text-sm leading-6 text-black">Type</div>
+        <div className="mr-1 text-sm leading-6 text-black">Mode</div>
       </div>
 
       <div className="relative text-sm">

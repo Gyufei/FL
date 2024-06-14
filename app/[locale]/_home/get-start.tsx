@@ -28,7 +28,6 @@ export default function GetStart() {
         >
           For Developers
         </div>
-      </div>
       </div> */}
       <div className="flex flex-col items-center justify-between space-x-0 space-y-6 sm:flex-row sm:space-y-0 sm:space-x-10">
         <div className="flex flex-col">

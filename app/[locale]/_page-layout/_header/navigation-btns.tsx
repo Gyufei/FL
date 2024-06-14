@@ -1,15 +1,13 @@
 "use client";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "@/app/navigation";
 
 export default function NavigationBtns() {
-  const locale = useLocale();
   const pathname = usePathname();
 
-  const isDashboard = pathname.startsWith(`${locale}/dashboard`);
-  const isMarketPlace = pathname.startsWith(`${locale}/marketplace`);
+  const isDashboard = pathname.startsWith(`/dashboard`);
+  const isMarketPlace = pathname.startsWith(`/marketplace`);
 
   return (
     <div className="hidden flex-1 items-center space-x-5 sm:flex">
@@ -17,14 +15,14 @@ export default function NavigationBtns() {
         active={isDashboard}
         icon="/icons/dashboard.svg"
         text="Dashboard"
-        href={`${locale}/dashboard`}
+        href={`/dashboard`}
         withWallet={true}
       />
       <NavigationBtn
         active={isMarketPlace}
         icon="/icons/Marketplace.svg"
         text="Marketplace"
-        href={`${locale}/marketplace`}
+        href={`/marketplace`}
         withWallet={false}
       />
     </div>

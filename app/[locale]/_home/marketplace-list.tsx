@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { IMarketplace } from "@/lib/types/marketplace";
 import MarketplaceOverview from "@/components/share/market-place-overview";
-import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useRouter } from "@/app/navigation";
 
 export default function MarketplaceList() {
   const { data: marketplaceData } = useMarketplaces();
@@ -23,11 +22,10 @@ export default function MarketplaceList() {
 }
 
 function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
-  const locale = useLocale();
   const router = useRouter();
 
   function handleGo() {
-    router.push(`${locale}/marketplace/${marketplace.market_id}`);
+    router.push(`/marketplace/${marketplace.market_id}`);
   }
 
   return (

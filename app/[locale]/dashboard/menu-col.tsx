@@ -2,12 +2,9 @@
 // import { GlobalMessageAtom } from "@/lib/states/global-message";
 // import { useSetAtom } from "jotai";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useLocale } from "next-intl";
+import { usePathname, Link } from "@/app/navigation";
 
 export default function MenuCol() {
-  const locale = useLocale();
   const pathname = usePathname();
 
   // const setGlobalMessage = useSetAtom(GlobalMessageAtom);
@@ -22,20 +19,20 @@ export default function MenuCol() {
   return (
     <div className="mt-[70px] flex flex-col  space-y-5">
       <MenuIcon
-        href={`${locale}/dashboard/orders`}
-        isActive={pathname === `${locale}/dashboard/orders`}
+        href={`/dashboard/orders`}
+        isActive={pathname === `/dashboard/orders`}
       >
         <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
       <MenuIcon
-        href={`${locale}/dashboard/stocks`}
-        isActive={pathname === `${locale}/dashboard/stocks`}
+        href={`/dashboard/stocks`}
+        isActive={pathname === `/dashboard/stocks`}
       >
         <Image src="/icons/stocks.svg" width={24} height={24} alt="stocks" />
       </MenuIcon>
       <MenuIcon
-        href={`${locale}/dashboard/balances`}
-        isActive={pathname === `${locale}/dashboard/balances`}
+        href={`/dashboard/balances`}
+        isActive={pathname === `/dashboard/balances`}
       >
         <Image src="/icons/wallet.svg" width={24} height={24} alt="balances" />
       </MenuIcon>

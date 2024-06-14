@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import { X } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/app/navigation";
 import { useState } from "react";
-import { useLocale } from "next-intl";
 
 export default function MobileRouterMenu() {
   const [showMenu, setShowMenu] = useState(false);
@@ -35,8 +34,7 @@ export default function MobileRouterMenu() {
 
 function MenuList({ onEnd }: { onEnd: () => void }) {
   const router = useRouter();
-  const locale = useLocale();
-  const routePath = [`${locale}/dashboard`, `${locale}/marketplace`];
+  const routePath = [`/dashboard`, `/marketplace`];
   const currentRoute = usePathname();
 
   const isDashboardActive = currentRoute.includes(routePath[0]);

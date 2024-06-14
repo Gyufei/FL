@@ -14,12 +14,11 @@ import { useSetAtom } from "jotai";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceOverview from "@/components/share/market-place-overview";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/navigation";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { handleGoTwitter } from "@/lib/utils/social";
-import { useLocale } from "next-intl";
 
 export default function MarketplaceCard({
   marketplace,
@@ -184,7 +183,6 @@ function FoldPop() {
   const { data: marketplaceData } = useMarketplaces();
 
   const router = useRouter();
-  const locale = useLocale();
 
   const [popOpen, setPopOpen] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -220,7 +218,7 @@ function FoldPop() {
   );
 
   function handleGo(id: string) {
-    router.push(`${locale}/marketplace/${id}`);
+    router.push(`/marketplace/${id}`);
   }
 
   return (

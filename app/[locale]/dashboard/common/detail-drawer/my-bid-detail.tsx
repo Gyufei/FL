@@ -13,6 +13,7 @@ import { useEffect, useMemo } from "react";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
+import { useTranslations } from "next-intl";
 
 export default function MyBidDetail({
   order,
@@ -21,6 +22,9 @@ export default function MyBidDetail({
   order: IOffer;
   onSuccess: () => void;
 }) {
+  const cot = useTranslations("CreateOffer");
+  const ot = useTranslations("OfferDetail");
+
   const {
     tokenTotalPrice,
     progress,
@@ -112,7 +116,7 @@ export default function MyBidDetail({
 
           <SwapItemPanel
             className="mt-5"
-            topText={<>You Pay</>}
+            topText={<>{cot("YouPay")}</>}
             bottomText={
               <>
                 1 {order.marketplace.point_name} = ${pointPerPrice}
@@ -132,11 +136,12 @@ export default function MyBidDetail({
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             topText={
               <div className="flex items-center">
-                You Get
+                {ot("YouGet")}
                 <WithTip>
-                  When buying {order.marketplace.point_name}s, you need to wait
-                  until the {order.marketplace.point_name}s convert into the
-                  protocol&apos;s tokens before you can receive tokens.
+                  {ot("YouGetTip").replace(
+                    /\$pointName/g,
+                    order.marketplace.point_name,
+                  )}
                 </WithTip>
               </div>
             }
@@ -146,7 +151,7 @@ export default function MyBidDetail({
 
           {isSettled || afterTGEPeriod ? (
             <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-              Settlement Completed
+              {ot("SettlementCompleted")}
             </button>
           ) : (
             <>
@@ -157,7 +162,7 @@ export default function MyBidDetail({
                     shouldSignIn={true}
                   >
                     <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                      Relist this offer
+                      {ot("RelistThisOffer")}
                     </button>
                   </WithWalletConnectBtn>
                 ) : (
@@ -165,14 +170,14 @@ export default function MyBidDetail({
                     disabled={true}
                     className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                   >
-                    Offer Closed
+                    {ot("OfferClosed")}
                   </button>
                 )
               ) : (
                 <>
                   {isClosed ? (
                     <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                      Awaiting settlement...
+                      {ot("AwaitingSettlement")}
                     </button>
                   ) : (
                     <>
@@ -185,7 +190,7 @@ export default function MyBidDetail({
                             disabled={isBidClosing}
                             className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                           >
-                            Close bid offer
+                            {ot("CloseBidOffer")}
                           </button>
                         </WithWalletConnectBtn>
                       ) : (
@@ -198,14 +203,13 @@ export default function MyBidDetail({
                               disabled={isClosing}
                               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                             >
-                              Close this offer
+                              {ot("CloseThisOffer")}
                             </button>
                           </WithWalletConnectBtn>
                           <>
                             {isFilled && (
                               <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                You have the option to close the offer before it
-                                is 100% filled.
+                                {ot("YouHaveTheOptionToClose ")}
                               </div>
                             )}
                           </>

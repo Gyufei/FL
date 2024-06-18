@@ -1,5 +1,6 @@
 import { NumericalInput } from "@/components/share/numerical-input";
 import { WithTip } from "./with-tip";
+import { useTranslations } from "next-intl";
 
 export default function TaxForSubTrades({
   value,
@@ -10,6 +11,8 @@ export default function TaxForSubTrades({
   onValueChange: (_v: string) => void;
   disabled?: boolean;
 }) {
+  const ct = useTranslations("CreateOffer");
+
   function handleInput(v: string) {
     if (Number(v) > 20) {
       onValueChange("20");
@@ -21,8 +24,10 @@ export default function TaxForSubTrades({
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
-        <div className="mr-1 text-sm leading-6 text-black">Bonus for Maker</div>
-        <WithTip></WithTip>
+        <div className="mr-1 text-sm leading-6 text-black">
+          {ct("BonusForMaker")}
+        </div>
+        <WithTip>{ct("BonusForMakerTip")}</WithTip>
       </div>
 
       <div className="relative text-sm">

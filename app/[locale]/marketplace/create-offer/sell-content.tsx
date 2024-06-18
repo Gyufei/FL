@@ -18,6 +18,7 @@ import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { isProduction } from "@/lib/PathMap";
+import { useTranslations } from "next-intl";
 
 export function SellContent({
   marketplace,
@@ -26,6 +27,7 @@ export function SellContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
+  const ct = useTranslations("CreateOffer");
   const { data: points } = useMarketPoints();
 
   const [sellPointAmount, setSellPointAmount] = useState("");
@@ -108,7 +110,7 @@ export function SellContent({
         <InputPanel
           value={sellPointAmount}
           onValueChange={handleSellPayChange}
-          topText={<>You will sell</>}
+          topText={<>{ct("YouSell")}</>}
           bottomText={
             <>
               1 {marketplace.point_name} = ${pointPrice}
@@ -130,12 +132,13 @@ export function SellContent({
           onValueChange={setReceiveAmount}
           topText={
             <div className="flex items-center">
-              You&apos;d like to receive
-              <WithTip>
+              {ct("YouReceive")}
+              <WithTip align="start">
                 <div className="relative">
-                  When buying {marketplace.point_name}s, you need to wait until
-                  the {marketplace.point_name}s convert into the protocol&apos;s
-                  tokens before you can receive tokens.
+                  {ct("YouReceiveTip").replace(
+                    /\$pointName/g,
+                    marketplace.point_name,
+                  )}
                   <Image
                     src="/icons/info-tip.svg"
                     height={30}
@@ -147,7 +150,11 @@ export function SellContent({
               </WithTip>
             </div>
           }
-          bottomText={<>Required collateral ${sellPrice}</>}
+          bottomText={
+            <>
+              {ct("RequiredCollateral")} ${sellPrice}
+            </>
+          }
           tokenSelect={
             <StableTokenSelectDisplay
               token={receiveToken}
@@ -177,7 +184,7 @@ export function SellContent({
           disabled={isCreateLoading}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
         >
-          Confirm Maker Order
+          {ct("ConfirmMakerOrder")}
         </button>
       </WithWalletConnectBtn>
     </div>

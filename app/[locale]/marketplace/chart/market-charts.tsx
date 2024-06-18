@@ -5,6 +5,7 @@ import { useState } from "react";
 import DepthChart from "./depth-chart";
 import SalesChart, { Durations, IDurationType } from "./sales-chart";
 import { IMarketplace } from "@/lib/types/marketplace";
+import { useTranslations } from "next-intl";
 
 type IChartType = "depth" | "sales";
 
@@ -63,6 +64,7 @@ function ChartSwitch({
   chartType: IChartType;
   handleChangeType: (_type: IChartType) => void;
 }) {
+  const t = useTranslations("Marketplace");
   // const isDepth = chartType === "depth";
   const isSales = chartType === "sales";
   return (
@@ -79,7 +81,7 @@ function ChartSwitch({
           alt="depth"
         />
         {isDepth && (
-          <div className="ml-[6px] text-sm leading-5 text-black">Depth</div>
+          <div className="ml-[6px] text-sm leading-5 text-black">{t('Depth')}</div>
         )}
       </div> */}
       <div
@@ -94,7 +96,9 @@ function ChartSwitch({
           alt="sales"
         />
         {isSales && (
-          <div className="ml-[6px] text-sm leading-5 text-black">Sales</div>
+          <div className="ml-[6px] text-sm leading-5 text-black">
+            {t("Sales")}
+          </div>
         )}
       </div>
     </div>

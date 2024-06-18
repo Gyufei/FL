@@ -11,6 +11,7 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useTranslations } from "next-intl";
 
 export default function BidDetail({
   order,
@@ -19,6 +20,9 @@ export default function BidDetail({
   order: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
+  const ct = useTranslations("CreateOffer");
+  const ot = useTranslations("OfferDetail");
+
   const {
     tokenPrice,
     progress,
@@ -103,7 +107,7 @@ export default function BidDetail({
           />
 
           <SliderCard
-            topText={<>You will sell</>}
+            topText={<>{ct("YouSell")}</>}
             bottomText={
               <>
                 1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}
@@ -118,7 +122,7 @@ export default function BidDetail({
           />
 
           <ReceiveCard
-            topText={<>You Get</>}
+            topText={<>{ot("YouGet")}</>}
             bottomText={<>~${formatNum(receiveTokenTotalPrice)} </>}
             value={receiveTokenAmount}
             tokenLogo={offerLogo}
@@ -126,7 +130,7 @@ export default function BidDetail({
 
           {isFilled ? (
             <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black">
-              Offer 100% Filled
+              {ot("OfferFilled")}
             </button>
           ) : (
             <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
@@ -135,7 +139,7 @@ export default function BidDetail({
                 onClick={handleDeposit}
                 className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
               >
-                Confirm Taker Order
+                {ot("ConfirmTakerOrder")}
               </button>
             </WithWalletConnectBtn>
           )}

@@ -1,4 +1,5 @@
 import { NumericalInput } from "@/components/share/numerical-input";
+import { useTranslations } from "next-intl";
 
 export default function CollateralRateInput({
   value,
@@ -9,6 +10,8 @@ export default function CollateralRateInput({
   disabled?: boolean;
   onValueChange: (_v: string) => void;
 }) {
+  const ct = useTranslations("CreateOffer");
+
   function handleInput(v: string) {
     if (v && Number(v) < 1) {
       onValueChange("1");
@@ -29,7 +32,9 @@ export default function CollateralRateInput({
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
-        <div className="mr-1 text-sm leading-6 text-black">Collateral Rate</div>
+        <div className="mr-1 text-sm leading-6 text-black">
+          {ct("CollateralRate")}
+        </div>
       </div>
 
       <div className="relative text-sm">

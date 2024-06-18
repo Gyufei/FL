@@ -1,6 +1,7 @@
 import { IMarketplace } from "@/lib/types/marketplace";
 import { formatNum } from "@/lib/utils/number";
 import { Skeleton } from "../ui/skeleton";
+import { useTranslations } from "next-intl";
 
 export default function MarketplaceOverview({
   marketplace,
@@ -9,13 +10,14 @@ export default function MarketplaceOverview({
   marketplace: IMarketplace | undefined;
   isLoading?: boolean;
 }) {
+  const t = useTranslations("Marketplace");
   const isLoadingFlag = !marketplace || isLoading;
 
   return (
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>Floor Price</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("FloorPrice")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -26,7 +28,7 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>Total Vol.</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("TotalVol")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -39,7 +41,7 @@ export default function MarketplaceOverview({
 
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>24h Change</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("ChangeRate24h")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -56,7 +58,7 @@ export default function MarketplaceOverview({
           )}
         </div>
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>24h Vol.</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("Vol24h")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -69,7 +71,7 @@ export default function MarketplaceOverview({
 
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>Listed Supply</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("ListedSupply")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -80,7 +82,7 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>Avg. Bid</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("AvgBid")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (

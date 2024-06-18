@@ -17,6 +17,7 @@ import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { isProduction } from "@/lib/PathMap";
+import { useTranslations } from "next-intl";
 
 export function BuyContent({
   marketplace,
@@ -25,6 +26,7 @@ export function BuyContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
+  const ct = useTranslations("CreateOffer");
   const { data: points } = useMarketPoints();
 
   const [payTokenAmount, setPayTokenAmount] = useState("0");
@@ -107,7 +109,7 @@ export function BuyContent({
         <InputPanel
           value={payTokenAmount}
           onValueChange={handleBuyPayChange}
-          topText={<>You pay</>}
+          topText={<>{ct("YouPay")}</>}
           bottomText={<>${payAmountValue}</>}
           tokenSelect={
             <StableTokenSelectDisplay token={payToken} setToken={setPayToken} />
@@ -121,11 +123,12 @@ export function BuyContent({
           onValueChange={setReceivePointAmount}
           topText={
             <div className="flex items-center">
-              You&apos;d like to receive
-              <WithTip>
-                When buying {marketplace.point_name}s, you need to wait until
-                the {marketplace.point_name}s convert into the protocol&apos;s
-                tokens before you can receive tokens.
+              {ct("YouReceive")}
+              <WithTip align="start">
+                {ct("YouReceiveTip").replace(
+                  /\$pointName/g,
+                  marketplace.point_name,
+                )}
               </WithTip>
             </div>
           }
@@ -164,7 +167,7 @@ export function BuyContent({
           disabled={isCreateLoading}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
         >
-          Confirm Maker Order
+          {ct("ConfirmMakerOrder")}
         </button>
       </WithWalletConnectBtn>
     </div>

@@ -12,9 +12,11 @@ import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
 export function WithTip({
   className,
   children,
+  align = "center",
 }: {
   className?: string;
   children?: React.ReactNode;
+  align?: "center" | "end" | "start" | undefined;
 }) {
   return (
     <TooltipProvider>
@@ -28,7 +30,10 @@ export function WithTip({
             className="ml-1"
           />
         </TooltipTrigger>
-        <TooltipContent className={cn(className, "z-[103] w-[300px]")}>
+        <TooltipContent
+          align={align}
+          className={cn(className, "z-[103] w-[300px]")}
+        >
           <p className="text-xs leading-[18px]">{children}</p>
           <TooltipArrow asChild>
             <CTooltipArrow />

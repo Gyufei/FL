@@ -12,9 +12,11 @@ import toPubString from "@/lib/utils/pub-string";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { SignInBtn } from "./sign-in-btn";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
+import { useTranslations } from "next-intl";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
+  const t = useTranslations("Common");
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
   );
@@ -50,8 +52,8 @@ export default function ConnectBtn() {
           className="shadow-25 h-10 rounded-full bg-[#f0f1f5] px-4 text-base leading-6 transition-all sm:h-12 sm:px-[22px]"
           onClick={() => openWalletSelectDialog()}
         >
-          <span className="hidden sm:inline-block">Connect Wallet</span>
-          <span className="inline-block sm:hidden">Connect</span>
+          <span className="hidden sm:inline-block">{t("ConnectWallet")}</span>
+          <span className="inline-block sm:hidden">{t("Connect")}</span>
         </button>
         <WalletSelectDialog />
       </>
@@ -79,7 +81,7 @@ export default function ConnectBtn() {
         }}
       >
         <div className="mb-3 text-xl leading-[30px] text-black">
-          {!token ? "You're signed out" : "You're signed in"}
+          {!token ? t("You're signed out") : t("You're signed in")}
         </div>
         <div className="text-center text-sm leading-5 text-black">
           Sign a message in your wallet to verify
@@ -93,6 +95,7 @@ export default function ConnectBtn() {
 }
 
 function SignOutBtn() {
+  const t = useTranslations("Common");
   const { disconnect } = useWallet();
   const setToken = useSetAtom(AccessTokenAtom);
 
@@ -107,7 +110,7 @@ function SignOutBtn() {
         onClick={handleDisconnect}
         className="flex h-12 w-full items-center justify-center rounded-2xl bg-[#F0F1F5] text-lightgray"
       >
-        Sign Out
+        {t("SignOut")}
       </button>
     </div>
   );

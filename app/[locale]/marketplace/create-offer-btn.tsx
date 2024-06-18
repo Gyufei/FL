@@ -7,6 +7,7 @@ import { SellContent } from "./create-offer/sell-content";
 import { BuyContent } from "./create-offer/buy-content";
 import { IMarketplace } from "@/lib/types/marketplace";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useTranslations } from "next-intl";
 
 export default function CreateOfferBtn({
   marketplace,
@@ -15,6 +16,8 @@ export default function CreateOfferBtn({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
+  const ct = useTranslations("Common");
+  const mt = useTranslations("CreateOffer");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
 
@@ -34,7 +37,7 @@ export default function CreateOfferBtn({
         onClick={() => setDrawerOpen(true)}
       >
         <button className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-          Create Offer
+          {mt("CreateOffer")}
         </button>
       </WithWalletConnectBtn>
       <Drawer
@@ -45,7 +48,7 @@ export default function CreateOfferBtn({
         className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title="Create Maker Offer"
+          title={mt("CreateMakerOffer")}
           onClose={() => handleCloseDrawer()}
         />
 
@@ -59,13 +62,13 @@ export default function CreateOfferBtn({
               className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:border-[#eee] data-[state=inactive]:text-[#99a0af] data-[state=active]:text-red"
               value="sell"
             >
-              Sell / Ask
+              {ct("Sell")} / {ct("Ask")}
             </TabsTrigger>
             <TabsTrigger
               className="rounded-none data-[state=inactive]:border-b data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:border-[#eee] data-[state=inactive]:text-[#99a0af] data-[state=active]:text-green"
               value="buy"
             >
-              Buy / Bid
+              {ct("Buy")} / {ct("Bid")}
             </TabsTrigger>
           </TabsList>
           <TabsContent

@@ -1,4 +1,5 @@
 import { NumericalInput } from "@/components/share/numerical-input";
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 
 export function InputPanel({
@@ -16,6 +17,8 @@ export function InputPanel({
   tokenSelect: ReactElement;
   isCanInput?: boolean;
 }) {
+  const ct = useTranslations("CreateOffer");
+
   return (
     <div className="flex w-full justify-between rounded-2xl border border-transparent bg-[#fafafa] p-4 focus-within:border focus-within:border-focus focus-within:bg-white">
       <div className="flex-1">
@@ -23,7 +26,7 @@ export function InputPanel({
         {isCanInput ? (
           <NumericalInput
             className="mt-2 mr-1 h-9 text-2xl placeholder:text-lightgray"
-            placeholder="Enter Amount"
+            placeholder={ct("EnterAmount")}
             value={value}
             onUserInput={onValueChange}
           />

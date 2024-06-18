@@ -11,6 +11,7 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
 import { range, sortBy } from "lodash";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 export function TradesTable({
   type,
@@ -21,6 +22,8 @@ export function TradesTable({
   marketplace: IMarketplace | undefined;
   isLoading: boolean;
 }) {
+  const ct = useTranslations("Common");
+  const mt = useTranslations("Marketplace");
   const { data: historyData, isLoading: isHistoryLoading } = useMarketTrades(
     marketplace?.market_place_id,
   );
@@ -56,17 +59,16 @@ export function TradesTable({
       };
     }
 
-    const trades = tradeMsgs
-      .map((msg) => {
-        const time = (Date.now() - msg.timestamp) / 1000;
-        return {
-          ...msg,
-          time: time < 2 ? 2 : time,
-          token: {
-            logoURI: "/icons/usdc.svg",
-          },
-        };
-      });
+    const trades = tradeMsgs.map((msg) => {
+      const time = (Date.now() - msg.timestamp) / 1000;
+      return {
+        ...msg,
+        time: time < 2 ? 2 : time,
+        token: {
+          logoURI: "/icons/usdc.svg",
+        },
+      };
+    });
 
     const typeTrades = trades.filter(() => type === "All" || true);
 
@@ -132,7 +134,7 @@ export function TradesTable({
         ),
     },
     {
-      label: "Item Id",
+      label: mt("ItemId"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[100px]" />
@@ -141,7 +143,7 @@ export function TradesTable({
         ),
     },
     {
-      label: "Value",
+      label: mt("Value"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
@@ -159,7 +161,7 @@ export function TradesTable({
         ),
     },
     {
-      label: "Amount",
+      label: ct("Amount"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
@@ -168,7 +170,7 @@ export function TradesTable({
         ),
     },
     {
-      label: "Buyer",
+      label: ct("Buyer"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[60px]" />

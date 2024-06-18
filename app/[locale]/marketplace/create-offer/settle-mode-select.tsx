@@ -7,6 +7,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ISettleMode } from "@/lib/types/maker-detail";
 import { capitalize } from "lodash";
+import { useTranslations } from "next-intl";
 
 export const SettleModes: Array<ISettleMode> = ["protected", "turbo"];
 
@@ -19,6 +20,7 @@ export function SettleModeSelect({
   onValueChange: (_v: ISettleMode) => void;
   disabled?: boolean;
 }) {
+  const ct = useTranslations("CreateOffer");
   const [popOpen, setPopOpen] = useState(false);
 
   function handleClickOpt(t: ISettleMode) {
@@ -29,7 +31,7 @@ export function SettleModeSelect({
   return (
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
-        <div className="mr-1 text-sm leading-6 text-black">Mode</div>
+        <div className="mr-1 text-sm leading-6 text-black">{ct("Mode")}</div>
       </div>
 
       <div className="relative text-sm">
@@ -41,7 +43,7 @@ export function SettleModeSelect({
               className="flex h-[50px] w-full cursor-pointer  items-center justify-between space-x-1 rounded-xl border border-[#D3D4D6] px-[16px] outline-none data-[disabled=true]:pointer-events-none data-[open=true]:border-focus data-[disabled=true]:bg-[#f0f1f5]"
             >
               <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">
-                {capitalize(value)}
+                {ct(capitalize(value))}
               </div>
               <Image
                 data-open={popOpen}
@@ -71,7 +73,7 @@ export function SettleModeSelect({
                   data-checked={value === t}
                   className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
                 >
-                  {capitalize(t)}
+                  {ct(capitalize(t))}
                 </div>
               </div>
             ))}

@@ -9,8 +9,13 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useTranslations } from "next-intl";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
+  const ct = useTranslations("Common");
+  const cot = useTranslations("CreateOffer");
+  const ot = useTranslations("OfferDetail");
+
   const { publicKey } = useWallet();
 
   const { orderTokenInfo, orderPointInfo, duringTGE, makerDetail } =
@@ -67,11 +72,13 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
   return (
     <div className="flex-1 px-6">
-      <div className="leading-6 text-black">Offer Details</div>
+      <div className="leading-6 text-black">{ot("OfferDetail")}</div>
 
       <DetailRow>
-        <DetailLabel tipText="">
-          Filled / {isAsk ? "Selling" : "Buying"} Amount
+        <DetailLabel tipText={ot("FilledTip")}>
+          {ot("Filled")} / {isAsk ? ct("Selling") : ct("Buying")}
+          {ct("Empty")}
+          {ct("Amount")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -89,8 +96,12 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">
-          {isAsk ? "Base Tax for each Trade" : "Tax for Sub Trade"}
+        <DetailLabel
+          tipText={
+            isAsk ? ot("BaseTaxForEachTradeTip") : ot("TaxForSubTradeTip")
+          }
+        >
+          {isAsk ? ot("BaseTaxForEachTrade") : ot("TaxForSubTrade")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
@@ -100,7 +111,9 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">Collateral Rate</DetailLabel>
+        <DetailLabel tipText={ot("CollateralRateTip")}>
+          {cot("CollateralRate")}
+        </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
             {Number(offer.collateral_rate) / 100}%
@@ -109,7 +122,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">Previous Maker / Taker</DetailLabel>
+        <DetailLabel tipText="">{ct("Previous")} Maker / Taker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
             #{originOffer?.offer_id || offer?.offer_id}
@@ -140,19 +153,25 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
       {isAsk && (
         <DetailRow>
-          <DetailLabel tipText="">Est. Settlement Time</DetailLabel>
+          <DetailLabel tipText={ot("EstSettlingOnTip")}>
+            {ot("EstSettlingOn")}
+          </DetailLabel>
           <div className="flex items-center space-x-1">
             {tgeTime ? (
               formatTimestamp(tgeTime)
             ) : (
-              <div className="text-sm leading-5 text-gray">Not Started</div>
+              <div className="text-sm leading-5 text-gray">
+                {ot("NotStarted")}
+              </div>
             )}
           </div>
         </DetailRow>
       )}
 
       <DetailRow>
-        <DetailLabel tipText="">Initial Offer Maker</DetailLabel>
+        <DetailLabel tipText={ot("InitialOfferMakerTip")}>
+          {ot("InitialOfferMaker")}
+        </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
             #{originOffer?.offer_id}
@@ -177,8 +196,10 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow showBottomLine={false}>
-        <DetailLabel tipText="">
-          {isAsk ? "Initial Offer Maker Bonus" : "Your Bonus"}
+        <DetailLabel
+          tipText={isAsk ? ot("InitialOfferMakerBonusTip") : ot("YourBonusTip")}
+        >
+          {isAsk ? ot("InitialOfferMakerBonus") : ot("YourBonus")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
@@ -228,13 +249,14 @@ function DetailLabel({
 
 function TimeDisplay({ seconds }: { seconds: number }) {
   const dateObj = formatTimeObj(seconds);
+  const ct = useTranslations("Common");
 
   return (
     <div className="mt-4 flex justify-center space-x-4">
-      <TimeItem num={dateObj.days || 0} text="Days" />
-      <TimeItem num={dateObj.hours || 0} text="Hours" />
-      <TimeItem num={dateObj.minutes || 0} text="Minutes" />
-      <TimeItem num={dateObj.seconds || 0} text="Seconds" />
+      <TimeItem num={dateObj.days || 0} text={ct("Days")} />
+      <TimeItem num={dateObj.hours || 0} text={ct("Hours")} />
+      <TimeItem num={dateObj.minutes || 0} text={ct("Minutes")} />
+      <TimeItem num={dateObj.seconds || 0} text={ct("Seconds")} />
     </div>
   );
 }

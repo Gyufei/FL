@@ -8,6 +8,7 @@ import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IOffer } from "@/lib/types/offer";
 import { upperFirst } from "lodash";
 import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
+import { useTranslations } from "next-intl";
 
 export default function OfferDetailDrawer({
   orders,
@@ -16,6 +17,9 @@ export default function OfferDetailDrawer({
   orders: Array<IOffer>;
   onSuccess: () => void;
 }) {
+  const ct = useTranslations("Common");
+  const cot = useTranslations("CreateOffer");
+  const ot = useTranslations("OfferDetail");
   const { anchor: orderId, setAnchorValue } = useAnchor();
 
   const order = useMemo(() => {
@@ -68,7 +72,9 @@ export default function OfferDetailDrawer({
         className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={`${isAsk ? "Ask" : "Bid"} Offer Detail [${settleMode}]`}
+          title={`${isAsk ? ct("Ask") : ct("Bid")}${ct("Empty")}${ot(
+            "OfferDetail",
+          )} [${cot(settleMode)}]`}
           onClose={() => setDrawerOpen(false)}
         />
         {isAsk ? (

@@ -2,8 +2,10 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import Image from "next/image";
 import { usePathname, useRouter } from "@/app/navigation";
+import { useTranslations } from "next-intl";
 
 export default function NavigationBtns() {
+  const t = useTranslations("Common");
   const pathname = usePathname();
 
   const isDashboard = pathname.startsWith(`/dashboard`);
@@ -14,14 +16,14 @@ export default function NavigationBtns() {
       <NavigationBtn
         active={isDashboard}
         icon="/icons/dashboard.svg"
-        text="Dashboard"
+        text={t("Dashboard")}
         href={`/dashboard`}
         withWallet={true}
       />
       <NavigationBtn
         active={isMarketPlace}
         icon="/icons/Marketplace.svg"
-        text="Marketplace"
+        text={t("Marketplace")}
         href={`/marketplace`}
         withWallet={false}
       />

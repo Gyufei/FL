@@ -7,6 +7,7 @@ import { IOffer } from "@/lib/types/offer";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useState } from "react";
 import useMakerSettleAccount from "@/lib/hooks/api/use-maker-settle-account";
+// import { useTranslations } from "next-intl";
 // import { Slider } from "@/components/ui/slider";
 
 export default function ConfirmAskMakerSettleDialog({
@@ -20,6 +21,7 @@ export default function ConfirmAskMakerSettleDialog({
   offer: IOffer;
   onSuccess: () => void;
 }) {
+  // const ct = useTranslations("Common");
   const orderRole = "Maker";
 
   const {
@@ -118,7 +120,7 @@ export default function ConfirmAskMakerSettleDialog({
                 onClick={() => setSliderValue(sliderMax)}
                 className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
               >
-                Max
+                {ct('Max')}
               </div>
             </div> */}
           </div>

@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslations } from "next-intl";
 
 export type IOfferType = "ask" | "bid";
 
@@ -27,14 +28,18 @@ export function OfferTypeSelect({
   types: Array<IOfferType>;
   handleTypeChange: (_ts: Array<IOfferType>) => void;
 }) {
+  const ct = useTranslations("Common");
   const [popOpen, setPopOpen] = useState(false);
 
   const currentTypeObj = useMemo(() => {
     if (types.length === 1) {
-      return OfferTypes.find((t) => t.value === types[0]);
+      const t = OfferTypes.find((t) => t.value === types[0]);
+      return {
+        label: getI18nLabel(t?.label || ""),
+      };
     } else {
       return {
-        label: "Sells / Buys",
+        label: `${ct("Sells")} / ${ct("Buys")}`,
       };
     }
   }, [types]);
@@ -48,6 +53,16 @@ export function OfferTypeSelect({
     } else {
       handleTypeChange([...types, t]);
       setPopOpen(false);
+    }
+  }
+
+  function getI18nLabel(label: string) {
+    if (label === "Sells / Asks") {
+      return `${ct("Sells")} / ${ct("Asks")}`;
+    }
+
+    if (label === "Buys / Bids") {
+      return `${ct("Buys")} / ${ct("Bids")}`;
     }
   }
 
@@ -119,7 +134,7 @@ export function OfferTypeSelect({
                 data-checked={types.includes(t.value)}
                 className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
               >
-                {t.label}
+                {getI18nLabel(t.label)}
               </div>
               <Checkbox
                 checked={types.includes(t.value)}

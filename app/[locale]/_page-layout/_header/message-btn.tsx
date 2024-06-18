@@ -9,8 +9,10 @@ import DrawerTitle from "@/components/share/drawer-title";
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
+import { useTranslations } from "next-intl";
 
 export default function MessageBtn() {
+  const t = useTranslations("Common");
   const { msgEvents } = useWsMsgs();
   const msgDetail = {
     avatar: "/img/token-placeholder.png",
@@ -64,7 +66,7 @@ export default function MessageBtn() {
         customIdSuffix="msg-drawer"
       >
         <DrawerTitle
-          title="Notifications"
+          title={t("Notifications")}
           onClose={() => setDrawerOpen(false)}
         />
         {(msgEvents || []).map((i, idx) => (

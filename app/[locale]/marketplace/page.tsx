@@ -1,14 +1,12 @@
 "use client";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { useRouter } from "@/app/navigation";
+import { redirect } from "@/app/navigation";
 
 export default function Marketplace() {
-  const router = useRouter();
-
   const { data: marketplaceData } = useMarketplaces();
 
   if (marketplaceData) {
-    router.push(`/marketplace/${marketplaceData[0].market_id}`);
+    redirect(`/marketplace/${marketplaceData[0].market_id}`);
   }
 
   return null;

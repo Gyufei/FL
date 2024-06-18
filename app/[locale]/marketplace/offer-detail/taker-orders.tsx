@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { formatNum } from "@/lib/utils/number";
+import { useTranslations } from "next-intl";
 
 export interface TakerOrder {
   create_at: string;
@@ -35,6 +36,7 @@ export function TakerOrders({
   orderEqTokenInfo: IToken;
   orderTokenInfo: IToken;
 }) {
+  const t = useTranslations("OfferDetail");
   const { handleGoScan } = useGoScan();
 
   const data = useMemo(() => {
@@ -96,19 +98,19 @@ export function TakerOrders({
   };
 
   const COLUMNS = [
-    { label: "Sub No.", renderCell: (o: any) => `#${o.sub_no}` },
+    { label: t("SubNo"), renderCell: (o: any) => `#${o.sub_no}` },
     {
-      label: "Fill Amount",
+      label: t("FillAmount"),
       renderCell: (o: any) => <PointsCell order={o} offerLogo={offerLogo} />,
     },
     {
-      label: "Deposits",
+      label: t("Deposits"),
       renderCell: (o: TakerOrder) => (
         <AmountCell order={o} tokenInfo={orderTokenInfo} />
       ),
     },
     {
-      label: "Eq.Token",
+      label: t("EqToken"),
       renderCell: () => (
         <div className="flex items-center justify-end space-x-1">
           <span>{orderEqTokenInfo.symbol}</span>
@@ -123,7 +125,7 @@ export function TakerOrders({
       ),
     },
     {
-      label: "Tx Hash",
+      label: t("TxHash"),
       renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">
           {truncateAddr(o.tx_hash || "")}
@@ -139,7 +141,7 @@ export function TakerOrders({
       ),
     },
     {
-      label: "Time",
+      label: t("Time"),
       renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">{`${formatTimestamp(
           Number(o.create_at) * 1000,

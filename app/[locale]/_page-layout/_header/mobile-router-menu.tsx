@@ -4,6 +4,7 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function MobileRouterMenu() {
   const [showMenu, setShowMenu] = useState(false);
@@ -33,6 +34,7 @@ export default function MobileRouterMenu() {
 }
 
 function MenuList({ onEnd }: { onEnd: () => void }) {
+  const t = useTranslations("Common");
   const router = useRouter();
   const routePath = [`/dashboard`, `/marketplace`];
   const currentRoute = usePathname();
@@ -68,7 +70,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           height={40}
           alt="pools"
         />
-        <div className="text-lg leading-5 text-black">Dashboard</div>
+        <div className="text-lg leading-5 text-black">{t("Dashboard")}</div>
       </div>
       <div
         data-active={isMarketplaceActive}
@@ -88,7 +90,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           height={40}
           alt="governance"
         />
-        <div className="text-lg leading-5 text-black">Marketplace</div>
+        <div className="text-lg leading-5 text-black">{t("Marketplace")}</div>
       </div>
     </div>
   );

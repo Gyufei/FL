@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import FeeDisplay from "./fee-display";
+import { useTranslations } from "next-intl";
 
 export default function OrderNoteAndFee({
   value,
@@ -12,6 +13,7 @@ export default function OrderNoteAndFee({
   onValueChange: (_v: string) => void;
   type: "buy" | "sell";
 }) {
+  const ct = useTranslations("CreateOffer");
   const [showInput, setShowInput] = useState(false);
 
   function handleInputNote(v: string) {
@@ -32,7 +34,9 @@ export default function OrderNoteAndFee({
   return (
     <div className="mt-4 flex flex-col">
       <div className="mb-2 flex items-center space-x-1">
-        <div className="mr-[6px]  text-sm leading-6 text-black">Order Note</div>
+        <div className="mr-[6px]  text-sm leading-6 text-black">
+          {ct("OrderNote")}
+        </div>
         <Checkbox
           checked={showInput}
           onCheckedChange={(v) => handleShowInput(!!v)}
@@ -45,9 +49,11 @@ export default function OrderNoteAndFee({
             <Textarea
               value={value}
               onChange={(e) => handleInputNote(e.target.value)}
-              placeholder={`Anything you want to inform the ${
-                type === "buy" ? "seller" : "buyer"
-              }...`}
+              placeholder={
+                type === "buy"
+                  ? ct("AnythingYouWantToInformTheSeller")
+                  : ct("AnythingYouWantToInformTheBuyer")
+              }
               className="h-[66px] rounded-xl border border-[#d8d8d8] focus:border-focus"
             />
             <div className="absolute right-4 bottom-2 text-xs leading-[18px] text-gray">

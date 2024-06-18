@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { upperFirst } from "lodash";
 import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
+import { useTranslations } from "next-intl";
 
 export default function DetailDrawer({
   orders,
@@ -16,6 +17,10 @@ export default function DetailDrawer({
   orders: Array<IOffer>;
   onSuccess: () => void;
 }) {
+  const ct = useTranslations("Common");
+  const cot = useTranslations("CreateOffer");
+  const ot = useTranslations("OfferDetail");
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { anchor: orderId, setAnchorValue } = useAnchor();
@@ -66,7 +71,9 @@ export default function DetailDrawer({
       customIdSuffix="detail-drawer"
     >
       <DrawerTitle
-        title={`My ${isAsk ? "Ask" : "Bid"} Offer Detail [${settleMode}]`}
+        title={`${ct("My")}${ct("Empty")}${isAsk ? ct("Ask") : ct("Bid")}${ct(
+          "Empty",
+        )}${ot("OfferDetail")} [${cot(settleMode)}]`}
         onClose={() => setDrawerOpen(false)}
       />
       {order &&

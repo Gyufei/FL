@@ -14,6 +14,7 @@ import { useMakerOrders } from "@/lib/hooks/api/use-maker-orders";
 import { useTradingVol } from "@/lib/hooks/api/use-trading-vol";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 export default function LeaderBoard({
   className,
@@ -22,6 +23,8 @@ export default function LeaderBoard({
   className?: string;
   isLoading: boolean;
 }) {
+  const ct = useTranslations("Common");
+  const mt = useTranslations("Marketplace");
   const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("hour");
 
@@ -163,7 +166,7 @@ export default function LeaderBoard({
       },
     },
     {
-      label: "Wallet",
+      label: ct("Wallet"),
       renderCell: (item: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[150px]" />
@@ -177,7 +180,7 @@ export default function LeaderBoard({
         ),
     },
     {
-      label: leaderType !== "Maker Orders" ? "Amount" : "Count",
+      label: leaderType !== "Maker Orders" ? ct("Amount") : ct("Count"),
       renderCell: (item: any) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
@@ -198,7 +201,7 @@ export default function LeaderBoard({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black">Leaderboard</div>
+          <div className="leading-6 text-black">{mt("Leaderboard")}</div>
         </div>
         <LeaderTypeSelect
           type={leaderType}

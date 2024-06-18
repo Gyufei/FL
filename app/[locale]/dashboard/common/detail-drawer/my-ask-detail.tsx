@@ -13,7 +13,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-
+import { useTranslations } from "next-intl";
 
 export default function MyAskDetail({
   order: order,
@@ -22,6 +22,7 @@ export default function MyAskDetail({
   order: IOffer;
   onSuccess: () => void;
 }) {
+  const ot = useTranslations("OfferDetail");
   const {
     tokenTotalPrice,
     progress,
@@ -105,7 +106,7 @@ export default function MyAskDetail({
 
           <SwapItemPanel
             className="mt-5"
-            topText={<>You have to sell</>}
+            topText={<>{ot("YouHaveToSell")}</>}
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             value={order.points}
             tokenLogo={orderPointInfo.logoURI}
@@ -125,11 +126,12 @@ export default function MyAskDetail({
             }
             topText={
               <div className="flex items-center">
-                You Get
-                <WithTip>
-                  When buying {order.marketplace.point_name}s, you need to wait
-                  until the {order.marketplace.point_name}s convert into the
-                  protocol&apos;s tokens before you can receive tokens.
+                {ot("YouGet")}
+                <WithTip align="start">
+                  {ot("YouGetTip").replace(
+                    /\$pointName/g,
+                    order.marketplace.point_name,
+                  )}
                 </WithTip>
               </div>
             }
@@ -140,14 +142,14 @@ export default function MyAskDetail({
           {isCanSettle ? (
             <WithWalletConnectBtn onClick={handleSettle} shouldSignIn={true}>
               <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                Settle this offer
+                {ot("SettleThisOffer")}
               </button>
             </WithWalletConnectBtn>
           ) : (
             <>
               {isSettled || afterTGEPeriod ? (
                 <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                  Settlement Completed
+                  {ot("SettlementCompleted")}
                 </button>
               ) : (
                 <>
@@ -158,7 +160,7 @@ export default function MyAskDetail({
                         shouldSignIn={true}
                       >
                         <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                          Relist this offer
+                          {ot("RelistThisOffer")}
                         </button>
                       </WithWalletConnectBtn>
                     ) : (
@@ -166,7 +168,7 @@ export default function MyAskDetail({
                         disabled={true}
                         className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                       >
-                        Offer Closed
+                        {ot("OfferClosed")}
                       </button>
                     )
                   ) : (
@@ -181,21 +183,20 @@ export default function MyAskDetail({
                               disabled={isClosing}
                               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                             >
-                              Close this offer
+                              {ot("CloseThisOffer")}
                             </button>
                           </WithWalletConnectBtn>
                           <>
                             {isFilled && (
                               <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                You have the option to close the offer before it
-                                is 100% filled.
+                                {ot("YouHaveTheOptionToClose ")}
                               </div>
                             )}
                           </>
                         </>
                       ) : (
                         <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                          Awaiting settlement...
+                          {ot("AwaitingSettlement")}
                         </button>
                       )}
                     </>

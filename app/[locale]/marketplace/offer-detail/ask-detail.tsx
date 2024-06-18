@@ -12,6 +12,7 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function AskDetail({
   offer,
@@ -20,6 +21,12 @@ export default function AskDetail({
   offer: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
+  const ct = useTranslations("CreateOffer");
+  const ot = useTranslations("OfferDetail");
+  const locale = useLocale();
+  const isEn = locale === "en";
+  const isZh = locale === "zh";
+
   const { platformFee } = useGlobalConfig();
   const { currentChain } = useCurrentChain();
   const {
@@ -108,7 +115,7 @@ export default function AskDetail({
           />
 
           <SliderCard
-            topText={<>You pay</>}
+            topText={<>{ct("YouPay")}</>}
             bottomText={<>~${formatNum(payTokenTotalPrice)} </>}
             value={payTokenAmount}
             tokenLogo={forLogo}
@@ -119,7 +126,7 @@ export default function AskDetail({
           />
 
           <ReceiveCard
-            topText={<>You Get</>}
+            topText={<>{ot("YouGet")}</>}
             bottomText={
               <>
                 1 {offer.marketplace.point_name} = ${formatNum(pointPerPrice)}
@@ -132,7 +139,7 @@ export default function AskDetail({
           {isFilled ? (
             <>
               <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black">
-                Offer 100% Filled
+                {ot("OfferFilled")}
               </button>
             </>
           ) : (
@@ -142,15 +149,25 @@ export default function AskDetail({
                   disabled={isDepositLoading || !receivePointAmount}
                   className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:bg-gray"
                 >
-                  Confirm Taker Order
+                  {ot("ConfirmTakerOrder")}
                 </button>
               </WithWalletConnectBtn>
               <div className="mt-3 text-xs leading-5 text-gray">
-                You will automatically receive the{" "}
-                <span className="text-black">
-                  equivalent amount of the protocol&apos;s tokens
-                </span>{" "}
-                once the Origin Offer Creator settle the offer.
+                {isEn && (
+                  <>
+                    You will automatically receive the{" "}
+                    <span className="text-black">
+                      equivalent amount of the protocol&apos;s tokens
+                    </span>{" "}
+                    once the Origin Offer Creator settle the offer.
+                  </>
+                )}
+                {isZh && (
+                  <>
+                    只要初始 Maker 执行了清算, 你将自动收到{" "}
+                    <span className="text-black">等价的协议代币</span>{" "}
+                  </>
+                )}
               </div>
             </>
           )}

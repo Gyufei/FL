@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 export type ISortField = "Created" | "Price" | "Collateral";
 export type ISortDir = "Ascending" | "Descending";
@@ -25,6 +26,7 @@ export function SortSelect({
   handleSortFieldChange: (_s: ISortField) => void;
   handleSortDirChange: (_s: ISortDir) => void;
 }) {
+  const t = useTranslations("Common");
   const [popOpen, setPopOpen] = useState(false);
 
   function handleSortDirClick(field: ISortField, dir: ISortDir) {
@@ -41,7 +43,9 @@ export function SortSelect({
           className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-yellow data-[open=true]:bg-yellow"
         >
           <Image src="/icons/sort.svg" width={20} height={20} alt="type icon" />
-          <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">{`${sortField}:${sortDir}`}</div>
+          <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">{`${t(
+            sortField,
+          )}:${t(sortDir)}`}</div>
           <Image
             data-open={popOpen}
             src="/icons/arrow-down.svg"
@@ -93,13 +97,14 @@ function SortOptions({
   sortDir: ISortDir;
   onSortDirChange: (_field: ISortField, _dir: ISortDir) => void;
 }) {
+  const t = useTranslations("Common");
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger
         data-checked={sortField === field}
         className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
       >
-        {field}
+        {t(field)}
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent
@@ -128,15 +133,25 @@ function SortOptions({
 }
 
 function SortUp({ onClick }: { onClick: () => void }) {
+  const t = useTranslations("Common");
+  const local = useLocale();
+  const isEn = local === "en";
+
   return (
     <div className="flex items-center space-x-1 " onClick={onClick}>
       <Image src="/icons/sort-up.svg" width={16} height={16} alt="up" />
-      <span className="text-xs leading-[18px]">Sort Ascending</span>
+      <span className="text-xs leading-[18px]">
+        {isEn ? "Sort " : ""}
+        {t("Ascending")}
+      </span>
     </div>
   );
 }
 
 function SortDown({ onClick }: { onClick: () => void }) {
+  const t = useTranslations("Common");
+  const local = useLocale();
+  const isEn = local === "en";
   return (
     <div onClick={onClick} className="flex items-center space-x-1">
       <Image
@@ -146,7 +161,10 @@ function SortDown({ onClick }: { onClick: () => void }) {
         height={16}
         alt="up"
       />
-      <span className="text-xs leading-[18px]">Sort Descending</span>
+      <span className="text-xs leading-[18px]">
+        {isEn ? "Sort " : ""}
+        {t("Descending")}
+      </span>
     </div>
   );
 }

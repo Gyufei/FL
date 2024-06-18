@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { handleGoTwitter } from "@/lib/utils/social";
+import { useTranslations } from "next-intl";
 
 export default function MarketplaceCard({
   marketplace,
@@ -180,6 +181,7 @@ function OverviewIcons({
 }
 
 function FoldPop() {
+ const t = useTranslations("Common");
   const { data: marketplaceData } = useMarketplaces();
 
   const router = useRouter();
@@ -248,7 +250,7 @@ function FoldPop() {
             className="absolute top-[10px] left-[7px]"
           />
           <Input
-            placeholder="Search"
+            placeholder={t("Search")}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onFocus={() => setIsInputFocused(true)}

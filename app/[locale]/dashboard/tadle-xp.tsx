@@ -1,8 +1,11 @@
 import { format } from "date-fns";
 import { GaugeComponent } from "./gauge";
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 export function TadleXp() {
+  const mot = useTranslations("MyOrders");
+
   const xp = 660;
   const rank = 10;
   const updateAt = new Date().getTime();
@@ -50,7 +53,7 @@ export function TadleXp() {
               { limit: 90 },
             ],
           }}
-          pointer={{ type: "blob", animationDelay: 0, color: '#fff' }}
+          pointer={{ type: "blob", animationDelay: 0, color: "#fff" }}
           value={value}
           maxValue={maxValue}
           labels={{
@@ -75,11 +78,11 @@ export function TadleXp() {
         <div className="absolute top-[75px] flex w-full flex-col items-center">
           <div className="text-4xl leading-[54px] text-black">{xp}</div>
           <div className="flex items-center text-sm leading-5">
-            <div className="mr-1 text-gray">Your Rank</div>
+            <div className="mr-1 text-gray">{mot("YourRank")}</div>
             <div className="text-black">{rank}</div>
           </div>
           <div className="text-xs leading-[18px] text-gray">
-            Updated On {format(updateAt, "LLL dd")}
+            {mot("UpdatedOn")} {format(updateAt, "LLL dd")}
           </div>
         </div>
       </div>

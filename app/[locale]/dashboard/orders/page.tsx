@@ -6,8 +6,10 @@ import {
 } from "@/components/share/offer-type-select";
 import { OrderTable } from "./order-table";
 import { FilterSelect, IRole, IStatus, Roles, Status } from "./filter-select";
+import { useTranslations } from "next-intl";
 
 export default function MyOrders() {
+  const mot = useTranslations("MyOrders");
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["ask"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
@@ -28,7 +30,9 @@ export default function MyOrders() {
     <div className="ml-5 flex h-full flex-1 flex-col">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-5">
-          <div className="text-xl leading-[30px] text-black">My Orders</div>
+          <div className="text-xl leading-[30px] text-black">
+            {mot("MyOrders")}
+          </div>
         </div>
         <div className="flex items-center space-x-6">
           <OfferTypeSelect

@@ -21,7 +21,7 @@ export default function AskDetail({
   offer: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
-  const ct = useTranslations("CreateOffer");
+  const cot = useTranslations("CreateOffer");
   const ot = useTranslations("OfferDetail");
   const locale = useLocale();
   const isEn = locale === "en";
@@ -115,7 +115,7 @@ export default function AskDetail({
           />
 
           <SliderCard
-            topText={<>{ct("YouPay")}</>}
+            topText={<>{cot("YouPay")}</>}
             bottomText={<>~${formatNum(payTokenTotalPrice)} </>}
             value={payTokenAmount}
             tokenLogo={forLogo}

@@ -6,8 +6,10 @@ import StockCard from "./stock-card";
 import { useSortOffer } from "@/lib/hooks/offer/use-sort-offer";
 import { useMemo } from "react";
 import { uniqBy } from "lodash";
+import { useTranslations } from "next-intl";
 
 export default function MyStocks() {
+  const mst = useTranslations("MyStocks");
   const { data: stocks, mutate: refreshOrders } = useMyStocks();
 
   const {
@@ -34,7 +36,9 @@ export default function MyStocks() {
   return (
     <div className="ml-5 flex flex-1 flex-col">
       <div className="flex items-center justify-between">
-        <div className="text-xl leading-[30px] text-black">My Stocks</div>
+        <div className="text-xl leading-[30px] text-black">
+          {mst("MyStocks")}
+        </div>
         <SortSelect
           sortField={sortField}
           sortDir={sortDir}

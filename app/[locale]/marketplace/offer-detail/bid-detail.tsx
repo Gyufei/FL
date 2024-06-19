@@ -20,7 +20,7 @@ export default function BidDetail({
   order: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
-  const ct = useTranslations("CreateOffer");
+  const cot = useTranslations("CreateOffer");
   const ot = useTranslations("OfferDetail");
 
   const {
@@ -107,7 +107,7 @@ export default function BidDetail({
           />
 
           <SliderCard
-            topText={<>{ct("YouSell")}</>}
+            topText={<>{cot("YouSell")}</>}
             bottomText={
               <>
                 1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}

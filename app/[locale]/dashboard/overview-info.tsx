@@ -9,8 +9,11 @@ import { format, subDays } from "date-fns";
 import { TadleXp } from "./tadle-xp";
 import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
 import HoverIcon from "@/components/share/hover-icon";
+import { useTranslations } from "next-intl";
 
 export default function OverviewInfo() {
+  const mt = useTranslations("Marketplace");
+  const mot = useTranslations("MyOrders");
   const inputRef = useRef<HTMLInputElement>(null);
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
@@ -106,16 +109,16 @@ export default function OverviewInfo() {
 
         {/* overview */}
         <div className="mt-6 rounded-3xl bg-[#fafafa] p-5">
-          <div className="leading-6 text-black">Account Overview</div>
+          <div className="leading-6 text-black">{mot("AccountOverview")}</div>
           <div className="mt-5 flex justify-between">
             <div>
-              <LabelText>Trade Vol.</LabelText>
+              <LabelText>{mot("TradeVol")}</LabelText>
               <div className="leading-6 text-black">
                 ${formatNum(accountInfo?.trade_vol)}
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>Profit</LabelText>
+              <LabelText>{mot("Profit")}</LabelText>
               <div
                 data-loss={accountInfo?.profit < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
@@ -128,13 +131,13 @@ export default function OverviewInfo() {
 
           <div className="mt-4 flex justify-between">
             <div>
-              <LabelText>Maker Orders</LabelText>
+              <LabelText>{mt("MakerOrders")}</LabelText>
               <div className="leading-6 text-black">
                 {formatNum(accountInfo?.maker_order)}
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>Taker Orders</LabelText>
+              <LabelText>{mot("TakerOrders")}</LabelText>
               <div className="leading-6 text-black">
                 {formatNum(accountInfo?.taker_order)}
               </div>
@@ -143,13 +146,13 @@ export default function OverviewInfo() {
 
           <div className="mt-5 flex justify-between">
             <div>
-              <LabelText>Settled Value</LabelText>
+              <LabelText>{mot("SettledValue")}</LabelText>
               <div className="leading-6 text-black">
                 ${formatNum(accountInfo?.settled_value)}
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>Bonus Income</LabelText>
+              <LabelText>{mot("BonusIncome")}</LabelText>
               <div
                 data-loss={accountInfo?.tax_income < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
@@ -165,7 +168,9 @@ export default function OverviewInfo() {
       <TadleXp />
 
       <div className="mb-5">
-        <div className="leading-[18px] text-gray">Your referral link</div>
+        <div className="leading-[18px] text-gray">
+          {mot("YourReferralLink")}
+        </div>
         <div className="relative mt-2">
           <Input
             placeholder="https://"

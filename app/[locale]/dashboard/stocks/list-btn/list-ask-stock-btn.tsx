@@ -20,6 +20,7 @@ import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { useListStock } from "@/lib/hooks/contract/use-list-maker";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useTranslations } from "next-intl";
 
 export default function ListAskStockBtn({
   order: order,
@@ -28,6 +29,7 @@ export default function ListAskStockBtn({
   order: IStock;
   onSuccess: () => void;
 }) {
+  const cot = useTranslations("CreateOffer");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail } =
@@ -117,7 +119,7 @@ export default function ListAskStockBtn({
             <InputPanel
               value={sellPointAmount}
               onValueChange={() => {}}
-              topText={<>You will sell</>}
+              topText={<>{cot("YouSell")}</>}
               bottomText={
                 <>
                   1 {order.marketplace.point_name} = ${formatNum(pointPrice)}
@@ -140,15 +142,20 @@ export default function ListAskStockBtn({
               onValueChange={setReceiveTokenAmount}
               topText={
                 <div className="flex items-center">
-                  You&apos;d like to receive
-                  <WithTip>
-                    When buying {order.marketplace.point_name}s, you need to
-                    wait until the {order.marketplace.point_name}s convert into
-                    the protocol&apos;s tokens before you can receive tokens.
+                  {cot("YouReceive")}
+                  <WithTip align="start">
+                    {cot("YouReceiveTip").replace(
+                      /\$pointName/g,
+                      order.marketplace.point_name,
+                    )}
                   </WithTip>
                 </div>
               }
-              bottomText={<>Required collateral ${formatNum(sellPrice)}</>}
+              bottomText={
+                <>
+                  {cot("RequiredCollateral")} ${formatNum(sellPrice)}
+                </>
+              }
               tokenSelect={
                 <StableTokenSelectDisplay
                   token={orderTokenInfo as IToken}
@@ -183,7 +190,7 @@ export default function ListAskStockBtn({
               disabled={isDepositLoading}
               className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
             >
-              Confirm Maker Order
+              {cot("ConfirmMakerOrder")}
             </button>
           </WithWalletConnectBtn>
         </div>

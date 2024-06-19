@@ -2,12 +2,14 @@
   "Common": {
     "Empty": " ",
     "My": "My",
+    "NO": "No.",
     "Marketplace": "Marketplace",
     "Dashboard": "Dashboard",
     "Search": "Search",
     "Wallet": "Wallet",
     "Amount": "Amount",
     "Count": "Count",
+    "Detail": "Detail",
     "Notifications": "Notifications",
     "Connect": "Connect",
     "ConnectWallet": "Connect Wallet",
@@ -40,7 +42,15 @@
     "Days": "Days",
     "Hours": "Hours",
     "Minutes": "Minutes",
-    "Seconds": "Seconds"
+    "Seconds": "Seconds",
+    "Type": "Type",
+    "Status": "Status",
+    "Tx": "Tx",
+    "Token": "Token",
+    "Setting": "Setting",
+    "Networks": "Networks",
+    "InputYourCustomRPC": "Input your custom RPC URL here...",
+    "UnsupportedRPC": "Unsupported RPC Endpoint for Solana Mainnet/Testnet"
   },
   "Marketplace": {
     "FloorPrice": "Floor Price",
@@ -136,6 +146,43 @@
   },
   "MyOrders": {
     "MyOrders": "My Orders",
-    "AccountOverview": "Account Overview"
+    "AccountOverview": "Account Overview",
+    "TakerOrders": "Taker Orders",
+    "TradeVol": "Trade Vol.",
+    "Profit": "Profit",
+    "SettledValue": "Settled Value",
+    "BonusIncome": "Bonus Income",
+    "YourRank": "Your Rank",
+    "UpdatedOn": "Updated On",
+    "YourReferralLink": "Your referral link",
+    "Items": "Items",
+    "Offer": "Offer",
+    "FromTo": "From/To",
+    "CreatedTime": "Created Time"
+  },
+  "MyStocks": {
+    "MyStocks": "My Stocks",
+    "List": "List",
+    "Listed": "Listed",
+    "StockId": "Stock Id",
+    "Prev": "Prev",
+    "OriginatedFrom": "Originated from",
+    "Settle": "Settle",
+    "YourRole": "Your Role",
+    "TotalSettlementRequired": "Total Settlement Required",
+    "YouAreGoingToSettle": "You're going to settle",
+    "ConfirmThisSettlement": "Confirm this settlement"
+  },
+  "MyBalance": {
+    "MyBalances": "My Balance",
+    "BonusIncome": "Bonus Income",
+    "RealizedAssets": "Realized Assets",
+    "ReferralBonus": "Referral Bonus",
+    "SalesRevenue": "Sales Revenue",
+    "RemainingCash": "Remaining Cash",
+    "MakerRefund": "Maker Refund",
+    "WalletCount": "Wallet Count",
+    "TotalAmount": "Total Amount",
+    "Get": "Get"
   }
 }

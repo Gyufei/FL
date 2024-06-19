@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 type IFilterType = "Type" | "Status";
 const FilterTypes: Array<IFilterType> = ["Type", "Status"];
@@ -35,6 +36,7 @@ export function FilterSelect({
   status: IStatus;
   setStatus: (t: IStatus) => void;
 }) {
+  const ct = useTranslations("Common");
   const [popOpen, setPopOpen] = useState(false);
 
   const [checkFilterType, setCheckFilterType] = useState<IFilterType>(
@@ -79,7 +81,7 @@ export function FilterSelect({
             className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => setCheckFilterType(FilterTypes[0])}
           >
-            Type
+            {ct("Type")}
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent
@@ -108,7 +110,7 @@ export function FilterSelect({
             className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => setCheckFilterType(FilterTypes[1])}
           >
-            Status
+            {ct("Status")}
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent

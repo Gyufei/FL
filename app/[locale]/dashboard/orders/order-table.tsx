@@ -26,6 +26,7 @@ import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useTranslations } from "next-intl";
 
 export function OrderTable({
   role,
@@ -36,6 +37,10 @@ export function OrderTable({
   status: IStatus;
   types: Array<IOfferType>;
 }) {
+  const ct = useTranslations("Common");
+  const mot = useTranslations("MyOrders");
+  const ot = useTranslations("OfferDetail");
+
   const { setAnchorValue } = useAnchor();
   const { data: offers, mutate: refreshOrders } = useMyOffers();
 
@@ -126,16 +131,26 @@ export function OrderTable({
           <>
             <Header className="text-xs leading-[18px] text-gray">
               <HeaderRow className="border-none">
-                <HeaderCell className="h-10 px-1 py-[11px]">Items</HeaderCell>
-                <HeaderCell className="h-10 px-1 py-[11px]">Offer</HeaderCell>
-                <HeaderCell className="h-10 px-1 py-[11px]">Type</HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  Eq.Token
+                  {mot("Items")}
                 </HeaderCell>
-                <HeaderCell className="h-10 px-1 py-[11px]">From/To</HeaderCell>
-                <HeaderCell className="h-10 px-1 py-[11px]">Tx</HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  Created Time
+                  {mot("Offer")}
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  {ct("Type")}
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  {ot("EqToken")}
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  {mot("FromTo")}
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  {ct("Tx")}
+                </HeaderCell>
+                <HeaderCell className="h-10 px-1 py-[11px]">
+                  {mot("CreatedTime")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]"></HeaderCell>
               </HeaderRow>
@@ -328,6 +343,7 @@ function OrderHash({ offer }: { offer: IOffer }) {
 }
 
 function DetailBtn({ onClick }: { onClick: () => void }) {
+  const ct = useTranslations("Common");
   return (
     <WithWalletConnectBtn
       className="flex w-fit"
@@ -335,7 +351,7 @@ function DetailBtn({ onClick }: { onClick: () => void }) {
       shouldSignIn={true}
     >
       <div className="flex h-7 w-full cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black">
-        Detail
+        {ct("Detail")}
       </div>
     </WithWalletConnectBtn>
   );

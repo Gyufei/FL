@@ -10,7 +10,7 @@ export default function CollateralRateInput({
   disabled?: boolean;
   onValueChange: (_v: string) => void;
 }) {
-  const ct = useTranslations("CreateOffer");
+  const cot = useTranslations("CreateOffer");
 
   function handleInput(v: string) {
     if (v && Number(v) < 1) {
@@ -33,7 +33,7 @@ export default function CollateralRateInput({
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
         <div className="mr-1 text-sm leading-6 text-black">
-          {ct("CollateralRate")}
+          {cot("CollateralRate")}
         </div>
       </div>
 

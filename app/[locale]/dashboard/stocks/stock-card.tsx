@@ -9,6 +9,7 @@ import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import DelistBtn from "./delist-btn/delist-btn";
+import { useTranslations } from "next-intl";
 
 export default function StockCard({
   stock,
@@ -17,6 +18,7 @@ export default function StockCard({
   stock: IStock;
   onSuccess: () => void;
 }) {
+  const ct = useTranslations("Common");
   const {
     afterTGE,
     afterTGEPeriod,
@@ -81,13 +83,15 @@ export default function StockCard({
           data-type={stock.stock_type}
           className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
         >
-          {!isAskStock ? "Bid" : "Ask"}
+          {!isAskStock ? ct("Bid") : ct("Ask")}
         </div>
       </div>
 
       <div className="mt-4 flex items-center justify-between border-b border-[#F0F1F5] pb-5">
         <div className="flex flex-col">
-          <div className="mb-[2px] text-xs leading-[18px] text-gray">Offer</div>
+          <div className="mb-[2px] text-xs leading-[18px] text-gray">
+            {ct("Offer")}
+          </div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(offerValue, 2, true)}
             <Image
@@ -109,7 +113,9 @@ export default function StockCard({
           alt="arrow"
         />
         <div className="flex flex-col items-end">
-          <div className="mb-[2px] text-xs leading-[18px] text-gray">For</div>
+          <div className="mb-[2px] text-xs leading-[18px] text-gray">
+            {ct("For")}
+          </div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(forValue, 2, true)}
             <Image

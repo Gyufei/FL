@@ -184,5 +184,18 @@
     "WalletCount": "Wallet Count",
     "TotalAmount": "Total Amount",
     "Get": "Get"
+  },
+  "Referral": {
+    "ReferralSystem": "Referral System",
+    "SignedUp": "Signed Up",
+    "Commission": "Commission",
+    "ReferralLink": "Referral link",
+    "ReferralCode": "Referral Code",
+    "TradingUsers": "Trading Users",
+    "TradingVol": "Trading Vol.",
+    "Views": "Views",
+    "CommissionRates": "Commission Rates",
+    "Note": "Note",
+    "Op": "Op"
   }
 }

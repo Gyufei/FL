@@ -187,5 +187,18 @@
     "WalletCount": "钱包数",
     "TotalAmount": "总计",
     "Get": "提取"
+  },
+  "Referral": {
+    "ReferralSystem": "推荐系统",
+    "SignedUp": "签约",
+    "Commission": "佣金",
+    "ReferralLink": "推荐链接",
+    "ReferralCode": "推荐码",
+    "TradingUsers": "交易用户数",
+    "TradingVol": "交易量",
+    "Views": "查看数",
+    "CommissionRates": "佣金率",
+    "Note": "备注",
+    "Op": "操作"
   }
 }

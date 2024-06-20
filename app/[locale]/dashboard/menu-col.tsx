@@ -36,6 +36,17 @@ export default function MenuCol() {
       >
         <Image src="/icons/wallet.svg" width={24} height={24} alt="balances" />
       </MenuIcon>
+      <MenuIcon
+        href={`/dashboard/referral`}
+        isActive={pathname === `/dashboard/referral`}
+      >
+        <Image
+          src="/icons/referral-system.svg"
+          width={24}
+          height={24}
+          alt="referral"
+        />
+      </MenuIcon>
       {/* <div
         onClick={handleComingSoon}
         data-active={false}

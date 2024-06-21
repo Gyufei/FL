@@ -32,7 +32,7 @@ interface Cluster {
 export const MainnetCluster: Cluster = {
   network: WalletAdapterNetwork.Mainnet,
   api: {
-    default: EndPointPathMap.solanaApi,
+    default: EndPointPathMap.api,
     tokenApi: EndPointPathMap.solanaToken,
   },
   program: {
@@ -45,7 +45,7 @@ export const MainnetCluster: Cluster = {
 export const DevnetCluster: Cluster = {
   network: WalletAdapterNetwork.Devnet,
   api: {
-    default: EndPointPathMap.solanaApi,
+    default: EndPointPathMap.api,
     tokenApi: EndPointPathMap.solanaToken,
   },
   program: {

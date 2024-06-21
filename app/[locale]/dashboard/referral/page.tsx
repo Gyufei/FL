@@ -1,7 +1,36 @@
+"use client";
 import { useTranslations } from "next-intl";
+import ReferralInfo from "./referral-info";
+import Image from "next/image";
+import { ReferralTable } from "./referral-table";
+import { useReferralData } from "@/lib/hooks/api/use-referral-data";
+import { useEffect } from "react";
+import { useReferralCreate } from "@/lib/hooks/api/use-referral";
 
 export default function Referral() {
   const rt = useTranslations("Referral");
+
+  const { data: referralData, mutate: refetch } = useReferralData();
+
+  const {
+    trigger: createAction,
+    isMutating: createLoading,
+    data: createResult,
+  } = useReferralCreate();
+
+  useEffect(() => {
+    if (createResult && createResult.code === 200) {
+      refetch();
+    }
+  }, [createResult]);
+
+  function handleCreate() {
+    if (createLoading) {
+      return;
+    }
+
+    createAction();
+  }
 
   return (
     <div className="ml-5 flex h-full flex-1 flex-col">
@@ -12,7 +41,24 @@ export default function Referral() {
           </div>
         </div>
       </div>
-      <div className="relative mt-5 flex flex-1 flex-col justify-end border-t border-[#eee]"></div>
+
+      <div className="relative mt-5 flex flex-1 flex-col justify-start border-t border-[#eee]">
+        <ReferralInfo referralData={referralData || []} />
+        <div className="mt-5 mb-2 flex items-center space-x-2">
+          <div className="text-base leading-6 text-black">
+            {rt("ReferralLink")}
+          </div>
+          <Image
+            onClick={handleCreate}
+            width={20}
+            height={20}
+            src="/icons/circle-add.svg"
+            alt="add"
+            className="cursor-pointer"
+          />
+        </div>
+        <ReferralTable referralData={referralData} refresh={refetch} />
+      </div>
     </div>
   );
 }

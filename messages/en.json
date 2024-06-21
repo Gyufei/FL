@@ -196,6 +196,12 @@
     "Views": "Views",
     "CommissionRates": "Commission Rates",
     "Note": "Note",
-    "Op": "Op"
+    "Op": "Op",
+    "Set": "Set",
+    "You": "You",
+    "YourFriend": "Your friend",
+    "ReferralDrawerTip": "When someone signs up using your referral link, the first person will receive a refund equal to 10% of the trading fee paid by the second person. Additionally, you, as the original referrer, will receive a reward equal to 40% of the commission fee.",
+    "Save": "Save",
+    "RateError": "Your And Your friend's commission rate can't be greater than 30%"
   }
 }

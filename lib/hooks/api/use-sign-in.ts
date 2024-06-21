@@ -19,7 +19,7 @@ export function useSignIn() {
     },
   ) => {
     const res = await fetcher(
-      `${apiEndPoint}${Paths.signIn}?apipost_id=7fff52`,
+      `${apiEndPoint}${Paths.signIn}`,
       {
         method: "POST",
         body: JSON.stringify(arg),

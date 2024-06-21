@@ -1,0 +1,189 @@
+import Image from "next/image";
+import Drawer from "react-modern-drawer";
+import DrawerTitle from "@/components/share/drawer-title";
+
+import { useTranslations } from "next-intl";
+import { IReferralItem } from "@/lib/hooks/api/use-referral-data";
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
+import { NumericalInput } from "@/components/share/numerical-input";
+import { useReferralRateChange } from "@/lib/hooks/api/use-referral";
+
+export default function DetailDrawer({
+  referral,
+  onSuccess,
+  drawerOpen,
+  setDrawerOpen,
+}: {
+  referral: IReferralItem | null;
+  onSuccess: () => void;
+  drawerOpen: boolean;
+  setDrawerOpen: (_v: boolean) => void;
+}) {
+  const ct = useTranslations("Common");
+  const rt = useTranslations("Referral");
+
+  const { trigger: updateReferralRate, data: createResult } =
+    useReferralRateChange();
+
+  const [rate, setRate] = useState(
+    String(Number(referral?.referrer_rate || 0) / 10 ** 4),
+  );
+  const [friendRate, setFriendRate] = useState(
+    String(Number(referral?.authority_rate || 0) / 10 ** 4),
+  );
+  const [rateError, setRateError] = useState(false);
+
+  useEffect(() => {
+    setRate(String(Number(referral?.referrer_rate || 0) / 10 ** 4));
+    setFriendRate(String(Number(referral?.authority_rate || 0) / 10 ** 4));
+  }, [referral]);
+
+  function handleDrawerClose() {
+    setDrawerOpen(false);
+  }
+
+  function handleRateInput(v: string) {
+    setRate(v);
+  }
+
+  function handleFRateInput(v: string) {
+    setFriendRate(v);
+  }
+
+  useEffect(() => {
+    if (Number(rate) + Number(friendRate) > 30) {
+      setRateError(true);
+    } else {
+      setRateError(false);
+    }
+  }, [rate, friendRate]);
+
+  useEffect(() => {
+    if (createResult) {
+      onSuccess();
+      setDrawerOpen(false);
+    }
+  });
+
+  function handleSaveRate() {
+    if (rateError) {
+      return;
+    }
+
+    const args = {
+      referral_code: referral?.referral_code || "",
+      authority_rate: String(Number(friendRate || 0) * 10 ** 4),
+      referrer_rate: String(Number(rate || 0) * 10 ** 4),
+    };
+
+    if (
+      args.authority_rate === referral?.authority_rate &&
+      args.referrer_rate === referral?.referrer_rate
+    ) {
+      return;
+    }
+
+    updateReferralRate(args);
+  }
+
+  return (
+    <Drawer
+      open={drawerOpen}
+      onClose={handleDrawerClose}
+      direction="right"
+      size={500}
+      className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
+      customIdSuffix="detail-drawer"
+    >
+      <DrawerTitle
+        title={rt("CommissionRates")}
+        onClose={() => setDrawerOpen(false)}
+      />
+
+      <div className="mt-6 flex flex-1 flex-col justify-between">
+        <div className="flex flex-1 flex-col">
+          <div className="text-base leading-6 text-black">
+            {rt("Set") + ct("Empty") + rt("ReferralLink")}
+          </div>
+          <div className="mt-2 text-sm leading-5 text-gray">
+            {rt("ReferralCode")}
+          </div>
+          <Input
+            disabled={true}
+            value={referral?.referral_code}
+            placeholder="qwerty"
+            className="mt-2 h-12 border-[#d8d8d8] pl-4 text-sm disabled:bg-[#F0F1F5]"
+          />
+
+          <div className="mt-6 text-base leading-6 text-black">
+            {rt("Set") + ct("Empty") + rt("CommissionRates")}
+          </div>
+
+          <div className="mt-2 flex items-center justify-between space-x-3">
+            <div className="flex flex-col space-y-2">
+              <div className="text-sm leading-5 text-gray">{rt("You")}</div>
+
+              <NumericalInput
+                data-error={rateError}
+                className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
+                placeholder="1%"
+                value={rate || ""}
+                onUserInput={handleRateInput}
+              />
+            </div>
+            <div className="mt-6 text-sm leading-5 text-gray">+</div>
+            <div className="flex flex-col space-y-2">
+              <div className="text-sm leading-5 text-gray">
+                {rt("YourFriend")}
+              </div>
+
+              <NumericalInput
+                data-error={rateError}
+                className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
+                placeholder="1%"
+                value={friendRate || ""}
+                onUserInput={handleFRateInput}
+              />
+            </div>
+            <div className="mt-6 flex items-center space-x-1 text-sm leading-5 text-gray">
+              <div>=</div>
+              <div>{Number(rate || 0) + Number(friendRate || 0)}%</div>
+            </div>
+          </div>
+
+          {rateError && (
+            <div className="mt-3 text-xs leading-3 text-red">
+              {rt("RateError")}
+            </div>
+          )}
+
+          <div className="mt-6 bg-[rgba(255,169,91,0.1)] p-4 text-sm leading-5 text-[#ffa95b]">
+            <Image
+              width={20}
+              height={20}
+              src="/icons/info-yellow.svg"
+              alt="info"
+              className="float-left mr-2"
+            />
+            <div>{rt("ReferralDrawerTip")}</div>
+          </div>
+        </div>
+
+        <WithWalletConnectBtn
+          className="w-full"
+          onClick={handleSaveRate}
+          shouldSignIn={true}
+        >
+          <button
+            // disabled={isCreateLoading}
+            className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
+          >
+            {rt("Save")}
+          </button>
+        </WithWalletConnectBtn>
+      </div>
+    </Drawer>
+  );
+}

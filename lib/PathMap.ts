@@ -3,7 +3,7 @@ export const isProduction = process.env.NODE_ENV === 'production' && !isPreview
 // export const isProduction = true;
 
 export function WithHost(path: string) {
-  const devHost = `https://api.tadle.com`;
+  const devHost = `https://preview-api.tadle.com`
   const prodHost = `https://api.tadle.com`
   const host = isProduction ? prodHost : devHost
   return `${host}${path}`
@@ -34,7 +34,7 @@ export function WithWss() {
 }
 
 export const EndPointPathMap = {
-  solanaApi: WithHost(""),
+  api: WithHost(""),
   solanaToken: WithCDN("/tokens/solana/tokenlist.json"),
 };
 
@@ -56,5 +56,15 @@ export const Paths = {
   marketTrades: "/market_place/maker_trades_history",
   userState: "/user/state",
   sales_volume_history: "/market_place/sales_volume_history",
-  makerSettleAccount: '/market_place/direct_settle_account'
+  makerSettleAccount: '/market_place/direct_settle_account',
+
+  referral: {
+    create: '/referral/create',
+    updateCommission: '/referral/update_commission',
+    updateNote: '/referral/update_notes',
+    default: '/referral/default',
+    data: '/referral/referral_system_data',
+    views: '/referral/views',
+    delete: '/referral/delete'
+  }
 };

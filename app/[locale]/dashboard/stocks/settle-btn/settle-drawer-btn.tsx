@@ -12,7 +12,7 @@ export default function SettleDrawerBtn({
   order: IStock;
   onSuccess: () => void;
 }) {
-  const mst = useTranslations("MyStocks");
+  const mst = useTranslations("page-MyStocks");
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
   function handleDrawerOpen(open: boolean) {
@@ -27,7 +27,7 @@ export default function SettleDrawerBtn({
       >
         <div className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black data-[disabled=true]:bg-gray">
           <Image src="/icons/settle.svg" width={16} height={16} alt="list" />
-          <span>{mst("Settle")}</span>
+          <span>{mst("btn-Settle")}</span>
         </div>
       </WithWalletConnectBtn>
 

@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 export default function ReferralLink() {
-  const mot = useTranslations("MyOrders");
+  const T = useTranslations("Referral");
 
   const { data: referralData } = useReferralData();
 
@@ -30,7 +30,9 @@ export default function ReferralLink() {
 
   return (
     <div className="mb-5">
-      <div className="leading-[18px] text-gray">{mot("YourReferralLink")}</div>
+      <div className="leading-[18px] text-gray">
+        {T("cap-YourReferralLink")}
+      </div>
       <div className="relative mt-2">
         {/* <Input
           placeholder="https://"

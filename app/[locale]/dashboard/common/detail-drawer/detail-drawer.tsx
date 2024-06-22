@@ -18,8 +18,7 @@ export default function DetailDrawer({
   onSuccess: () => void;
 }) {
   const ct = useTranslations("Common");
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const ot = useTranslations("drawer-OfferDetail");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -71,9 +70,9 @@ export default function DetailDrawer({
       customIdSuffix="detail-drawer"
     >
       <DrawerTitle
-        title={`${ct("My")}${ct("Empty")}${isAsk ? ct("Ask") : ct("Bid")}${ct(
-          "Empty",
-        )}${ot("OfferDetail")} [${cot(settleMode)}]`}
+        title={`
+          ${isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")}
+        [${ct(settleMode)}]`}
         onClose={() => setDrawerOpen(false)}
       />
       {order &&

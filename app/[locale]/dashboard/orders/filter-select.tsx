@@ -36,7 +36,7 @@ export function FilterSelect({
   status: IStatus;
   setStatus: (t: IStatus) => void;
 }) {
-  const ct = useTranslations("Common");
+  const T = useTranslations("page-MyOrders");
   const [popOpen, setPopOpen] = useState(false);
 
   const [checkFilterType, setCheckFilterType] = useState<IFilterType>(
@@ -81,7 +81,7 @@ export function FilterSelect({
             className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => setCheckFilterType(FilterTypes[0])}
           >
-            {ct("Type")}
+            {T("sl-Type")}
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent
@@ -110,7 +110,7 @@ export function FilterSelect({
             className="flex h-9 cursor-pointer items-center rounded-xl px-4 text-xs leading-[18px] text-black data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => setCheckFilterType(FilterTypes[1])}
           >
-            {ct("Status")}
+            {T("sl-Status")}
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent

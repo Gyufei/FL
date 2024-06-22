@@ -5,6 +5,7 @@ import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
 import { useBuildTransaction } from "./help/use-build-transaction";
+import { SolanaZeroed } from "@/lib/constant";
 
 export function useCreateTaker({
   marketplaceStr,
@@ -13,6 +14,7 @@ export function useCreateTaker({
   originOfferStr,
   originOfferAuthStr,
   preOfferAuthStr,
+  referrerStr,
 }: {
   marketplaceStr: string;
   offerStr: string;
@@ -20,6 +22,7 @@ export function useCreateTaker({
   originOfferStr: string
   originOfferAuthStr: string,
   preOfferAuthStr: string,
+  referrerStr: string
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
@@ -46,6 +49,7 @@ export function useCreateTaker({
     const originOffer = new PublicKey(originOfferStr);
     const originOfferAuthority = new PublicKey(originOfferAuthStr);
     const preOfferAuthority = new PublicKey(preOfferAuthStr);
+    const referrer = new PublicKey(referrerStr || SolanaZeroed);
 
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
@@ -67,6 +71,24 @@ export function useCreateTaker({
       ],
       program.programId
     )[0];
+
+    const referralConfig = referrerStr ? PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("referral_config"),
+        authority!.toBuffer()
+      ],
+      program.programId
+    )[0] : referrer;
+
+    const referrerBaseTokenBalance = referrerStr ? PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("token_balance"),
+        usdcTokenMint.toBuffer(),
+        referrer.toBuffer()
+      ],
+      program.programId
+    )[0] : referrer;
+
 
     const methodTransaction = await program.methods
       .createTaker(new BN(pointAmount))
@@ -105,6 +127,21 @@ export function useCreateTaker({
         },
         {
           pubkey: userUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: referralConfig,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: referrer,
+          isSigner: false,
+          isWritable: true
+        },
+        {
+          pubkey: referrerBaseTokenBalance,
           isSigner: false,
           isWritable: true
         }

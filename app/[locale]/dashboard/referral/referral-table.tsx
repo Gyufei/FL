@@ -42,7 +42,7 @@ export function ReferralTable({
   referralData?: IReferralItem[] | null;
   refresh: () => void;
 }) {
-  const rt = useTranslations("Referral");
+  const rt = useTranslations("page-Referral");
 
   const data = useMemo(() => {
     return {
@@ -104,28 +104,28 @@ export function ReferralTable({
             <Header className="text-xs leading-[18px] text-gray">
               <HeaderRow className="border-none">
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("ReferralCode")}
+                  {rt("th-ReferralCode")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("SignedUp")}
+                  {rt("lb-SignedUp")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("TradingUsers")}
+                  {rt("th-TradingUsers")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("TradingVol")}
+                  {rt("th-TradingVol")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("Views")}
+                  {rt("th-Views")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("CommissionRates")}
+                  {rt("th-CommissionRates")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("Note")}
+                  {rt("th-Note")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {rt("Op")}
+                  {rt("th-Op")}
                 </HeaderCell>
               </HeaderRow>
             </Header>
@@ -288,7 +288,7 @@ function ReferralNote({
   rD: IReferralItem;
   onSuccess: () => void;
 }) {
-  const rt = useTranslations("Referral");
+  const rt = useTranslations("page-Referral");
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState(rD.notes);
   const [isEdit, setIsEdit] = useState(false);
@@ -341,7 +341,7 @@ function ReferralNote({
         <div ref={outSideRef}>
           <Input
             ref={inputRef}
-            placeholder={rt("Note")}
+            placeholder={rt("th-Note")}
             value={inputValue}
             onChange={(e: any) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}

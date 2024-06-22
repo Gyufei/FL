@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useReferralCreate } from "@/lib/hooks/api/use-referral";
 
 export default function Referral() {
-  const rt = useTranslations("Referral");
+  const rt = useTranslations("page-Referral");
 
   const { data: referralData, mutate: refetch } = useReferralData();
 
@@ -37,7 +37,7 @@ export default function Referral() {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-5">
           <div className="text-xl leading-[30px] text-black">
-            {rt("ReferralSystem")}
+            {rt("cap-ReferralSystem")}
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default function Referral() {
         <ReferralInfo referralData={referralData || []} />
         <div className="mt-5 mb-2 flex items-center space-x-2">
           <div className="text-base leading-6 text-black">
-            {rt("ReferralLink")}
+            {rt("cap-ReferralLink")}
           </div>
           <Image
             onClick={handleCreate}

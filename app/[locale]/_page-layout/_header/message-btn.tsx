@@ -12,7 +12,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useTranslations } from "next-intl";
 
 export default function MessageBtn() {
-  const t = useTranslations("Common");
+  const t = useTranslations("Header");
   const { msgEvents } = useWsMsgs();
   const msgDetail = {
     avatar: "/img/token-placeholder.png",
@@ -66,7 +66,7 @@ export default function MessageBtn() {
         customIdSuffix="msg-drawer"
       >
         <DrawerTitle
-          title={t("Notifications")}
+          title={t("cap-Notifications")}
           onClose={() => setDrawerOpen(false)}
         />
         {(msgEvents || []).map((i, idx) => (

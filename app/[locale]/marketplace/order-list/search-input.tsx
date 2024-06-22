@@ -8,7 +8,7 @@ export default function SearchInput({
 }: {
   handleSearch: (searchText: string) => void;
 }) {
-  const t = useTranslations("Marketplace");
+  const t = useTranslations("pn-Marketplace");
   const [searchText, setSearchText] = useState("");
   const [isActive, setIsActive] = useState(false);
 
@@ -47,7 +47,7 @@ export default function SearchInput({
       {isActive && (
         <Input
           ref={inputRef}
-          placeholder={t("ItemId")}
+          placeholder={t("pl-ItemId")}
           onBlur={handleBlur}
           value={searchText}
           onKeyDown={handleKeyPress}

@@ -21,8 +21,7 @@ export default function DetailDrawer({
   drawerOpen: boolean;
   setDrawerOpen: (_v: boolean) => void;
 }) {
-  const ct = useTranslations("Common");
-  const rt = useTranslations("Referral");
+  const rt = useTranslations("page-Referral");
 
   const { trigger: updateReferralRate, data: createResult } =
     useReferralRateChange();
@@ -98,17 +97,17 @@ export default function DetailDrawer({
       customIdSuffix="detail-drawer"
     >
       <DrawerTitle
-        title={rt("CommissionRates")}
+        title={rt("th-CommissionRates")}
         onClose={() => setDrawerOpen(false)}
       />
 
       <div className="mt-6 flex flex-1 flex-col justify-between">
         <div className="flex flex-1 flex-col">
           <div className="text-base leading-6 text-black">
-            {rt("Set") + ct("Empty") + rt("ReferralLink")}
+            {rt("cap-SetReferralLink")}
           </div>
           <div className="mt-2 text-sm leading-5 text-gray">
-            {rt("ReferralCode")}
+            {rt("th-ReferralCode")}
           </div>
           <Input
             disabled={true}
@@ -118,12 +117,12 @@ export default function DetailDrawer({
           />
 
           <div className="mt-6 text-base leading-6 text-black">
-            {rt("Set") + ct("Empty") + rt("CommissionRates")}
+            {rt("cap-SetCommissionRates")}
           </div>
 
           <div className="mt-2 flex items-center justify-between space-x-3">
             <div className="flex flex-col space-y-2">
-              <div className="text-sm leading-5 text-gray">{rt("You")}</div>
+              <div className="text-sm leading-5 text-gray">{rt("lb-You")}</div>
 
               <NumericalInput
                 data-error={rateError}
@@ -136,7 +135,7 @@ export default function DetailDrawer({
             <div className="mt-6 text-sm leading-5 text-gray">+</div>
             <div className="flex flex-col space-y-2">
               <div className="text-sm leading-5 text-gray">
-                {rt("YourFriend")}
+                {rt("lb-YourFriend")}
               </div>
 
               <NumericalInput
@@ -155,7 +154,7 @@ export default function DetailDrawer({
 
           {rateError && (
             <div className="mt-3 text-xs leading-3 text-red">
-              {rt("RateError")}
+              {rt("txt-RateError")}
             </div>
           )}
 
@@ -167,7 +166,7 @@ export default function DetailDrawer({
               alt="info"
               className="float-left mr-2"
             />
-            <div>{rt("ReferralDrawerTip")}</div>
+            <div>{rt("tip-ReferralDrawer")}</div>
           </div>
         </div>
 
@@ -180,7 +179,7 @@ export default function DetailDrawer({
             // disabled={isCreateLoading}
             className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
           >
-            {rt("Save")}
+            {rt("btn-Save")}
           </button>
         </WithWalletConnectBtn>
       </div>

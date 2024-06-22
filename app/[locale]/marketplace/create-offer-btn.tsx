@@ -16,8 +16,7 @@ export default function CreateOfferBtn({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
-  const ct = useTranslations("Common");
-  const mt = useTranslations("CreateOffer");
+  const T = useTranslations("drawer-CreateOffer");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
 
@@ -37,7 +36,7 @@ export default function CreateOfferBtn({
         onClick={() => setDrawerOpen(true)}
       >
         <button className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-          {mt("CreateOffer")}
+          {T("btn-CreateOffer")}
         </button>
       </WithWalletConnectBtn>
       <Drawer
@@ -48,7 +47,7 @@ export default function CreateOfferBtn({
         className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={mt("CreateMakerOffer")}
+          title={T("cap-CreateMakerOffer")}
           onClose={() => handleCloseDrawer()}
         />
 
@@ -62,13 +61,13 @@ export default function CreateOfferBtn({
               className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:border-[#eee] data-[state=inactive]:text-[#99a0af] data-[state=active]:text-red"
               value="sell"
             >
-              {ct("Sell")} / {ct("Ask")}
+              {T("cap-Sell")} / {T("cap-Ask")}
             </TabsTrigger>
             <TabsTrigger
               className="rounded-none data-[state=inactive]:border-b data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:border-[#eee] data-[state=inactive]:text-[#99a0af] data-[state=active]:text-green"
               value="buy"
             >
-              {ct("Buy")} / {ct("Bid")}
+              {T("cap-Buy")} / {T("cap-Bid")}
             </TabsTrigger>
           </TabsList>
           <TabsContent

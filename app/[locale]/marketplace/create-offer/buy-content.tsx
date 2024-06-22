@@ -26,7 +26,7 @@ export function BuyContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
-  const cot = useTranslations("CreateOffer");
+  const cot = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
 
   const [payTokenAmount, setPayTokenAmount] = useState("0");
@@ -109,7 +109,7 @@ export function BuyContent({
         <InputPanel
           value={payTokenAmount}
           onValueChange={handleBuyPayChange}
-          topText={<>{cot("YouPay")}</>}
+          topText={<>{cot("txt-YouPay")}</>}
           bottomText={<>${payAmountValue}</>}
           tokenSelect={
             <StableTokenSelectDisplay token={payToken} setToken={setPayToken} />
@@ -123,9 +123,9 @@ export function BuyContent({
           onValueChange={setReceivePointAmount}
           topText={
             <div className="flex items-center">
-              {cot("YouReceive")}
+              {cot("txt-YouDLikeToReceive")}
               <WithTip align="start">
-                {cot("YouReceiveTip").replace(
+                {cot("tip-YouDLikeToReceive").replace(
                   /\$pointName/g,
                   marketplace.point_name,
                 )}
@@ -167,7 +167,7 @@ export function BuyContent({
           disabled={isCreateLoading}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
         >
-          {cot("ConfirmMakerOrder")}
+          {cot("btn-ConfirmMakerOrder")}
         </button>
       </WithWalletConnectBtn>
     </div>

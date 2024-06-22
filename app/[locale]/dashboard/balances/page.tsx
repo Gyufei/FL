@@ -39,7 +39,7 @@ const TokenListMap: Record<string, IToken> = {
 };
 
 export default function MyBalances() {
-  const mbt = useTranslations("MyBalance");
+  const mbt = useTranslations("page-MyBalance");
   const [openPanel, setOpenPanel] = useState("1");
 
   const { publicKey } = useWallet();
@@ -193,7 +193,7 @@ export default function MyBalances() {
     <div className="ml-5 flex h-full flex-1 flex-col">
       <div className="flex items-center space-x-5">
         <div className="text-xl leading-[30px] text-black">
-          {mbt("MyBalances")}
+          {mbt("cap-MyBalances")}
         </div>
       </div>
       <div className="relative mt-5 flex w-full flex-1 flex-col justify-between border-t border-[#eee]">
@@ -207,7 +207,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "taxIncomeData"}
-                name={mbt("BonusIncome")}
+                name={mbt("cap-BonusIncome")}
                 walletCount={taxIncomeData?.length || 0}
                 totalAmount={taxIncomeTotal}
               />
@@ -230,7 +230,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "realizedAssetsData"}
-                name={mbt("RealizedAssets")}
+                name={mbt("cap-RealizedAssets")}
                 walletCount={realizedAssetsData?.length || 0}
                 totalAmount={realizedAssetsTotal}
               />
@@ -255,7 +255,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "referralData"}
-                name={mbt("ReferralBonus")}
+                name={mbt("cap-ReferralBonus")}
                 walletCount={referralData?.length || 0}
                 totalAmount={referralTotal}
               />
@@ -278,7 +278,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "salesRevenueData"}
-                name={mbt("SalesRevenue")}
+                name={mbt("cap-SalesRevenue")}
                 walletCount={salesRevenueData?.length || 0}
                 totalAmount={salesRevenueTotal}
               />
@@ -301,7 +301,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "remainingCashData"}
-                name={mbt("RemainingCash")}
+                name={mbt("cap-RemainingCash")}
                 walletCount={remainingCashData?.length || 0}
                 totalAmount={remainingCashTotal}
               />
@@ -324,7 +324,7 @@ export default function MyBalances() {
             <AccordionTrigger showIcon={false}>
               <AcHeader
                 open={openPanel === "makerRefundData"}
-                name={mbt("MakerRefund")}
+                name={mbt("cap-MakerRefund")}
                 walletCount={makerRefundData?.length || 0}
                 totalAmount={makerRefundTotal}
               />
@@ -360,18 +360,18 @@ function AcHeader({
   walletCount: number;
   totalAmount: number;
 }) {
-  const mbt = useTranslations("MyBalance");
+  const mbt = useTranslations("page-MyBalance");
 
   return (
     <div className="flex flex-1 items-center justify-between">
       <div className="flex flex-1 items-center text-lg leading-[28px] ">
         <div className="flex flex-1 justify-start text-black">{name}</div>
         <div className="flex flex-1 items-center gap-x-[10px]">
-          <div className="text-gray">{mbt("WalletCount")}</div>
+          <div className="text-gray">{mbt("cap-WalletCount")}</div>
           <div className="text-black">{walletCount}</div>
         </div>
         <div className="flex flex-1 items-center gap-x-[10px]">
-          <div className="text-gray">{mbt("TotalAmount")}</div>
+          <div className="text-gray">{mbt("cap-TotalAmount")}</div>
           <div className="text-black">{formatNum(totalAmount)}</div>
         </div>
       </div>
@@ -397,13 +397,14 @@ function TokenGetCard({
   amount: number;
   onClick: () => void;
 }) {
-  const ct = useTranslations("Common");
-  const mbt = useTranslations("MyBalance");
+  const mbt = useTranslations("page-MyBalance");
 
   return (
     <div className="flex w-[220px] flex-col items-stretch justify-between rounded-xl bg-white px-4 py-3">
       <div className="flex flex-col">
-        <div className="text-sm leading-5 text-lightgray">{ct("Token")}</div>
+        <div className="text-sm leading-5 text-lightgray">
+          {mbt("lb-Token")}
+        </div>
         <div className="flex items-center gap-x-1">
           <Image src={logo} width={16} height={16} alt="token logo" />
           <div className="text-base leading-6 text-black">{name}</div>
@@ -412,7 +413,9 @@ function TokenGetCard({
 
       <div className="mt-[10px] flex items-end justify-between">
         <div className="flex flex-col">
-          <div className="text-sm leading-5 text-lightgray">{ct("Amount")}</div>
+          <div className="text-sm leading-5 text-lightgray">
+            {mbt("lb-Amount")}
+          </div>
           <div className="text-base leading-6 text-black">
             {formatNum(amount)}
           </div>
@@ -422,7 +425,7 @@ function TokenGetCard({
             data-active={amount > 0}
             className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow data-[active=false]:pointer-events-none data-[active=false]:opacity-70"
           >
-            {mbt("Get")}
+            {mbt("btn-Get")}
           </div>
         </WithWalletConnectBtn>
       </div>

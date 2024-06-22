@@ -13,6 +13,7 @@ import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
+import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 
 export default function AskDetail({
   offer,
@@ -21,12 +22,12 @@ export default function AskDetail({
   offer: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const T = useTranslations("drawer-OfferDetail");
   const locale = useLocale();
   const isEn = locale === "en";
   const isZh = locale === "zh";
 
+  const { data: referrer } = useReferralReferer();
   const { platformFee } = useGlobalConfig();
   const { currentChain } = useCurrentChain();
   const {
@@ -59,6 +60,7 @@ export default function AskDetail({
     originOfferStr: makerDetail?.origin_offer || "",
     preOfferAuthStr: offer.authority,
     originOfferAuthStr: offer.origin_offer_detail?.authority,
+    referrerStr: referrer || "",
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
@@ -115,7 +117,7 @@ export default function AskDetail({
           />
 
           <SliderCard
-            topText={<>{cot("YouPay")}</>}
+            topText={<>{T("txt-YouPay")}</>}
             bottomText={<>~${formatNum(payTokenTotalPrice)} </>}
             value={payTokenAmount}
             tokenLogo={forLogo}
@@ -126,7 +128,7 @@ export default function AskDetail({
           />
 
           <ReceiveCard
-            topText={<>{ot("YouGet")}</>}
+            topText={<>{T("txt-YouGet")}</>}
             bottomText={
               <>
                 1 {offer.marketplace.point_name} = ${formatNum(pointPerPrice)}
@@ -139,7 +141,7 @@ export default function AskDetail({
           {isFilled ? (
             <>
               <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black">
-                {ot("OfferFilled")}
+                {T("btn-Offer100%Filled")}
               </button>
             </>
           ) : (
@@ -149,7 +151,7 @@ export default function AskDetail({
                   disabled={isDepositLoading || !receivePointAmount}
                   className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:bg-gray"
                 >
-                  {ot("ConfirmTakerOrder")}
+                  {T("btn-ConfirmTakerOrder")}
                 </button>
               </WithWalletConnectBtn>
               <div className="mt-3 text-xs leading-5 text-gray">

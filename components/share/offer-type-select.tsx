@@ -28,7 +28,7 @@ export function OfferTypeSelect({
   types: Array<IOfferType>;
   handleTypeChange: (_ts: Array<IOfferType>) => void;
 }) {
-  const ct = useTranslations("Common");
+  const t = useTranslations("sl-OfferType");
   const [popOpen, setPopOpen] = useState(false);
 
   const currentTypeObj = useMemo(() => {
@@ -39,7 +39,7 @@ export function OfferTypeSelect({
       };
     } else {
       return {
-        label: `${ct("Sells")} / ${ct("Buys")}`,
+        label: `${t("sl-Sells")} / ${t("sl-Buys")}`,
       };
     }
   }, [types]);
@@ -58,11 +58,11 @@ export function OfferTypeSelect({
 
   function getI18nLabel(label: string) {
     if (label === "Sells / Asks") {
-      return `${ct("Sells")} / ${ct("Asks")}`;
+      return `${t("sl-Sells")} / ${t("sl-Asks")}`;
     }
 
     if (label === "Buys / Bids") {
-      return `${ct("Buys")} / ${ct("Bids")}`;
+      return `${t("sl-Buys")} / ${t("sl-Bids")}`;
     }
   }
 

@@ -12,9 +12,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useTranslations } from "next-intl";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
-  const ct = useTranslations("Common");
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const ot = useTranslations("drawer-OfferDetail");
 
   const { publicKey } = useWallet();
 
@@ -72,13 +70,11 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
   return (
     <div className="flex-1 px-6">
-      <div className="leading-6 text-black">{ot("OfferDetail")}</div>
+      <div className="leading-6 text-black">{ot("cap-OfferDetail")}</div>
 
       <DetailRow>
-        <DetailLabel tipText={ot("FilledTip")}>
-          {ot("Filled")} / {isAsk ? ct("Selling") : ct("Buying")}
-          {ct("Empty")}
-          {ct("Amount")}
+        <DetailLabel tipText={ot("tip-Filled")}>
+          {isAsk ? ot("lb-Filled/SellingAmount") : ot("lb-Filled/BuyingAmount")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -98,10 +94,10 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       <DetailRow>
         <DetailLabel
           tipText={
-            isAsk ? ot("BaseTaxForEachTradeTip") : ot("TaxForSubTradeTip")
+            isAsk ? ot("tip-BaseTaxForEachTrade") : ot("tip-TaxForSubTrade")
           }
         >
-          {isAsk ? ot("BaseTaxForEachTrade") : ot("TaxForSubTrade")}
+          {isAsk ? ot("lb-BaseTaxForEachTrade") : ot("lb-TaxForSubTrade")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
@@ -111,8 +107,8 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText={ot("CollateralRateTip")}>
-          {cot("CollateralRate")}
+        <DetailLabel tipText={ot("tip-CollateralRate")}>
+          {ot("lb-CollateralRate")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
@@ -122,7 +118,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText="">{ct("Previous")} Maker / Taker</DetailLabel>
+        <DetailLabel tipText="">{ot("lb-Previous")} Maker / Taker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
             #{originOffer?.offer_id || offer?.offer_id}
@@ -153,15 +149,15 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
       {isAsk && (
         <DetailRow>
-          <DetailLabel tipText={ot("EstSettlingOnTip")}>
-            {ot("EstSettlingOn")}
+          <DetailLabel tipText={ot("tip-EstSettlingOn")}>
+            {ot("lb-EstSettlingOn")}
           </DetailLabel>
           <div className="flex items-center space-x-1">
             {tgeTime ? (
               formatTimestamp(tgeTime)
             ) : (
               <div className="text-sm leading-5 text-gray">
-                {ot("NotStarted")}
+                {ot("txt-NotStarted")}
               </div>
             )}
           </div>
@@ -169,8 +165,8 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       )}
 
       <DetailRow>
-        <DetailLabel tipText={ot("InitialOfferMakerTip")}>
-          {ot("InitialOfferMaker")}
+        <DetailLabel tipText={ot("tip-InitialOfferMaker")}>
+          {ot("lb-InitialOfferMaker")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
@@ -178,7 +174,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
           </div>
           <div className="text-sm leading-5 text-red">
             {isYouAreOriginMaker
-              ? "You"
+              ? ot("lb-You")
               : truncateAddr(originMaker, {
                   nPrefix: 4,
                   nSuffix: 4,
@@ -197,9 +193,11 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
       <DetailRow showBottomLine={false}>
         <DetailLabel
-          tipText={isAsk ? ot("InitialOfferMakerBonusTip") : ot("YourBonusTip")}
+          tipText={
+            isAsk ? ot("tip-InitialOfferMakerBonus") : ot("tip-YourBonus")
+          }
         >
-          {isAsk ? ot("InitialOfferMakerBonus") : ot("YourBonus")}
+          {isAsk ? ot("lb-InitialOfferMakerBonus") : ot("lb-YourBonus")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">

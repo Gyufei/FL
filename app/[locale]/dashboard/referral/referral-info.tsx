@@ -10,7 +10,7 @@ export default function ReferralInfo({
 }: {
   referralData: Array<IReferralItem>;
 }) {
-  const rt = useTranslations("Referral");
+  const rt = useTranslations("page-Referral");
 
   const signedUp = useMemo(() => {
     return referralData.reduce((acc, cur) => {
@@ -61,7 +61,7 @@ export default function ReferralInfo({
             <div className="mt-1 text-[30px] leading-[30px] text-black">
               {signedUp}
             </div>
-            <div className="text-sm leading-5 text-gray">{rt("SignedUp")}</div>
+            <div className="text-sm leading-5 text-gray">{rt("lb-SignedUp")}</div>
           </div>
           <div className="flex flex-col items-end justify-between space-y-1">
             <DisplayArrow isUp={signedUpRate > 0} />
@@ -89,7 +89,7 @@ export default function ReferralInfo({
               ${commission}
             </div>
             <div className="text-sm leading-5 text-gray">
-              {rt("Commission")}
+              {rt("lb-Commission")}
             </div>
           </div>
           <div className="flex flex-col items-end justify-between space-y-1">

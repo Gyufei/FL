@@ -10,6 +10,7 @@ import {
   handleGoTwitter,
 } from "@/lib/utils/social";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 function validateEmail(input: string): boolean {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -17,6 +18,7 @@ function validateEmail(input: string): boolean {
 }
 
 export default function ContactUs() {
+  const t = useTranslations("Home");
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
 
@@ -30,17 +32,17 @@ export default function ContactUs() {
   }
 
   return (
-    <div className="bg-[#F9FAF2] px-4 sm:px-[120px] pt-[60px]">
-      <div className="flex flex-col sm:flex-row items-end justify-between">
-        <div className="flex flex-col w-full sm:w-fit sm:items-start items-center">
-          <div className="text-center text-2xl leading-9 sm:text-[40px] text-black sm:text-4xl sm:leading-[54px]">
-            Stay in the loop with us
+    <div className="bg-[#F9FAF2] px-4 pt-[60px] sm:px-[120px]">
+      <div className="flex flex-col items-end justify-between sm:flex-row">
+        <div className="flex w-full flex-col items-center sm:w-fit sm:items-start">
+          <div className="text-center text-2xl leading-9 text-black sm:text-[40px] sm:text-4xl sm:leading-[54px]">
+            {t("cap-StayInTheLoopWithUs")}
           </div>
-          <div className="relative w-full sm:w-fit mt-5 flex justify-center">
+          <div className="relative mt-5 flex w-full justify-center sm:w-fit">
             <Input
-              className="h-10 w-full sm:w-[480px] rounded-xl border border-[#d8d8d8] sm:h-12"
+              className="h-10 w-full rounded-xl border border-[#d8d8d8] sm:h-12 sm:w-[480px]"
               type="email"
-              placeholder="Enter email address"
+              placeholder={t("pl-EnterEmailAddress")}
               value={email}
               onChange={(e) => handleInput(e.target.value)}
             />
@@ -52,12 +54,12 @@ export default function ContactUs() {
               className="absolute top-0 flex h-10 items-center rounded-lg px-5 leading-5 text-lightgray data-[active=true]:cursor-pointer data-[active=true]:bg-yellow data-[active=true]:text-black sm:top-1 sm:leading-[22px]"
               onClick={handleSubscribe}
             >
-              Subscribe
+              {t("btn-Subscribe")}
             </div>
           </div>
         </div>
-        <div className="flex sm:w-fit w-full mt-5 sm:mt-0 justify-start items-center space-x-5">
-          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
+        <div className="mt-5 flex w-full items-center justify-start space-x-5 sm:mt-0 sm:w-fit">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray sm:h-14 sm:w-14">
             <HoverIcon
               onClick={handleGoDiscord}
               src="/icons/discord-gray.svg"
@@ -67,7 +69,7 @@ export default function ContactUs() {
               alt="discord"
             />
           </div>
-          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray sm:h-14 sm:w-14">
             <HoverIcon
               onClick={handleGoTwitter}
               src="/icons/twitter-gray.svg"
@@ -77,7 +79,7 @@ export default function ContactUs() {
               alt="x"
             />
           </div>
-          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray sm:h-14 sm:w-14">
             <HoverIcon
               onClick={handleGoGithub}
               src="/icons/github.svg"
@@ -87,7 +89,7 @@ export default function ContactUs() {
               alt="discord"
             />
           </div>
-          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-gray">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray sm:h-14 sm:w-14">
             <HoverIcon
               onClick={handleGoTg}
               src="/icons/telegram.svg"
@@ -100,7 +102,7 @@ export default function ContactUs() {
         </div>
       </div>
 
-      <div className="flex flex-col items-start sm:items-center justify-between py-[60px] px-0 sm:flex-row">
+      <div className="flex flex-col items-start justify-between py-[60px] px-0 sm:flex-row sm:items-center">
         <Image
           src="/icons/logo.svg"
           width={75}
@@ -108,11 +110,11 @@ export default function ContactUs() {
           alt="logo"
           className="mb-8 sm:mb-0"
         />
-        <div className="flex flex-wrap justify-between items-center gap-x-10 sm:flex-nowrap">
-          <LinkItem href="">Submit ticket</LinkItem>
-          <LinkItem href="">Listing proposal</LinkItem>
-          <LinkItem href="">Contact us</LinkItem>
-          <LinkItem href="">Docs</LinkItem>
+        <div className="flex flex-wrap items-center justify-between gap-x-10 sm:flex-nowrap">
+          <LinkItem href="">{t("lb-SubmitTicket")}</LinkItem>
+          <LinkItem href="">{t("lb-ListingProposal")}</LinkItem>
+          <LinkItem href="">{t("lb-ContactUs")}</LinkItem>
+          <LinkItem href="">{t("lb-Docs")}</LinkItem>
         </div>
       </div>
 

@@ -29,7 +29,8 @@ export default function ListAskStockBtn({
   order: IStock;
   onSuccess: () => void;
 }) {
-  const cot = useTranslations("CreateOffer");
+  const cot = useTranslations("drawer-CreateOffer");
+  const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail } =
@@ -97,7 +98,7 @@ export default function ListAskStockBtn({
         className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title="List Stock As Ask Offer"
+          title={T("cap-ListStockAsAskOffer")}
           onClose={() => setDrawerOpen(false)}
         />
         <div className="flex flex-1 flex-col justify-between">
@@ -119,7 +120,7 @@ export default function ListAskStockBtn({
             <InputPanel
               value={sellPointAmount}
               onValueChange={() => {}}
-              topText={<>{cot("YouSell")}</>}
+              topText={<>{cot("txt-YouWillSell")}</>}
               bottomText={
                 <>
                   1 {order.marketplace.point_name} = ${formatNum(pointPrice)}
@@ -142,9 +143,9 @@ export default function ListAskStockBtn({
               onValueChange={setReceiveTokenAmount}
               topText={
                 <div className="flex items-center">
-                  {cot("YouReceive")}
+                  {cot("txt-YouDLikeToReceive")}
                   <WithTip align="start">
-                    {cot("YouReceiveTip").replace(
+                    {cot("tip-YouDLikeToReceive").replace(
                       /\$pointName/g,
                       order.marketplace.point_name,
                     )}
@@ -153,7 +154,7 @@ export default function ListAskStockBtn({
               }
               bottomText={
                 <>
-                  {cot("RequiredCollateral")} ${formatNum(sellPrice)}
+                  {cot("txt-RequiredCollateral")} ${formatNum(sellPrice)}
                 </>
               }
               tokenSelect={
@@ -190,7 +191,7 @@ export default function ListAskStockBtn({
               disabled={isDepositLoading}
               className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
             >
-              {cot("ConfirmMakerOrder")}
+              {cot("btn-ConfirmMakerOrder")}
             </button>
           </WithWalletConnectBtn>
         </div>

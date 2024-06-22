@@ -49,3 +49,15 @@ export function useReferralData() {
 
   return res;
 }
+
+export function useReferralReferer() {
+  const { apiEndPoint } = useEndPoint();
+  const token = useAtomValue(AccessTokenAtom);
+
+  const res = useSWR<string | null>(
+    token ? `${apiEndPoint}${Paths.referral.referer}?access_token=${token}` : null,
+    fetcher,
+  );
+
+  return res;
+}

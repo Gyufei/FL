@@ -18,8 +18,7 @@ export default function OfferDetailDrawer({
   onSuccess: () => void;
 }) {
   const ct = useTranslations("Common");
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const ot = useTranslations("drawer-OfferDetail");
   const { anchor: orderId, setAnchorValue } = useAnchor();
 
   const order = useMemo(() => {
@@ -72,9 +71,9 @@ export default function OfferDetailDrawer({
         className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={`${isAsk ? ct("Ask") : ct("Bid")}${ct("Empty")}${ot(
-            "OfferDetail",
-          )} [${cot(settleMode)}]`}
+          title={`
+          ${isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
+          [${ct(settleMode)}]`}
           onClose={() => setDrawerOpen(false)}
         />
         {isAsk ? (

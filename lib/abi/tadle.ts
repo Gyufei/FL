@@ -119,6 +119,50 @@ export const TadleAbi = {
       ]
     },
     {
+      "name": "updateReferralConfig",
+      "accounts": [
+        {
+          "name": "manager",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "referralConfig",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "referrer",
+          "type": "publicKey"
+        },
+        {
+          "name": "referrerRate",
+          "type": "u64"
+        },
+        {
+          "name": "authorityRate",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "createOffer",
       "accounts": [
         {
@@ -1125,6 +1169,26 @@ export const TadleAbi = {
       }
     },
     {
+      "name": "ReferralConfigData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "referrer",
+            "type": "publicKey"
+          },
+          {
+            "name": "referrerRate",
+            "type": "u64"
+          },
+          {
+            "name": "authorityRate",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
       "name": "Stock",
       "type": {
         "kind": "struct",
@@ -1539,6 +1603,46 @@ export const TadleAbi = {
       ]
     },
     {
+      "name": "ReferralBonusEvent",
+      "fields": [
+        {
+          "name": "maker",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "referrer",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "authorityReferralBonus",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "referrerReferralBonus",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tradingFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tradingVol",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
       "name": "ListEvent",
       "fields": [
         {
@@ -1683,6 +1787,31 @@ export const TadleAbi = {
         },
         {
           "name": "settledPointTokenAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "UpdateReferralEvent",
+      "fields": [
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "referrer",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "referrerRate",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "authorityRate",
           "type": "u64",
           "index": false
         }
@@ -1849,6 +1978,31 @@ export const TadleAbi = {
       "code": 6018,
       "name": "InvaildTokenBalanceAccount",
       "msg": "token balance account mismatch"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidReferralRate",
+      "msg": "invalid referral rate"
+    },
+    {
+      "code": 6020,
+      "name": "InvalidPoints",
+      "msg": "invalid points"
+    },
+    {
+      "code": 6021,
+      "name": "InvalidAmount",
+      "msg": "invalid amount"
+    },
+    {
+      "code": 6022,
+      "name": "ReferrerMismatch",
+      "msg": "referrer mismatch"
+    },
+    {
+      "code": 6023,
+      "name": "ReferralConfigMismatch",
+      "msg": "referral config mismatch"
     }
   ],
   "metadata": {

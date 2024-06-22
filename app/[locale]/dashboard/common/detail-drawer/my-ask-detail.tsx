@@ -22,7 +22,7 @@ export default function MyAskDetail({
   order: IOffer;
   onSuccess: () => void;
 }) {
-  const ot = useTranslations("OfferDetail");
+  const ot = useTranslations("drawer-OfferDetail");
   const {
     tokenTotalPrice,
     progress,
@@ -106,7 +106,7 @@ export default function MyAskDetail({
 
           <SwapItemPanel
             className="mt-5"
-            topText={<>{ot("YouHaveToSell")}</>}
+            topText={<>{ot("txt-YouHaveToSell")}</>}
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             value={order.points}
             tokenLogo={orderPointInfo.logoURI}
@@ -126,9 +126,9 @@ export default function MyAskDetail({
             }
             topText={
               <div className="flex items-center">
-                {ot("YouGet")}
+                {ot("txt-YouGet")}
                 <WithTip align="start">
-                  {ot("YouGetTip").replace(
+                  {ot("tip-YouGet").replace(
                     /\$pointName/g,
                     order.marketplace.point_name,
                   )}
@@ -142,14 +142,14 @@ export default function MyAskDetail({
           {isCanSettle ? (
             <WithWalletConnectBtn onClick={handleSettle} shouldSignIn={true}>
               <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                {ot("SettleThisOffer")}
+                {ot("btn-SettleThisOffer")}
               </button>
             </WithWalletConnectBtn>
           ) : (
             <>
               {isSettled || afterTGEPeriod ? (
                 <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                  {ot("SettlementCompleted")}
+                  {ot("btn-SettlementCompleted")}
                 </button>
               ) : (
                 <>
@@ -160,7 +160,7 @@ export default function MyAskDetail({
                         shouldSignIn={true}
                       >
                         <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                          {ot("RelistThisOffer")}
+                          {ot("btn-RelistThisOffer")}
                         </button>
                       </WithWalletConnectBtn>
                     ) : (
@@ -168,7 +168,7 @@ export default function MyAskDetail({
                         disabled={true}
                         className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                       >
-                        {ot("OfferClosed")}
+                        {ot("btn-OfferClosed")}
                       </button>
                     )
                   ) : (
@@ -183,20 +183,20 @@ export default function MyAskDetail({
                               disabled={isClosing}
                               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                             >
-                              {ot("CloseThisOffer")}
+                              {ot("btn-CloseThisOffer")}
                             </button>
                           </WithWalletConnectBtn>
                           <>
                             {isFilled && (
                               <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                {ot("YouHaveTheOptionToClose ")}
+                                {ot("txt-YouHaveTheOptionToClose ")}
                               </div>
                             )}
                           </>
                         </>
                       ) : (
                         <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                          {ot("AwaitingSettlement")}
+                          {ot("btn-AwaitingSettlement")}
                         </button>
                       )}
                     </>

@@ -5,13 +5,17 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { IMarketplace } from "@/lib/types/marketplace";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "@/app/navigation";
+import { useTranslations } from "next-intl";
 
 export default function MarketplaceList() {
+  const t = useTranslations("Home");
   const { data: marketplaceData } = useMarketplaces();
 
   return (
     <div className="flex flex-col items-center pt-20">
-      <div className="text-[40px] leading-10 text-black">Trending Projects</div>
+      <div className="text-[40px] leading-10 text-black">
+        {t("cap-TrendingProjects")}
+      </div>
       <div className="mt-6 flex w-full flex-col items-start gap-x-5 gap-y-9 px-4 py-5 sm:grid sm:grid-cols-4 sm:flex-row sm:items-stretch sm:overflow-x-hidden">
         {(marketplaceData || []).map((marketplace) => (
           <ItemCard key={marketplace.market_id} marketplace={marketplace} />

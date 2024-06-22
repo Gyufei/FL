@@ -13,7 +13,7 @@ export default function OrderNoteAndFee({
   onValueChange: (_v: string) => void;
   type: "buy" | "sell";
 }) {
-  const cot = useTranslations("CreateOffer");
+  const cot = useTranslations("drawer-CreateOffer");
   const [showInput, setShowInput] = useState(false);
 
   function handleInputNote(v: string) {
@@ -35,7 +35,7 @@ export default function OrderNoteAndFee({
     <div className="mt-4 flex flex-col">
       <div className="mb-2 flex items-center space-x-1">
         <div className="mr-[6px]  text-sm leading-6 text-black">
-          {cot("OrderNote")}
+          {cot("cap-OrderNote")}
         </div>
         <Checkbox
           checked={showInput}
@@ -51,8 +51,8 @@ export default function OrderNoteAndFee({
               onChange={(e) => handleInputNote(e.target.value)}
               placeholder={
                 type === "buy"
-                  ? cot("AnythingYouWantToInformTheSeller")
-                  : cot("AnythingYouWantToInformTheBuyer")
+                  ? cot("pl-AnythingYouWantToInformTheSeller")
+                  : cot("pl-AnythingYouWantToInformTheBuyer")
               }
               className="h-[66px] rounded-xl border border-[#d8d8d8] focus:border-focus"
             />

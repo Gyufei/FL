@@ -12,8 +12,7 @@ import { useTranslations } from "next-intl";
 import ReferralLink from "./referral-link";
 
 export default function OverviewInfo() {
-  const mt = useTranslations("Marketplace");
-  const mot = useTranslations("MyOrders");
+  const T = useTranslations("cd-AccountOverview");
   const inputRef = useRef<HTMLInputElement>(null);
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
@@ -60,7 +59,7 @@ export default function OverviewInfo() {
             {showNameInput ? (
               <Input
                 ref={inputRef}
-                placeholder="userName"
+                placeholder={T("pl-Username")}
                 value={nameInputValue}
                 onChange={(e) => setNameInputValue(e.target.value)}
                 className="h-6 w-40 rounded-none border-x-0 border-b border-t-0 border-[#f0f1f5] bg-white pl-0  text-black"
@@ -101,7 +100,7 @@ export default function OverviewInfo() {
                   <div>{format(date.from, "LLL dd, y")}</div>
                 )
               ) : (
-                <span>Pick a date</span>
+                <span>{T("txt-PickADate")}</span>
               )}
             </div>
           </DateRangePickerDialog>
@@ -109,16 +108,16 @@ export default function OverviewInfo() {
 
         {/* overview */}
         <div className="mt-6 rounded-3xl bg-[#fafafa] p-5">
-          <div className="leading-6 text-black">{mot("AccountOverview")}</div>
+          <div className="leading-6 text-black">{T("cap-AccountOverview")}</div>
           <div className="mt-5 flex justify-between">
             <div>
-              <LabelText>{mot("TradeVol")}</LabelText>
+              <LabelText>{T("lb-TradeVol")}</LabelText>
               <div className="leading-6 text-black">
                 ${formatNum(accountInfo?.trade_vol)}
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>{mot("Profit")}</LabelText>
+              <LabelText>{T("lb-Profit")}</LabelText>
               <div
                 data-loss={accountInfo?.profit < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
@@ -131,13 +130,13 @@ export default function OverviewInfo() {
 
           <div className="mt-4 flex justify-between">
             <div>
-              <LabelText>{mt("MakerOrders")}</LabelText>
+              <LabelText>{T("lb-MakerOrders")}</LabelText>
               <div className="leading-6 text-black">
                 {formatNum(accountInfo?.maker_order)}
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>{mot("TakerOrders")}</LabelText>
+              <LabelText>{T("lb-TakerOrders")}</LabelText>
               <div className="leading-6 text-black">
                 {formatNum(accountInfo?.taker_order)}
               </div>
@@ -146,13 +145,13 @@ export default function OverviewInfo() {
 
           <div className="mt-5 flex justify-between">
             <div>
-              <LabelText>{mot("SettledValue")}</LabelText>
+              <LabelText>{T("lb-SettledValue")}</LabelText>
               <div className="leading-6 text-black">
                 ${formatNum(accountInfo?.settled_value)}
               </div>
             </div>
             <div className="flex flex-col items-end">
-              <LabelText>{mot("BonusIncome")}</LabelText>
+              <LabelText>{T("lb-BonusIncome")}</LabelText>
               <div
                 data-loss={accountInfo?.tax_income < 0}
                 className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"

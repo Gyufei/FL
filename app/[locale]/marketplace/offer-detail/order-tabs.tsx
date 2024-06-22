@@ -9,7 +9,7 @@ import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useTranslations } from "next-intl";
 
 export default function OrderTabs({ order }: { order: IOffer }) {
-  const t = useTranslations("OfferDetail");
+  const T = useTranslations("drawer-OfferDetail");
   const [currentTab, setCurrentTab] = useState("orders");
 
   const { publicKey } = useWallet();
@@ -56,13 +56,13 @@ export default function OrderTabs({ order }: { order: IOffer }) {
               className="flex w-[105px] items-center pt-0 pl-0 pb-[10px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
               value="orders"
             >
-              {t("TakerOrders")}
+              {T("cap-TakerOrders")}
             </TabsTrigger>
             {/* <TabsTrigger
               className="w-[105px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
               value="history"
             >
-              {t("OrderHistory")}
+              {T("cap-OrderHistory")}
             </TabsTrigger> */}
           </div>
           <div className="flex items-center space-x-2">
@@ -70,7 +70,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
               htmlFor="onlyMe"
               className="text-xs leading-[18px] text-gray"
             >
-              {t("OnlyMe")}
+              {T("tg-OnlyMe")}
             </label>
             <SmallSwitch
               checked={onlyMe}

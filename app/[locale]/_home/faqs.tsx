@@ -7,8 +7,10 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import React, { forwardRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function Faqs() {
+  const t = useTranslations("Home");
   const [openIdx, setOpenIdx] = useState(-1);
 
   return (
@@ -16,10 +18,10 @@ export default function Faqs() {
       <div className="flex items-center justify-between">
         <div />
         <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:leading-[54px]">
-          FAQ
+          {t("cap-FAQ")}
         </div>
         <div className="flex cursor-pointer items-center space-x-1">
-          <div className="text-lg leading-6 text-black">More</div>
+          <div className="text-lg leading-6 text-black">{t("btn-More")}</div>
           <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
         </div>
       </div>
@@ -33,15 +35,12 @@ export default function Faqs() {
         }}
       >
         <CollapsibleTrigger asChild>
-          <CollTrigger isOpen={openIdx === 0}>What is Point?</CollTrigger>
+          <CollTrigger isOpen={openIdx === 0}>
+            {t("cap-WhatIsPoint")}
+          </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CollContent>
-            Before issuing tokens, various Web3 projects conduct a series of
-            operational activities to encourage user interaction. Points are
-            awarded for users’ participation. In the future, these points may be
-            exchanged for the corresponding tokens.
-          </CollContent>
+          <CollContent>{t("p-WhatIsPoint")}</CollContent>
         </CollapsibleContent>
       </Collapsible>
 
@@ -55,17 +54,11 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 1}>
-            What is Point Market?
+            {t("cap-WhatIsPointMarket")}
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CollContent>
-            A Point Market is a marketplace for users to buy and sell points
-            among themselves. Since the project has not yet issued tokens, users
-            have various reasons for needing liquidity for the points they have
-            already acquired. Therefore, the Point Market service has emerged to
-            meet this demand.
-          </CollContent>
+          <CollContent>{t("p-WhatIsPointMarket")}</CollContent>
         </CollapsibleContent>
       </Collapsible>
 
@@ -79,18 +72,18 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 2}>
-            How do I start to trade?
+            {t("cap-HowDoIStartToTrade")}
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CollContent>
-            1. Connect to your wallet
+            1. {t("p-HowDoIStartToTrade1")}
             <br />
-            2. Discover the projects whose points you want to trade
+            2. {t("p-HowDoIStartToTrade2")}
             <br />
-            3. Place a buy or sell order
+            3. {t("p-HowDoIStartToTrade3")}
             <br />
-            4. View your trading history and earnings in your personal dashboard
+            4. {t("p-HowDoIStartToTrade4")}
             <br />
           </CollContent>
         </CollapsibleContent>

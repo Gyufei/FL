@@ -36,7 +36,7 @@ export function TakerOrders({
   orderEqTokenInfo: IToken;
   orderTokenInfo: IToken;
 }) {
-  const t = useTranslations("OfferDetail");
+  const T = useTranslations("drawer-OfferDetail");
   const { handleGoScan } = useGoScan();
 
   const data = useMemo(() => {
@@ -98,19 +98,19 @@ export function TakerOrders({
   };
 
   const COLUMNS = [
-    { label: t("SubNo"), renderCell: (o: any) => `#${o.sub_no}` },
+    { label: T("th-SubNo"), renderCell: (o: any) => `#${o.sub_no}` },
     {
-      label: t("FillAmount"),
+      label: T("th-FillAmount"),
       renderCell: (o: any) => <PointsCell order={o} offerLogo={offerLogo} />,
     },
     {
-      label: t("Deposits"),
+      label: T("th-Deposits"),
       renderCell: (o: TakerOrder) => (
         <AmountCell order={o} tokenInfo={orderTokenInfo} />
       ),
     },
     {
-      label: t("EqToken"),
+      label: T("th-EqToken"),
       renderCell: () => (
         <div className="flex items-center justify-end space-x-1">
           <span>{orderEqTokenInfo.symbol}</span>
@@ -125,7 +125,7 @@ export function TakerOrders({
       ),
     },
     {
-      label: t("TxHash"),
+      label: T("th-TxHash"),
       renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">
           {truncateAddr(o.tx_hash || "")}
@@ -141,7 +141,7 @@ export function TakerOrders({
       ),
     },
     {
-      label: t("Time"),
+      label: T("th-Time"),
       renderCell: (o: TakerOrder) => (
         <div className="flex items-center justify-end">{`${formatTimestamp(
           Number(o.create_at) * 1000,

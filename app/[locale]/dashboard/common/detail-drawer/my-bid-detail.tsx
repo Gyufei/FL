@@ -22,8 +22,7 @@ export default function MyBidDetail({
   order: IOffer;
   onSuccess: () => void;
 }) {
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const ot = useTranslations("drawer-OfferDetail");
 
   const {
     tokenTotalPrice,
@@ -116,7 +115,7 @@ export default function MyBidDetail({
 
           <SwapItemPanel
             className="mt-5"
-            topText={<>{cot("YouPay")}</>}
+            topText={<>{ot("txt-YouPay")}</>}
             bottomText={
               <>
                 1 {order.marketplace.point_name} = ${pointPerPrice}
@@ -136,9 +135,9 @@ export default function MyBidDetail({
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             topText={
               <div className="flex items-center">
-                {ot("YouGet")}
+                {ot("txt-YouGet")}
                 <WithTip>
-                  {ot("YouGetTip").replace(
+                  {ot("tip-YouGet").replace(
                     /\$pointName/g,
                     order.marketplace.point_name,
                   )}
@@ -151,7 +150,7 @@ export default function MyBidDetail({
 
           {isSettled || afterTGEPeriod ? (
             <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-              {ot("SettlementCompleted")}
+              {ot("btn-SettlementCompleted")}
             </button>
           ) : (
             <>
@@ -162,7 +161,7 @@ export default function MyBidDetail({
                     shouldSignIn={true}
                   >
                     <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                      {ot("RelistThisOffer")}
+                      {ot("btn-RelistThisOffer")}
                     </button>
                   </WithWalletConnectBtn>
                 ) : (
@@ -170,14 +169,14 @@ export default function MyBidDetail({
                     disabled={true}
                     className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                   >
-                    {ot("OfferClosed")}
+                    {ot("btn-OfferClosed")}
                   </button>
                 )
               ) : (
                 <>
                   {isClosed ? (
                     <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                      {ot("AwaitingSettlement")}
+                      {ot("btn-AwaitingSettlement")}
                     </button>
                   ) : (
                     <>
@@ -190,7 +189,7 @@ export default function MyBidDetail({
                             disabled={isBidClosing}
                             className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                           >
-                            {ot("CloseBidOffer")}
+                            {ot("btn-CloseBidOffer")}
                           </button>
                         </WithWalletConnectBtn>
                       ) : (
@@ -203,13 +202,13 @@ export default function MyBidDetail({
                               disabled={isClosing}
                               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                             >
-                              {ot("CloseThisOffer")}
+                              {ot("btn-CloseThisOffer")}
                             </button>
                           </WithWalletConnectBtn>
                           <>
                             {isFilled && (
                               <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                {ot("YouHaveTheOptionToClose ")}
+                                {ot("txt-YouHaveTheOptionToClose ")}
                               </div>
                             )}
                           </>

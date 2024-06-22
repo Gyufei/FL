@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "@/app/navigation";
 import { useTranslations } from "next-intl";
 
 export default function NavigationBtns() {
-  const t = useTranslations("Common");
+  const t = useTranslations("Header");
   const pathname = usePathname();
 
   const isDashboard = pathname.startsWith(`/dashboard`);
@@ -16,14 +16,14 @@ export default function NavigationBtns() {
       <NavigationBtn
         active={isDashboard}
         icon="/icons/dashboard.svg"
-        text={t("Dashboard")}
+        text={t("btn-Dashboard")}
         href={`/dashboard`}
         withWallet={true}
       />
       <NavigationBtn
         active={isMarketPlace}
         icon="/icons/Marketplace.svg"
-        text={t("Marketplace")}
+        text={t("btn-Marketplace")}
         href={`/marketplace`}
         withWallet={false}
       />

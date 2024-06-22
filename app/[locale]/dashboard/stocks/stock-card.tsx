@@ -18,7 +18,7 @@ export default function StockCard({
   stock: IStock;
   onSuccess: () => void;
 }) {
-  const ct = useTranslations("Common");
+  const ct = useTranslations("page-MyStocks");
   const {
     afterTGE,
     afterTGEPeriod,
@@ -83,14 +83,14 @@ export default function StockCard({
           data-type={stock.stock_type}
           className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
         >
-          {!isAskStock ? ct("Bid") : ct("Ask")}
+          {!isAskStock ? ct("tag-Bid") : ct("tag-Ask")}
         </div>
       </div>
 
       <div className="mt-4 flex items-center justify-between border-b border-[#F0F1F5] pb-5">
         <div className="flex flex-col">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">
-            {ct("Offer")}
+            {ct("lb-Offer")}
           </div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(offerValue, 2, true)}
@@ -114,7 +114,7 @@ export default function StockCard({
         />
         <div className="flex flex-col items-end">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">
-            {ct("For")}
+            {ct("lb-For")}
           </div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(forValue, 2, true)}

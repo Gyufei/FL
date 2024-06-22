@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { formatNum } from "@/lib/utils/number";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function NewestItemCard() {
+  const t = useTranslations("Home");
   const [prevMsg, setPrevMsg] = useState<any>(null);
   const [nowMsg, setNowMsg] = useState<any>(null);
   const { msgEvents } = useWsMsgs();
@@ -32,9 +34,9 @@ export default function NewestItemCard() {
   return (
     <div className="relative mt-20">
       <div className="mx-8 flex justify-between space-x-[250px] text-xl leading-[30px] text-gray">
-        <div>Item ID</div>
-        <div>Asset</div>
-        <div>Value</div>
+        <div>{t("th-ItemId")}</div>
+        <div>{t("th-Asset")}</div>
+        <div>{t("th-Value")}</div>
       </div>
       {!nowMsg && (
         <div

@@ -27,7 +27,7 @@ export function SellContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
-  const cot = useTranslations("CreateOffer");
+  const T = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
 
   const [sellPointAmount, setSellPointAmount] = useState("");
@@ -110,7 +110,7 @@ export function SellContent({
         <InputPanel
           value={sellPointAmount}
           onValueChange={handleSellPayChange}
-          topText={<>{cot("YouSell")}</>}
+          topText={<>{T("txt-YouWillSell")}</>}
           bottomText={
             <>
               1 {marketplace.point_name} = ${pointPrice}
@@ -132,10 +132,10 @@ export function SellContent({
           onValueChange={setReceiveAmount}
           topText={
             <div className="flex items-center">
-              {cot("YouReceive")}
+              {T("txt-YouDLikeToReceive")}
               <WithTip align="start">
                 <div className="relative">
-                  {cot("YouReceiveTip").replace(
+                  {T("tip-YouDLikeToReceive").replace(
                     /\$pointName/g,
                     marketplace.point_name,
                   )}
@@ -152,7 +152,7 @@ export function SellContent({
           }
           bottomText={
             <>
-              {cot("RequiredCollateral")} ${sellPrice}
+              {T("txt-RequiredCollateral")} ${sellPrice}
             </>
           }
           tokenSelect={
@@ -184,7 +184,7 @@ export function SellContent({
           disabled={isCreateLoading}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
         >
-          {cot("ConfirmMakerOrder")}
+          {T("btn-ConfirmMakerOrder")}
         </button>
       </WithWalletConnectBtn>
     </div>

@@ -12,6 +12,7 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
+import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 
 export default function BidDetail({
   order,
@@ -20,9 +21,9 @@ export default function BidDetail({
   order: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const T = useTranslations("drawer-OfferDetail");
 
+  const { data: referrer } = useReferralReferer();
   const {
     tokenPrice,
     progress,
@@ -69,6 +70,7 @@ export default function BidDetail({
     preOfferAuthStr: order.authority,
     originOfferStr: makerDetail?.origin_offer || "",
     originOfferAuthStr: order.origin_offer_detail?.authority,
+    referrerStr: referrer || "",
   });
 
   function handleSliderChange(v: number) {
@@ -107,7 +109,7 @@ export default function BidDetail({
           />
 
           <SliderCard
-            topText={<>{cot("YouSell")}</>}
+            topText={<>{T("txt-YouWillSell")}</>}
             bottomText={
               <>
                 1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}
@@ -122,7 +124,7 @@ export default function BidDetail({
           />
 
           <ReceiveCard
-            topText={<>{ot("YouGet")}</>}
+            topText={<>{T("txt-YouGet")}</>}
             bottomText={<>~${formatNum(receiveTokenTotalPrice)} </>}
             value={receiveTokenAmount}
             tokenLogo={offerLogo}
@@ -130,7 +132,7 @@ export default function BidDetail({
 
           {isFilled ? (
             <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black">
-              {ot("OfferFilled")}
+              {T("btn-Offer100%Filled")}
             </button>
           ) : (
             <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
@@ -139,7 +141,7 @@ export default function BidDetail({
                 onClick={handleDeposit}
                 className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
               >
-                {ot("ConfirmTakerOrder")}
+                {T("btn-ConfirmTakerOrder")}
               </button>
             </WithWalletConnectBtn>
           )}

@@ -11,7 +11,7 @@ export default function TaxForSubTrades({
   onValueChange: (_v: string) => void;
   disabled?: boolean;
 }) {
-  const cot = useTranslations("CreateOffer");
+  const cot = useTranslations("drawer-CreateOffer");
 
   function handleInput(v: string) {
     if (Number(v) > 20) {
@@ -25,9 +25,9 @@ export default function TaxForSubTrades({
     <div className="flex flex-1 flex-col space-y-2">
       <div className="flex items-center">
         <div className="mr-1 text-sm leading-6 text-black">
-          {cot("BonusForMaker")}
+          {cot("cap-BonusForMaker")}
         </div>
-        <WithTip>{cot("BonusForMakerTip")}</WithTip>
+        <WithTip>{cot("tip-BonusForMaker")}</WithTip>
       </div>
 
       <div className="relative text-sm">

@@ -10,14 +10,14 @@ export default function MarketplaceOverview({
   marketplace: IMarketplace | undefined;
   isLoading?: boolean;
 }) {
-  const t = useTranslations("Marketplace");
+  const t = useTranslations("card-Marketplace");
   const isLoadingFlag = !marketplace || isLoading;
 
   return (
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>{t("FloorPrice")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-FloorPrice")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -28,7 +28,7 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("TotalVol")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-TotalVol")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -41,7 +41,7 @@ export default function MarketplaceOverview({
 
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>{t("ChangeRate24h")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-24hChange")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -58,7 +58,7 @@ export default function MarketplaceOverview({
           )}
         </div>
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("Vol24h")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-24hVol")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -71,7 +71,9 @@ export default function MarketplaceOverview({
 
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>{t("ListedSupply")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>
+            {t("lb-ListedSupply")}
+          </LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -82,7 +84,7 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("AvgBid")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-AvgBid")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (

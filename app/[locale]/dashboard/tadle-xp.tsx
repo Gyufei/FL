@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 
 export function TadleXp() {
-  const mot = useTranslations("MyOrders");
+  const T = useTranslations("ct-Rank");
 
   const xp = 660;
   const rank = 10;
@@ -78,11 +78,11 @@ export function TadleXp() {
         <div className="absolute top-[75px] flex w-full flex-col items-center">
           <div className="text-4xl leading-[54px] text-black">{xp}</div>
           <div className="flex items-center text-sm leading-5">
-            <div className="mr-1 text-gray">{mot("YourRank")}</div>
+            <div className="mr-1 text-gray">{T("txt-YourRank")}</div>
             <div className="text-black">{rank}</div>
           </div>
           <div className="text-xs leading-[18px] text-gray">
-            {mot("UpdatedOn")} {format(updateAt, "LLL dd")}
+            {T("txt-UpdatedOn")} {format(updateAt, "LLL dd")}
           </div>
         </div>
       </div>

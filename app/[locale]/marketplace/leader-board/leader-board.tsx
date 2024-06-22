@@ -23,8 +23,7 @@ export default function LeaderBoard({
   className?: string;
   isLoading: boolean;
 }) {
-  const ct = useTranslations("Common");
-  const mt = useTranslations("Marketplace");
+  const t = useTranslations("tb-Leaderboard");
   const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("hour");
 
@@ -166,7 +165,7 @@ export default function LeaderBoard({
       },
     },
     {
-      label: ct("Wallet"),
+      label: t("th-Wallet"),
       renderCell: (item: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[150px]" />
@@ -180,7 +179,7 @@ export default function LeaderBoard({
         ),
     },
     {
-      label: leaderType !== "Maker Orders" ? ct("Amount") : ct("Count"),
+      label: leaderType !== "Maker Orders" ? t("th-Amount") : t("th-Count"),
       renderCell: (item: any) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
@@ -201,7 +200,7 @@ export default function LeaderBoard({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black">{mt("Leaderboard")}</div>
+          <div className="leading-6 text-black">{t("cap-Leaderboard")}</div>
         </div>
         <LeaderTypeSelect
           type={leaderType}

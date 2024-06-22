@@ -19,9 +19,7 @@ export default function ConfirmAskTakerSettleDialog({
   stock: IStock;
   onSuccess: () => void;
 }) {
-  const ct = useTranslations("Common");
-  const mst = useTranslations("MyStocks");
-  const mot = useTranslations("MyOrders");
+  const T = useTranslations("dialog-Settle");
   const orderRole = "Taker";
 
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod } =
@@ -49,28 +47,20 @@ export default function ConfirmAskTakerSettleDialog({
         overlayClassName="z-[110]"
         className="z-[110] flex w-[400px] flex-col items-center gap-0 rounded-3xl border-none bg-white p-6"
       >
-        <DialogTitle>
-          {mst("Settle")}
-          {ct("Empty")}
-          {ct("Ask")}
-          {ct("Empty")}
-          {mot("Offer")}
-        </DialogTitle>
+        <DialogTitle>{T("cap-SettleAskOffer")}</DialogTitle>
         <div className="mt-[30px] w-full">
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">
-              {ct("Ask")}
-              {ct("Empty")}
-              {mot("Offer")}
-              {ct("Empty")}
-              {ct("NO")}
+              {T("lb-AskOfferNo")}
             </div>
             <div className="text-sm leading-5 text-black">
               #{(stock as any).stock_id || (stock as any).offer_id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
-            <div className="text-sm leading-5 text-gray">{mst("YourRole")}</div>
+            <div className="text-sm leading-5 text-gray">
+              {T("lb-YourRole")}
+            </div>
             <div
               data-type={orderRole}
               className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
@@ -80,7 +70,7 @@ export default function ConfirmAskTakerSettleDialog({
           </div>
           <div className="mt-[30px] flex justify-between">
             <div className="text-sm leading-5 text-gray">
-              {mst("TotalSettlementRequired")}
+              {T("lb-TotalSettlementRequired")}
             </div>
             <div className="text-sm leading-5 text-black">
               {formatNum(amount)} (${formatNum(tokenTotalPrice)})
@@ -89,7 +79,7 @@ export default function ConfirmAskTakerSettleDialog({
 
           <div className="mt-5 rounded-2xl bg-[#fafafa] p-4">
             <div className="text-xs leading-[18px] text-gray">
-              {mst("YouAreGoingToSettle")}
+              {T("lb-YouAreGoingToSettle")}
             </div>
             <div className="mt-2 flex justify-between">
               <div className="text-2xl leading-[36px]">

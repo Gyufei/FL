@@ -3,8 +3,9 @@ export const isProduction = process.env.NODE_ENV === 'production' && !isPreview
 // export const isProduction = true;
 
 export function WithHost(path: string) {
-  const devHost = `https://preview-api.tadle.com`
   const prodHost = `https://api.tadle.com`
+  // const devHost = `https://preview-api.tadle.com`
+  const devHost = `https://api.tadle.com`
   const host = isProduction ? prodHost : devHost
   return `${host}${path}`
 }
@@ -59,6 +60,7 @@ export const Paths = {
   makerSettleAccount: '/market_place/direct_settle_account',
 
   referral: {
+    referer: '/referral/referer',
     create: '/referral/create',
     updateCommission: '/referral/update_commission',
     updateNote: '/referral/update_notes',

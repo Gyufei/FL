@@ -17,7 +17,7 @@ export function InputPanel({
   tokenSelect: ReactElement;
   isCanInput?: boolean;
 }) {
-  const cot = useTranslations("CreateOffer");
+  const cot = useTranslations("Common");
 
   return (
     <div className="flex w-full justify-between rounded-2xl border border-transparent bg-[#fafafa] p-4 focus-within:border focus-within:border-focus focus-within:bg-white">
@@ -26,7 +26,7 @@ export function InputPanel({
         {isCanInput ? (
           <NumericalInput
             className="mt-2 mr-1 h-9 text-2xl placeholder:text-lightgray"
-            placeholder={cot("EnterAmount")}
+            placeholder={cot("pl-EnterAmount")}
             value={value}
             onUserInput={onValueChange}
           />

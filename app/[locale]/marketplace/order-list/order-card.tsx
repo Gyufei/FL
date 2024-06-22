@@ -21,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 
 export function OrderCard({ order }: { order: IOffer }) {
-  const t = useTranslations("Common");
+  const t = useTranslations("cd-Order");
   const { setAnchorValue } = useAnchor();
   const {
     progress,
@@ -86,7 +86,7 @@ export function OrderCard({ order }: { order: IOffer }) {
       <div className="mt-4 flex items-center justify-between border-b border-[#F0F1F5] pb-5">
         <div className="flex flex-1 grow flex-col">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">
-            {t("Offer")}
+            {t("lb-Offer")}
           </div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(offerValue, 2, true)}
@@ -118,7 +118,7 @@ export function OrderCard({ order }: { order: IOffer }) {
         </div>
         <div className="flex flex-1 grow flex-col items-end">
           <div className="mb-[2px] text-xs leading-[18px] text-gray">
-            {t("For")}
+            {t("lb-For")}
           </div>
           <div className="flex items-center leading-6 text-black">
             {formatNum(forValue, 2, true)}
@@ -178,7 +178,7 @@ export function OrderCard({ order }: { order: IOffer }) {
               onClick={() => handleShowOrderOffer(order.offer_id)}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
-                {t("Buy")}
+                {t("btn-Buy")}
               </button>
             </WithWalletConnectBtn>
           )}

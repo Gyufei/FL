@@ -34,7 +34,7 @@ export default function MobileRouterMenu() {
 }
 
 function MenuList({ onEnd }: { onEnd: () => void }) {
-  const t = useTranslations("Common");
+  const t = useTranslations("Header");
   const router = useRouter();
   const routePath = [`/dashboard`, `/marketplace`];
   const currentRoute = usePathname();
@@ -70,7 +70,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           height={40}
           alt="pools"
         />
-        <div className="text-lg leading-5 text-black">{t("Dashboard")}</div>
+        <div className="text-lg leading-5 text-black">{t("btn-Dashboard")}</div>
       </div>
       <div
         data-active={isMarketplaceActive}
@@ -90,7 +90,9 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           height={40}
           alt="governance"
         />
-        <div className="text-lg leading-5 text-black">{t("Marketplace")}</div>
+        <div className="text-lg leading-5 text-black">
+          {t("btn-Marketplace")}
+        </div>
       </div>
     </div>
   );

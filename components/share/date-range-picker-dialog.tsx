@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { format, subDays } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export default function DateRangePickerDialog({
   dateRange,
@@ -14,6 +15,7 @@ export default function DateRangePickerDialog({
   setDateRange: (date: DateRange | undefined) => void;
   children: React.ReactNode;
 }) {
+  const T = useTranslations("Common");
   const [range, setRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
     to: undefined,
@@ -58,7 +60,7 @@ export default function DateRangePickerDialog({
               onClick={handleConfirm}
               className="h-7 rounded-full border border-[#eee] hover:border-black"
             >
-              Confirm
+              {T("btn-Confirm")}
             </Button>
           </div>
         </div>

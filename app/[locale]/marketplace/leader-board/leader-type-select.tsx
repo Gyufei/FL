@@ -21,7 +21,7 @@ export function LeaderTypeSelect({
   type: ILeaderType;
   handleTypeChange: (_t: ILeaderType) => void;
 }) {
-  const mt = useTranslations("Marketplace");
+  const mt = useTranslations("tb-Leaderboard");
   const [popOpen, setPopOpen] = useState(false);
 
   function handleClickOpt(t: ILeaderType) {
@@ -30,7 +30,7 @@ export function LeaderTypeSelect({
   }
 
   function getI18nText(t: ILeaderType) {
-    return t.replace(" ", "");
+    return "sl-" + t.replace(" ", "");
   }
 
   return (

@@ -37,9 +37,7 @@ export function OrderTable({
   status: IStatus;
   types: Array<IOfferType>;
 }) {
-  const ct = useTranslations("Common");
-  const mot = useTranslations("MyOrders");
-  const ot = useTranslations("OfferDetail");
+  const T = useTranslations("page-MyOrders");
 
   const { setAnchorValue } = useAnchor();
   const { data: offers, mutate: refreshOrders } = useMyOffers();
@@ -132,25 +130,25 @@ export function OrderTable({
             <Header className="text-xs leading-[18px] text-gray">
               <HeaderRow className="border-none">
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {mot("Items")}
+                  {T("th-Items")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {mot("Offer")}
+                  {T("th-Offer")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {ct("Type")}
+                  {T("th-Type")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {ot("EqToken")}
+                  {T("th-EqToken")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {mot("FromTo")}
+                  {T("th-From/To")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {ct("Tx")}
+                  {T("th-Tx")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]">
-                  {mot("CreatedTime")}
+                  {T("th-CreatedTime")}
                 </HeaderCell>
                 <HeaderCell className="h-10 px-1 py-[11px]"></HeaderCell>
               </HeaderRow>

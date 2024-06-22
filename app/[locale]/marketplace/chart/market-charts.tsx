@@ -64,7 +64,7 @@ function ChartSwitch({
   chartType: IChartType;
   handleChangeType: (_type: IChartType) => void;
 }) {
-  const t = useTranslations("Marketplace");
+  const t = useTranslations("ct-Marketplace");
   // const isDepth = chartType === "depth";
   const isSales = chartType === "sales";
   return (
@@ -81,7 +81,7 @@ function ChartSwitch({
           alt="depth"
         />
         {isDepth && (
-          <div className="ml-[6px] text-sm leading-5 text-black">{t('Depth')}</div>
+          <div className="ml-[6px] text-sm leading-5 text-black">{t('tg-Depth')}</div>
         )}
       </div> */}
       <div
@@ -97,7 +97,7 @@ function ChartSwitch({
         />
         {isSales && (
           <div className="ml-[6px] text-sm leading-5 text-black">
-            {t("Sales")}
+            {t("tg-Sales")}
           </div>
         )}
       </div>

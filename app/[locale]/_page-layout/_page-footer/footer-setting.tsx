@@ -20,7 +20,7 @@ import { getDomainName } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
 
 export default function FooterSetting() {
-  const ct = useTranslations("Common");
+  const ct = useTranslations("pop-Setting");
   const { setClusterType, clusterConfig } = useClusterConfig();
   const [globalRpc, setGlobalRpc] = useAtom(GlobalRpcsAtom);
   const [customRpc, setCustomRpc] = useAtom(CustomRpcsAtom);
@@ -147,7 +147,7 @@ export default function FooterSetting() {
       >
         <div className="ml-30 flex items-center">
           <div className="flex flex-1 justify-center text-xl leading-[30px]">
-            {ct("Setting")}
+            {ct("cap-Setting")}
           </div>
           <Image
             onClick={() => setPopOpen(false)}
@@ -160,7 +160,7 @@ export default function FooterSetting() {
         </div>
 
         <div className="mt-4 flex flex-col space-y-2">
-          <div className="text-sm leading-5 text-black">{ct("Networks")}</div>
+          <div className="text-sm leading-5 text-black">{ct("cap-Networks")}</div>
           {!isPreview && (
             <NetItem
               name="Tadle RPC 1"
@@ -201,7 +201,7 @@ export default function FooterSetting() {
             <>
               <Input
                 data-error={inputRpcError}
-                placeholder={ct("InputYourCustomRPC")}
+                placeholder={ct("pl-InputYourCustomRPC")}
                 value={inputRpc}
                 onChange={(e) => setInputRpc(e.target.value)}
                 className="h-10 rounded-lg border-none bg-[#fafafa] pl-3 pr-[50px] data-[error]:border-red"
@@ -247,7 +247,7 @@ export default function FooterSetting() {
           )}
           {inputRpcError && (
             <div className="pl-2 text-[10px] text-red">
-              {ct("UnsupportedRPC")}
+              {ct("txt-UnsupportedRPC")}
             </div>
           )}
         </div>

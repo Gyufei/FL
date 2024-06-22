@@ -11,9 +11,7 @@ import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
-  const ct = useTranslations("Common");
-  const cot = useTranslations("CreateOffer");
-  const ot = useTranslations("OfferDetail");
+  const T = useTranslations("drawer-OfferDetail");
   const { handleGoScan } = useGoScan();
 
   const { amount, orderTokenInfo, orderPointInfo, makerDetail } =
@@ -48,12 +46,14 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
 
   return (
     <div className="flex-1 px-6">
-      <div className="leading-6 text-black">{ot("OfferDetail")}</div>
+      <div className="leading-6 text-black">{T("cap-OfferDetail")}</div>
       <DetailRow>
-        <DetailLabel tipText={ot("SellingAmountTip")}>
-          {orderType === "ask" ? ct("Selling") : ct("Buying")}
-          {ct("Empty")}
-          {ct("Amount")}
+        <DetailLabel
+          tipText={
+            orderType === "ask" ? T("tip-SellerAmount") : T("tip-BuyerAmount")
+          }
+        >
+          {orderType === "ask" ? T("lb-SellerAmount") : T("lb-BuyerAmount")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -71,9 +71,9 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
 
       <DetailRow>
         <DetailLabel
-          tipText={orderType === "ask" ? ot("SellerTip") : ot("BuyerTip")}
+          tipText={orderType === "ask" ? T("tip-Seller") : T("tip-Buyer")}
         >
-          {orderType === "ask" ? ct("Seller") : ct("Buyer")}
+          {orderType === "ask" ? T("lb-Seller") : T("lb-Buyer")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -97,11 +97,13 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel
           tipText={
             orderType === "ask"
-              ? ot("BonusRateForEachTXTip")
-              : ot("BonusForMakerTip")
+              ? T("tip-BonusRateForEachTX")
+              : T("tip-BonusForMaker")
           }
         >
-          {orderType === "ask" ? ot("BonusRateForEachTX") : ot("BonusForMaker")}
+          {orderType === "ask"
+            ? T("lb-BonusRateForEachTX")
+            : T("lb-BonusForMaker")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
@@ -111,8 +113,8 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText={ot("CollateralRateTip")}>
-          {cot("CollateralRate")}
+        <DetailLabel tipText={T("tip-CollateralRate")}>
+          {T("lb-CollateralRate")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
@@ -125,11 +127,11 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel
           tipText={
             orderType === "ask"
-              ? ot("TotalCollateralTip")
-              : ot("TotalDepositTip")
+              ? T("tip-TotalCollateral")
+              : T("tip-TotalDeposit")
           }
         >
-          {orderType === "ask" ? ot("TotalCollateral") : ot("TotalDeposit")}
+          {orderType === "ask" ? T("lb-TotalCollateral") : T("lb-TotalDeposit")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -146,15 +148,15 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel tipText={ot("EstSettlingOnTip")}>
-          {ot("EstSettlingOn")}
+        <DetailLabel tipText={T("tip-EstSettlingOn")}>
+          {T("lb-EstSettlingOn")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           {tgeTime ? (
             formatTimestamp(tgeTime)
           ) : (
             <div className="text-sm leading-5 text-gray">
-              {ot("NotStarted")}
+              {T("txt-NotStarted")}
             </div>
           )}
         </div>
@@ -163,8 +165,8 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
       {orderType === "ask" && (
         <>
           <DetailRow>
-            <DetailLabel tipText={ot("InitialOfferMakerTip")}>
-              {ot("InitialOfferMaker")}
+            <DetailLabel tipText={T("tip-InitialOfferMaker")}>
+              {T("lb-InitialOfferMaker")}
             </DetailLabel>
             <div className="flex items-center space-x-1">
               <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
@@ -188,8 +190,8 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
           </DetailRow>
 
           <DetailRow showBottomLine={false}>
-            <DetailLabel tipText={ot("InitialOfferMakerBonusTip")}>
-              {ot("InitialOfferMakerBonus")}
+            <DetailLabel tipText={T("tip-InitialOfferMakerBonus")}>
+              {T("lb-InitialOfferMakerBonus")}
             </DetailLabel>
             <div className="flex items-center space-x-1">
               <div className="text-sm leading-5 text-green">

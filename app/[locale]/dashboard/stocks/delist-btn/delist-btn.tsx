@@ -1,10 +1,10 @@
 import { useTranslations } from "next-intl";
 
 export default function DelistBtn() {
-  const mst = useTranslations("MyStocks");
+  const mst = useTranslations("page-MyStocks");
   return (
     <div>
-      <div className="text-sm leading-7 text-black">{mst("Listed")}</div>
+      <div className="text-sm leading-7 text-black">{mst("txt-Listed")}</div>
     </div>
   );
 }

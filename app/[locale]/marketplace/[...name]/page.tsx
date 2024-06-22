@@ -12,8 +12,12 @@ import OfferDetailDrawer from "../offer-detail/offer-detail-drawer";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 import { IOffer } from "@/lib/types/offer";
+import { useTranslations } from "next-intl";
+import CreateOfferBtn from "../create-offer-btn";
+import MarketCharts from "../chart/market-charts";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
+  const mt = useTranslations("pn-Marketplace");
   const marketplaceName = decodeURIComponent(params.name[0]);
 
   const { data: marketplaceData, isLoading: isMarketLoading } =
@@ -101,8 +105,8 @@ export default function Marketplace({ params }: { params: { name: string } }) {
                   />
                 </div>
                 <div className="text-center text-xl leading-8 text-gray">
-                  This project is under settlement. <br />
-                  No offer is available.
+                  {mt("txt-ThisProjectIsUnderSettlement")} <br />
+                  {mt("txt-NoOfferIsAvailable")}
                 </div>
               </div>
             ) : (
@@ -121,9 +125,19 @@ export default function Marketplace({ params }: { params: { name: string } }) {
           <div className="flex w-[368px] flex-col px-6">
             <MarketTrades
               marketplace={marketplace}
-              onCreateSuccess={refreshOrders}
               isLoading={isMarketLoading}
             />
+
+            <div className="h-[80px] py-4">
+              {marketplace && (
+                <CreateOfferBtn
+                  marketplace={marketplace}
+                  onSuccess={refreshOrders}
+                />
+              )}
+            </div>
+
+            {marketplace && <MarketCharts marketplace={marketplace} />}
           </div>
         </div>
         <PageFooter />

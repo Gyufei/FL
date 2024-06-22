@@ -10,7 +10,7 @@ export function DevnetRow({
   isActive: boolean;
   onClick: () => void;
 }) {
-  const t = useTranslations("Common");
+  const t = useTranslations("Header");
   const {
     // data: txHash,
     isLoading: isClaiming,
@@ -41,7 +41,7 @@ export function DevnetRow({
           <div className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]">
             <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
             <div className="text-xs leading-[18px]">
-              {t("Claim test tokens")}
+              {t("txt-ClaimTestTokens")}
             </div>
           </div>
         </WithWalletConnectBtn>
@@ -50,7 +50,7 @@ export function DevnetRow({
           className="flex cursor-pointer items-center text-[#99a0af] hover:text-[#2D2E33]"
         >
           <div className="mr-1 h-1 w-1 rounded-full bg-current"></div>
-          <div className="text-xs leading-[18px] ">{t("Help")}</div>
+          <div className="text-xs leading-[18px] ">{t("txt-Help")}</div>
         </div>
       </div>
     </div>

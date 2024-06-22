@@ -2,7 +2,7 @@ import { useSignInAction } from "@/lib/hooks/web3/use-sign-in-action";
 import { useTranslations } from "next-intl";
 
 export function SignInBtn() {
-  const t = useTranslations("Common");
+  const t = useTranslations("Header");
   const { signInAction } = useSignInAction();
 
   return (
@@ -11,7 +11,7 @@ export function SignInBtn() {
         onClick={signInAction}
         className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
       >
-        {t("SignIn")}
+        {t("btn-SignIn")}
       </button>
     </div>
   );

@@ -9,7 +9,7 @@ import { FilterSelect, IRole, IStatus, Roles, Status } from "./filter-select";
 import { useTranslations } from "next-intl";
 
 export default function MyOrders() {
-  const mot = useTranslations("MyOrders");
+  const T = useTranslations("page-MyOrders");
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["ask"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
@@ -31,7 +31,7 @@ export default function MyOrders() {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-5">
           <div className="text-xl leading-[30px] text-black">
-            {mot("MyOrders")}
+            {T("cap-MyOrders")}
           </div>
         </div>
         <div className="flex items-center space-x-6">

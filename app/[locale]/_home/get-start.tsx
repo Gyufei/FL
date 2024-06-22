@@ -1,17 +1,19 @@
 "use client";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 // import { useState } from "react";
 
 export default function GetStart() {
   // const [activeTab, setActiveTab] = useState("individuals");
+  const t = useTranslations("Home");
 
   return (
     <div className="flex flex-col items-center bg-[rgba(224,255,98,0.1)] px-4 py-20 sm:px-[120px]">
       <div className="hidden text-[40px] leading-10 text-black sm:flex">
-        How to get started with Tadle
+        {t("cap-HowToGetStartedWithTadle")}
       </div>
       <div className="flex text-[24px] leading-9 text-black sm:hidden">
-        Product advantages
+        {t("Product advantages")}
       </div>
       {/* <div className="mt-5 mb-[60px] flex items-center justify-between space-x-12">
         <div
@@ -29,17 +31,17 @@ export default function GetStart() {
           For Developers
         </div>
       </div> */}
-      <div className="flex flex-col items-center justify-between space-x-0 space-y-6 sm:flex-row sm:space-y-0 sm:space-x-10">
+      <div className="mt-5 flex flex-col items-center justify-between space-x-0 space-y-6 sm:flex-row sm:space-y-0 sm:space-x-10">
         <div className="flex flex-col">
           <div className="relative h-[280px] w-[374px] overflow-hidden rounded-[20px] bg-yellow px-[30px] pt-[40px] pb-6 pl-6">
             <div className="flex h-full flex-col justify-between">
               <div className="text-[40px] leading-9 text-black">01</div>
               <div>
                 <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
-                  Step 1
+                  {t("txt-Step")} 1
                 </div>
                 <div className="text-[24px] leading-9 text-black">
-                  Connect to your wallet
+                  {t("txt-ConnectToYourWallet")}
                 </div>
               </div>
             </div>
@@ -82,10 +84,10 @@ export default function GetStart() {
               </div>
               <div>
                 <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
-                  Step 2
+                  {t("txt-Step")} 2
                 </div>
                 <div className="text-[24px] leading-9 text-black">
-                  Search for the projects
+                  {t("txt-SearchForTheProjects")}
                 </div>
               </div>
             </div>
@@ -112,10 +114,10 @@ export default function GetStart() {
             </div>
             <div>
               <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
-                Step 3
+                {t("txt-Step")} 3
               </div>
               <div className="text-[24px] leading-9 text-black">
-                Place a buy or sell order
+                {t("txt-PlaceABuyOrSellOrder")}
               </div>
             </div>
           </div>
@@ -141,10 +143,10 @@ export default function GetStart() {
             </div>
             <div>
               <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
-                Step 4
+                {t("txt-Step")} 4
               </div>
               <div className="text-[24px] leading-9 text-black">
-                Check metrics in dashboard
+                {t("txt-CheckMetricsInDashboard")}
               </div>
             </div>
           </div>

@@ -77,11 +77,11 @@
     "sl-Bids": "Bids"
   },
   "sl-OrderSort": {
-    "sl-Created": "创建时间",
-    "sl-Price": "价格",
-    "sl-Collateral": "抵押数量",
-    "sl-Ascending": "升序",
-    "sl-Descending": "降序"
+    "sl-Created": "Created",
+    "sl-Price": "Price",
+    "sl-Collateral": "Collateral",
+    "sl-Ascending": "Ascending",
+    "sl-Descending": "Descending"
   },
   "cd-Order": {
     "lb-Offer": "Offer",

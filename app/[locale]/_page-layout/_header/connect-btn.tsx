@@ -57,7 +57,7 @@ export default function ConnectBtn() {
 
     if (!address) return;
     const sa = truncateAddr(address, {
-      nPrefix: 6,
+      nPrefix: 4,
       nSuffix: 4,
     });
 

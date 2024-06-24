@@ -136,6 +136,41 @@ export function useReferralDefault() {
   return res;
 }
 
+export function useReferralDelete() {
+  const { apiEndPoint } = useEndPoint();
+  const token = useAtomValue(AccessTokenAtom);
+
+  const postApi = async (
+    _: string,
+    {
+      arg,
+    }: {
+      arg: {
+        "referral_code": string,
+      };
+    },
+  ) => {
+    if (!token || !arg.referral_code) return null;
+
+    const res = await fetcher(
+      `${apiEndPoint}${Paths.referral.delete}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          access_token: token,
+          ...arg
+        }),
+      },
+    );
+
+    return res;
+  };
+
+  const res = useSWRMutation("delete referral", postApi);
+
+  return res;
+}
+
 export function useReferralView() {
   const { apiEndPoint } = useEndPoint();
 

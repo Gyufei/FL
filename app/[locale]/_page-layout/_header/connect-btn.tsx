@@ -3,16 +3,21 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { truncateAddr } from "@/lib/utils/web3";
 import WalletSelectDialog, {
   WalletSelectDialogVisibleAtom,
 } from "@/components/share/wallet-select-dialog";
 import toPubString from "@/lib/utils/pub-string";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { SignInBtn } from "./sign-in-btn";
+import { useSignInAction } from "@/lib/hooks/web3/use-sign-in-action";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { useUpdateReferral } from "@/lib/hooks/contract/use-update-referral";
+import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
+import { usePathname, useRouter } from "@/app/navigation";
+import { useReferralView } from "@/lib/hooks/api/use-referral";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -20,6 +25,11 @@ export default function ConnectBtn() {
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
   );
+
+  const query = useSearchParams();
+  const referralCode = query.get("s") || "";
+
+  const { trigger: viewReferral } = useReferralView();
 
   const openWalletSelectDialog = useCallback(() => {
     setWalletSelectDialogVisible(true);
@@ -34,6 +44,17 @@ export default function ConnectBtn() {
   const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
 
   useEffect(() => {
+    if (referralCode) {
+      viewReferral({ referral_code: referralCode, authority: address });
+    }
+  }, [referralCode, viewReferral, address]);
+
+  useEffect(() => {
+    if (referralCode) {
+      setShowSignIn(true);
+      return;
+    }
+
     if (!address) return;
     const sa = truncateAddr(address, {
       nPrefix: 6,
@@ -43,7 +64,7 @@ export default function ConnectBtn() {
     setShortAddr(sa);
 
     if (!token) setShowSignIn(true);
-  }, [address, setShowSignIn, setShortAddr, token]);
+  }, [address, setShowSignIn, setShortAddr, token, referralCode]);
 
   if (!connected) {
     return (
@@ -82,15 +103,111 @@ export default function ConnectBtn() {
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}
       >
-        <div className="mb-3 text-xl leading-[30px] text-black">
-          {!token ? t("cap-YouAreSignedOut") : t("cap-YouAreSignedIn")}
-        </div>
-        <div className="px-5 text-center text-sm leading-5 text-black">
-          {t("txt-SignAMessageInYourWallet")}
-        </div>
-        {token ? <SignOutBtn /> : <SignInBtn />}
+        {referralCode ? (
+          <ReferralSignInBtn referralCode={referralCode} />
+        ) : token ? (
+          <SignOutBtn />
+        ) : (
+          <ContinueBtn />
+        )}
       </DialogContent>
     </Dialog>
+  );
+}
+
+export function ContinueBtn() {
+  const t = useTranslations("Header");
+  const { signInAction } = useSignInAction();
+
+  return (
+    <>
+      <div className="mb-3 text-xl leading-[30px] text-black">
+        {t("cap-YouAreSignedOut")}
+      </div>
+      <div className="min-h-10 px-5 text-center text-sm leading-5 text-black">
+        {t("txt-SignAMessageInYourWallet")}
+      </div>
+      <div className="mt-10 w-full">
+        <button
+          onClick={signInAction}
+          className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
+        >
+          {t("btn-Continue")}
+        </button>
+      </div>
+    </>
+  );
+}
+
+export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
+  const t = useTranslations("Header");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const { data: codeData } = useReferralCodeData({ code: referralCode });
+
+  const referrerStr = useMemo(() => {
+    if (!codeData) return "";
+    return codeData.authority;
+  }, [codeData]);
+
+  const shortAddr = useMemo(() => {
+    if (!referrerStr) return "";
+    return truncateAddr(referrerStr, {
+      nPrefix: 6,
+      nSuffix: 4,
+    });
+  }, [referrerStr]);
+
+  const {
+    data: txHash,
+    isLoading: isUpdating,
+    isSuccess,
+    write: writeAction,
+  } = useUpdateReferral({
+    referrerStr,
+  });
+
+  function handleSignInReferral() {
+    if (isUpdating || !codeData) return;
+    writeAction({
+      firstAmount: Number(codeData.referral_rate),
+      secondAmount: Number(codeData.authority_rate),
+    });
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (searchParams.get("s")) {
+        router.replace({
+          pathname: pathname,
+          query: {},
+        });
+      }
+    }
+  }, [isSuccess, txHash]);
+
+  return (
+    <>
+      <div className="mb-3 text-xl leading-[30px] text-black">
+        {t("cap-Welcome")}
+      </div>
+      <div className="min-h-10 px-5 text-center text-sm leading-5 text-black">
+        {t("txt-YourFriendSentYouAnOnboardingInvitation", {
+          name: shortAddr,
+          num: Number(codeData?.authority_rate || 0) / 10 ** 4 + "%",
+        })}
+      </div>
+      <div className="mt-10 w-full">
+        <button
+          onClick={handleSignInReferral}
+          className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
+        >
+          {t("btn-SignIn")}
+        </button>
+      </div>
+    </>
   );
 }
 
@@ -105,13 +222,19 @@ function SignOutBtn() {
   };
 
   return (
-    <div className="mt-10 w-full">
-      <button
-        onClick={handleDisconnect}
-        className="flex h-12 w-full items-center justify-center rounded-2xl bg-[#F0F1F5] text-lightgray"
-      >
-        {t("btn-SignOut")}
-      </button>
-    </div>
+    <>
+      <div className="mb-3 text-xl leading-[30px] text-black">
+        {t("cap-YouAreSignedIn")}
+      </div>
+      <div className="min-h-10 px-5 text-center text-sm leading-5 text-black"></div>
+      <div className="mt-10 w-full">
+        <button
+          onClick={handleDisconnect}
+          className="flex h-12 w-full items-center justify-center rounded-2xl border border-red bg-white text-red hover:bg-red hover:text-white"
+        >
+          {t("btn-SignOut")}
+        </button>
+      </div>
+    </>
   );
 }

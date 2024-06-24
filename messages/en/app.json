@@ -7,26 +7,10 @@
     "Max": "Max",
     "Detail": "Detail",
     "Search": "Search",
-
-    "Empty": " ",
-    "My": "My",
-    "NO": "No.",
-    "Wallet": "Wallet",
-    "Amount": "Amount",
-    "Count": "Count",
-    "Selling": "Selling",
-    "Asks": "Asks",
-    "Buying": "Buying",
-    "Offer": "Offer",
-    "For": "For",
-    "Buyer": "Buyer",
-    "Seller": "Seller",
     "Days": "Days",
     "Hours": "Hours",
     "Minutes": "Minutes",
-    "Seconds": "Seconds",
-    "Tx": "Tx",
-    "Token": "Token"
+    "Seconds": "Seconds"
   },
   "Header": {
     "btn-Marketplace": "Marketplace",
@@ -40,7 +24,10 @@
     "cap-YouAreSignedIn": "You're signed in",
     "txt-ClaimTestTokens": "Claim test tokens",
     "txt-Help": "Help",
-    "txt-SignAMessageInYourWallet": "Sign a message in your wallet to verify that you're the owner of the connected address"
+    "txt-SignAMessageInYourWallet": "Sign a message in your wallet to verify that you're the owner of the connected address",
+    "cap-Welcome": "Welcome",
+    "btn-Continue": "Continue",
+    "txt-YourFriendSentYouAnOnboardingInvitation": "Your friend {name} sent you an onboarding invitation with {num} trading fee back! "
   },
   "pop-Setting": {
     "cap-Setting": "Setting",
@@ -113,7 +100,7 @@
     "txt-YouWillSell": "You will sell",
     "pl-EnterAmount": "Enter Amount",
     "txt-YouDLikeToReceive": "You'd like to receive",
-    "tip-YouDLikeToReceive": "When buying $pointNames, you need to wait until the $pointNames convert into the protocol's tokens before you can receive tokens.",
+    "tip-YouDLikeToReceive": "When buying {pointName}, you need to wait until the {pointName} convert into the protocol's tokens before you can receive tokens.",
     "txt-RequiredCollateral": "Required Collateral",
     "txt-YouPay": "You pay",
     "cap-Mode": "Mode",
@@ -279,7 +266,7 @@
     "cap-SetCommissionRates": "Set Commission Rates",
     "lb-You": "You",
     "lb-YourFriend": "Your friend",
-    "tip-ReferralDrawer": "When someone signs up using your referral link, the first person will receive a refund equal to 10% of the trading fee paid by the second person. Additionally, you, as the original referrer, will receive a reward equal to 40% of the commission fee.",
+    "tip-ReferralDrawer": "When someone signs up using your referral link, the first person will receive a refund equal to {num1} of the trading fee paid by the second person. Additionally, you, as the original referrer, will receive a reward equal to {num2} of the commission fee.",
     "btn-Save": "Save",
     "txt-RateError": "Your And Your friend's commission rate can't be greater than 30%"
   }

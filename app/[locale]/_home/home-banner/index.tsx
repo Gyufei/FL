@@ -33,7 +33,7 @@ export default function HomeBanner() {
         {t("cap-BridgingLiquidityBetweenPrimaryAndSecondaryMarkets")}
       </div>
 
-      <div className="mt-10 flex w-full flex-col items-center space-x-5 px-4 sm:w-fit sm:flex-row sm:px-0">
+      <div className="mt-10 flex w-full flex-col items-center space-x-10 px-4 sm:w-fit sm:flex-row sm:px-0">
         <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow text-lg leading-6 sm:w-[160px]">
           {t("btn-GetStarted")}
         </div>

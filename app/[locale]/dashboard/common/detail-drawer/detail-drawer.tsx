@@ -70,10 +70,10 @@ export default function DetailDrawer({
       customIdSuffix="detail-drawer"
     >
       <DrawerTitle
-        title={`
-          ${isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")}
-        [${ct(settleMode)}]`}
+        title={isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")}
         onClose={() => setDrawerOpen(false)}
+        tag={ct(settleMode)}
+        tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
       />
       {order &&
         (isAsk ? (

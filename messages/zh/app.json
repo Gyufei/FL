@@ -8,28 +8,10 @@
     "Max": "最大",
     "Detail": "详情",
     "Search": "查找",
-
-    "My": "我的",
-    "NO": "编号",
-    "Wallet": "钱包",
-    "Amount": "总计",
-    "Count": "数量",
-    "Sells": "售卖",
-    "Selling": "售卖",
-    "Asks": "询价",
-    "Buys": "购买",
-    "Buying": "购买",
-    "Bids": "报价",
-    "Offer": "提供",
-    "For": "需求",
-    "Buyer": "买家",
-    "Seller": "卖家",
     "Days": "天",
     "Hours": "小时",
     "Minutes": "分钟",
-    "Seconds": "秒",
-    "Tx": "交易",
-    "Token": "代币"
+    "Seconds": "秒"
   },
   "Header": {
     "btn-Marketplace": "市场",
@@ -43,7 +25,10 @@
     "cap-YouAreSignedIn": "您已登录",
     "txt-ClaimTestTokens": "获取测试币",
     "txt-Help": "帮助",
-    "txt-SignAMessageInYourWallet": "在您的钱包中签署一条消息，以验证您是连接地址的所有者"
+    "txt-SignAMessageInYourWallet": "在您的钱包中签署一条消息，以验证您是连接地址的所有者",
+    "cap-Welcome": "欢迎",
+    "btn-Continue": "继续",
+    "txt-YourFriendSentYouAnOnboardingInvitation": "您的朋友 {name} 向您发送了一个交易费返还 { num } 的引导邀请"
   },
   "pop-Setting": {
     "cap-Setting": "设置",
@@ -116,7 +101,7 @@
     "cap-Bid": "报价",
     "txt-YouWillSell": "你将出售",
     "txt-YouDLikeToReceive": "你将收到",
-    "tip-YouDLikeToReceive": "当购买 $pointName 时, 您需要等到 $pointName 转换成协议的代币之后才能接收代币",
+    "tip-YouDLikeToReceive": "当购买 {pointName} 时, 您需要等到 {pointName} 转换成协议的代币之后才能接收代币",
     "txt-RequiredCollateral": "需要抵押",
     "txt-YouPay": "你支付",
     "cap-Mode": "模式",
@@ -282,7 +267,7 @@
     "cap-SetCommissionRates": "设置佣金率",
     "lb-You": "你",
     "lb-YourFriend": "你的朋友",
-    "tip-ReferralDrawer": "当有人使用你的推荐链接注册时，第一个人将收到第二个人支付的交易费用的10%的退款。此外，作为原始推荐人，您将获得相当于佣金40%的奖励。",
+    "tip-ReferralDrawer": "当有人使用你的推荐链接注册时，第一个人将收到第二个人支付的交易费用的{ num1 }的退款。此外，作为原始推荐人，您将获得相当于佣金{ num2 }的奖励。",
     "btn-Save": "保存",
     "txt-RateError": "总和不得超过30%"
   }

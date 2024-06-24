@@ -61,3 +61,18 @@ export function useReferralReferer() {
 
   return res;
 }
+
+export function useReferralCodeData({ code }: { code: string}) {
+  const { apiEndPoint } = useEndPoint();
+
+  const res = useSWR<{
+    authority: string;
+    authority_rate: string;
+    referral_rate: string
+  } | null>(
+    code ? `${apiEndPoint}${Paths.referral.codeData}?referral_code=${code}` : null,
+    fetcher,
+  );
+
+  return res;
+}

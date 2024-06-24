@@ -135,10 +135,9 @@ export function SellContent({
               {T("txt-YouDLikeToReceive")}
               <WithTip align="start">
                 <div className="relative">
-                  {T("tip-YouDLikeToReceive").replace(
-                    /\$pointName/g,
-                    marketplace.point_name,
-                  )}
+                  {T("tip-YouDLikeToReceive", {
+                    pointName: marketplace.point_name,
+                  })}
                   <Image
                     src="/icons/info-tip.svg"
                     height={30}

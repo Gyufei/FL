@@ -16,7 +16,7 @@ export default function ReferralLink() {
   const refLink = useMemo(() => {
     if (!referralData) return "";
     const defaultRef = referralData.find((ref) => ref.flag === "1");
-    return `${window.location.origin}/?ref=${defaultRef?.referral_code}`;
+    return `${window.location.origin}/s/${defaultRef?.referral_code}`;
   }, [referralData]);
 
   function handleCopy() {

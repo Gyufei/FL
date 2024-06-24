@@ -145,10 +145,9 @@ export default function ListAskStockBtn({
                 <div className="flex items-center">
                   {cot("txt-YouDLikeToReceive")}
                   <WithTip align="start">
-                    {cot("tip-YouDLikeToReceive").replace(
-                      /\$pointName/g,
-                      order.marketplace.point_name,
-                    )}
+                    {cot("tip-YouDLikeToReceive", {
+                      pointName: order.marketplace.point_name,
+                    })}
                   </WithTip>
                 </div>
               }

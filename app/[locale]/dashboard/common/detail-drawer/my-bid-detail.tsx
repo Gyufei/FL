@@ -137,10 +137,9 @@ export default function MyBidDetail({
               <div className="flex items-center">
                 {ot("txt-YouGet")}
                 <WithTip>
-                  {ot("tip-YouGet").replace(
-                    /\$pointName/g,
-                    order.marketplace.point_name,
-                  )}
+                  {ot("tip-YouGet", {
+                    pointName: order.marketplace.point_name,
+                  })}
                 </WithTip>
               </div>
             }

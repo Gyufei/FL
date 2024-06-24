@@ -128,10 +128,9 @@ export default function MyAskDetail({
               <div className="flex items-center">
                 {ot("txt-YouGet")}
                 <WithTip align="start">
-                  {ot("tip-YouGet").replace(
-                    /\$pointName/g,
-                    order.marketplace.point_name,
-                  )}
+                  {ot("tip-YouGet", {
+                    pointName: order.marketplace.point_name,
+                  })}
                 </WithTip>
               </div>
             }

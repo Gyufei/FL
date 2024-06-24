@@ -125,10 +125,9 @@ export function BuyContent({
             <div className="flex items-center">
               {cot("txt-YouDLikeToReceive")}
               <WithTip align="start">
-                {cot("tip-YouDLikeToReceive").replace(
-                  /\$pointName/g,
-                  marketplace.point_name,
-                )}
+                {cot("tip-YouDLikeToReceive", {
+                  pointName: marketplace.point_name,
+                })}
               </WithTip>
             </div>
           }

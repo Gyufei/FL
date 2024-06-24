@@ -71,10 +71,10 @@ export default function OfferDetailDrawer({
         className="overflow-y-auto rounded-l-2xl p-6"
       >
         <DrawerTitle
-          title={`
-          ${isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
-          [${ct(settleMode)}]`}
+          title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
           onClose={() => setDrawerOpen(false)}
+          tag={ct(settleMode)}
+          tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
         />
         {isAsk ? (
           <AskDetail onSuccess={(ord) => handleSuccess(ord)} offer={order} />

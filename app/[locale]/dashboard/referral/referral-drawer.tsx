@@ -166,7 +166,12 @@ export default function DetailDrawer({
               alt="info"
               className="float-left mr-2"
             />
-            <div>{rt("tip-ReferralDrawer")}</div>
+            <div>
+              {rt("tip-ReferralDrawer", {
+                num1: Number(rate || 0) + "%",
+                num2: Number(friendRate || 0) + "%",
+              })}
+            </div>
           </div>
         </div>
 

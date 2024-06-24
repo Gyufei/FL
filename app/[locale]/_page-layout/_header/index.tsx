@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import ConnectBtn from "./connect-btn";
 import { MbNetworkSelect, NetworkSelect } from "./network-select";
@@ -5,8 +6,12 @@ import NavigationBtns from "./navigation-btns";
 import MessageBtn from "./message-btn";
 import MobileRouterMenu from "./mobile-router-menu";
 import Link from "next/link";
+import { usePathname } from "@/app/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
     <>
       <MobileLogo />
@@ -15,16 +20,20 @@ export default function Header() {
         <NavigationBtns />
         <Logo />
         <div className="hidden flex-1 items-center justify-end space-x-4 sm:flex md:space-x-6">
-          <NetworkSelect />
-          <ConnectBtn />
+          {!isHome && (
+            <>
+              <NetworkSelect />
+              <ConnectBtn />
+            </>
+          )}
           <MessageBtn />
         </div>
 
         {/* Mobile */}
         <div className="flex flex-1 items-center justify-between sm:hidden">
-          <MbNetworkSelect />
+          {isHome && <MbNetworkSelect />}
           <div className="flex items-center space-x-4">
-            <ConnectBtn />
+            {!isHome && <ConnectBtn />}
             <MobileRouterMenu />
           </div>
         </div>

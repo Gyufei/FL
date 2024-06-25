@@ -13,4 +13,5 @@ export interface IPoint {
   symbol: string;
   logoURI: string;
   marketplaceId: string;
+  marketName: string;
 }

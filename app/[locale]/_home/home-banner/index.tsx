@@ -1,6 +1,7 @@
 import Image from "next/image";
 import NewestItemCard from "./newest-item-card";
 import { useTranslations } from "next-intl";
+import { Link } from "@/app/navigation";
 
 export default function HomeBanner() {
   const t = useTranslations("Home");
@@ -34,9 +35,11 @@ export default function HomeBanner() {
       </div>
 
       <div className="mt-10 flex w-full flex-col items-center space-x-10 px-4 sm:w-fit sm:flex-row sm:px-0">
-        <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow text-lg leading-6 sm:w-[160px]">
-          {t("btn-GetStarted")}
-        </div>
+        <Link href="/marketplace">
+          <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow text-lg leading-6 sm:w-[160px]">
+            {t("btn-GetStarted")}
+          </div>
+        </Link>
         <div className="mt-[22px] flex cursor-pointer items-center space-x-1 sm:mt-0">
           <div className="text-lg leading-6 text-black">
             {t("btn-ReadTheDocs")}

@@ -128,16 +128,17 @@ function OverviewIcons({
   handleGoTwitter: () => void;
   handleGoDiscord: () => void;
 }) {
+  console.info(isStar, handleStar, handleCopy);
   return (
     <div className="flex items-center space-x-1">
-      <HoverIcon
+      {/* <HoverIcon
         onClick={handleCopy}
         src="/icons/copy-gray.svg"
         hoverSrc="/icons/copy.svg"
         width={20}
         height={20}
         alt="copy"
-      />
+      /> */}
 
       <HoverIcon
         onClick={handleGoTwitter}
@@ -157,7 +158,7 @@ function OverviewIcons({
         alt="discord"
       />
 
-      {isStar ? (
+      {/* {isStar ? (
         <Image
           onClick={handleStar}
           src="/icons/stared.svg"
@@ -175,13 +176,13 @@ function OverviewIcons({
           height={20}
           alt="star"
         />
-      )}
+      )} */}
     </div>
   );
 }
 
 function FoldPop() {
- const t = useTranslations("Common");
+  const t = useTranslations("Common");
   const { data: marketplaceData } = useMarketplaces();
 
   const router = useRouter();

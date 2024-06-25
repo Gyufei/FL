@@ -20,7 +20,7 @@ export function useBuildTransaction() {
     
     const prioritization_fee_list = await program.provider.connection.getRecentPrioritizationFees();
     const fees = prioritization_fee_list.map((fee) => fee.prioritizationFee).sort();
-    const microLamports = (fees.length > 0 ? Math.ceil(fees.reduce((acc, cur) => acc + cur) / fees.length) : 1) * 10 ** 3;
+    const microLamports = (fees.length > 0) ? Math.ceil(fees.reduce((acc, cur) => acc + cur) / fees.length) : 1000;
 
     const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({ 
       microLamports

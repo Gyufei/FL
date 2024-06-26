@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/collapsible";
 import React, { forwardRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/app/navigation";
 
 export default function Faqs() {
   const t = useTranslations("Home");
@@ -21,8 +22,10 @@ export default function Faqs() {
           {t("cap-FAQ")}
         </div>
         <div className="flex cursor-pointer items-center space-x-1">
-          <div className="text-lg leading-6 text-black">{t("btn-More")}</div>
-          <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+          <Link href="https://tadle.gitbook.io/tadle/faq">
+            <div className="text-lg leading-6 text-black">{t("btn-More")}</div>
+            <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+          </Link>
         </div>
       </div>
 

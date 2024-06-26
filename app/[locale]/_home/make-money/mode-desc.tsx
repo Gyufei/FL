@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
+import { Link } from "@/app/navigation";
 
 export default function ModeDesc() {
   const t = useTranslations("Home");
@@ -48,10 +49,12 @@ export default function ModeDesc() {
         )}
 
         <div className="mt-[50px] flex cursor-pointer items-center space-x-1 sm:mt-0">
-          <div className="text-lg leading-6 text-black">
-            {t("btn-StartTrading")}
-          </div>
-          <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+          <Link href="/marketplace">
+            <div className="text-lg leading-6 text-black">
+              {t("btn-StartTrading")}
+            </div>
+            <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+          </Link>
         </div>
       </div>
     </div>

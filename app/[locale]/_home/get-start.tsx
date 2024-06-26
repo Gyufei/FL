@@ -2,6 +2,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 // import { useState } from "react";
+import { Link } from "@/app/navigation";
 
 export default function GetStart() {
   // const [activeTab, setActiveTab] = useState("individuals");
@@ -40,9 +41,11 @@ export default function GetStart() {
                 <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
                   {t("txt-Step")} 1
                 </div>
-                <div className="text-[24px] leading-9 text-black">
-                  {t("txt-ConnectToYourWallet")}
-                </div>
+                <Link href="https://tadle.gitbook.io/tadle/user-guides/get-started-for-users">
+                  <div className="text-[24px] leading-9 text-black">
+                    {t("txt-ConnectToYourWallet")}
+                  </div>
+                </Link>
               </div>
             </div>
 
@@ -86,9 +89,11 @@ export default function GetStart() {
                 <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
                   {t("txt-Step")} 2
                 </div>
-                <div className="text-[24px] leading-9 text-black">
-                  {t("txt-SearchForTheProjects")}
-                </div>
+                <Link href="https://tadle.gitbook.io/tadle/user-guides/get-started-for-users">
+                  <div className="text-[24px] leading-9 text-black">
+                    {t("txt-SearchForTheProjects")}
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -116,9 +121,11 @@ export default function GetStart() {
               <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
                 {t("txt-Step")} 3
               </div>
-              <div className="text-[24px] leading-9 text-black">
-                {t("txt-PlaceABuyOrSellOrder")}
-              </div>
+              <Link href="https://tadle.gitbook.io/tadle/user-guides/get-started-for-users">
+                <div className="text-[24px] leading-9 text-black">
+                  {t("txt-PlaceABuyOrSellOrder")}
+                </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -145,9 +152,11 @@ export default function GetStart() {
               <div className="text-[22px] leading-6 text-[rgba(45,46,51,0.4)]">
                 {t("txt-Step")} 4
               </div>
-              <div className="text-[24px] leading-9 text-black">
-                {t("txt-CheckMetricsInDashboard")}
-              </div>
+              <Link href="https://tadle.gitbook.io/tadle/user-guides/get-started-for-users">
+                <div className="text-[24px] leading-9 text-black">
+                  {t("txt-CheckMetricsInDashboard")}
+                </div>
+              </Link>
             </div>
           </div>
         </div>

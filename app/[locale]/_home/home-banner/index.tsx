@@ -41,10 +41,17 @@ export default function HomeBanner() {
           </div>
         </Link>
         <div className="mt-[22px] flex cursor-pointer items-center space-x-1 sm:mt-0">
-          <div className="text-lg leading-6 text-black">
-            {t("btn-ReadTheDocs")}
-          </div>
-          <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+          <Link href="https://tadle.gitbook.io/tadle">
+            <div className="text-lg leading-6 text-black">
+              {t("btn-ReadTheDocs")}
+            </div>
+            <Image
+              src="/icons/right-arrow.svg"
+              width={24}
+              height={24}
+              alt="go"
+            />
+          </Link>
         </div>
       </div>
 

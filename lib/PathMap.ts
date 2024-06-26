@@ -53,9 +53,11 @@ export const Paths = {
   accountOverview: "/user/overview",
   makerOrders: "/user/maker_orders",
   userBalance: "/user/token_balance",
+  userXpPoints: "/user/xp_points",
   tradingVol: "/user/trade_vol",
   marketTrades: "/market_place/maker_trades_history",
   userState: "/user/state",
+  userName: "/user/user_name",
   sales_volume_history: "/market_place/sales_volume_history",
   makerSettleAccount: '/market_place/direct_settle_account',
 

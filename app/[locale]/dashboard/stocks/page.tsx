@@ -49,15 +49,21 @@ export default function MyStocks() {
 
       <DetailDrawer orders={offers || []} onSuccess={refreshOrders} />
 
-      <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {(sortOrders || []).map((order) => (
-          <StockCard
-            key={order.stock_id}
-            stock={order}
-            onSuccess={refreshOrders}
-          />
-        ))}
-      </div>
+      {sortOrders.length ? (
+        <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {(sortOrders || []).map((order) => (
+            <StockCard
+              key={order.stock_id}
+              stock={order}
+              onSuccess={refreshOrders}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-1 items-center justify-center text-base text-gray">
+          {T("txt-YourStockAppearHere")}
+        </div>
+      )}
     </div>
   );
 }

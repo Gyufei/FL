@@ -210,7 +210,8 @@
     "th-Tx": "交易",
     "th-From/To": "从/至",
     "th-EqToken": "等价代币",
-    "th-CreatedTime": "创建时间"
+    "th-CreatedTime": "创建时间",
+    "txt-YourOrderAppearHere": "你的订单在此显示..."
   },
   "page-MyStocks": {
     "cap-MyStocks": "我的库存",
@@ -221,7 +222,8 @@
     "btn-List": "上架",
     "cap-ListStockAsAskOffer": "上架库存为询价订单",
     "txt-Listed": "已上架",
-    "btn-Settle": "清算"
+    "btn-Settle": "清算",
+    "txt-YourStockAppearHere": "你的库存在此显示..."
   },
   "drawer-ListOrder": {
     "cap-StockId": "库存Id",
@@ -238,7 +240,8 @@
   },
   "page-MyBalance": {
     "cap-MyBalances": "我的余额",
-    "cap-BonusIncome": "奖励收入",
+    "txt-YourBalanceAppearHere": "你的余额在此显示...",
+    "cap-TaxIncome": "奖励收入",
     "cap-RealizedAssets": "回报资产",
     "cap-ReferralBonus": "推荐奖励",
     "cap-SalesRevenue": "销售收入",
@@ -256,6 +259,7 @@
     "lb-SignedUp": "签约",
     "lb-Commission": "佣金",
     "cap-ReferralLink": "推荐链接",
+    "txt-YourReferralLinkAppearHere": "你的推荐链接在此显示...",
     "th-ReferralCode": "推荐码",
     "th-TradingUsers": "交易用户数",
     "th-TradingVol": "交易量",

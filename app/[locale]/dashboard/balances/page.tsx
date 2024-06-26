@@ -38,9 +38,21 @@ const TokenListMap: Record<string, IToken> = {
   } as IToken,
 };
 
+interface IPanelProps {
+  title: string;
+  panelName: string;
+  withdrawerName: IBalanceType | null;
+  isPoint: boolean;
+  data: {
+    amount: number;
+    tokenInfo: IToken;
+  }[];
+  total: number;
+}
+
 export default function MyBalances() {
   const mbt = useTranslations("page-MyBalance");
-  const [openPanel, setOpenPanel] = useState("1");
+  const [openPanel, setOpenPanel] = useState("taxIncomeData");
 
   const { publicKey } = useWallet();
   const wallet = toPubString(publicKey);
@@ -102,7 +114,7 @@ export default function MyBalances() {
           symbol: market?.point_name,
           logoURI: market?.pointLogo,
           marketplaceId: t.market_place_account,
-        };
+        } as unknown as IToken;
         const amount = NP.divide(t.amount, isProduction ? 10 ** 6 : 10 ** 9);
 
         return {
@@ -121,54 +133,122 @@ export default function MyBalances() {
     return data;
   }, [balanceData, getTokenDataFormat]);
 
-  const taxIncomeTotal = useMemo(() => {
-    return taxIncomeData.reduce((acc, t) => acc + t.amount, 0);
-  }, [taxIncomeData]);
-
   const realizedAssetsData = useMemo(() => {
     const data = getPointDataFormat(balanceData);
     return data;
   }, [getPointDataFormat, balanceData]);
-
-  const realizedAssetsTotal = useMemo(() => {
-    return realizedAssetsData.reduce((acc, t) => acc + t.amount, 0);
-  }, [realizedAssetsData]);
 
   const referralData = useMemo(() => {
     const data = getTokenDataFormat(balanceData, "referral_bonus");
     return data;
   }, [balanceData, getTokenDataFormat]);
 
-  const referralTotal = useMemo(() => {
-    return referralData.reduce((acc, t) => acc + t.amount, 0);
-  }, [referralData]);
-
   const salesRevenueData = useMemo(() => {
     const data = getTokenDataFormat(balanceData, "sales_revenue");
     return data;
   }, [balanceData, getTokenDataFormat]);
-
-  const salesRevenueTotal = useMemo(() => {
-    return salesRevenueData.reduce((acc, t) => acc + t.amount, 0);
-  }, [salesRevenueData]);
 
   const remainingCashData = useMemo(() => {
     const data = getTokenDataFormat(balanceData, "remaining_cash");
     return data;
   }, [balanceData, getTokenDataFormat]);
 
-  const remainingCashTotal = useMemo(() => {
-    return remainingCashData.reduce((acc, t) => acc + t.amount, 0);
-  }, [remainingCashData]);
-
   const makerRefundData = useMemo(() => {
     const data = getTokenDataFormat(balanceData, "maker_refund");
     return data;
   }, [balanceData, getTokenDataFormat]);
 
-  const makerRefundTotal = useMemo(() => {
-    return makerRefundData.reduce((acc, t) => acc + t.amount, 0);
-  }, [makerRefundData]);
+  const dataArray: Array<IPanelProps> = useMemo(() => {
+    const items = [];
+
+    if (taxIncomeData.length > 0) {
+      const total = taxIncomeData.reduce((acc, t) => acc + t.amount, 0);
+      items.push({
+        title: mbt("cap-TaxIncome"),
+        panelName: "taxIncomeData",
+        withdrawerName: "taxIncome",
+        isPoint: false,
+        data: taxIncomeData,
+        total,
+      } as IPanelProps);
+    }
+
+    if (realizedAssetsData.length > 0) {
+      const total = realizedAssetsData.reduce((acc, t) => acc + t.amount, 0);
+      items.push({
+        title: mbt("cap-RealizedAssets"),
+        panelName: "realizedAssetsData",
+        withdrawerName: null,
+        isPoint: true,
+        data: realizedAssetsData,
+        total,
+      } as IPanelProps);
+    }
+
+    if (referralData.length > 0) {
+      const total = referralData.reduce((acc, t) => acc + t.amount, 0);
+      items.push({
+        title: mbt("cap-ReferralBonus"),
+        panelName: "referralData",
+        withdrawerName: "referralBonus",
+        isPoint: false,
+        data: referralData,
+        total,
+      } as IPanelProps);
+    }
+
+    if (salesRevenueData.length > 0) {
+      const total = salesRevenueData.reduce((acc, t) => acc + t.amount, 0);
+      items.push({
+        title: mbt("cap-SalesRevenue"),
+        panelName: "salesRevenueData",
+        withdrawerName: "salesRevenue",
+        isPoint: false,
+        data: salesRevenueData,
+        total,
+      } as IPanelProps);
+    }
+
+    if (remainingCashData.length > 0) {
+      const total = remainingCashData.reduce((acc, t) => acc + t.amount, 0);
+      items.push({
+        title: mbt("cap-RemainingCash"),
+        panelName: "remainingCashData",
+        withdrawerName: "remainingCash",
+        isPoint: false,
+        data: remainingCashData,
+        total,
+      } as IPanelProps);
+    }
+
+    if (makerRefundData.length > 0) {
+      const total = makerRefundData.reduce((acc, t) => acc + t.amount, 0);
+      items.push({
+        title: mbt("cap-MakerRefund"),
+        panelName: "makerRefundData",
+        withdrawerName: "makerRefund",
+        isPoint: false,
+        data: makerRefundData,
+        total,
+      } as IPanelProps);
+    }
+
+    return items;
+  }, [
+    mbt,
+    taxIncomeData,
+    realizedAssetsData,
+    referralData,
+    salesRevenueData,
+    remainingCashData,
+    makerRefundData,
+  ]);
+
+  useEffect(() => {
+    if (dataArray.length > 0) {
+      setOpenPanel(dataArray[0].panelName);
+    }
+  }, [dataArray]);
 
   function handleOpenPanel(panelIndex: string) {
     if (!panelIndex) return;
@@ -196,155 +276,52 @@ export default function MyBalances() {
           {mbt("cap-MyBalances")}
         </div>
       </div>
-      <div className="relative mt-5 flex w-full flex-1 flex-col justify-between border-t border-[#eee]">
-        <Accordion
-          type="single"
-          collapsible
-          value={openPanel}
-          onValueChange={(v) => handleOpenPanel(v)}
-        >
-          <AccordionItem value="taxIncomeData">
-            <AccordionTrigger showIcon={false}>
-              <AcHeader
-                open={openPanel === "taxIncomeData"}
-                name={mbt("cap-BonusIncome")}
-                walletCount={taxIncomeData?.length || 0}
-                totalAmount={taxIncomeTotal}
-              />
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-wrap gap-5">
-                {taxIncomeData.map((i, index) => (
-                  <TokenGetCard
-                    key={index}
-                    name={i.tokenInfo?.symbol}
-                    logo={i.tokenInfo?.logoURI}
-                    amount={i.amount}
-                    onClick={() => handleWithdrawToken("taxIncome")}
+      {dataArray.length > 0 ? (
+        <div className="relative mt-5 flex w-full flex-1 flex-col justify-between border-t border-[#eee]">
+          <Accordion
+            type="single"
+            collapsible
+            value={openPanel}
+            onValueChange={(v) => handleOpenPanel(v)}
+          >
+            {dataArray.map((item, index) => (
+              <AccordionItem key={index} value={item.panelName}>
+                <AccordionTrigger showIcon={false}>
+                  <AcHeader
+                    open={openPanel === item.panelName}
+                    name={item.title}
+                    walletCount={item.data?.length}
+                    totalAmount={item.total}
                   />
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="realizedAssetsData">
-            <AccordionTrigger showIcon={false}>
-              <AcHeader
-                open={openPanel === "realizedAssetsData"}
-                name={mbt("cap-RealizedAssets")}
-                walletCount={realizedAssetsData?.length || 0}
-                totalAmount={realizedAssetsTotal}
-              />
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-wrap gap-5">
-                {realizedAssetsData.map((i, index) => (
-                  <TokenGetCard
-                    key={index}
-                    name={i.tokenInfo?.symbol || ""}
-                    logo={i.tokenInfo?.logoURI || ""}
-                    amount={i.amount}
-                    onClick={() =>
-                      handleWithdrawPoint(i.tokenInfo.marketplaceId || "")
-                    }
-                  />
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="referralData">
-            <AccordionTrigger showIcon={false}>
-              <AcHeader
-                open={openPanel === "referralData"}
-                name={mbt("cap-ReferralBonus")}
-                walletCount={referralData?.length || 0}
-                totalAmount={referralTotal}
-              />
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-wrap gap-5">
-                {referralData.map((i, index) => (
-                  <TokenGetCard
-                    key={index}
-                    name={i.tokenInfo?.symbol}
-                    logo={i.tokenInfo?.logoURI}
-                    amount={i.amount}
-                    onClick={() => handleWithdrawToken("referralBonus")}
-                  />
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="salesRevenueData">
-            <AccordionTrigger showIcon={false}>
-              <AcHeader
-                open={openPanel === "salesRevenueData"}
-                name={mbt("cap-SalesRevenue")}
-                walletCount={salesRevenueData?.length || 0}
-                totalAmount={salesRevenueTotal}
-              />
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-wrap gap-5">
-                {salesRevenueData.map((i, index) => (
-                  <TokenGetCard
-                    key={index}
-                    name={i.tokenInfo?.symbol}
-                    logo={i.tokenInfo?.logoURI}
-                    amount={i.amount}
-                    onClick={() => handleWithdrawToken("salesRevenue")}
-                  />
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="remainingCashData">
-            <AccordionTrigger showIcon={false}>
-              <AcHeader
-                open={openPanel === "remainingCashData"}
-                name={mbt("cap-RemainingCash")}
-                walletCount={remainingCashData?.length || 0}
-                totalAmount={remainingCashTotal}
-              />
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-wrap gap-5">
-                {remainingCashData.map((i, index) => (
-                  <TokenGetCard
-                    key={index}
-                    name={i.tokenInfo?.symbol}
-                    logo={i.tokenInfo?.logoURI}
-                    amount={i.amount}
-                    onClick={() => handleWithdrawToken("remainingCash")}
-                  />
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="makerRefundData">
-            <AccordionTrigger showIcon={false}>
-              <AcHeader
-                open={openPanel === "makerRefundData"}
-                name={mbt("cap-MakerRefund")}
-                walletCount={makerRefundData?.length || 0}
-                totalAmount={makerRefundTotal}
-              />
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-wrap gap-5">
-                {makerRefundData.map((i, index) => (
-                  <TokenGetCard
-                    key={index}
-                    name={i.tokenInfo?.symbol}
-                    logo={i.tokenInfo?.logoURI}
-                    amount={i.amount}
-                    onClick={() => handleWithdrawToken("makerRefund")}
-                  />
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-wrap gap-5">
+                    {item.data.map((i, index) => (
+                      <TokenGetCard
+                        key={index}
+                        name={i.tokenInfo?.symbol || ""}
+                        logo={i.tokenInfo?.logoURI || ""}
+                        amount={i.amount}
+                        onClick={() =>
+                          !item.isPoint
+                            ? handleWithdrawToken(item.withdrawerName!)
+                            : handleWithdrawPoint(
+                                i.tokenInfo.marketplaceId || "",
+                              )
+                        }
+                      />
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      ) : (
+        <div className="flex flex-1 items-center justify-center text-base text-gray">
+          {mbt("txt-YourBalanceAppearHere")}
+        </div>
+      )}
     </div>
   );
 }
@@ -377,9 +354,9 @@ function AcHeader({
       </div>
       <div>
         {open ? (
-          <Image src="/icons/ac-plus.svg" width={24} height={24} alt="open" />
-        ) : (
           <Image src="/icons/ac-minus.svg" width={24} height={24} alt="open" />
+        ) : (
+          <Image src="/icons/ac-plus.svg" width={24} height={24} alt="open" />
         )}
       </div>
     </div>

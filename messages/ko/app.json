@@ -209,7 +209,8 @@
     "th-Tx": "Tx",
     "th-From/To": "From/To",
     "th-EqToken": "Eq. Token",
-    "th-CreatedTime": "Created Time"
+    "th-CreatedTime": "Created Time",
+    "txt-YourOrderAppearHere": "Your orders appear here.."
   },
   "page-MyStocks": {
     "cap-MyStocks": "My Stocks",
@@ -220,7 +221,8 @@
     "btn-List": "List",
     "cap-ListStockAsAskOffer": "List Stock As Ask Offer",
     "txt-Listed": "Listed",
-    "btn-Settle": "Settle"
+    "btn-Settle": "Settle",
+    "txt-YourStockAppearHere": "Your stock appear here.."
   },
   "drawer-ListOrder": {
     "cap-StockId": "Stock Id",
@@ -237,7 +239,8 @@
   },
   "page-MyBalance": {
     "cap-MyBalances": "My Balance",
-    "cap-BonusIncome": "Bonus Income",
+    "txt-YourBalanceAppearHere": "Your balance appear here...",
+    "cap-TaxIncome": "Bonus Income",
     "cap-RealizedAssets": "Realized Assets",
     "cap-ReferralBonus": "Referral Bonus",
     "cap-SalesRevenue": "Sales Revenue",
@@ -255,6 +258,7 @@
     "lb-SignedUp": "Signed Up",
     "lb-Commission": "Commission",
     "cap-ReferralLink": "Referral link",
+    "txt-YourReferralLinkAppearHere": "Your referral links appear here..",
     "th-ReferralCode": "Referral Code",
     "th-TradingUsers": "Trading Users",
     "th-TradingVol": "Trading Vol.",

@@ -226,7 +226,7 @@ function AmountCell({
   return (
     <div className="flex items-center justify-end space-x-1">
       <span>{formatNum(amount)}</span>
-      <Image src={tokenInfo.logoURI} width={12} height={12} alt="token" />
+      <Image src={tokenInfo.logoURI} width={16} height={16} alt="token" />
     </div>
   );
 }

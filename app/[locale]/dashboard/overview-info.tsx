@@ -2,7 +2,10 @@
 import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { Input } from "@/components/ui/input";
-import { useAccountOverview } from "@/lib/hooks/api/use-account-overview";
+import {
+  useAccountOverview,
+  useUserNameChange,
+} from "@/lib/hooks/api/use-account-overview";
 import { DateRange } from "react-day-picker";
 import { useEffect, useRef, useState } from "react";
 import { format, subDays } from "date-fns";
@@ -19,7 +22,10 @@ export default function OverviewInfo() {
     to: undefined,
   });
 
-  const { data: accountInfo } = useAccountOverview();
+  const { data: accountInfo, mutate: refetchAccountInfo } =
+    useAccountOverview();
+  const { trigger: updateUserNameAction, data: updateRes } =
+    useUserNameChange();
 
   const [nameInputValue, setNameInputValue] = useState("");
   const [showNameInput, setShowNameInput] = useState(false);
@@ -30,11 +36,22 @@ export default function OverviewInfo() {
     }
   }, [accountInfo]);
 
+  useEffect(() => {
+    if (updateRes) {
+      refetchAccountInfo();
+    }
+  }, [updateRes, refetchAccountInfo]);
+
   function handleNameInputBlur() {
     if (!accountInfo || !nameInputValue) {
       setShowNameInput(false);
       return;
     }
+
+    updateUserNameAction({
+      uuid: accountInfo.uid,
+      user_name: nameInputValue,
+    });
 
     accountInfo.user_name = nameInputValue;
     setShowNameInput(false);

@@ -92,6 +92,14 @@ export function ReferralTable({
     setDrawerOpen(true);
   }
 
+  if (!data.nodes.length) {
+    return (
+      <div className="flex flex-1 items-center justify-center text-base text-gray">
+        {rt("txt-YourReferralLinkAppearHere")}
+      </div>
+    );
+  }
+
   return (
     <>
       <Table

@@ -117,6 +117,14 @@ export function OrderTable({
     pagination.fns.onSetPage(page);
   };
 
+  if (!data.nodes.length) {
+    return (
+      <div className="flex flex-1 items-center justify-center text-base text-gray">
+        {T("txt-YourOrderAppearHere")}
+      </div>
+    );
+  }
+
   return (
     <>
       <Table

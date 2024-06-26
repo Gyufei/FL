@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 export default function ReferralLink() {
-  const T = useTranslations("Referral");
+  const T = useTranslations("page-Referral");
 
   const { data: referralData } = useReferralData();
 
@@ -16,10 +16,13 @@ export default function ReferralLink() {
   const refLink = useMemo(() => {
     if (!referralData) return "";
     const defaultRef = referralData.find((ref) => ref.flag === "1");
-    return `${window.location.origin}/s/${defaultRef?.referral_code}`;
+
+    if (!defaultRef) return "";
+    return `${window.location.origin}/s/${defaultRef?.referral_code || ""}`;
   }, [referralData]);
 
   function handleCopy() {
+    if (!refLink) return;
     navigator.clipboard.writeText(refLink);
 
     setGlobalMessage({

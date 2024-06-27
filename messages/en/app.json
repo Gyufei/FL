@@ -152,7 +152,7 @@
     "lb-BonusForMaker": "Bonus for Maker",
     "tip-BonusForMaker": "",
     "tip-BonusRateForEachTX": "",
-    "lb-CollateralRate": "",
+    "lb-CollateralRate": "Collateral Rate",
     "tip-CollateralRate": "",
     "lb-Previous": "Previous",
     "lb-TotalCollateral": "Total collateral",

@@ -24,9 +24,9 @@ export default function Header() {
             <>
               <NetworkSelect />
               <ConnectBtn />
+              <MessageBtn />
             </>
           )}
-          <MessageBtn />
         </div>
 
         {/* Mobile */}

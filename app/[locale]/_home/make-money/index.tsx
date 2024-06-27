@@ -1,5 +1,7 @@
 import { useTranslations } from "next-intl";
 import ModeDesc from "./mode-desc";
+import { inter } from "@/app/fonts";
+import { cn } from "@/lib/utils/common";
 
 export default function MakeMoney() {
   const t = useTranslations("Home");
@@ -13,7 +15,12 @@ export default function MakeMoney() {
           <div className="mb-3 text-center text-base leading-6 text-black sm:mb-[30px] sm:text-right sm:text-[30px] sm:leading-[42px]">
             {t("cap-SpecialPointMarket")}
           </div>
-          <div className="flex flex-col space-y-4 text-base leading-[30px] text-gray">
+          <div
+            className={cn(
+              "flex flex-col space-y-4 text-base leading-[30px] text-gray",
+              inter.className,
+            )}
+          >
             <div>{t("p-SpecialPointMarket1")}</div>
             <div>{t("p-SpecialPointMarket2")}</div>
             <div>{t("p-SpecialPointMarket3")}</div>

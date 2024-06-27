@@ -1,4 +1,6 @@
 "use client";
+import { inter } from "@/app/fonts";
+import { cn } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -24,7 +26,12 @@ export default function OutPerforms() {
             <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
               {t("cap-OptimalCapitalEfficiency")}
             </div>
-            <div className="mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px] ">
+            <div
+              className={cn(
+                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                inter.className,
+              )}
+            >
               {t("p-OptimalCapitalEfficiency")}
             </div>
             <ReadMore onClick={() => {}} />
@@ -36,7 +43,12 @@ export default function OutPerforms() {
             <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
               {t("cap-SuperiorLiquidity")}
             </div>
-            <div className="mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px] ">
+            <div
+              className={cn(
+                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                inter.className,
+              )}
+            >
               {t("p-SuperiorLiquidity")}
             </div>
             <ReadMore onClick={() => {}} />
@@ -64,7 +76,12 @@ export default function OutPerforms() {
             <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
               {t("cap-LowTradingFee")}
             </div>
-            <div className="mt-6 text-center text-xl leading-[30px] text-gray sm:text-left ">
+            <div
+              className={cn(
+                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                inter.className,
+              )}
+            >
               {t("p-LowTradingFee")}
             </div>
             <ReadMore onClick={() => {}} />
@@ -76,7 +93,12 @@ export default function OutPerforms() {
             <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
               {t("cap-AdvancedTradingSystem")}
             </div>
-            <div className="mt-6 text-center text-xl leading-[30px] text-gray sm:text-left ">
+            <div
+              className={cn(
+                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                inter.className,
+              )}
+            >
               {t("p-AdvancedTradingSystem")}
             </div>
             <ReadMore onClick={() => {}} />
@@ -103,7 +125,12 @@ export default function OutPerforms() {
             <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
               {t("cap-RobustSecurity")}
             </div>
-            <div className="mt-6 text-center text-xl leading-[30px] text-gray sm:text-left ">
+            <div
+              className={cn(
+                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                inter.className,
+              )}
+            >
               {t("p-RobustSecurity")}
             </div>
             <ReadMore onClick={() => {}} />
@@ -115,7 +142,12 @@ export default function OutPerforms() {
             <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
               {t("cap-DecentralizedArbitrationForSettlements")}
             </div>
-            <div className="mt-6 text-center text-xl leading-[30px] text-gray sm:text-left ">
+            <div
+              className={cn(
+                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                inter.className,
+              )}
+            >
               {t("p-DecentralizedArbitrationForSettlements")}
             </div>
             <ReadMore onClick={() => {}} />

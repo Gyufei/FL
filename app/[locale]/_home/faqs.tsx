@@ -9,6 +9,8 @@ import {
 import React, { forwardRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/navigation";
+import { inter } from "@/app/fonts";
+import { cn } from "@/lib/utils/common";
 
 export default function Faqs() {
   const t = useTranslations("Home");
@@ -24,7 +26,12 @@ export default function Faqs() {
         <div className="flex cursor-pointer items-center space-x-1">
           <Link href="https://tadle.gitbook.io/tadle/faq">
             <div className="text-lg leading-6 text-black">{t("btn-More")}</div>
-            <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+            <Image
+              src="/icons/right-arrow.svg"
+              width={24}
+              height={24}
+              alt="go"
+            />
           </Link>
         </div>
       </div>
@@ -143,7 +150,12 @@ function CollDot() {
 
 function CollContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-[10px] pl-[26px] text-sm leading-5 text-gray sm:text-base sm:leading-6">
+    <div
+      className={cn(
+        "mt-[10px] pl-[26px] text-sm leading-5 text-gray sm:text-base sm:leading-6",
+        inter.className,
+      )}
+    >
       {children}
     </div>
   );

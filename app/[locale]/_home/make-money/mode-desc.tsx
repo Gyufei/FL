@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import { Link } from "@/app/navigation";
+import { inter } from "@/app/fonts";
+import { cn } from "@/lib/utils/common";
 
 export default function ModeDesc() {
   const t = useTranslations("Home");
@@ -36,7 +38,12 @@ export default function ModeDesc() {
       </div>
       <div className="flex flex-1 flex-col justify-between">
         {mode === "turbo" && (
-          <div className="flex flex-col space-y-4 text-base leading-[30px] text-gray">
+          <div
+            className={cn(
+              "flex flex-col space-y-4 text-base leading-[30px] text-gray",
+              inter.className,
+            )}
+          >
             <div>{t("p-TurboMode1")}</div>
             <div>{t("p-TurboMode2")}</div>
           </div>
@@ -48,14 +55,15 @@ export default function ModeDesc() {
           </div>
         )}
 
-        <div className="mt-[50px] flex cursor-pointer items-center space-x-1 sm:mt-0">
-          <Link href="/marketplace">
-            <div className="text-lg leading-6 text-black">
-              {t("btn-StartTrading")}
-            </div>
-            <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
-          </Link>
-        </div>
+        <Link
+          href="/marketplace"
+          className="mt-[50px] flex cursor-pointer items-center space-x-1 sm:mt-0"
+        >
+          <div className="text-lg leading-6 text-black">
+            {t("btn-StartTrading")}
+          </div>
+          <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
+        </Link>
       </div>
     </div>
   );

@@ -6,7 +6,8 @@ import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useMakerDetail } from "../api/use-maker-detail";
 import { isProduction } from "@/lib/PathMap";
-// import { useTokensInfo } from "../api/use-token-info";
+import { useTokensInfo } from "../api/token/use-token-info";
+import { useTokenPrice } from "../api/token/use-token-price";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail({
@@ -19,14 +20,13 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     (Number(offer.used_points) / Number(offer.points)).toFixed(2),
   );
 
-  const tokenPrice = 1;
 
-  // const [orderTokenInfo1] = useTokensInfo([makerDetail?.token_mint || null]);
-  const orderTokenInfo = {
-    symbol: "USDC",
-    logoURI: "/icons/usdc.svg",
-    decimals: isProduction ? 6 : 9,
-  } as IToken;
+  const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
+
+  const isSol = orderTokenInfo?.symbol === "SOL";
+  console.log(orderTokenInfo);
+
+  const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || '');
 
   const orderPointInfo: IPoint = {
     symbol: offer.marketplace.point_name,
@@ -41,14 +41,14 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     decimals: 9,
   } as IToken;
 
-  const tokenLogo = orderTokenInfo.logoURI;
-  const pointLogo = orderPointInfo.logoURI;
+  const tokenLogo = orderTokenInfo?.logoURI || '/icons/empty.svg';
+  const pointLogo = orderPointInfo?.logoURI || '/icons/empty.svg';
 
   const orderType = offer.offer_type;
 
   const amount = NP.divide(
     offer.amount,
-    10 ** orderTokenInfo.decimals,
+    10 ** (orderTokenInfo?.decimals || isProduction ? 6 : 9),
   );
 
   const offerValue = orderType === "ask" ? offer.points : amount;
@@ -120,6 +120,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     orderEqTokenInfo,
     isCanSettle,
     isSettled,
-    makerDetail
+    makerDetail,
+    isSol
   };
 }

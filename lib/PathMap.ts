@@ -36,7 +36,7 @@ export function WithWss() {
 
 export const EndPointPathMap = {
   api: WithHost(""),
-  solanaToken: WithCDN("/tokens/solana/tokenlist.json"),
+  solanaToken: WithCDN("/tokenlist/solana.json"),
 };
 
 export const Paths = {
@@ -60,6 +60,7 @@ export const Paths = {
   userName: "/user/user_name",
   sales_volume_history: "/market_place/sales_volume_history",
   makerSettleAccount: '/market_place/direct_settle_account',
+  tokenPrice: '/token/info',
 
   referral: {
     referer: '/referral/referer',

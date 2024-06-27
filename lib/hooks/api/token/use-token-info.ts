@@ -1,5 +1,5 @@
+import { IToken } from "@/lib/types/token";
 import { useTokens } from "./use-tokens";
-import type { IToken } from "../../types/token";
 import { useCallback, useMemo } from "react";
 
 export function useTokensInfo(

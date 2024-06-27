@@ -15,6 +15,7 @@ export function useCreateTaker({
   originOfferAuthStr,
   preOfferAuthStr,
   referrerStr,
+  isSol
 }: {
   marketplaceStr: string;
   offerStr: string;
@@ -22,7 +23,8 @@ export function useCreateTaker({
   originOfferStr: string
   originOfferAuthStr: string,
   preOfferAuthStr: string,
-  referrerStr: string
+  referrerStr: string,
+  isSol: boolean
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
@@ -41,6 +43,7 @@ export function useCreateTaker({
       usdcTokenMint,
       seedAccount,
       userConfig: userBConfig,
+      userSolTokenAccount
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -126,7 +129,7 @@ export function useCreateTaker({
           isWritable: true
         },
         {
-          pubkey: userUsdcTokenAccount,
+          pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },

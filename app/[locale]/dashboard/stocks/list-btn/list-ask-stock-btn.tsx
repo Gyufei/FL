@@ -21,6 +21,7 @@ import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { useListStock } from "@/lib/hooks/contract/use-list-maker";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
+import { isProduction } from "@/lib/PathMap";
 
 export default function ListAskStockBtn({
   order: order,
@@ -33,7 +34,7 @@ export default function ListAskStockBtn({
   const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail } =
+  const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail, isSol } =
     useStockFormat({
       stock: order,
     });
@@ -61,6 +62,7 @@ export default function ListAskStockBtn({
     makerStr: order.maker_account,
     stockStr: order.stock_account,
     originOfferStr: makerDetail?.origin_offer || "",
+    isSol,
   });
 
   function handleDeposit() {
@@ -70,7 +72,8 @@ export default function ListAskStockBtn({
 
     writeAction({
       receiveTokenAmount:
-        Number(receiveTokenAmount) * 10 ** orderTokenInfo.decimals,
+        Number(receiveTokenAmount) *
+        10 ** (orderTokenInfo?.decimals || isProduction ? 6 : 9),
       collateralRate: Number(collateralRate || 100) * 100,
     });
   }

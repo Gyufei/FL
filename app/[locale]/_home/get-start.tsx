@@ -14,7 +14,7 @@ export default function GetStart() {
         {t("cap-HowToGetStartedWithTadle")}
       </div>
       <div className="flex text-[24px] leading-9 text-black sm:hidden">
-        {t("Product advantages")}
+        {t("cap-ProductAdvantages")}
       </div>
       {/* <div className="mt-5 mb-[60px] flex items-center justify-between space-x-12">
         <div

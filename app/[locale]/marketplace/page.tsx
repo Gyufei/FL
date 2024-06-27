@@ -9,7 +9,6 @@ export default function Marketplace({
 }) {
   const { data: marketplaceData } = useMarketplaces();
 
-  console.log(searchParams);
   if (marketplaceData) {
     const query = searchParams?.s;
     const path =

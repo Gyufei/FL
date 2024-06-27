@@ -21,6 +21,7 @@ export function useAccounts() {
 
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
     const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
+    const wsolTokenMint = new PublicKey("So11111111111111111111111111111111111111112");
 
     const systemConfig = PublicKey.findProgramAddressSync(
       [
@@ -35,6 +36,8 @@ export function useAccounts() {
       ],
       programId
     )[0];
+
+    const userSolTokenAccount = PublicKey.default;
 
     const userUsdcTokenAccount = await getAssociatedTokenAddress(
       usdcTokenMint,
@@ -57,6 +60,12 @@ export function useAccounts() {
       poolTokenAuthority,
       true
     );
+
+    const poolSolTokenAccount = await getAssociatedTokenAddress(
+      wsolTokenMint,
+      poolTokenAuthority,
+      true
+    )
 
     const poolPointsTokenAccount = await getAssociatedTokenAddress(
       pointTokenMint,
@@ -85,6 +94,8 @@ export function useAccounts() {
       pointTokenMint,
       associatedTokenProgram,
       poolTokenAuthority,
+      poolSolTokenAccount,
+      userSolTokenAccount,
     };
   }
 

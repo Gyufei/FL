@@ -9,6 +9,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
+import { isProduction } from "@/lib/PathMap";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
@@ -138,7 +139,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
             {formatNum(totalColl)}
           </div>
           <Image
-            src={orderTokenInfo.logoURI}
+            src={orderTokenInfo?.logoURI || "/icons/empty.png"}
             width={16}
             height={16}
             alt="stable token"
@@ -198,7 +199,10 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
                 $
                 {NP.divide(
                   offer?.trade_tax || 0,
-                  Math.pow(10, orderTokenInfo.decimals),
+                  Math.pow(
+                    10,
+                    orderTokenInfo?.decimals || isProduction ? 6 : 9,
+                  ),
                 )}
               </div>
             </div>

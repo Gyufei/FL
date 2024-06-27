@@ -10,6 +10,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useTranslations } from "next-intl";
+import { isProduction } from "@/lib/PathMap";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");
@@ -39,7 +40,10 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     const ti = offer?.trade_tax || makerDetail?.trade_tax;
 
     const tax = Number(ti || 0);
-    const fmtTax = NP.divide(tax, 10 ** orderTokenInfo.decimals);
+    const fmtTax = NP.divide(
+      tax,
+      10 ** (orderTokenInfo?.decimals || isProduction ? 6 : 9),
+    );
 
     return fmtTax;
   }, [makerDetail, offer, orderTokenInfo]);

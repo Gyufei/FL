@@ -19,6 +19,8 @@ import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
+import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
+import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 
 export function SellContent({
   marketplace,
@@ -29,6 +31,7 @@ export function SellContent({
 }) {
   const T = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
+  const { data: stableToken } = useStableToken();
 
   const [sellPointAmount, setSellPointAmount] = useState("");
   const [sellPoint, setSellPoint] = useState<IPoint | null>(null);
@@ -44,11 +47,22 @@ export function SellContent({
   }, [points, marketplace]);
 
   const [receiveTokenAmount, setReceiveAmount] = useState("");
-  const [receiveToken, setReceiveToken] = useState<IToken>({
-    symbol: "USDC",
-    logoURI: "/icons/usdc.svg",
-    decimals: isProduction ? 6 : 9,
-  } as IToken);
+  const [receiveToken, setReceiveToken] = useState<IToken>(
+    stableToken[0] ||
+      ({
+        symbol: "",
+        logoURI: "/icons/empty.svg",
+        decimals: isProduction ? 6 : 9,
+      } as IToken),
+  );
+
+  const { data: tokenPrice } = useTokenPrice(receiveToken?.address || "");
+
+  useEffect(() => {
+    if (stableToken) {
+      setReceiveToken(stableToken[0]);
+    }
+  }, [stableToken]);
 
   const [collateralRate, setCollateralRate] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
@@ -60,8 +74,8 @@ export function SellContent({
     if (!receiveTokenAmount) {
       return 0;
     }
-    return NP.times(receiveTokenAmount, 1);
-  }, [receiveTokenAmount]);
+    return NP.times(receiveTokenAmount, tokenPrice);
+  }, [receiveTokenAmount, tokenPrice]);
 
   const pointPrice = useMemo(() => {
     if (!sellPointAmount) {
@@ -95,6 +109,7 @@ export function SellContent({
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
+      isSol: receiveToken?.symbol === "SOL",
     });
   }
 

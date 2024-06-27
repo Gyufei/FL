@@ -10,12 +10,14 @@ export function useListStock({
   marketplaceStr,
   makerStr,
   stockStr,
-  originOfferStr
+  originOfferStr,
+  isSol
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   originOfferStr: string;
+  isSol: boolean
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
@@ -36,9 +38,10 @@ export function useListStock({
       authority,
       systemProgram,
       systemConfig,
-      userUsdcTokenAccount: walletDUsdcTokenAccount,
+      userUsdcTokenAccount,
       poolUsdcTokenAccount,
       usdcTokenMint,
+      userSolTokenAccount
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -75,7 +78,7 @@ export function useListStock({
         systemProgram,
       }).remainingAccounts([
         {
-          pubkey: walletDUsdcTokenAccount,
+          pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         }

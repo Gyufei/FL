@@ -3,8 +3,8 @@ export interface IToken {
   name: string;
   symbol: string;
   decimals: number;
-  chainId: number;
   logoURI: string;
+  chainId: number;
   ratingScore: string;
   [key: string]: any;
 }

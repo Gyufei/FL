@@ -1,4 +1,4 @@
-import { useTokensInfo } from "@/lib/hooks/api/use-token-info";
+import { useTokensInfo } from "@/lib/hooks/api/token/use-token-info";
 import Image from "next/image";
 
 export function TokenAddrPairImg({

@@ -35,6 +35,7 @@ export default function MyBidDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
+    isSol,
   } = useOfferFormat({
     offer: order,
   });
@@ -61,6 +62,7 @@ export default function MyBidDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
+    isSol,
   });
 
   const {
@@ -122,7 +124,7 @@ export default function MyBidDetail({
               </>
             }
             value={String(amount)}
-            tokenLogo={orderTokenInfo.logoURI}
+            tokenLogo={orderTokenInfo?.logoURI || "/icons/empty.png"}
             onValueChange={() => {}}
             isCanInput={false}
           />

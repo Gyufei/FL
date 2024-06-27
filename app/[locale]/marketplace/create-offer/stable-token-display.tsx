@@ -6,6 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 
 export function StableTokenSelectDisplay({
   token,
@@ -14,13 +15,7 @@ export function StableTokenSelectDisplay({
   token: IToken;
   setToken: (_t: IToken) => void;
 }) {
-  const tokens = [
-    {
-      symbol: "USDC",
-      logoURI: "/icons/usdc.svg",
-      decimals: 6,
-    },
-  ] as Array<IToken>;
+  const { data: tokens } = useStableToken();
   const [popOpen, setPopOpen] = useState(false);
 
   const handleSelectToken = (t: IToken) => {
@@ -35,12 +30,12 @@ export function StableTokenSelectDisplay({
           <Image
             width={24}
             height={24}
-            src="/icons/usdc.svg"
+            src={token?.logoURI}
             alt="select token"
-            className="mr-2"
+            className="mr-2 rounded-full"
           ></Image>
           <div className="pr-[4px] text-sm leading-5 text-black">
-            {token.symbol}
+            {token?.symbol}
           </div>
           <div className="flex h-6 w-6 items-center justify-center">
             <Image src="/icons/down.svg" width={16} height={16} alt="arrow" />
@@ -60,9 +55,9 @@ export function StableTokenSelectDisplay({
             <Image
               width={24}
               height={24}
-              src={token.logoURI}
+              src={t.logoURI}
               alt="select token"
-              className="mr-2"
+              className="mr-2 rounded-full"
             ></Image>
             {t.symbol}
           </div>

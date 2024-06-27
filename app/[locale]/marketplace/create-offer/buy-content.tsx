@@ -18,6 +18,8 @@ import { SettleModeSelect, SettleModes } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
+import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
+import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 
 export function BuyContent({
   marketplace,
@@ -28,13 +30,17 @@ export function BuyContent({
 }) {
   const cot = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
+  const { data: stableToken } = useStableToken();
 
   const [payTokenAmount, setPayTokenAmount] = useState("0");
-  const [payToken, setPayToken] = useState<IToken>({
-    symbol: "USDC",
-    logoURI: "/icons/usdc.svg",
-    decimals: isProduction ? 6 : 9,
-  } as IToken);
+  const [payToken, setPayToken] = useState<IToken>(
+    stableToken[0] ||
+      ({
+        symbol: "",
+        logoURI: "/icons/empty.svg",
+        decimals: isProduction ? 6 : 9,
+      } as IToken),
+  );
 
   useEffect(() => {
     if (points) {
@@ -45,6 +51,8 @@ export function BuyContent({
       );
     }
   }, [points, marketplace]);
+
+  const { data: tokenPrice } = useTokenPrice(payToken?.address || "");
 
   const [receivePoint, setReceivePoint] = useState<IPoint | null>(null);
   const [receivePointAmount, setReceivePointAmount] = useState("");
@@ -58,8 +66,8 @@ export function BuyContent({
   const payAmountValue = useMemo(() => {
     if (!payTokenAmount) return 0;
 
-    return NP.times(payTokenAmount, 1);
-  }, [payTokenAmount]);
+    return NP.times(payTokenAmount, tokenPrice);
+  }, [payTokenAmount, tokenPrice]);
 
   const pointPrice = useMemo(() => {
     if (!receivePointAmount) {
@@ -94,6 +102,7 @@ export function BuyContent({
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
+      isSol: payToken?.symbol === "SOL",
     });
   }
 

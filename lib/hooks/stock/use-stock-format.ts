@@ -16,15 +16,16 @@ export function useStockFormat({ stock }: { stock: IStock }) {
     orderPointInfo,
     orderTokenInfo,
     orderEqTokenInfo,
-    makerDetail
+    makerDetail,
+    isSol
   } = useOfferFormat({
     offer: stock as unknown as IOffer
   })
 
   const stockType = stock.stock_type;
 
-  const tokenLogo = orderTokenInfo.logoURI;
-  const pointLogo = orderPointInfo.logoURI;
+  const tokenLogo = orderTokenInfo?.logoURI || '/icons/empty.svg';
+  const pointLogo = orderPointInfo?.logoURI || '/icons/empty.svg';
 
   const offerValue = stockType === "ask" ? stock.points : amount;
   const forValue = stockType === "ask" ? amount : stock.points;
@@ -57,6 +58,7 @@ export function useStockFormat({ stock }: { stock: IStock }) {
     isCanSettle,
     isSettled,
     tokenPrice,
-    makerDetail
+    makerDetail,
+    isSol
   };
 }

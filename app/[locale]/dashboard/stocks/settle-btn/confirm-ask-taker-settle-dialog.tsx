@@ -37,10 +37,6 @@ export default function ConfirmAskTakerSettleDialog({
     onOpenChange(false);
   }
 
-  if (open) {
-    console.log(stock, 123);
-  }
-
   return (
     <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
       <DialogContent

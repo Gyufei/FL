@@ -23,6 +23,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "raw.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: '"cdn-tadle.aggregation.top'
+      }
     ],
   },
   webpack: (config) => {

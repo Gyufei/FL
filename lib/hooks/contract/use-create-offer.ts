@@ -27,6 +27,7 @@ export function useCreateOffer({
     taxForSub,
     settleMode,
     note,
+    isSol,
   }: {
     pointAmount: number;
     tokenAmount: number;
@@ -34,6 +35,7 @@ export function useCreateOffer({
     taxForSub: number;
     settleMode: ISettleMode,
     note: string;
+    isSol: boolean;
   }) => {
     const {
       tokenProgram,
@@ -46,7 +48,9 @@ export function useCreateOffer({
       seedAccount,
       associatedTokenProgram,
       poolTokenAuthority,
-      poolUsdcTokenAccount
+      poolUsdcTokenAccount,
+      poolSolTokenAccount,
+      userSolTokenAccount,
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -106,12 +110,12 @@ export function useCreateOffer({
         systemProgram,
       }).remainingAccounts([
         {
-          pubkey: userUsdcTokenAccount,
+          pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },
         {
-          pubkey: poolUsdcTokenAccount,
+          pubkey: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },

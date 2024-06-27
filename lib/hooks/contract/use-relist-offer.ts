@@ -10,11 +10,13 @@ export function useRelistOffer({
   makerStr,
   offerStr,
   stockStr,
+  isSol,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
   stockStr: string;
+  isSol: boolean;
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
@@ -31,6 +33,7 @@ export function useRelistOffer({
       userUsdcTokenAccount,
       poolUsdcTokenAccount,
       usdcTokenMint,
+      userSolTokenAccount,
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -55,7 +58,7 @@ export function useRelistOffer({
         systemProgram,
       }).remainingAccounts([
         {
-          pubkey: userUsdcTokenAccount,
+          pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         }

@@ -6,10 +6,19 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import MarketplaceOverview from "@/components/share/market-place-overview";
 import { useRouter } from "@/app/navigation";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
+import useTge from "@/lib/hooks/marketplace/useTge";
 
 export default function MarketplaceList() {
   const t = useTranslations("Home");
   const { data: marketplaceData } = useMarketplaces();
+  const { checkIsAfterTge } = useTge();
+
+  const markets = useMemo(() => {
+    return (marketplaceData || [])
+      .filter((m) => !checkIsAfterTge(m.tge, Number(m.settlement_period)))
+      .filter((m) => m.status !== "offline");
+  }, [marketplaceData]);
 
   return (
     <div className="flex flex-col items-center pt-20">
@@ -17,7 +26,7 @@ export default function MarketplaceList() {
         {t("cap-TrendingProjects")}
       </div>
       <div className="mt-6 flex w-full flex-col items-start gap-x-5 gap-y-9 px-4 py-5 sm:grid sm:grid-cols-4 sm:flex-row sm:items-stretch sm:overflow-x-hidden">
-        {(marketplaceData || []).map((marketplace) => (
+        {(markets || []).map((marketplace) => (
           <ItemCard key={marketplace.market_id} marketplace={marketplace} />
         ))}
       </div>
@@ -55,7 +64,7 @@ function ItemCard({ marketplace }: { marketplace: IMarketplace }) {
             <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
               {marketplace.market_name}
             </div>
-            <div className="text-xs h-[18px] leading-[18px] text-gray">
+            <div className="h-[18px] text-xs leading-[18px] text-gray">
               {/* <span>Spread:</span>
               <span>{marketplace.trade_spread}%</span> */}
             </div>

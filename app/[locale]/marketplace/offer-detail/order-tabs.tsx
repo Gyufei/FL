@@ -80,13 +80,15 @@ export default function OrderTabs({ order }: { order: IOffer }) {
           </div>
         </TabsList>
         <TabsContent value="orders" className="h-fit flex-1">
-          <TakerOrders
-            orders={orders || []}
-            offerLogo={offerLogo}
-            forLogo={forLogo}
-            orderTokenInfo={orderTokenInfo}
-            orderEqTokenInfo={orderEqTokenInfo}
-          />
+          {orderTokenInfo && (
+            <TakerOrders
+              orders={orders || []}
+              offerLogo={offerLogo}
+              forLogo={forLogo}
+              orderTokenInfo={orderTokenInfo}
+              orderEqTokenInfo={orderEqTokenInfo}
+            />
+          )}
         </TabsContent>
         <TabsContent value="history" className="flex-1"></TabsContent>
       </Tabs>

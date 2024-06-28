@@ -15,6 +15,7 @@ import { IOffer } from "@/lib/types/offer";
 import { useTranslations } from "next-intl";
 import CreateOfferBtn from "../create-offer-btn";
 import MarketCharts from "../chart/market-charts";
+import { sortBy } from "lodash";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const mt = useTranslations("pn-Marketplace");
@@ -36,9 +37,13 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   });
 
   const canBuyOrders = useMemo(() => {
-    return (orders || [])?.filter((order: IOffer) =>
-      ["virgin", "ongoing"].includes(order.offer_status),
+    const showOrder = (orders || [])?.filter((order: IOffer) =>
+      ["virgin", "ongoing", "filled"].includes(order.offer_status),
     );
+    const sortO = sortBy(showOrder, "status");
+    console.log(sortO);
+
+    return sortO;
   }, [orders]);
 
   const { anchor: orderId } = useAnchor();

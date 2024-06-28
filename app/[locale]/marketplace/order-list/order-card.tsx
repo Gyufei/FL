@@ -71,14 +71,14 @@ export function OrderCard({ order }: { order: IOffer }) {
 
         <div className="relative">
           <CircleProgress
-            percentage={progress * 100}
+            percentage={Number(formatNum(progress * 100))}
             className="scale-[1.1429]"
           />
           <div
             data-zero={Number(progress) === 0 ? true : false}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=true]:text-gray data-[zero=false]:text-black"
           >
-            {formatNum(progress * 100)}%
+            {Math.floor(progress * 100)}%
           </div>
         </div>
       </div>

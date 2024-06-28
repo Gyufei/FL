@@ -34,15 +34,15 @@ export default function HomeBanner() {
         {t("cap-BridgingLiquidityBetweenPrimaryAndSecondaryMarkets")}
       </div>
 
-      <div className="mt-10 flex w-full flex-col items-center space-x-10 px-4 sm:w-fit sm:flex-row sm:px-0">
+      <div className="mt-10 flex w-full flex-col items-center sm:space-x-10 px-4 sm:w-fit sm:flex-row sm:px-0">
         <Link href="/marketplace">
-          <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow text-lg leading-6 sm:w-[160px]">
+          <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow text-lg leading-6 px-5">
             {t("btn-GetStarted")}
           </div>
         </Link>
         <Link
           href="https://tadle.gitbook.io/tadle"
-          className="mt-[22px] flex cursor-pointer items-center space-x-1 sm:mt-0"
+          className="mt-[22px] ml-1 sm:ml-0 flex cursor-pointer items-center space-x-1 sm:mt-0"
         >
           <div className="text-lg leading-6 text-black">
             {t("btn-ReadTheDocs")}

@@ -36,11 +36,17 @@ export default function SliderCard({
   return (
     <div className="mt-5 rounded-2xl bg-white p-4">
       <div className="text-xs leading-[18px] text-gray">{topText}</div>
-      <div className="mt-2 flex justify-between">
+      <div className="mt-2 flex items-center justify-between">
         <div className="h-[36px] text-2xl leading-[36px]">
           {formatNum(value)}
         </div>
-        <Image src={tokenLogo} width={28} height={28} alt="stable token" />
+        <Image
+          src={tokenLogo}
+          width={28}
+          height={28}
+          alt="stable token"
+          className="rounded-full"
+        />
       </div>
       <div className="mt-3 flex">
         <Slider

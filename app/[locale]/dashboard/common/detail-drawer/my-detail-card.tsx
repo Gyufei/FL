@@ -42,7 +42,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     const tax = Number(ti || 0);
     const fmtTax = NP.divide(
       tax,
-      10 ** (orderTokenInfo?.decimals || isProduction ? 6 : 9),
+      10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
     );
 
     return fmtTax;

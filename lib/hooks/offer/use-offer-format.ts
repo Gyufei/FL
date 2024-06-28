@@ -24,7 +24,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
 
   const isSol = orderTokenInfo?.symbol === "SOL";
-  console.log(orderTokenInfo);
 
   const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || '');
 
@@ -48,7 +47,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const amount = NP.divide(
     offer.amount,
-    10 ** (orderTokenInfo?.decimals || isProduction ? 6 : 9),
+    10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
   );
 
   const offerValue = orderType === "ask" ? offer.points : amount;

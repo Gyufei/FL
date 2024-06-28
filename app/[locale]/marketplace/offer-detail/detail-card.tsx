@@ -201,7 +201,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
                   offer?.trade_tax || 0,
                   Math.pow(
                     10,
-                    orderTokenInfo?.decimals || isProduction ? 6 : 9,
+                    orderTokenInfo?.decimals || (isProduction ? 6 : 9),
                   ),
                 )}
               </div>

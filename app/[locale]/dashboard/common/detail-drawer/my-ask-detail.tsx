@@ -1,11 +1,13 @@
-import { formatNum } from "@/lib/utils/number";
-import OfferInfo from "@/app/[locale]/marketplace/offer-detail/offer-info";
-import OrderTabs from "@/app/[locale]/marketplace/offer-detail/order-tabs";
-import { SwapItemPanel } from "./swap-item-panel";
-import ArrowBetween from "@/app/[locale]/marketplace/create-offer/arrow-between";
-import { WithTip } from "@/app/[locale]/marketplace/create-offer/with-tip";
-import MyDetailCard from "./my-detail-card";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
+
+import { formatNum } from "@/lib/utils/number";
+import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
+import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
+import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
+import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-tip";
+import { SwapItemPanel } from "./swap-item-panel";
+import MyDetailCard from "./my-detail-card";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
@@ -13,7 +15,6 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import { useTranslations } from "next-intl";
 
 export default function MyAskDetail({
   order: order,

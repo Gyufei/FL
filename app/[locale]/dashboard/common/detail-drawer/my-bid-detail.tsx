@@ -1,12 +1,12 @@
 import { formatNum } from "@/lib/utils/number";
-import OfferInfo from "@/app/[locale]/marketplace/offer-detail/offer-info";
+import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
 import { SwapItemPanel } from "./swap-item-panel";
-import ArrowBetween from "@/app/[locale]/marketplace/create-offer/arrow-between";
-import { WithTip } from "@/app/[locale]/marketplace/create-offer/with-tip";
+import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
+import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-tip";
 import MyDetailCard from "./my-detail-card";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import OrderTabs from "@/app/[locale]/marketplace/offer-detail/order-tabs";
+import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
 import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useEffect, useMemo } from "react";

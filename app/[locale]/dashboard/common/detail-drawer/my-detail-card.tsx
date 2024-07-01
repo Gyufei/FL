@@ -2,7 +2,7 @@ import NP from "number-precision";
 import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { truncateAddr } from "@/lib/utils/web3";
-import { WithTip } from "@/app/[locale]/marketplace/create-offer/with-tip";
+import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-tip";
 import { formatTimeObj, formatTimestamp } from "@/lib/utils/time";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";

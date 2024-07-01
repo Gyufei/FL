@@ -274,5 +274,19 @@
     "tip-ReferralDrawer": "当有人使用你的推荐链接注册时，第一个人将收到第二个人支付的交易费用的{ num1 }的退款。此外，作为原始推荐人，您将获得相当于佣金{ num2 }的奖励。",
     "btn-Save": "保存",
     "txt-RateError": "总和不得超过30%"
+  },
+  "page-MarketList": {
+    "cap-PointMarket": "Point市场",
+    "th-Asset": "资产",
+    "th-LastPrice": "最后价格",
+    "th-Vol24h": "24小时总量",
+    "th-TotalVol": "总量",
+    "th-SetterStarts": "清算开始",
+    "th-SetterEnds": "清算结束",
+    "th-Countdown": "倒计时",
+    "cap-MockMarket": "Mock市场",
+    "cap-TrendingAssets": "趋势资产",
+    "th-FloorPrice": "地板价",
+    "th-24hChange": "24h变化"
   }
 }

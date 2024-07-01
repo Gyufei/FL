@@ -1,6 +1,8 @@
 "use client";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { redirect } from "@/app/navigation";
+import PageFooter from "../_page-layout/_page-footer";
+import PointMarket from "./point-market";
+// import { redirect } from "@/app/navigation";
 
 export default function Marketplace({
   searchParams,
@@ -15,8 +17,20 @@ export default function Marketplace({
       `/marketplace/${marketplaceData[0].market_id}` +
       (query ? `?s=${query}` : "");
 
-    redirect(path);
+    console.log(path);
+    // redirect(path);
   }
 
-  return null;
+  return (
+    <div className="flex h-[calc(100vh-96px)] w-full flex-col">
+      <div className="flex flex-1 items-stretch">
+        <div className="flex flex-col flex-1 pl-6">
+          <PointMarket />
+        </div>
+        <div className="flex w-[368px] flex-col px-6"></div>
+      </div>
+
+      <PageFooter />
+    </div>
+  );
 }

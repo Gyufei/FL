@@ -1,21 +1,24 @@
 "use client";
 import Image from "next/image";
-import MarketTrades from "@/app/[locale]/marketplace/market-trades/market-trades";
-import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
-import OrderList from "@/app/[locale]/marketplace/order-list/order-list";
-import LeaderBoard from "@/app/[locale]/marketplace/leader-board/leader-board";
-import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import MarketplaceCard from "../marketplace-card";
-import useTge from "@/lib/hooks/marketplace/useTge";
 import { useMemo } from "react";
-import OfferDetailDrawer from "../offer-detail/offer-detail-drawer";
+import { useTranslations } from "next-intl";
+import { sortBy } from "lodash";
+
+import MarketTrades from "@/app/[locale]/marketplace/[...name]/market-trades/market-trades";
+import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
+import OrderList from "@/app/[locale]/marketplace/[...name]/order-list/order-list";
+import LeaderBoard from "@/app/[locale]/marketplace/[...name]/leader-board/leader-board";
+
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import useTge from "@/lib/hooks/marketplace/useTge";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 import { IOffer } from "@/lib/types/offer";
-import { useTranslations } from "next-intl";
-import CreateOfferBtn from "../create-offer-btn";
-import MarketCharts from "../chart/market-charts";
-import { sortBy } from "lodash";
+
+import MarketplaceCard from "./marketplace-card";
+import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
+import CreateOfferBtn from "./create-offer-btn";
+import MarketCharts from "./chart/market-charts";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const mt = useTranslations("pn-Marketplace");

@@ -16,8 +16,8 @@ export default function MarketplaceList() {
 
   const markets = useMemo(() => {
     return (marketplaceData || [])
-      .filter((m) => !checkIsAfterTge(m.tge, Number(m.settlement_period)))
-      .filter((m) => m.status !== "offline");
+      .filter((m) => m.status !== "offline")
+      .filter((m) => !checkIsAfterTge(m.tge, Number(m.settlement_period)));
   }, [marketplaceData]);
 
   return (

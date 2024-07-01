@@ -195,10 +195,10 @@ function FoldPop() {
 
   const cateList = useMemo(() => {
     return (marketplaceData || [])
+      .filter((m) => m.status !== "offline")
       .filter((m) => {
         return !checkIsAfterTge(m.tge, Number(m.settlement_period));
       })
-      .filter((m) => m.status !== "offline")
       .map((marketplace) => {
         return {
           name: marketplace.market_name,

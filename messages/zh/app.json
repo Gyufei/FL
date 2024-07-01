@@ -287,6 +287,7 @@
     "cap-MockMarket": "Mock市场",
     "cap-TrendingAssets": "趋势资产",
     "th-FloorPrice": "地板价",
-    "th-24hChange": "24h变化"
+    "th-24hChange": "24h变化",
+    "txt-NotStarted": "未开始"
   }
 }

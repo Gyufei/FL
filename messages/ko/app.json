@@ -286,6 +286,7 @@
     "cap-MockMarket": "Mock Market",
     "cap-TrendingAssets": "Trending Assets",
     "th-FloorPrice": "Floor Price",
-    "th-24hChange": "24h Change"
+    "th-24hChange": "24h Change",
+    "txt-NotStarted": "Not Started"
   }
 }

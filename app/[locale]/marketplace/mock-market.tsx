@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useRouter } from "@/app/navigation";
 
-export default function PointMarket({ className }: { className?: string }) {
+export default function MockMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
 
   const router = useRouter();
@@ -49,6 +49,7 @@ export default function PointMarket({ className }: { className?: string }) {
     BaseCell: `
       font-size: 14px;
       font-weight: normal;
+
       text-align: right;
 
       &:first-of-type {
@@ -252,7 +253,7 @@ export default function PointMarket({ className }: { className?: string }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black">{t("cap-PointMarket")}</div>
+          <div className="leading-6 text-black">{t("cap-MockMarket")}</div>
         </div>
       </div>
       <div className="max-h-auto relative min-h-[296px] w-full flex-1 flex-col overflow-y-hidden">

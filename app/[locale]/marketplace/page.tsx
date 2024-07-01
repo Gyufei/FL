@@ -3,6 +3,7 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import PageFooter from "../_page-layout/_page-footer";
 import PointMarket from "./point-market";
 import MockMarket from "./mock-market";
+import TrendingAsset from "./trending-asset";
 // import { redirect } from "@/app/navigation";
 
 export default function Marketplace({
@@ -29,7 +30,9 @@ export default function Marketplace({
           <PointMarket />
           <MockMarket className="mt-6" />
         </div>
-        <div className="flex w-[368px] flex-col px-6"></div>
+        <div className="flex w-[368px] flex-col px-6">
+          <TrendingAsset />
+        </div>
       </div>
 
       <PageFooter />

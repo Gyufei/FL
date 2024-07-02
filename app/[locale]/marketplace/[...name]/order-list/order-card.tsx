@@ -127,7 +127,7 @@ export function OrderCard({ order }: { order: IOffer }) {
               width={16}
               height={16}
               alt="stable"
-              className="ml-1"
+              className="ml-1 rounded-full"
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">

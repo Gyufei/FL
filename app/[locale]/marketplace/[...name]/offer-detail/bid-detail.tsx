@@ -24,6 +24,7 @@ export default function BidDetail({
   const T = useTranslations("drawer-OfferDetail");
 
   const { data: referrer } = useReferralReferer();
+
   const {
     tokenPrice,
     progress,

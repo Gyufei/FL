@@ -10,6 +10,7 @@ export default function ConfirmAskTakerSettleBtn({
   settleAmount,
   preOfferAuthorityStr,
   onSuccess,
+  isSol,
 }: {
   marketplaceStr: string;
   stockStr: string;
@@ -18,6 +19,7 @@ export default function ConfirmAskTakerSettleBtn({
   preOfferAuthorityStr: string;
   settleAmount: number;
   onSuccess: () => void;
+  isSol: boolean;
 }) {
   const {
     isLoading,
@@ -29,6 +31,7 @@ export default function ConfirmAskTakerSettleBtn({
     stockStr,
     preOfferAuthorityStr,
     makerStr,
+    isSol,
   });
 
   function handleConfirm() {

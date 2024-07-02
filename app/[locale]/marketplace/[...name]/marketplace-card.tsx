@@ -116,19 +116,19 @@ export default function MarketplaceCard({
 }
 
 function OverviewIcons({
-  isStar,
-  handleStar,
-  handleCopy,
+  // isStar,
+  // handleStar,
+  // handleCopy,
   handleGoTwitter,
   handleGoDiscord,
 }: {
-  isStar: boolean;
-  handleStar: () => void;
-  handleCopy: () => void;
+  // isStar: boolean;
+  // handleStar: () => void;
+  // handleCopy: () => void;
   handleGoTwitter: () => void;
   handleGoDiscord: () => void;
+  [key: string]: any;
 }) {
-  console.info(isStar, handleStar, handleCopy);
   return (
     <div className="flex items-center space-x-1">
       {/* <HoverIcon

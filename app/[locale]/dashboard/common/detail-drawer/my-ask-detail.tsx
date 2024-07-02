@@ -60,6 +60,7 @@ export default function MyAskDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
+    isSol,
   });
 
   const {

@@ -11,10 +11,12 @@ export function useSettleAskMaker({
   marketplaceStr,
   makerStr,
   offerStr,
+  isSol
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
+  isSol: boolean
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
@@ -59,7 +61,7 @@ export function useSettleAskMaker({
     const {
       walletBaseTokenBalance: walletABaseTokenBalance,
       // walletPointTokenBalance: walletAPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
 
     const stockAccountP = await Promise.all(stockArr.map(async (s: {
       stock_account: string,
@@ -89,7 +91,7 @@ export function useSettleAskMaker({
       const {
         walletBaseTokenBalance,
         walletPointTokenBalance,
-      } = await getWalletBalanceAccount(program.programId, stockAuth, marketPlace)
+      } = await getWalletBalanceAccount(program.programId, stockAuth, marketPlace, isSol)
 
       return [
         ...stockArr,

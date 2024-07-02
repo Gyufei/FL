@@ -44,7 +44,6 @@ export default function Marketplace({ params }: { params: { name: string } }) {
       ["virgin", "ongoing", "filled"].includes(order.offer_status),
     );
     const sortO = sortBy(showOrder, "status");
-    console.log(sortO);
 
     return sortO;
   }, [orders]);

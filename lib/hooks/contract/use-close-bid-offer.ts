@@ -9,10 +9,12 @@ export function useCloseBidOffer({
   marketplaceStr,
   makerStr,
   offerStr,
+  isSol
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
+  isSol: boolean
 }) {
   const { program } = useTadleProgram();
   const { getAccounts, getWalletBalanceAccount } = useAccounts();
@@ -33,7 +35,7 @@ export function useCloseBidOffer({
 
     const {
       walletBaseTokenBalance: walletDBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
 
     const methodTransaction = await program.methods
       .closeBidOffer()

@@ -32,7 +32,9 @@ export function useRelistOffer({
       systemConfig,
       userUsdcTokenAccount,
       poolUsdcTokenAccount,
+      poolSolTokenAccount,
       usdcTokenMint,
+      wsolTokenMint,
       userSolTokenAccount,
     } = await getAccounts(program.programId);
 
@@ -49,10 +51,10 @@ export function useRelistOffer({
         offer: offerD,
         stock: stockD,
 
-        poolTokenAccount: poolUsdcTokenAccount,
+        poolTokenAccount: isSol ? poolSolTokenAccount :  poolUsdcTokenAccount,
         maker,
         marketPlace,
-        tokenMint: usdcTokenMint,
+        tokenMint: isSol ? wsolTokenMint :  usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,

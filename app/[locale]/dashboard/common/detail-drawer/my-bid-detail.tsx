@@ -51,6 +51,7 @@ export default function MyBidDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
+    isSol,
   });
 
   const {
@@ -73,6 +74,7 @@ export default function MyBidDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
+    isSol
   });
 
   function handleClose() {

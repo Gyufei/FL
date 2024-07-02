@@ -54,10 +54,17 @@ export function useReferralReferer() {
   const { apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
-  const res = useSWR<string | null>(
+  const res = useSWR<string | any | null>(
     token ? `${apiEndPoint}${Paths.referral.referer}?access_token=${token}` : null,
     fetcher,
   );
+
+  if (res.data && res.data?.code === 500) {
+    return {
+      ...res,
+      data: undefined,
+    }
+  }
 
   return res;
 }

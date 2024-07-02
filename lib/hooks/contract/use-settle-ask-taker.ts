@@ -12,12 +12,14 @@ export function useSettleAskTaker({
   stockStr,
   preOfferStr,
   preOfferAuthorityStr,
+  isSol
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   preOfferStr: string;
   preOfferAuthorityStr: string;
+  isSol: boolean;
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
@@ -58,13 +60,13 @@ export function useSettleAskTaker({
 
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
 
     const preOfferAuthority = new PublicKey(preOfferAuthorityStr);
     const {
       walletBaseTokenBalance: walletABaseTokenBalance,
       walletPointTokenBalance: walletAPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace, isSol)
 
 
     const methodTransaction = await program.methods

@@ -30,6 +30,7 @@ export default function ConfirmAskMakerSettleDialog({
     orderPointInfo,
     afterTGEPeriod,
     makerDetail,
+    isSol
   } = useOfferFormat({
     offer: offer,
   });
@@ -126,6 +127,7 @@ export default function ConfirmAskMakerSettleDialog({
           </div>
 
           <ConfirmAskMakerSettleBtn
+            isSol={isSol}
             isStocksLoading={isOfferStockLoading || isSettleAccountLoading}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_account}

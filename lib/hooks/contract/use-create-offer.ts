@@ -51,6 +51,7 @@ export function useCreateOffer({
       poolUsdcTokenAccount,
       poolSolTokenAccount,
       userSolTokenAccount,
+      wsolTokenMint
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -58,7 +59,7 @@ export function useCreateOffer({
     const {
       walletBaseTokenBalance: walletABaseTokenBalance,
       walletPointTokenBalance: walletAPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
 
     const maker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
@@ -80,6 +81,28 @@ export function useCreateOffer({
       ],
       program.programId
     )[0];
+
+    console.log(Object.entries({
+        authority,
+        seedAccount: seedAccount.publicKey,
+        marketPlace,
+        systemConfig,
+        maker,
+        stock: stockA,
+        offer: offerA,
+        poolTokenAuthority,
+        tokenMint: isSol ? wsolTokenMint : usdcTokenMint,
+        tokenProgram,
+        tokenProgram2022,
+        associatedTokenProgram,
+        systemProgram,
+        pubkey1: isSol ? userSolTokenAccount : userUsdcTokenAccount,
+        pubkey2: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
+        pubkey3: walletABaseTokenBalance,
+        pubkey4: walletAPointTokenBalance,
+    }).map((v) => 
+      ({ [v[0]]: v[1]?.toBase58() })
+    ))
 
     const methodTransaction = await program.methods
       .createOffer(
@@ -103,7 +126,7 @@ export function useCreateOffer({
         stock: stockA,
         offer: offerA,
         poolTokenAuthority,
-        tokenMint: usdcTokenMint,
+        tokenMint: isSol ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         associatedTokenProgram,
@@ -129,7 +152,9 @@ export function useCreateOffer({
           isSigner: false,
           isWritable: true
         },
-      ]).transaction();
+      ])
+      // .signers([seedAccount]).rpc()
+      .transaction();
 
     const txHash = await buildTransaction(methodTransaction, program, [seedAccount], authority!);
 

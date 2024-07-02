@@ -77,7 +77,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
       };
     }
 
-    const nodes = data.map((item: any, index: number) => {
+    const nodes = (data || []).map((item: any, index: number) => {
       return {
         id: index + 1,
         no: index + 1,

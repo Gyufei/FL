@@ -89,6 +89,7 @@ export function useAccounts() {
       poolUsdcTokenAccount,
       usdcTokenMint,
       seedAccount,
+      wsolTokenMint,
       userPointsTokenAccount,
       poolPointsTokenAccount,
       pointTokenMint,
@@ -99,13 +100,14 @@ export function useAccounts() {
     };
   }
 
-  async function getWalletBalanceAccount(programId: PublicKey,  wallet: PublicKey, marketPlace: PublicKey) {
+  async function getWalletBalanceAccount(programId: PublicKey,  wallet: PublicKey, marketPlace: PublicKey, isSol = false) {
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
+    const wsolTokenMint = new PublicKey("So11111111111111111111111111111111111111112");
 
     const walletBaseTokenBalance = PublicKey.findProgramAddressSync(
       [
         Buffer.from("token_balance"),
-        usdcTokenMint.toBuffer(),
+        (isSol ? wsolTokenMint : usdcTokenMint ).toBuffer(),
         wallet.toBuffer()
       ],
       programId

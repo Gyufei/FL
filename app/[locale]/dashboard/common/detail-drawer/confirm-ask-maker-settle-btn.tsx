@@ -11,6 +11,7 @@ export default function ConfirmAskMakerSettleBtn({
   offerStocks,
   isTurbo,
   onSuccess,
+  isSol
 }: {
   isStocksLoading: boolean;
   marketplaceStr: string;
@@ -20,6 +21,7 @@ export default function ConfirmAskMakerSettleBtn({
   offerStocks: Array<Record<string, any>>;
   isTurbo: boolean;
   onSuccess: () => void;
+  isSol: boolean
 }) {
   const {
     isLoading,
@@ -29,6 +31,7 @@ export default function ConfirmAskMakerSettleBtn({
     marketplaceStr,
     offerStr: orderStr,
     makerStr,
+    isSol
   });
 
   const stockArr = useMemo(() => {

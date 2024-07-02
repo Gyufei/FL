@@ -40,10 +40,12 @@ export function useCreateTaker({
       systemConfig,
       userUsdcTokenAccount,
       poolUsdcTokenAccount,
+      poolSolTokenAccount,
       usdcTokenMint,
       seedAccount,
       userConfig: userBConfig,
-      userSolTokenAccount
+      userSolTokenAccount,
+      wsolTokenMint
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
@@ -57,15 +59,15 @@ export function useCreateTaker({
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
       walletPointTokenBalance: walletBPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
 
     const {
       walletBaseTokenBalance: originMarkerBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, originOfferAuthority, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, originOfferAuthority, marketPlace, isSol)
 
     const {
       walletBaseTokenBalance: preOfferBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace)
+    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace, isSol)
 
     const stockB = PublicKey.findProgramAddressSync(
       [
@@ -106,8 +108,8 @@ export function useCreateTaker({
         originOffer: originOffer,
         maker,
         marketPlace,
-        poolTokenAccount: poolUsdcTokenAccount,
-        tokenMint: usdcTokenMint,
+        poolTokenAccount: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
+        tokenMint: isSol ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,

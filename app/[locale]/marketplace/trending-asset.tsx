@@ -5,16 +5,16 @@ import { formatNum } from "@/lib/utils/number";
 import { useMemo } from "react";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { useTaxIncome } from "@/lib/hooks/api/use-tax-income";
 import { range } from "lodash";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 
 export default function TrendingAsset({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
 
-  const { data, isLoading: isLoadingFlag } = useTaxIncome("hour");
+  const { data, isLoading: isLoadingFlag } = useMarketplaces();
 
   const theme = useTheme({
     Table: `
@@ -79,14 +79,14 @@ export default function TrendingAsset({ className }: { className?: string }) {
 
     const nodes = (data || []).map((item: any, index: number) => {
       return {
-        id: index + 1,
+        id: item.market_id,
         no: index + 1,
         asset: {
-          logoURI: "/icons/usdc.svg",
-          symbol: "BNB",
+          logoURI: item.pointLogo,
+          symbol: item.point_name,
         },
-        floorPrice: 12345,
-        change24h: -12,
+        floorPrice: item.floor_price,
+        change24h: item.change_rate_24h,
       };
     });
 
@@ -172,7 +172,9 @@ function PercentText({ num }: { num: number }) {
       data-greater={Number(num) === 0 ? "zero" : isGreater}
       className="text-[10px] leading-4 data-[greater=zero]:text-black data-[greater=true]:text-green data-[greater=false]:text-red"
     >
-      {num === 0 ? "0%" : `${isGreater ? "+" : "-"}${Math.abs(num).toFixed(2)}`}
+      {Number(num) === 0
+        ? "0"
+        : `${isGreater ? "+" : "-"}${Math.abs(num).toFixed(2)}`}
       %
     </div>
   );

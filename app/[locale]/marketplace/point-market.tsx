@@ -138,7 +138,7 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-LastPrice"),
-      renderCell: (item: any) =>
+      renderCell: (_item: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[150px]" />
         ) : (

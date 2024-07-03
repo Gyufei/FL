@@ -3,12 +3,16 @@ import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 
 import { useTranslations } from "next-intl";
-import { IReferralItem } from "@/lib/hooks/api/use-referral-data";
+import {
+  IReferralItem,
+  useReferralExtraRate,
+} from "@/lib/hooks/api/use-referral-data";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NumericalInput } from "@/components/share/numerical-input";
 import { useReferralRateChange } from "@/lib/hooks/api/use-referral";
+import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 
 export default function DetailDrawer({
   referral,
@@ -22,6 +26,14 @@ export default function DetailDrawer({
   setDrawerOpen: (_v: boolean) => void;
 }) {
   const rt = useTranslations("page-Referral");
+
+  const { data: extraRateData } = useReferralExtraRate();
+  const extraRate = useMemo(
+    () => (extraRateData?.data || 0) / 10 ** 4,
+    [extraRateData],
+  );
+
+  const { referralBaseRate } = useGlobalConfig();
 
   const { trigger: updateReferralRate, data: createResult } =
     useReferralRateChange();
@@ -52,12 +64,12 @@ export default function DetailDrawer({
   }
 
   useEffect(() => {
-    if (Number(rate) + Number(friendRate) > 30) {
+    if (Number(rate) + Number(friendRate) > referralBaseRate + extraRate) {
       setRateError(true);
     } else {
       setRateError(false);
     }
-  }, [rate, friendRate]);
+  }, [rate, friendRate, referralBaseRate, extraRate]);
 
   useEffect(() => {
     if (createResult) {
@@ -127,7 +139,7 @@ export default function DetailDrawer({
               <NumericalInput
                 data-error={rateError}
                 className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
-                placeholder="1%"
+                placeholder={`${referralBaseRate}%`}
                 value={rate || ""}
                 onUserInput={handleRateInput}
               />
@@ -139,6 +151,7 @@ export default function DetailDrawer({
               </div>
 
               <NumericalInput
+                disabled={extraRate === 0}
                 data-error={rateError}
                 className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
                 placeholder="1%"
@@ -154,7 +167,9 @@ export default function DetailDrawer({
 
           {rateError && (
             <div className="mt-3 text-xs leading-3 text-red">
-              {rt("txt-RateError")}
+              {rt("txt-RateError", {
+                rate: Number(referralBaseRate || 0) + Number(extraRate || 0),
+              })}
             </div>
           )}
 

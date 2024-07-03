@@ -32,13 +32,20 @@ export function useUpdateReferral({
 
     const referrer = new PublicKey(referrerStr);
 
-    const referralConfig = PublicKey.findProgramAddressSync(
+    const referralBaseRateConfig = PublicKey.findProgramAddressSync(
       [
-        Buffer.from("referral_config"),
-        authority!.toBuffer()
+        Buffer.from("base_referral_rate"),
       ],
       program.programId
-    )[0]
+    )[0];
+
+    const referralExtraRateConfig = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("extra_referral_rate"),
+        referrer.toBuffer()
+      ],
+      program.programId
+    )[0];
 
     const methodTransaction = await program.methods.updateReferralConfig(
       referrer,
@@ -48,7 +55,8 @@ export function useUpdateReferral({
       manager: authority!,
       authority: authority!,
       systemConfig,
-      referralConfig,
+      referralBaseRateConfig,
+      referralExtraRateConfig,
       systemProgram
     }).transaction();
 

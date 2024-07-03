@@ -83,3 +83,15 @@ export function useReferralCodeData({ code }: { code: string}) {
 
   return res;
 }
+
+export function useReferralExtraRate() {
+  const { apiEndPoint } = useEndPoint();
+  const token = useAtomValue(AccessTokenAtom);
+
+  const res = useSWR(
+    token ? `${apiEndPoint}${Paths.referral.extraRate}?access_token=${token}` : null,
+    fetcher,
+  );
+
+  return res;
+}

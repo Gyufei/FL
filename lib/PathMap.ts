@@ -71,6 +71,7 @@ export const Paths = {
     data: '/referral/referral_system_data',
     views: '/referral/views',
     delete: '/referral/delete',
-    codeData: '/referral/referal_rate'
+    codeData: '/referral/referal_rate',
+    extraRate: "/referral/referal_extra_rate"
   }
 };

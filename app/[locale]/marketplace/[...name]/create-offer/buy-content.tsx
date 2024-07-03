@@ -20,6 +20,7 @@ import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
+import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
 export function BuyContent({
   marketplace,
@@ -53,6 +54,7 @@ export function BuyContent({
   }, [points, marketplace]);
 
   const { data: tokenPrice } = useTokenPrice(payToken?.address || "");
+  const { checkMinPrice } = useCreateOfferMinPrice();
 
   const [receivePoint, setReceivePoint] = useState<IPoint | null>(null);
   const [receivePointAmount, setReceivePointAmount] = useState("");
@@ -91,7 +93,18 @@ export function BuyContent({
   });
 
   function handleDeposit() {
-    if (!receivePoint || !payToken || !payTokenAmount || !receivePointAmount) {
+    const isPriceValid = checkMinPrice(
+      pointPrice,
+      Number(marketplace.minimum_price),
+    );
+
+    if (
+      !receivePoint ||
+      !payToken ||
+      !payTokenAmount ||
+      !receivePointAmount ||
+      !isPriceValid
+    ) {
       return;
     }
 

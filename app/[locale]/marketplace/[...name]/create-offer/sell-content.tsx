@@ -21,6 +21,7 @@ import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
+import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
 export function SellContent({
   marketplace,
@@ -57,6 +58,7 @@ export function SellContent({
   );
 
   const { data: tokenPrice } = useTokenPrice(receiveToken?.address || "");
+  const { checkMinPrice } = useCreateOfferMinPrice();
 
   useEffect(() => {
     if (stableToken) {
@@ -98,7 +100,12 @@ export function SellContent({
   });
 
   async function handleCreate() {
-    if (!sellPointAmount || !receiveTokenAmount) {
+    const isPriceValid = checkMinPrice(
+      pointPrice,
+      Number(marketplace.minimum_price),
+    );
+
+    if (!sellPointAmount || !receiveTokenAmount || !isPriceValid) {
       return;
     }
 

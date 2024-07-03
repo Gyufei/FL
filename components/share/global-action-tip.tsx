@@ -79,7 +79,7 @@ export default function GlobalActionTip() {
                 return null;
             }
           })(type)}
-          <div className="text-title-color max-w-[340px]	 overflow-hidden text-ellipsis whitespace-nowrap leading-6">
+          <div className="text-title-color max-w-[440px] overflow-hidden text-ellipsis whitespace-nowrap leading-6">
             {message}
           </div>
         </div>

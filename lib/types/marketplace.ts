@@ -1,6 +1,10 @@
 export interface IMarketplace {
+  id: number;
+  last_price: string;
+  last_price_24h_ago: string;
   market_place_id: string;
   market_id: string;
+  minimum_price: string;
   market_type: 'point' | 'mock',
   market_name: string;
   floor_price: string;

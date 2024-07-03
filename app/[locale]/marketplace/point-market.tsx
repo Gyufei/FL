@@ -1,6 +1,6 @@
 "use client";
 
-// import Image from "next/image";
+import NP from "number-precision";
 import { useMemo } from "react";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
@@ -130,7 +130,7 @@ export default function PointMarket({ className }: { className?: string }) {
               <div className="text-sm leading-5 text-black">
                 {item.market_name}
               </div>
-              <div className="text-[10px] leading-4 text-gray">#{12}</div>
+              <div className="text-[10px] leading-4 text-gray">#{item.id}</div>
             </div>
           </div>
         );
@@ -138,15 +138,22 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-LastPrice"),
-      renderCell: (_item: any) =>
-        isLoadingFlag ? (
+      renderCell: (item: any) => {
+        const lastPrice = item.last_price || 0;
+        const lastPrice24hAgo = item.last_price_24h_ago || 0;
+        const lastPricePercent =
+          Number(lastPrice24hAgo) === 0
+            ? 0
+            : NP.divide(NP.minus(lastPrice, lastPrice24hAgo), lastPrice24hAgo);
+        return isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[150px]" />
         ) : (
           <div className="flex flex-col items-end">
-            <PriceText num={233.566} />
-            <PercentText num={-12.34} />
+            <PriceText num={item.last_price} />
+            <PercentText num={lastPricePercent * 100} />
           </div>
-        ),
+        );
+      },
     },
     {
       label: t("th-Vol24h"),
@@ -164,17 +171,26 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-TotalVol"),
-      renderCell: (item: any) =>
-        isLoadingFlag ? (
+      renderCell: (item: any) => {
+        const totalPercent =
+          Number(item.total_vol) === 0
+            ? 0
+            : NP.divide(
+                item.vol_24h || 0,
+                (item.total_vol || 0) - (item.vol_24h || 0),
+              );
+
+        return isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
           </div>
         ) : (
           <div className="flex flex-col items-end">
             <PriceText num={item.total_vol} />
-            <PercentText num={-12.34} />
+            <PercentText num={totalPercent * 100} />
           </div>
-        ),
+        );
+      },
     },
     {
       label: t("th-SetterStarts"),
@@ -282,7 +298,9 @@ function PercentText({ num }: { num: number }) {
       data-greater={Number(num) === 0 ? "zero" : isGreater}
       className="text-[10px] leading-4 data-[greater=zero]:text-black data-[greater=true]:text-green data-[greater=false]:text-red"
     >
-      {num === 0 ? "0%" : `${isGreater ? "+" : "-"}${Math.abs(num).toFixed(2)}`}
+      {Number(num) === 0
+        ? "0"
+        : `${isGreater ? "+" : "-"}${Math.abs(num).toFixed(2)}`}
       %
     </div>
   );

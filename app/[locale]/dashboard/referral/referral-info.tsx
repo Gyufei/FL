@@ -6,7 +6,7 @@ import { IReferralItem } from "@/lib/hooks/api/use-referral-data";
 import { useMemo } from "react";
 
 export default function ReferralInfo({
-  referralData
+  referralData,
 }: {
   referralData: Array<IReferralItem>;
 }) {
@@ -61,14 +61,18 @@ export default function ReferralInfo({
             <div className="mt-1 text-[30px] leading-[30px] text-black">
               {signedUp}
             </div>
-            <div className="text-sm leading-5 text-gray">{rt("lb-SignedUp")}</div>
+            <div className="text-sm leading-5 text-gray">
+              {rt("lb-SignedUp")}
+            </div>
           </div>
           <div className="flex flex-col items-end justify-between space-y-1">
-            <DisplayArrow isUp={signedUpRate > 0} />
+            <DisplayArrow
+              isUp={Number(signedUpRate === 0) ? "zero" : signedUpRate > 0}
+            />
             <div className="flex items-center space-x-1">
               <span
-                data-up={signedUpRate > 0}
-                className="text-sm leading-5 data-[up=true]:text-green data-[up=false]:text-red"
+                data-up={Number(signedUpRate === 0) ? "zero" : signedUpRate > 0}
+                className="data text-sm leading-5 data-[up=zero]:text-gray data-[up=true]:text-green data-[up=false]:text-red"
               >
                 {signedUpRate > 0 ? "+" : ""}
                 {formatNum(signedUpRate * 100)}%
@@ -93,11 +97,15 @@ export default function ReferralInfo({
             </div>
           </div>
           <div className="flex flex-col items-end justify-between space-y-1">
-            <DisplayArrow isUp={commissionRate > 0} />
+            <DisplayArrow
+              isUp={Number(commissionRate === 0) ? "zero" : commissionRate > 0}
+            />
             <div className="flex items-center space-x-1">
               <span
-                data-up={commissionRate > 0}
-                className="text-sm leading-5 data-[up=true]:text-green data-[up=false]:text-red"
+                data-up={
+                  Number(commissionRate === 0) ? "zero" : commissionRate > 0
+                }
+                className="text-sm leading-5 data-[up=zero]:text-gray  data-[up=true]:text-green data-[up=false]:text-red"
               >
                 {commissionRate > 0 ? "+" : ""}
                 {formatNum(commissionRate * 100)}%
@@ -111,17 +119,26 @@ export default function ReferralInfo({
   );
 }
 
-function DisplayArrow({ isUp }: { isUp: boolean }) {
+function DisplayArrow({ isUp }: { isUp: "zero" | boolean }) {
   return (
     <div
       data-up={isUp}
-      className="flex h-8 w-11 items-center justify-center rounded-[12px] data-[up=true]:bg-[rgba(76,191,135,0.2)] data-[up=false]:bg-[rgba(255,98,98,0.2)]"
+      className="flex h-8 w-11 items-center justify-center rounded-[12px] data-[up=zero]:bg-[rgba(240,241,245,1)] data-[up=true]:bg-[rgba(76,191,135,0.2)] data-[up=false]:bg-[rgba(255,98,98,0.2)]"
     >
       <Image
-        src={isUp ? "/icons/green-up-arrow.svg" : "/icons/red-down-arrow.svg"}
+        src={
+          isUp === "zero"
+            ? "/icons/gray-up-arrow.svg"
+            : isUp
+            ? "/icons/green-up-arrow.svg"
+            : "/icons/red-down-arrow.svg"
+        }
         width={8}
         height={14}
         alt="arrow"
+        style={{
+          transform: isUp === "zero" ? "rotate(90deg)" : "",
+        }}
       />
     </div>
   );

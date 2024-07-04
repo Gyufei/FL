@@ -21,14 +21,14 @@
     "btn-ConnectWallet": "连接钱包",
     "btn-SignIn": "登录",
     "btn-SignOut": "退出",
-    "cap-YouAreSignedOut": "您已退出",
+    "cap-YouAreSignedOut": "登录",
     "cap-YouAreSignedIn": "您已登录",
     "txt-ClaimTestTokens": "获取测试币",
     "txt-Help": "帮助",
     "txt-SignAMessageInYourWallet": "在您的钱包中签署一条消息，以验证您是连接地址的所有者",
     "cap-Welcome": "欢迎",
     "btn-Continue": "继续",
-    "txt-YourFriendSentYouAnOnboardingInvitation": "您的朋友 {name} 向您发送了一个交易费返还 { num } 的引导邀请"
+    "txt-YourFriendSentYouAnOnboardingInvitation": "您的朋友 <name></name> 向您发送了一个交易费返还 <num></num> 的引导邀请"
   },
   "pop-Setting": {
     "cap-Setting": "设置",
@@ -74,7 +74,9 @@
   "cd-Order": {
     "lb-Offer": "提供",
     "lb-For": "需求",
-    "btn-Buy": "买"
+    "btn-Buy": "买",
+    "btn-Sell": "卖",
+    "btn-Detail": "详情"
   },
   "tb-MarketTrades": {
     "cap-MarketTrades": "市场交易",

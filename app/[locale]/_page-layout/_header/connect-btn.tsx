@@ -1,9 +1,9 @@
 "use client";
 
+import { useCallback, useEffect, useMemo } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { truncateAddr } from "@/lib/utils/web3";
 import WalletSelectDialog, {
   WalletSelectDialogVisibleAtom,
@@ -38,7 +38,13 @@ export default function ConnectBtn() {
   const { publicKey, connected, connecting } = useWallet();
 
   const address = toPubString(publicKey);
-  const [shortAddr, setShortAddr] = useState("");
+  const shortAddr = useMemo(() => {
+    if (!address) return "";
+    return truncateAddr(address, {
+      nPrefix: 4,
+      nSuffix: 4,
+    });
+  }, [address]);
 
   const token = useAtomValue(AccessTokenAtom);
   const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
@@ -50,21 +56,18 @@ export default function ConnectBtn() {
   }, [referralCode, viewReferral, address]);
 
   useEffect(() => {
-    if (referralCode) {
+    const noConnect = !connecting && !connected && !address;
+    if (noConnect) {
+      setWalletSelectDialogVisible(true);
+    }
+  }, [connecting, connected, address, setWalletSelectDialogVisible]);
+
+  useEffect(() => {
+    if (address && (referralCode || !token)) {
       setShowSignIn(true);
       return;
     }
-
-    if (!address) return;
-    const sa = truncateAddr(address, {
-      nPrefix: 4,
-      nSuffix: 4,
-    });
-
-    setShortAddr(sa);
-
-    if (!token) setShowSignIn(true);
-  }, [address, setShowSignIn, setShortAddr, token, referralCode]);
+  }, [address, setShowSignIn, token, referralCode]);
 
   if (!connected) {
     return (
@@ -155,7 +158,7 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
   const shortAddr = useMemo(() => {
     if (!referrerStr) return "";
     return truncateAddr(referrerStr, {
-      nPrefix: 6,
+      nPrefix: 4,
       nSuffix: 4,
     });
   }, [referrerStr]);
@@ -194,9 +197,15 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
         {t("cap-Welcome")}
       </div>
       <div className="min-h-10 px-5 text-center text-sm leading-5 text-black">
-        {t("txt-YourFriendSentYouAnOnboardingInvitation", {
-          name: shortAddr,
-          num: Number(codeData?.authority_rate || 0) / 10 ** 4 + "%",
+        {t.rich("txt-YourFriendSentYouAnOnboardingInvitation", {
+          name: (_chunks: any) => (
+            <span className="text-green">{shortAddr}</span>
+          ),
+          num: (_chunks: any) => (
+            <span className="text-green">
+              {Number(codeData?.authority_rate || 0) / 10 ** 4 + "%"}
+            </span>
+          ),
         })}
       </div>
       <div className="mt-10 w-full">

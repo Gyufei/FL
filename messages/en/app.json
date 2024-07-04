@@ -20,14 +20,14 @@
     "btn-ConnectWallet": "Connect Wallet",
     "btn-SignIn": "Sign in",
     "btn-SignOut": "Sign out",
-    "cap-YouAreSignedOut": "You're signed out",
+    "cap-YouAreSignedOut": "Sign in",
     "cap-YouAreSignedIn": "You're signed in",
     "txt-ClaimTestTokens": "Claim test tokens",
     "txt-Help": "Help",
-    "txt-SignAMessageInYourWallet": "Sign a message in your wallet to verify that you're the owner of the connected address",
+    "txt-SignAMessageInYourWallet": "Sign a message in your wallet to verify that you own this wallet.",
     "cap-Welcome": "Welcome",
     "btn-Continue": "Continue",
-    "txt-YourFriendSentYouAnOnboardingInvitation": "Your friend {name} sent you an onboarding invitation with {num} trading fee back! "
+    "txt-YourFriendSentYouAnOnboardingInvitation": "Your friend <name></name> sent you an onboarding invitation with <num></num> trading fee back! "
   },
   "pop-Setting": {
     "cap-Setting": "Setting",
@@ -73,7 +73,9 @@
   "cd-Order": {
     "lb-Offer": "Offer",
     "lb-For": "For",
-    "btn-Buy": "Buy"
+    "btn-Buy": "Buy",
+    "btn-Sell": "Sell",
+    "btn-Detail": "Detail"
   },
   "tb-MarketTrades": {
     "cap-MarketTrades": "Market Trades",

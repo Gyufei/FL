@@ -184,7 +184,7 @@ export default function MyAskDetail({
                           >
                             <button
                               disabled={isClosing}
-                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
                             >
                               {ot("btn-CloseThisOffer")}
                             </button>

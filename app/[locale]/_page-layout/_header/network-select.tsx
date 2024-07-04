@@ -99,7 +99,7 @@ export function NetworkSelect() {
             isActive={cluster === WalletAdapterNetwork.Devnet}
           />
         )}
-        <div
+        {/* <div
           onClick={() => {}}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
@@ -119,7 +119,7 @@ export function NetworkSelect() {
             alt="evm chains"
             className="z-10 bg-white"
           ></Image>
-        </div>
+        </div> */}
       </PopoverContent>
     </Popover>
   );
@@ -165,7 +165,7 @@ export function MbNetworkSelect() {
           onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
           isActive={WalletAdapterNetwork.Devnet === cluster}
         />
-        <div
+        {/* <div
           onClick={() => {}}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
@@ -185,7 +185,7 @@ export function MbNetworkSelect() {
             alt="evm chains"
             className="z-10 bg-white"
           ></Image>
-        </div>
+        </div> */}
       </DrawerContent>
     </Drawer>
   );

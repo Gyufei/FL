@@ -44,6 +44,10 @@ export function OrderCard({ order }: { order: IOffer }) {
     return ["virgin", "ongoing"].includes(order.offer_status);
   }, [order]);
 
+  const done = useMemo(() => {
+    return ["filled", "settled"].includes(order.offer_status);
+  }, [order]);
+
   function handleShowOrderOffer(oId: string) {
     setAnchorValue(oId);
   }
@@ -178,9 +182,17 @@ export function OrderCard({ order }: { order: IOffer }) {
               onClick={() => handleShowOrderOffer(order.offer_id)}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
-                {t("btn-Buy")}
+                {orderType === "ask" ? t("btn-Buy") : t("btn-Sell")}
               </button>
             </WithWalletConnectBtn>
+          )}
+          {done && (
+            <button
+              onClick={() => handleShowOrderOffer(order.offer_id)}
+              className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow"
+            >
+              {t("btn-Detail")}
+            </button>
           )}
         </div>
       </div>

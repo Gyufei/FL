@@ -1,0 +1,46 @@
+"use client";
+import Image from "next/image";
+import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
+import { useRouter } from "@/app/navigation";
+import { useEffect, useMemo } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import toPubString from "@/lib/utils/pub-string";
+
+export default function ReferralPage({ params }: { params: any }) {
+  const referral = params.referral[0];
+  const router = useRouter();
+
+  const { publicKey } = useWallet();
+  const address = toPubString(publicKey);
+
+  const { data: codeData, isLoading } = useReferralCodeData({
+    code: referral,
+  });
+
+  const noReferralData = useMemo(() => {
+    if (!codeData) return false;
+
+    return codeData && (codeData as any)?.code === 500;
+  }, [codeData]);
+
+  const sameUser = useMemo(() => {
+    if (!codeData) return false;
+    return codeData && codeData.authority === address;
+  }, [codeData, address]);
+
+  useEffect(() => {
+    if (!isLoading && !noReferralData && !sameUser) {
+      router.replace(`/marketplace?s=${referral}`);
+    }
+  }, [isLoading, referral, router, noReferralData, sameUser]);
+
+  if (noReferralData || sameUser) {
+    return (
+      <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
+        <Image src="/img/404.png" width={480} height={360} alt="404" />
+      </div>
+    );
+  }
+
+  return <></>;
+}

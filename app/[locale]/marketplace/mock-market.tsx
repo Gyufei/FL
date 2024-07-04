@@ -84,12 +84,14 @@ export default function MockMarket({ className }: { className?: string }) {
       };
     }
 
-    const nodes = (data || []).map((item: any, index: number) => {
-      return {
-        id: index + 1,
-        ...item,
-      };
-    });
+    const nodes = (data || [])
+      .filter((m) => m.status !== "offline")
+      .map((item: any, index: number) => {
+        return {
+          id: index + 1,
+          ...item,
+        };
+      });
 
     return {
       nodes,

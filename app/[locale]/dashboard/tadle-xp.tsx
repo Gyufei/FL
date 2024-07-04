@@ -91,10 +91,10 @@ export function TadleXp() {
           }}
         />
         <div className="absolute top-[75px] flex w-full flex-col items-center">
-          <div className="text-4xl leading-[54px] text-black">{xp}</div>
+          {/* <div className="text-4xl leading-[54px] text-black">{xp}</div> */}
+          <div className="text-4xl leading-[54px] text-black">N/A</div>
           <div className="flex items-center text-sm leading-5">
             <div className="mr-1 text-gray">{T("txt-YourRank")}</div>
-            <div className="text-black">{xp}</div>
           </div>
           <div className="text-xs leading-[18px] text-gray">
             {T("txt-UpdatedOn")} {format(updateAt, "LLL dd")}

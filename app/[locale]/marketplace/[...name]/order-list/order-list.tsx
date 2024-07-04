@@ -41,9 +41,7 @@ export default function OrderList({
     }
 
     return typeOrders?.filter((o: IOffer) => {
-      const isIdMatch = o.offer_id
-        .toLocaleUpperCase()
-        .includes(searchText.toLocaleUpperCase());
+      const isIdMatch = String(o.offer_id) === String(searchText);
 
       return isIdMatch;
     });

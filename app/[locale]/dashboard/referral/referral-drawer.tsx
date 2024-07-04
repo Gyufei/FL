@@ -35,8 +35,11 @@ export default function DetailDrawer({
 
   const { referralBaseRate } = useGlobalConfig();
 
-  const { trigger: updateReferralRate, data: createResult } =
-    useReferralRateChange();
+  const {
+    trigger: updateReferralRate,
+    data: createResult,
+    reset: resetCreateResult,
+  } = useReferralRateChange();
 
   const [rate, setRate] = useState(
     String(Number(referral?.referrer_rate || 0) / 10 ** 4),
@@ -75,6 +78,7 @@ export default function DetailDrawer({
     if (createResult) {
       onSuccess();
       setDrawerOpen(false);
+      resetCreateResult();
     }
   });
 

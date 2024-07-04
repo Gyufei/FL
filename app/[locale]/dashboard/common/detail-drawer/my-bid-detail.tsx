@@ -74,7 +74,7 @@ export default function MyBidDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
-    isSol
+    isSol,
   });
 
   function handleClose() {
@@ -203,13 +203,13 @@ export default function MyBidDetail({
                           >
                             <button
                               disabled={isClosing}
-                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
                             >
                               {ot("btn-CloseThisOffer")}
                             </button>
                           </WithWalletConnectBtn>
                           <>
-                            {isFilled && (
+                            {!isFilled && (
                               <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
                                 {ot("txt-YouHaveTheOptionToClose ")}
                               </div>

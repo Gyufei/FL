@@ -142,38 +142,38 @@ export function ReferralTable({
                 <Row
                   key={rD.id}
                   item={rD}
-                  className="h-12 border-none !bg-transparent"
+                  className="h-[64px] border-none !bg-transparent"
                 >
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <ReferralCode rD={rD} index={index} />
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <div className="text-sm leading-5 text-black">
                       {rD.referral_users}
                     </div>
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <div className="text-sm leading-5 text-black">
                       {rD.trading_users}
                     </div>
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <div className="text-sm leading-5 text-black">
                       ${rD.trading_fee}
                     </div>
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <div className="text-sm leading-5 text-black">
                       {rD.unique_views}
                     </div>
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <ReferralRate rD={rD} onClick={() => openEditDrawer(rD)} />
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <ReferralNote rD={rD} onSuccess={refresh} />
                   </Cell>
-                  <Cell className="h-12 px-1 py-[11px] align-top">
+                  <Cell className="h-[64px] px-1 py-[11px] align-top">
                     <OpBtn rD={rD} onSuccess={refresh} />
                   </Cell>
                 </Row>
@@ -271,8 +271,12 @@ function ReferralRate({
       className="relative flex h-fit w-fit cursor-pointer items-center space-x-[6px]"
     >
       <span className="border-b border-dashed border-lightgray text-sm leading-5 text-black">
-        {formatNum(Number(rD.referrer_rate || 0) / 10 ** 4)}%,&nbsp;
-        {formatNum(Number(rD.authority_rate || 0) / 10 ** 4)}%
+        {rD.referrer_rate != "" && rD.referrer_rate != null && (
+          <>{formatNum(Number(rD.referrer_rate || 0) / 10 ** 4)}%,&nbsp;</>
+        )}
+        {rD.authority_rate != "" && rD.authority_rate != null && (
+          <>{formatNum(Number(rD.authority_rate || 0) / 10 ** 4)}%</>
+        )}
       </span>
       {isHover && (
         <HoverIcon
@@ -424,6 +428,8 @@ function OpBtn({
   }
 
   function handleDelete() {
+    if (rD.flag === "1") return;
+
     deleteAction({
       referral_code: rD.referral_code,
     });
@@ -450,14 +456,16 @@ function OpBtn({
           alt="copy"
         />
       )}
-      <HoverIcon
-        onClick={handleDelete}
-        src="/icons/delete-gray.svg"
-        hoverSrc="/icons/delete.svg"
-        width={20}
-        height={20}
-        alt="copy"
-      />
+      {rD.flag !== "1" && (
+        <HoverIcon
+          onClick={handleDelete}
+          src="/icons/delete-gray.svg"
+          hoverSrc="/icons/delete.svg"
+          width={20}
+          height={20}
+          alt="copy"
+        />
+      )}
     </div>
   );
 }

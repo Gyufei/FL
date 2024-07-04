@@ -77,18 +77,20 @@ export default function TrendingAsset({ className }: { className?: string }) {
       };
     }
 
-    const nodes = (data || []).map((item: any, index: number) => {
-      return {
-        id: item.market_id,
-        no: index + 1,
-        asset: {
-          logoURI: item.pointLogo,
-          symbol: item.point_name,
-        },
-        floorPrice: item.floor_price,
-        change24h: item.change_rate_24h,
-      };
-    });
+    const nodes = (data || [])
+      .filter((m) => m.status !== "offline")
+      .map((item: any, index: number) => {
+        return {
+          id: item.market_id,
+          no: index + 1,
+          asset: {
+            logoURI: item.pointLogo,
+            symbol: item.point_name,
+          },
+          floorPrice: item.floor_price,
+          change24h: item.change_rate_24h,
+        };
+      });
 
     return {
       nodes,

@@ -27,7 +27,9 @@ export default function AskDetail({
   const isEn = locale === "en";
   const isZh = locale === "zh";
 
-  const { data: referrer } = useReferralReferer();
+  const { data: referrerData } = useReferralReferer();
+  const referrer = referrerData?.data;
+
   const { platformFee } = useGlobalConfig();
   const { currentChain } = useCurrentChain();
   const {
@@ -74,8 +76,8 @@ export default function AskDetail({
   const payTokenAmount = useMemo(() => {
     if (!receivePointAmount) return "0";
     const pay = NP.times(NP.divide(receivePointAmount, offer.points), forValue);
-    const payWithFee = NP.times(pay, 1 + platformFee + tradeFee).toFixed();
-    return payWithFee;
+    const payWithFee = NP.times(pay, 1 + platformFee + tradeFee);
+    return formatNum(payWithFee);
   }, [receivePointAmount, forValue, offer.points, tradeFee, platformFee]);
 
   const payTokenTotalPrice = useMemo(() => {

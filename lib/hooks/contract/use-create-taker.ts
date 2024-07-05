@@ -95,6 +95,26 @@ export function useCreateTaker({
     )[0] : referrer;
 
 
+    console.log(Object.entries({
+        authority: authority,
+        systemConfig,
+        originMarkerBaseTokenBalance,
+        preOfferBaseTokenBalance,
+        seedAccount: seedAccount.publicKey,
+        stock: stockB,
+        preOffer: offerA,
+        originOffer: originOffer,
+        maker,
+        marketPlace,
+        poolTokenAccount: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
+        tokenMint: isSol ? wsolTokenMint : usdcTokenMint,
+        tokenProgram,
+        tokenProgram2022,
+        systemProgram,
+    }).map((v) => 
+      ({ [v[0]]: v[1]?.toBase58() })
+    ))
+
     const methodTransaction = await program.methods
       .createTaker(new BN(pointAmount))
       .accounts({

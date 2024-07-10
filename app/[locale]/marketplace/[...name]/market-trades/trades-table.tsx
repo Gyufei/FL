@@ -12,6 +12,7 @@ import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
 import { range, sortBy } from "lodash";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
+import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 
 export function TradesTable({
   type,
@@ -27,18 +28,31 @@ export function TradesTable({
     marketplace?.market_place_id,
   );
 
+  const { data: tokens } = useTokens();
   const isLoadingFlag = !marketplace || isLoading || isHistoryLoading;
 
   const { msgEvents } = useWsMsgs();
 
   const tradeMsgs = useMemo<any[]>(() => {
     const sortHistory = sortBy(historyData || [], "trade_at").reverse();
-    const history = sortHistory.map((item: any) => {
-      return {
-        ...item,
-        timestamp: item.trade_at * 1000,
-      };
-    });
+    const history = sortHistory
+      .map((item: any) => {
+        return {
+          ...item,
+          timestamp: item.trade_at * 1000,
+        };
+      })
+      .map((item: any) => {
+        const token = tokens?.find(
+          (token) => token.address === item.token_mint,
+        );
+
+        return {
+          ...item,
+          token: token || item.token,
+        };
+      });
+
     const msgAll = msgEvents.filter((msg) => !!msg);
     return msgAll.concat(history || []);
   }, [msgEvents, historyData]);
@@ -63,9 +77,6 @@ export function TradesTable({
       return {
         ...msg,
         time: time < 2 ? 2 : time,
-        token: {
-          logoURI: "/icons/usdc.svg",
-        },
       };
     });
 
@@ -148,9 +159,9 @@ export function TradesTable({
           <Skeleton className="h-[16px] w-[50px]" />
         ) : (
           <div className="flex w-full items-center justify-end">
-            <span>{formatNum(trade.value)}</span>
+            <span>{formatNum(trade.token_amount)}</span>
             <Image
-              className="ml-1"
+              className="ml-1 rounded-full"
               src={trade.token.logoURI}
               width={12}
               height={12}

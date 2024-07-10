@@ -22,7 +22,7 @@ export default function MarketplaceOverview({
             <ValueSkeleton />
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
-              {formatNum(marketplace!.floor_price, 6)}
+              ${formatNum(marketplace!.floor_price, 6)}
             </div>
           )}
         </div>
@@ -39,7 +39,7 @@ export default function MarketplaceOverview({
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <div>
           <LabelText isLoading={isLoadingFlag}>{t("lb-24hChange")}</LabelText>
           {isLoadingFlag ? (
@@ -67,7 +67,7 @@ export default function MarketplaceOverview({
             </div>
           )}
         </div>
-      </div>
+      </div> */}
 
       <div className="flex items-center justify-between">
         <div>

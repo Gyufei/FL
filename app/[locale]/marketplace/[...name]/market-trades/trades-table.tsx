@@ -49,10 +49,7 @@ export function TradesTable({
 
         return {
           ...item,
-          token: token ||
-            item.token || {
-              logoURI: "/images/usdc.svg",
-            },
+          token: token || item.token,
         };
       });
 
@@ -163,13 +160,15 @@ export function TradesTable({
         ) : (
           <div className="flex w-full items-center justify-end">
             <span>{formatNum(trade.token_amount)}</span>
-            <Image
-              className="ml-1 rounded-full"
-              src={trade.token?.logoURI}
-              width={12}
-              height={12}
-              alt="token"
-            />
+            {trade.token && (
+              <Image
+                className="ml-1 rounded-full"
+                src={trade.token?.logoURI}
+                width={12}
+                height={12}
+                alt="token"
+              />
+            )}
           </div>
         ),
     },

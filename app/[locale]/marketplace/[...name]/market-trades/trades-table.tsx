@@ -49,7 +49,10 @@ export function TradesTable({
 
         return {
           ...item,
-          token: token || item.token,
+          token: token ||
+            item.token || {
+              logoURI: "/images/usdc.svg",
+            },
         };
       });
 
@@ -162,7 +165,7 @@ export function TradesTable({
             <span>{formatNum(trade.token_amount)}</span>
             <Image
               className="ml-1 rounded-full"
-              src={trade.token.logoURI}
+              src={trade.token?.logoURI}
               width={12}
               height={12}
               alt="token"

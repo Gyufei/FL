@@ -202,14 +202,16 @@ export default function LeaderBoard({
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
           <div className="leading-6 text-black">{t("cap-Leaderboard")}</div>
         </div>
-        <LeaderTypeSelect
-          type={leaderType}
-          handleTypeChange={handleTradeTypeChange}
-        />
-        <LeaderRangeSelect
-          type={timeRange}
-          handleTypeChange={handleRangeTypeChange}
-        />
+        <div className="flex items-center justify-end space-x-3">
+          <LeaderTypeSelect
+            type={leaderType}
+            handleTypeChange={handleTradeTypeChange}
+          />
+          <LeaderRangeSelect
+            type={timeRange}
+            handleTypeChange={handleRangeTypeChange}
+          />
+        </div>
       </div>
       <div className="max-h-auto relative min-h-[187.5px] w-full flex-1 flex-col overflow-y-hidden">
         <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">

@@ -35,7 +35,14 @@ export default function MarketplaceCard({
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
-  const { data: marketInfos, isLoading: isLoadingInfos } = useMarketInfo();
+  const { data: marketInfos } = useMarketInfo();
+
+  const projectInfo = useMemo(() => {
+    if (!marketplace || !marketInfos) return;
+    const projectInfo = marketInfos[marketplace.market_name];
+
+    return projectInfo;
+  }, [marketplace, marketInfos]);
 
   function handleStar() {
     if (isStar) {
@@ -55,22 +62,6 @@ export default function MarketplaceCard({
       type: "success",
       message: "Copied to clipboard",
     });
-  };
-
-  const handleGoTwitter = () => {
-    if (isLoadingFlag || isLoadingInfos) return;
-    const marketInfo = marketInfos?.[marketplace?.market_id];
-
-    if (!marketInfo?.twitter) return;
-    window.open(marketInfo?.twitter, "_blank");
-  };
-  const handleGoDiscord = () => {
-    if (isLoadingFlag || isLoadingInfos) return;
-
-    const marketInfo = marketInfos?.[marketplace?.market_id];
-    if (!marketInfo?.discord) return;
-
-    window.open(marketInfo?.discord, "_blank");
   };
 
   return (
@@ -109,8 +100,8 @@ export default function MarketplaceCard({
                   isStar={isStar}
                   handleStar={handleStar}
                   handleCopy={handleCopy}
-                  handleGoTwitter={handleGoTwitter}
-                  handleGoDiscord={handleGoDiscord}
+                  twitter={projectInfo?.twitter}
+                  discord={projectInfo?.discord}
                 />
               </>
             )}
@@ -135,16 +126,26 @@ function OverviewIcons({
   // isStar,
   // handleStar,
   // handleCopy,
-  handleGoTwitter,
-  handleGoDiscord,
+  twitter,
+  discord,
 }: {
   // isStar: boolean;
   // handleStar: () => void;
   // handleCopy: () => void;
-  handleGoTwitter: () => void;
-  handleGoDiscord: () => void;
+  twitter: string | undefined;
+  discord: string | undefined;
   [key: string]: any;
 }) {
+  const handleGoTwitter = () => {
+    if (!twitter) return;
+    window.open(twitter, "_blank");
+  };
+
+  const handleGoDiscord = () => {
+    if (discord) return;
+    window.open(discord, "_blank");
+  };
+
   return (
     <div className="flex items-center space-x-1">
       {/* <HoverIcon
@@ -156,23 +157,27 @@ function OverviewIcons({
         alt="copy"
       /> */}
 
-      <HoverIcon
-        onClick={handleGoTwitter}
-        src="/icons/twitter-gray.svg"
-        hoverSrc="/icons/twitter.svg"
-        width={20}
-        height={20}
-        alt="x"
-      />
+      {twitter && (
+        <HoverIcon
+          onClick={handleGoTwitter}
+          src="/icons/twitter-gray.svg"
+          hoverSrc="/icons/twitter.svg"
+          width={20}
+          height={20}
+          alt="x"
+        />
+      )}
 
-      <HoverIcon
-        onClick={handleGoDiscord}
-        src="/icons/discord-gray.svg"
-        hoverSrc="/icons/discord.svg"
-        width={20}
-        height={20}
-        alt="discord"
-      />
+      {discord && (
+        <HoverIcon
+          onClick={handleGoDiscord}
+          src="/icons/discord-gray.svg"
+          hoverSrc="/icons/discord.svg"
+          width={20}
+          height={20}
+          alt="discord"
+        />
+      )}
 
       {/* {isStar ? (
         <Image

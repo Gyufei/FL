@@ -19,6 +19,7 @@ import MarketplaceCard from "./marketplace-card";
 import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
 import MarketCharts from "./chart/market-charts";
+import AdBanner from "./ad-banner";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const mt = useTranslations("pn-Marketplace");
@@ -84,15 +85,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               isLoading={isMarketLoading}
             />
             <LeaderBoard isLoading={isMarketLoading} className="shrink grow" />
-            <div className="shrink-0 grow-0">
-              <Image
-                src="/img/ad-placeholder-1.png"
-                width={280}
-                height={160}
-                alt="ad1"
-                className="rounded-2xl"
-              />
-            </div>
+            <AdBanner className="shrink grow" />
           </div>
           <div
             className="flex-1"

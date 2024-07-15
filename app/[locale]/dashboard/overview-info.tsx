@@ -65,7 +65,7 @@ export default function OverviewInfo() {
   }
 
   return (
-    <div className="flex h-full max-h-[800px] flex-col justify-between px-4">
+    <div className="flex h-full max-h-[800px] flex-col justify-between space-y-12 px-4">
       {/* top header */}
       <div className="flex flex-col">
         <div className="flex justify-between">
@@ -130,17 +130,23 @@ export default function OverviewInfo() {
             <div>
               <LabelText>{T("lb-TradeVol")}</LabelText>
               <div className="leading-6 text-black">
-                ${formatNum(accountInfo?.trade_vol)}
+                <NoDataDisplay noData={!accountInfo}>
+                  ${formatNum(accountInfo?.trade_vol)}
+                </NoDataDisplay>
               </div>
             </div>
             <div className="flex flex-col items-end">
               <LabelText>{T("lb-Profit")}</LabelText>
               <div
-                data-loss={accountInfo?.profit < 0}
-                className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
+                data-loss={accountInfo ? accountInfo?.profit < 0 : "null"}
+                className="leading-6 data-[loss=true]:text-red data-[loss=null]:text-black data-[loss=false]:text-green"
               >
-                {accountInfo?.profit < 0 ? "-" : "+"}$
-                {formatNum(Math.abs(accountInfo?.profit))}
+                <NoDataDisplay noData={!accountInfo}>
+                  <>
+                    {accountInfo?.profit < 0 ? "-" : "+"}$
+                    {formatNum(Math.abs(accountInfo?.profit))}
+                  </>
+                </NoDataDisplay>
               </div>
             </div>
           </div>
@@ -149,13 +155,17 @@ export default function OverviewInfo() {
             <div>
               <LabelText>{T("lb-MakerOrders")}</LabelText>
               <div className="leading-6 text-black">
-                {formatNum(accountInfo?.maker_order)}
+                <NoDataDisplay noData={!accountInfo}>
+                  {formatNum(accountInfo?.maker_order)}
+                </NoDataDisplay>
               </div>
             </div>
             <div className="flex flex-col items-end">
               <LabelText>{T("lb-TakerOrders")}</LabelText>
               <div className="leading-6 text-black">
-                {formatNum(accountInfo?.taker_order)}
+                <NoDataDisplay noData={!accountInfo}>
+                  {formatNum(accountInfo?.taker_order)}
+                </NoDataDisplay>
               </div>
             </div>
           </div>
@@ -164,17 +174,23 @@ export default function OverviewInfo() {
             <div>
               <LabelText>{T("lb-SettledValue")}</LabelText>
               <div className="leading-6 text-black">
-                ${formatNum(accountInfo?.settled_value)}
+                <NoDataDisplay noData={!accountInfo}>
+                  ${formatNum(accountInfo?.settled_value)}
+                </NoDataDisplay>
               </div>
             </div>
             <div className="flex flex-col items-end">
               <LabelText>{T("lb-BonusIncome")}</LabelText>
               <div
-                data-loss={accountInfo?.tax_income < 0}
-                className="leading-6 data-[loss=true]:text-red data-[loss=false]:text-green"
+                data-loss={accountInfo ? accountInfo?.tax_income < 0 : "null"}
+                className="leading-6 data-[loss=true]:text-red data-[loss=null]:text-black data-[loss=false]:text-green"
               >
-                {accountInfo?.tax_income < 0 ? "-" : "+"}$
-                {formatNum(Math.abs(accountInfo?.tax_income))}
+                <NoDataDisplay noData={!accountInfo}>
+                  <>
+                    {accountInfo?.tax_income < 0 ? "-" : "+"}$
+                    {formatNum(Math.abs(accountInfo?.tax_income))}
+                  </>
+                </NoDataDisplay>
               </div>
             </div>
           </div>
@@ -190,4 +206,14 @@ export default function OverviewInfo() {
 
 function LabelText({ children }: { children: React.ReactNode }) {
   return <div className="text-xs leading-[18px] text-gray">{children}</div>;
+}
+
+function NoDataDisplay({
+  noData,
+  children,
+}: {
+  noData: boolean;
+  children: React.ReactNode;
+}) {
+  return noData ? <>-</> : <>{children}</>;
 }

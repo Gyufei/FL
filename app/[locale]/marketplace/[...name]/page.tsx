@@ -85,7 +85,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
               isLoading={isMarketLoading}
             />
             <LeaderBoard isLoading={isMarketLoading} className="shrink grow" />
-            <AdBanner className="shrink grow" />
+            <AdBanner className="shrink grow-0" />
           </div>
           <div
             className="flex-1"

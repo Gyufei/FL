@@ -81,7 +81,10 @@ export function LeaderTypeSelect({
 
 function OptionIcon({ type, active }: { type: ILeaderType; active: boolean }) {
   const imageName = useMemo(() => {
-    const imageName = kebabCase(type);
+    let imageName = kebabCase(type);
+    if (imageName === "bonus-income") {
+      imageName = "bonus";
+    }
     if (!active) {
       return imageName + "-gray";
     }

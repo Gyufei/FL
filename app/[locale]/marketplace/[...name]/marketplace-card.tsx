@@ -39,7 +39,7 @@ export default function MarketplaceCard({
 
   const projectInfo = useMemo(() => {
     if (!marketplace || !marketInfos) return;
-    const projectInfo = marketInfos[marketplace.market_name];
+    const projectInfo = marketInfos[marketplace.market_id];
 
     return projectInfo;
   }, [marketplace, marketInfos]);

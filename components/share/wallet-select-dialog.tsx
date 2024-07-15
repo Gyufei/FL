@@ -35,12 +35,16 @@ export default function WalletSelectDialog() {
     window.open(w.adapter.url, "_blank");
   }
 
+  function onOpenChange(isOpen: boolean) {
+    setWalletSelectDialogVisible(isOpen);
+  }
+
   function handleConnect(w: Wallet) {
     if (w.readyState !== WalletReadyState.Installed) {
       goToWallet(w);
     } else {
       select(w.adapter.name);
-      setWalletSelectDialogVisible(false);
+      onOpenChange(false);
     }
   }
 
@@ -48,7 +52,7 @@ export default function WalletSelectDialog() {
     return (
       <Dialog
         open={walletSelectDialogVisible}
-        onOpenChange={(isOpen) => setWalletSelectDialogVisible(isOpen)}
+        onOpenChange={(isOpen) => onOpenChange(isOpen)}
       >
         <DialogContent className="w-[400px] border-none bg-white p-0 pb-6 md:w-[400px]">
           <DialogTitle className="justify-center px-6 pt-4 pl-[120px] text-xl leading-[30px] text-black">

@@ -1,13 +1,11 @@
 import useSWRImmutable from "swr/immutable";
 import type { IToken } from "../../../types/token";
-import { useEndPoint } from "../use-endpoint";
 import fetcher from "@/lib/fetcher";
+import { EndPointPathMap } from "@/lib/PathMap";
 
 export function useTokens() {
-  const { tokenEndPoint } = useEndPoint();
-
   async function tFetcher() {
-    const tokens = await fetcher(tokenEndPoint);
+    const tokens = await fetcher(EndPointPathMap.solanaToken);
 
     const newTokens = tokens.map((t: Record<string, any>) => {
       const newT = {
@@ -31,7 +29,7 @@ export function useTokens() {
 
   const { data, isLoading, error } = useSWRImmutable<{
     tokens: Array<IToken>;
-  }>(tokenEndPoint, tFetcher);
+  }>(EndPointPathMap.solanaToken, tFetcher);
 
   return {
     data: data?.tokens,

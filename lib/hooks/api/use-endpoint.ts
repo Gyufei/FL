@@ -1,19 +1,12 @@
 import { useMemo } from "react";
-import { useClusterConfig } from "../web3/use-cluster-config";
+import { EndPointPathMap } from "@/lib/PathMap";
 
 export function useEndPoint() {
-  const { clusterConfig } = useClusterConfig();
-
   const apiEndPoint = useMemo(() => {
-    return clusterConfig?.api.default;
-  }, [clusterConfig]);
-
-  const tokenEndPoint = useMemo(() => {
-    return clusterConfig?.api.tokenApi;
-  }, [clusterConfig]);
+    return EndPointPathMap.api
+  }, []);
 
   return {
-    apiEndPoint,
-    tokenEndPoint,
+    apiEndPoint
   };
 }

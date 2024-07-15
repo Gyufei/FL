@@ -10,7 +10,7 @@ export function WithHost(path: string) {
   return `${host}${path}`
 }
 
-function WithCDN(path: string) {
+export function WithCDN(path: string) {
   const devCDN = `https://preview-cdn.tadle.com`
   const prodCDN = `https://cdn.tadle.com`
   const cdn = isProduction ? prodCDN : devCDN
@@ -37,6 +37,7 @@ export function WithWss() {
 export const EndPointPathMap = {
   api: WithHost(""),
   solanaToken: WithCDN("/tokenlist/solana.json"),
+  projectInfo: WithCDN('/project_info.json'),
 };
 
 export const Paths = {

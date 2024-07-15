@@ -94,7 +94,7 @@ export function OfferTypeSelect({
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="flex w-[154px] flex-col items-stretch border-0 bg-white p-1"
+        className="flex w-[160px] flex-col items-stretch border-0 bg-white p-1"
         style={{
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}

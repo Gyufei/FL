@@ -9,6 +9,7 @@ export interface IMarketplace {
   market_name: string;
   floor_price: string;
   total_vol: string;
+  filled_orders: string;
   change_rate_24h: string;
   vol_24h: string;
   listed_supply: string;

@@ -39,6 +39,7 @@
   "card-Marketplace": {
     "lb-FloorPrice": "地板价",
     "lb-TotalVol": "总量",
+    "lb-FilledOrders": "订单数",
     "lb-24hChange": "变化率/24h",
     "lb-24hVol": "总量/24h",
     "lb-ListedSupply": "挂单量",

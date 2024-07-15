@@ -1,6 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { EndPointPathMap, isPreview } from "../PathMap";
+import { isPreview } from "../PathMap";
 
 export const RPCS = {
   TadleRPC1: process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
@@ -11,10 +11,6 @@ export const RPCS = {
 
 interface Cluster {
   network: WalletAdapterNetwork;
-  api: {
-    default: string;
-    tokenApi: string;
-  };
   // marginTokens: Array<string>;
   program: {
     tadleProgram: string;
@@ -31,10 +27,6 @@ interface Cluster {
 
 export const MainnetCluster: Cluster = {
   network: WalletAdapterNetwork.Mainnet,
-  api: {
-    default: EndPointPathMap.api,
-    tokenApi: EndPointPathMap.solanaToken,
-  },
   program: {
     usdcTokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     pointTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",
@@ -44,10 +36,6 @@ export const MainnetCluster: Cluster = {
 
 export const DevnetCluster: Cluster = {
   network: WalletAdapterNetwork.Devnet,
-  api: {
-    default: EndPointPathMap.api,
-    tokenApi: EndPointPathMap.solanaToken,
-  },
   program: {
     usdcTokenMint: "BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ",
     pointTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",

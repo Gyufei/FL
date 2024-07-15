@@ -5,7 +5,7 @@ import { sortBy } from "lodash";
 import { useMemo, useState } from "react";
 
 export function useSortOffer(orders: Array<any>) {
-  const [sortField, setSortField] = useState<ISortField>("Collateral");
+  const [sortField, setSortField] = useState<ISortField>("Created");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");
 
   function handleSortFieldChange(field: ISortField) {

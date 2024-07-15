@@ -18,8 +18,8 @@ import { useRouter } from "@/app/navigation";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import useTge from "@/lib/hooks/marketplace/useTge";
-import { handleGoTwitter } from "@/lib/utils/social";
 import { useTranslations } from "next-intl";
+import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
 
 export default function MarketplaceCard({
   marketplace,
@@ -34,6 +34,8 @@ export default function MarketplaceCard({
 
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
+
+  const { data: marketInfos, isLoading: isLoadingInfos } = useMarketInfo();
 
   function handleStar() {
     if (isStar) {
@@ -55,7 +57,21 @@ export default function MarketplaceCard({
     });
   };
 
-  const handleGoDiscord = () => {};
+  const handleGoTwitter = () => {
+    if (isLoadingFlag || isLoadingInfos) return;
+    const marketInfo = marketInfos?.[marketplace?.market_id];
+
+    if (!marketInfo?.twitter) return;
+    window.open(marketInfo?.twitter, "_blank");
+  };
+  const handleGoDiscord = () => {
+    if (isLoadingFlag || isLoadingInfos) return;
+
+    const marketInfo = marketInfos?.[marketplace?.market_id];
+    if (!marketInfo?.discord) return;
+
+    window.open(marketInfo?.discord, "_blank");
+  };
 
   return (
     <div

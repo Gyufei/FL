@@ -28,12 +28,14 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("lb-TotalVol")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>
+            {t("lb-FilledOrders")}
+          </LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
-              ${formatNum(marketplace!.total_vol)}
+              {formatNum(marketplace!.filled_orders || 0)}
             </div>
           )}
         </div>

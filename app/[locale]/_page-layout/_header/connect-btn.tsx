@@ -56,10 +56,12 @@ export default function ConnectBtn() {
   }, [referralCode, viewReferral, address]);
 
   useEffect(() => {
-    const noConnect = !connecting && !connected && !address;
-    if (noConnect) {
-      setWalletSelectDialogVisible(true);
-    }
+    setTimeout(() => {
+      const noConnect = !connecting && !connected && !address;
+      if (noConnect) {
+        setWalletSelectDialogVisible(true);
+      }
+    }, 500);
   }, [connecting, connected, address, setWalletSelectDialogVisible]);
 
   useEffect(() => {

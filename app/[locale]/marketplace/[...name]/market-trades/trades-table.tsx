@@ -3,7 +3,7 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { formatTimeDuration } from "@/lib/utils/time";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatNum } from "@/lib/utils/number";
 import { ITradeType } from "./trade-type-select";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
@@ -82,8 +82,10 @@ export function TradesTable({
 
     const typeTrades = trades.filter(() => type === "All" || true);
 
+    const tableData =
+      typeTrades.length > 30 ? typeTrades.slice(0, 30) : typeTrades;
     return {
-      nodes: typeTrades,
+      nodes: tableData,
     };
   }, [tradeMsgs, type, marketplace, isLoadingFlag]);
 
@@ -140,7 +142,7 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
         ) : (
-          <div>{formatTimeDuration(trade.time)}</div>
+          <TimeDisplay time={trade.time} />
         ),
     },
     {
@@ -213,4 +215,23 @@ export function TradesTable({
       </div>
     </div>
   );
+}
+
+function TimeDisplay({ time }: { time: number }) {
+  const [duration, setDuration] = useState("");
+
+  useEffect(() => {
+    if (time > 3600) {
+      setDuration(formatTimeDuration(time));
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setDuration(formatTimeDuration(time));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [time]);
+
+  return <div>{duration}</div>;
 }

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import ConnectBtn from "./connect-btn";
-import { MbNetworkSelect, NetworkSelect } from "./network-select";
+import { NetworkSelect } from "./network-select";
 import NavigationBtns from "./navigation-btns";
 import MessageBtn from "./message-btn";
 import MobileRouterMenu from "./mobile-router-menu";
@@ -12,6 +12,40 @@ export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
+  if (isHome) {
+    return (
+      <>
+        <MobileLogo />
+        <div className="flex h-14 items-center justify-between px-4 py-2 sm:absolute sm:top-0 sm:h-24 sm:w-full sm:px-6 sm:py-6">
+          {/* pc */}
+          <NavigationBtns />
+          <Logo />
+          <div className="hidden flex-1 items-center justify-end space-x-4 sm:flex md:space-x-6"></div>
+
+          {/* Mobile */}
+          <div className="flex flex-1 items-center justify-between sm:hidden">
+            <div></div>
+            <Link href="/">
+              <div className="flex h-11 cursor-pointer items-center justify-center sm:hidden">
+                <div className="flex h-6 items-center justify-center rounded-full bg-yellow">
+                  <Image
+                    src="/icons/logo.svg"
+                    alt="logo"
+                    width={75}
+                    height={20}
+                  />
+                </div>
+              </div>
+            </Link>
+            <div className="flex items-center space-x-4">
+              <MobileRouterMenu />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <MobileLogo />
@@ -20,20 +54,15 @@ export default function Header() {
         <NavigationBtns />
         <Logo />
         <div className="hidden flex-1 items-center justify-end space-x-4 sm:flex md:space-x-6">
-          {!isHome && (
-            <>
-              <NetworkSelect />
-              <ConnectBtn />
-              <MessageBtn />
-            </>
-          )}
+          <NetworkSelect />
+          <ConnectBtn />
+          <MessageBtn />
         </div>
 
         {/* Mobile */}
         <div className="flex flex-1 items-center justify-between sm:hidden">
-          {isHome && <MbNetworkSelect />}
           <div className="flex items-center space-x-4">
-            {!isHome && <ConnectBtn />}
+            <ConnectBtn />
             <MobileRouterMenu />
           </div>
         </div>

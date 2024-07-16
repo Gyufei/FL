@@ -62,3 +62,10 @@ body {
   border-radius: 12px;
   border: 1px solid #d8d8d8;
 }
+
+img {
+  -webkit-user-drag: none; /* Safari 和 Chrome */
+  -moz-user-drag: none; /* Firefox */
+  -ms-user-drag: none; /* IE/Edge */
+  user-drag: none;
+}

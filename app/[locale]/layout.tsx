@@ -4,7 +4,7 @@ import { VideoFont } from "@/app/fonts";
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
-import MainLayout from "@/app/[locale]/main-layout";
+import MainLayout from "@/app/[locale]/_page-layout/main-layout";
 import GlobalProvider from "@/components/provider/global-provider";
 import { SolanaWalletProviders } from "@/components/provider/solana-wallets";
 import "react-modern-drawer/dist/index.css";

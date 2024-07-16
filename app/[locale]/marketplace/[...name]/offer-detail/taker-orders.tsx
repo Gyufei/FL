@@ -55,8 +55,9 @@ export function TakerOrders({
   const theme = useTheme({
     Table: `
       grid-template-rows: 40px repeat(auto-fit, 48px);
-      grid-template-columns:  60px repeat(5, minmax(0, 1fr));
+      grid-template-columns: 60px repeat(5, minmax(0, 1fr));
       font-weight: 400;
+      grid-auto-rows: 48px;
     `,
     Header: "",
     Body: "",

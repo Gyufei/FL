@@ -13,150 +13,163 @@ export default function OutPerforms() {
         {t("cap-WhyTadleOutperformsOthers")}
       </div>
       <div className="mt-[60px] flex flex-col items-stretch">
-        <div className="flex flex-1 flex-col items-center justify-between sm:flex-row">
+        <div className="flex flex-1 flex-col items-center justify-between sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch justify-center">
             <Image
               src="/img/home/rocket.png"
-              width={382}
-              height={374}
+              width={560}
+              height={372}
               alt="rocket"
             />
           </div>
-          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start">
-            <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-              {t("cap-OptimalCapitalEfficiency")}
-            </div>
-            <div
-              className={cn(
-                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                inter.className,
-              )}
-            >
-              {t("p-OptimalCapitalEfficiency")}
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-OptimalCapitalEfficiency")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-OptimalCapitalEfficiency")}
+              </div>
             </div>
             <ReadMore onClick={() => {}} />
           </div>
         </div>
 
-        <div className="mt-10 flex flex-1 flex-col-reverse items-center justify-between sm:mt-0 sm:flex-row">
-          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start">
-            <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-              {t("cap-SuperiorLiquidity")}
-            </div>
-            <div
-              className={cn(
-                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                inter.className,
-              )}
-            >
-              {t("p-SuperiorLiquidity")}
+        <div className="mt-10 flex flex-1 flex-col-reverse items-center justify-between sm:mt-0 sm:flex-row sm:items-stretch">
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-SuperiorLiquidity")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-SuperiorLiquidity")}
+              </div>
             </div>
             <ReadMore onClick={() => {}} />
           </div>
           <div className="flex flex-1 items-stretch justify-center">
             <Image
               src="/img/home/liquidity.png"
-              width={530}
-              height={317}
+              width={560}
+              height={372}
               alt="rocket"
             />
           </div>
         </div>
 
-        <div className="mt-10 flex flex-1 flex-col items-center justify-between sm:mt-0 sm:flex-row">
+        <div className="mt-10 flex flex-1 flex-col items-center justify-between sm:mt-0 sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch justify-center">
             <Image
               src="/img/home/fee.png"
-              width={444}
-              height={374}
+              width={560}
+              height={372}
               alt="rocket"
             />
           </div>
-          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start">
-            <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-              {t("cap-LowTradingFee")}
-            </div>
-            <div
-              className={cn(
-                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                inter.className,
-              )}
-            >
-              {t("p-LowTradingFee")}
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-LowTradingFee")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-LowTradingFee")}
+              </div>
             </div>
             <ReadMore onClick={() => {}} />
           </div>
         </div>
 
-        <div className="mt-10 flex flex-1 flex-col-reverse items-center justify-between sm:mt-[87px] sm:flex-row">
-          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start">
-            <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-              {t("cap-AdvancedTradingSystem")}
-            </div>
-            <div
-              className={cn(
-                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                inter.className,
-              )}
-            >
-              {t("p-AdvancedTradingSystem")}
+        <div className="mt-10 flex flex-1 flex-col-reverse items-center justify-between sm:mt-[87px] sm:flex-row sm:items-stretch">
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-AdvancedTradingSystem")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-AdvancedTradingSystem")}
+              </div>
             </div>
             <ReadMore onClick={() => {}} />
           </div>
           <div className="flex flex-1 items-stretch justify-center">
             <Image
               src="/img/home/system.png"
-              width={530}
-              height={317}
+              width={560}
+              height={372}
               alt="rocket"
             />
           </div>
         </div>
-        <div className="mt-10 flex flex-1 flex-col items-center justify-between sm:mt-[87px] sm:flex-row">
+
+        <div className="mt-10 flex flex-1 flex-col items-center justify-between sm:mt-[87px] sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch justify-center">
             <Image
               src="/img/home/security.png"
-              width={444}
-              height={374}
+              width={560}
+              height={372}
               alt="rocket"
             />
           </div>
-          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start">
-            <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-              {t("cap-RobustSecurity")}
-            </div>
-            <div
-              className={cn(
-                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                inter.className,
-              )}
-            >
-              {t("p-RobustSecurity")}
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-RobustSecurity")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-RobustSecurity")}
+              </div>
             </div>
             <ReadMore onClick={() => {}} />
           </div>
         </div>
 
-        <div className="mt-10 flex flex-1 flex-col-reverse items-center justify-between sm:mt-[87px] sm:flex-row">
-          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start">
-            <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-              {t("cap-DecentralizedArbitrationForSettlements")}
-            </div>
-            <div
-              className={cn(
-                "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                inter.className,
-              )}
-            >
-              {t("p-DecentralizedArbitrationForSettlements")}
+        <div className="mt-10 flex flex-1 flex-col-reverse items-center justify-between sm:mt-[87px] sm:flex-row sm:items-stretch">
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-DecentralizedArbitrationForSettlements")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-DecentralizedArbitrationForSettlements")}
+              </div>
             </div>
             <ReadMore onClick={() => {}} />
           </div>
           <div className="flex flex-1 items-stretch justify-center">
             <Image
               src="/img/home/settlements.png"
-              width={530}
-              height={317}
+              width={560}
+              height={372}
               alt="rocket"
             />
           </div>
@@ -172,7 +185,7 @@ function ReadMore({ onClick }: { onClick: () => void }) {
   return (
     <div
       onClick={onClick}
-      className="mt-6 flex h-12 w-[200px] cursor-pointer items-center justify-center space-x-1 rounded-xl bg-yellow text-lg leading-6 hover:w-[200px] hover:bg-yellow sm:mt-[88px] sm:w-fit sm:bg-transparent"
+      className="mt-6 flex h-12 w-[200px] cursor-pointer items-center justify-center space-x-1 rounded-xl bg-yellow text-lg leading-6 hover:w-[200px] hover:bg-yellow sm:mb-10 sm:mt-0 sm:w-fit sm:bg-transparent"
     >
       <div className="flex justify-between space-x-1">
         <div className="text-lg leading-6 text-black">{t("btn-ReadMore")}</div>

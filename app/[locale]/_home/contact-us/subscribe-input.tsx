@@ -37,7 +37,7 @@ export default function SubscribeInput() {
         }}
       ></iframe> */}
       <Input
-        className="h-10 w-full rounded-xl border border-[#d8d8d8] sm:h-12 sm:w-[480px]"
+        className="h-10 w-full rounded-xl border border-[#d8d8d8] hover:border-green focus:border-green sm:h-12 sm:w-[480px]"
         type="email"
         placeholder={t("pl-EnterEmailAddress")}
         value={email}

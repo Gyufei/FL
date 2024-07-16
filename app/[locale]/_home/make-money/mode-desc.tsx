@@ -20,18 +20,18 @@ export default function ModeDesc() {
         backgroundPosition: "right bottom",
       }}
     >
-      <div className="mb-7 flex items-center justify-center space-x-10 text-lg leading-6 sm:justify-start">
+      <div className="mb-7 flex items-center justify-center space-x-5 text-lg leading-6 sm:justify-start">
         <div
           data-active={mode === "turbo"}
           onClick={() => setMode("turbo")}
-          className="flex h-12 w-40 cursor-pointer items-center justify-center rounded-xl data-[active=true]:bg-yellow"
+          className="flex h-12 cursor-pointer items-center justify-center rounded-xl px-[30px] text-[#c0c4cc] data-[active=true]:bg-yellow data-[active=true]:text-black"
         >
           {t("btn-TurboMode")}
         </div>
         <div
           data-active={mode === "protected"}
           onClick={() => setMode("protected")}
-          className="flex h-12 w-40 cursor-pointer items-center justify-center rounded-xl data-[active=true]:bg-yellow"
+          className="flex h-12 cursor-pointer items-center justify-center rounded-xl px-[30px] text-[#c0c4cc] data-[active=true]:bg-yellow data-[active=true]:text-black"
         >
           {t("btn-ProtectedMode")}
         </div>
@@ -49,7 +49,12 @@ export default function ModeDesc() {
           </div>
         )}
         {mode === "protected" && (
-          <div className="flex flex-col space-y-4 text-base leading-[30px] text-gray">
+          <div
+            className={cn(
+              "flex flex-col space-y-4 text-base leading-[30px] text-gray",
+              inter.className,
+            )}
+          >
             <div>{t("p-ProtectedMode1")}</div>
             <div>{t("p-ProtectedMode2")}</div>
           </div>

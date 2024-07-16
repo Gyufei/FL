@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { truncateAddr } from "@/lib/utils/web3";
-import Link from "next/link";
+import { Link } from "@/app/navigation";
 
 export default function OrderFillDialog({
   open,

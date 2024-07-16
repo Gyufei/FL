@@ -79,7 +79,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
             />
           </div>
         </TabsList>
-        <TabsContent value="orders" className="h-fit flex-1">
+        <TabsContent value="orders" className="h-fit">
           {orderTokenInfo && (
             <TakerOrders
               orders={orders || []}

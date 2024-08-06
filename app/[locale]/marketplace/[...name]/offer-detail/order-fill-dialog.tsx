@@ -60,7 +60,7 @@ export default function OrderFillDialog({
 
         <Link href="/dashboard/stocks">
           <button className="mt-7 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-            <span className="mr-1 inline-block">Go To My Stocks</span>
+            <span className="mr-1 inline-block">Go To My Holdings</span>
             <Image
               src="/icons/right-45.svg"
               className="rotate-45"

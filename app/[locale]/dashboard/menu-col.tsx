@@ -1,20 +1,9 @@
 "use client";
-// import { GlobalMessageAtom } from "@/lib/states/global-message";
-// import { useSetAtom } from "jotai";
 import Image from "next/image";
 import { usePathname, Link } from "@/app/navigation";
 
 export default function MenuCol() {
   const pathname = usePathname();
-
-  // const setGlobalMessage = useSetAtom(GlobalMessageAtom);
-
-  // function handleComingSoon() {
-  //   setGlobalMessage({
-  //     type: "success",
-  //     message: "Coming soon",
-  //   });
-  // }
 
   return (
     <div className="mt-[70px] flex flex-col  space-y-5">

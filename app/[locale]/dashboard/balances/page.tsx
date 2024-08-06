@@ -265,9 +265,10 @@ export default function MyBalances() {
     setOpenPanel(panelIndex);
   }
 
-  function handleWithdrawToken(mode: IBalanceType) {
+  function handleWithdrawToken(mode: IBalanceType, tokenName: string) {
     if (isWdTokenLoading) return;
     wdTokenAction({
+      isSol: tokenName === "SOL",
       mode,
     });
   }
@@ -314,7 +315,10 @@ export default function MyBalances() {
                         amount={i.amount}
                         onClick={() =>
                           !item.isPoint
-                            ? handleWithdrawToken(item.withdrawerName!)
+                            ? handleWithdrawToken(
+                                item.withdrawerName!,
+                                i.tokenInfo.symbol || "",
+                              )
                             : handleWithdrawPoint(
                                 i.tokenInfo.marketplaceId || "",
                               )

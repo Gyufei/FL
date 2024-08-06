@@ -5,11 +5,12 @@ import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
 import { useBuildTransaction } from "./help/use-build-transaction";
 
-export type IBalanceType = "taxIncome" |
-      "referralBonus" |
-      "salesRevenue" |
-      "remainingCash" |
-      "makerRefund"
+export type IBalanceType =
+  | "taxIncome"
+  | "referralBonus"
+  | "salesRevenue"
+  | "remainingCash"
+  | "makerRefund";
 
 export function useWithdrawBaseToken() {
   const { program } = useTadleProgram();
@@ -17,10 +18,12 @@ export function useWithdrawBaseToken() {
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts } = useAccounts();
 
-  const writeAction = async ({ 
-    mode
+  const writeAction = async ({
+    mode,
+    isSol,
   }: {
-    mode: IBalanceType
+    isSol: boolean;
+    mode: IBalanceType;
   }) => {
     const {
       tokenProgram,
@@ -31,7 +34,10 @@ export function useWithdrawBaseToken() {
       usdcTokenMint,
       poolTokenAuthority,
       userUsdcTokenAccount,
+      poolSolTokenAccount,
       poolUsdcTokenAccount,
+      wsolTokenMint,
+      userSolTokenAccount,
     } = await getAccounts(program.programId);
 
     const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
@@ -43,36 +49,42 @@ export function useWithdrawBaseToken() {
       [
         Buffer.from("token_balance"),
         usdcTokenMint.toBuffer(),
-        authority!.toBuffer()
+        authority!.toBuffer(),
       ],
-      program.programId
+      program.programId,
     )[0];
 
+    const methodTransaction = await program.methods
+      .withdrawBaseToken({
+        [mode]: {},
+      })
+      .accounts({
+        authority,
+        poolTokenAuthority,
+        wsolTmpTokenAccount,
+        userBaseTokenBalance,
+        systemConfig,
+        poolTokenAccount: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
+        tokenMint: isSol ? wsolTokenMint : usdcTokenMint,
+        tokenProgram,
+        tokenProgram2022,
+        systemProgram,
+      })
+      .remainingAccounts([
+        {
+          pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true,
+        },
+      ])
+      .transaction();
 
-    const methodTransaction = await program.methods.withdrawBaseToken(
-      {
-        [mode]: {}
-      }
-    ).accounts({
-      authority,
-      poolTokenAuthority,
-      wsolTmpTokenAccount,
-      userBaseTokenBalance,
-      systemConfig,
-      poolTokenAccount: poolUsdcTokenAccount,
-      tokenMint: usdcTokenMint,
-      tokenProgram,
-      tokenProgram2022,
-      systemProgram
-    }).remainingAccounts([
-      {
-        pubkey: userUsdcTokenAccount,
-        isSigner: false,
-        isWritable: true
-      }
-    ]).transaction()
-
-    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
+    const txHash = await buildTransaction(
+      methodTransaction,
+      program,
+      [],
+      authority!,
+    );
 
     await recordTransaction({
       txHash,

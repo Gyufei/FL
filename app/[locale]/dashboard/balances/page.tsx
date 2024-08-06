@@ -24,6 +24,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
+import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -35,6 +36,11 @@ const TokenListMap: Record<string, IToken> = {
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
     decimals: 6,
+  } as IToken,
+  So11111111111111111111111111111111111111112: {
+    symbol: "SOL",
+    logoURI: "/icons/solana.svg",
+    decimals: 9,
   } as IToken,
 };
 
@@ -56,6 +62,8 @@ export default function MyBalances() {
 
   const { publicKey } = useWallet();
   const wallet = toPubString(publicKey);
+
+  const { data: tokens } = useTokens();
 
   const { data: balanceData, mutate: refetchBalanceData } =
     useUserBalance(wallet);
@@ -82,11 +90,13 @@ export default function MyBalances() {
 
   const getTokenDataFormat = useCallback(
     (bData: IBalance | undefined, key: string) => {
-      if (!bData) return [];
+      if (!bData || !tokens) return [];
 
       const tBalances = bData.token_balance_list;
       const itemData = tBalances?.map((t) => {
-        const tokenInfo = TokenListMap[t.token_address];
+        const tokenInfo =
+          tokens.find((token) => token.address === t.token_address) ||
+          TokenListMap[t.token_address];
         const amount = NP.divide((t as any)[key], 10 ** tokenInfo.decimals);
         return {
           amount: Number(amount),
@@ -96,7 +106,7 @@ export default function MyBalances() {
 
       return itemData;
     },
-    [],
+    [tokens],
   );
 
   const getPointDataFormat = useCallback(
@@ -383,7 +393,13 @@ function TokenGetCard({
           {mbt("lb-Token")}
         </div>
         <div className="flex items-center gap-x-1">
-          <Image src={logo} width={16} height={16} alt="token logo" />
+          <Image
+            src={logo}
+            width={16}
+            height={16}
+            className="rounded-full"
+            alt="token logo"
+          />
           <div className="text-base leading-6 text-black">{name}</div>
         </div>
       </div>

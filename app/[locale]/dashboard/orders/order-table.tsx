@@ -27,6 +27,7 @@ import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
+import { sortBy } from "lodash";
 
 export function OrderTable({
   role,
@@ -64,8 +65,11 @@ export function OrderTable({
 
         return isRole && isStatus && types.includes(oType as IOfferType);
       });
+
+    const sortData = sortBy(orderData, "create_at").reverse();
+
     return {
-      nodes: orderData,
+      nodes: sortData,
     };
   }, [offers, role, status, types]);
 

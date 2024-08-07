@@ -16,7 +16,7 @@ export function useWithdrawBaseToken() {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts } = useAccounts();
+  const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
   const writeAction = async ({
     mode,
@@ -45,14 +45,13 @@ export function useWithdrawBaseToken() {
       program.programId,
     )[0];
 
-    const userBaseTokenBalance = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("token_balance"),
-        usdcTokenMint.toBuffer(),
-        authority!.toBuffer(),
-      ],
-      program.programId,
-    )[0];
+    const { walletBaseTokenBalance: userBaseTokenBalance } =
+      await getWalletBalanceAccount(
+        program.programId,
+        authority!,
+        authority!,
+        isSol,
+      );
 
     const methodTransaction = await program.methods
       .withdrawBaseToken({

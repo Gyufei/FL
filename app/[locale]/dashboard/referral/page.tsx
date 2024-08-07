@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ReferralTable } from "./referral-table";
 import { useReferralData } from "@/lib/hooks/api/use-referral-data";
 import { useEffect } from "react";
-import { useReferralCreate } from "@/lib/hooks/api/use-referral";
+import { useCreateReferral } from "@/lib/hooks/contract/use-create-referral";
 
 export default function Referral() {
   const rt = useTranslations("page-Referral");
@@ -13,23 +13,23 @@ export default function Referral() {
   const { data: referralData, mutate: refetch } = useReferralData();
 
   const {
-    trigger: createAction,
-    isMutating: createLoading,
-    data: createResult,
-  } = useReferralCreate();
+    write: createAction,
+    isLoading: createLoading,
+    isSuccess,
+  } = useCreateReferral();
 
   useEffect(() => {
-    if (createResult && createResult.code === 200) {
+    if (isSuccess) {
       refetch();
     }
-  }, [createResult]);
+  }, [isSuccess]);
 
   function handleCreate() {
     if (createLoading) {
       return;
     }
 
-    createAction();
+    createAction(undefined);
   }
 
   return (

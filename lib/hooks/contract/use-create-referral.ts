@@ -1,51 +1,53 @@
 import useTadleProgram from "../web3/use-tadle-program";
 import useTxStatus from "./help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
+import { BN } from "bn.js";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
 import { useBuildTransaction } from "./help/use-build-transaction";
+import { generateRandomCode } from "@/lib/utils/common";
 
-export function useUpdateReferral({
-  referrerStr,
-  referralCode,
-}: {
-  referrerStr: string;
-  referralCode: string;
-}) {
+export function useCreateReferral() {
   const { program } = useTadleProgram();
   const { getAccounts } = useAccounts();
 
   const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
 
-  const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts(
-      program.programId,
-    );
-
-    const referrer = new PublicKey(referrerStr);
+  const writeAction = async (args?: {
+    firstAmount?: number;
+    secondAmount?: number;
+  }) => {
+    const RandomCode = generateRandomCode(8);
+    const { firstAmount = 300000, secondAmount = 0 } = args || {};
+    const { authority, systemProgram } = await getAccounts(program.programId);
 
     const referralCodeData = PublicKey.findProgramAddressSync(
       [
         Buffer.from("create_referral_code"),
-        Buffer.from(referralCode),
-        referrer.toBuffer(),
+        Buffer.from(RandomCode),
+        authority!.toBuffer(),
       ],
       program.programId,
     )[0];
 
-    const referralConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("referral_config"), authority!.toBuffer()],
+    const referralBaseRateConfig = PublicKey.findProgramAddressSync(
+      [Buffer.from("base_referral_rate")],
+      program.programId,
+    )[0];
+
+    const referralExtraRateConfig = PublicKey.findProgramAddressSync(
+      [Buffer.from("extra_referral_rate"), authority!.toBuffer()],
       program.programId,
     )[0];
 
     const methodTransaction = await program.methods
-      .updateReferralConfig(referrer, referralCode)
+      .createReferralCode(RandomCode, new BN(firstAmount), new BN(secondAmount))
       .accounts({
         authority: authority!,
-        systemConfig,
+        referralBaseRateConfig,
+        referralExtraRateConfig,
         referralCodeData,
-        referralConfig,
         systemProgram,
       })
       .transaction();

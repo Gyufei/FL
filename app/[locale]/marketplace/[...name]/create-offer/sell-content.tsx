@@ -22,6 +22,7 @@ import { useTranslations } from "next-intl";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
+import { formatNum } from "@/lib/utils/number";
 
 export function SellContent({
   marketplace,
@@ -83,6 +84,7 @@ export function SellContent({
     if (!sellPointAmount) {
       return 0;
     }
+
     return NP.divide(sellPrice, sellPointAmount);
   }, [sellPrice, sellPointAmount]);
 
@@ -135,7 +137,7 @@ export function SellContent({
           topText={<>{T("txt-YouWillSell")}</>}
           bottomText={
             <>
-              1 {marketplace.point_name} = ${pointPrice}
+              1 {marketplace.point_name} = ${formatNum(pointPrice)}
             </>
           }
           tokenSelect={

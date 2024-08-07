@@ -10,9 +10,11 @@ import { useTokensInfo } from "../api/token/use-token-info";
 import { useTokenPrice } from "../api/token/use-token-price";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
-  const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail({
-    makerId: offer.maker_account
-  });
+  const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail(
+    {
+      makerId: offer.maker_account,
+    },
+  );
 
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
@@ -20,18 +22,17 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     (Number(offer.used_points) / Number(offer.points)).toFixed(2),
   );
 
-
   const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
 
   const isSol = orderTokenInfo?.symbol === "SOL";
 
-  const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || '');
+  const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || "");
 
   const orderPointInfo: IPoint = {
     symbol: offer.marketplace.point_name,
     logoURI: offer.marketplace.pointLogo,
     marketplaceId: offer.marketplace.market_place_id,
-    marketName: offer.marketplace.market_name
+    marketName: offer.marketplace.market_name,
   };
 
   const orderEqTokenInfo = {
@@ -40,8 +41,8 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     decimals: 9,
   } as IToken;
 
-  const tokenLogo = orderTokenInfo?.logoURI || '/icons/empty.svg';
-  const pointLogo = orderPointInfo?.logoURI || '/icons/empty.svg';
+  const tokenLogo = orderTokenInfo?.logoURI || "/icons/empty.svg";
+  const pointLogo = orderPointInfo?.logoURI || "/icons/empty.svg";
 
   const orderType = offer.offer_type;
 
@@ -59,44 +60,70 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const pointPerPrice = NP.divide(tokenTotalPrice, offer.points);
 
   const orderDuration = formatTimeDuration(
-    Math.floor(
-      NP.minus(
-        Date.now() / 1000,
-        offer.create_at,
-      ),
-    ),
+    Math.floor(NP.minus(Date.now() / 1000, offer.create_at)),
   );
 
   const isFilled = offer.used_points === offer.points;
 
   const afterTGE = useMemo(() => {
-    return checkIsAfterTge(offer.marketplace.tge, Number(offer.marketplace.settlement_period));
-  }, [offer.marketplace.tge, offer.marketplace.settlement_period, checkIsAfterTge]);
+    return checkIsAfterTge(
+      offer.marketplace.tge,
+      Number(offer.marketplace.settlement_period),
+    );
+  }, [
+    offer.marketplace.tge,
+    offer.marketplace.settlement_period,
+    checkIsAfterTge,
+  ]);
 
   const duringTGE = useMemo(() => {
-    return checkIsDuringTge(offer.marketplace.tge, Number(offer.marketplace.settlement_period));
-  }, [offer.marketplace.tge, offer.marketplace.settlement_period, checkIsDuringTge]);
+    return checkIsDuringTge(
+      offer.marketplace.tge,
+      Number(offer.marketplace.settlement_period),
+    );
+  }, [
+    offer.marketplace.tge,
+    offer.marketplace.settlement_period,
+    checkIsDuringTge,
+  ]);
 
   const afterTGEPeriod = useMemo(() => {
-    return checkIsAfterTgePeriod(offer.marketplace.tge, Number(offer.marketplace.settlement_period));
-  }, [offer.marketplace.tge, offer.marketplace.settlement_period, checkIsAfterTgePeriod]);
+    return checkIsAfterTgePeriod(
+      offer.marketplace.tge,
+      Number(offer.marketplace.settlement_period),
+    );
+  }, [
+    offer.marketplace.tge,
+    offer.marketplace.settlement_period,
+    checkIsAfterTgePeriod,
+  ]);
 
   const isCanSettle = useMemo(() => {
-      if (!afterTGE) return false;
-      if (isLoadingMakerDetail) return false;
+    if (!afterTGE) return false;
+    if (isLoadingMakerDetail) return false;
 
-      const offerType = makerDetail?.offer_settle_type;
-      const isTurbo = offerType === 'turbo'
+    const offerType = makerDetail?.offer_settle_type;
+    const isTurbo = offerType === "turbo";
 
-      if (isTurbo && offer.pre_offer) {
-        return false;
-      }
+    if (isTurbo && offer.pre_offer) {
+      return false;
+    }
 
-      return !["canceled", "settled"].includes(offer.offer_status) || (offer.offer_status === 'canceled' && Number(offer.used_points) > 0)
-  }, [offer.offer_status, afterTGE, offer.used_points, makerDetail, isLoadingMakerDetail, offer.pre_offer]);
+    return (
+      !["canceled", "settled"].includes(offer.offer_status) ||
+      (offer.offer_status === "canceled" && Number(offer.used_points) > 0)
+    );
+  }, [
+    offer.offer_status,
+    afterTGE,
+    offer.used_points,
+    makerDetail,
+    isLoadingMakerDetail,
+    offer.pre_offer,
+  ]);
 
   const isSettled = useMemo(() => {
-    return ["settled", "finished"].includes(offer.offer_status)
+    return ["settled", "finished"].includes(offer.offer_status);
   }, [offer.offer_status]);
 
   return {
@@ -120,6 +147,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     isCanSettle,
     isSettled,
     makerDetail,
-    isSol
+    isSol,
   };
 }

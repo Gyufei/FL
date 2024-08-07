@@ -172,14 +172,12 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
     write: writeAction,
   } = useUpdateReferral({
     referrerStr,
+    referralCode,
   });
 
   function handleSignInReferral() {
     if (isUpdating || !codeData) return;
-    writeAction({
-      firstAmount: Number(codeData.referral_rate),
-      secondAmount: Number(codeData.authority_rate),
-    });
+    writeAction(undefined);
   }
 
   useEffect(() => {

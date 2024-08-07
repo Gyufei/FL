@@ -4,9 +4,7 @@ import { formatNum } from "@/lib/utils/number";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOffer } from "@/lib/types/offer";
-import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useState } from "react";
-import useMakerSettleAccount from "@/lib/hooks/api/use-maker-settle-account";
 // import { useTranslations } from "next-intl";
 // import { Slider } from "@/components/ui/slider";
 
@@ -24,27 +22,9 @@ export default function ConfirmAskMakerSettleDialog({
   // const ct = useTranslations("Common");
   const orderRole = "Maker";
 
-  const {
-    amount,
-    tokenTotalPrice,
-    orderPointInfo,
-    afterTGEPeriod,
-    makerDetail,
-    isSol
-  } = useOfferFormat({
-    offer: offer,
-  });
-
-  const isTurbo = makerDetail?.offer_settle_type === "turbo";
-
-  const { data: offerStocks, isLoading: isOfferStockLoading } = useOfferStocks({
-    offer: offer,
-  });
-
-  const { data: makerSettleAccount, isLoading: isSettleAccountLoading } =
-    useMakerSettleAccount({
-      makerId: offer.maker_account,
-      isTurbo,
+  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isSol } =
+    useOfferFormat({
+      offer: offer,
     });
 
   // const [sliderMax] = useState(100);
@@ -128,14 +108,12 @@ export default function ConfirmAskMakerSettleDialog({
 
           <ConfirmAskMakerSettleBtn
             isSol={isSol}
-            isStocksLoading={isOfferStockLoading || isSettleAccountLoading}
+            isStocksLoading={false}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_account}
             makerStr={offer.maker_account}
             settleAmount={settleAmount}
-            offerStocks={isTurbo ? makerSettleAccount : offerStocks}
             onSuccess={handleSuccess}
-            isTurbo={isTurbo}
           />
         </div>
       </DialogContent>

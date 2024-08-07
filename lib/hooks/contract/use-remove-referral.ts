@@ -5,47 +5,30 @@ import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
 import { useBuildTransaction } from "./help/use-build-transaction";
 
-export function useUpdateReferral({
-  referrerStr,
-  referralCode,
-}: {
-  referrerStr: string;
-  referralCode: string;
-}) {
+export function useRemoveReferral() {
   const { program } = useTadleProgram();
   const { getAccounts } = useAccounts();
 
   const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
 
-  const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts(
-      program.programId,
-    );
-
-    const referrer = new PublicKey(referrerStr);
+  const writeAction = async ({ referralCode }: { referralCode: string }) => {
+    const { authority, systemProgram } = await getAccounts(program.programId);
 
     const referralCodeData = PublicKey.findProgramAddressSync(
       [
         Buffer.from("create_referral_code"),
         Buffer.from(referralCode),
-        referrer.toBuffer(),
+        authority!.toBuffer(),
       ],
       program.programId,
     )[0];
 
-    const referralConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("referral_config"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
     const methodTransaction = await program.methods
-      .updateReferralConfig(referrer, referralCode)
+      .removeReferralCode(referralCode)
       .accounts({
         authority: authority!,
-        systemConfig,
         referralCodeData,
-        referralConfig,
         systemProgram,
       })
       .transaction();

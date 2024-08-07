@@ -211,7 +211,7 @@ export default function MyBidDetail({
                           <>
                             {!isFilled && (
                               <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                {ot("txt-YouHaveTheOptionToClose ")}
+                                {ot("txt-YouHaveTheOptionToClose")}
                               </div>
                             )}
                           </>

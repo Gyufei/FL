@@ -31,9 +31,10 @@ import { IReferralItem } from "@/lib/hooks/api/use-referral-data";
 import ReferralDrawer from "./referral-drawer";
 import {
   useReferralDefault,
-  useReferralDelete,
+  // useReferralDelete,
   useReferralNoteChange,
 } from "@/lib/hooks/api/use-referral";
+import { useRemoveReferral } from "@/lib/hooks/contract/use-remove-referral";
 
 export function ReferralTable({
   referralData,
@@ -407,7 +408,7 @@ function OpBtn({
 }) {
   const { trigger: setDefaultAction, data: setDefaultRes } =
     useReferralDefault();
-  const { trigger: deleteAction, data: deleteRes } = useReferralDelete();
+  const { write: deleteAction, isSuccess } = useRemoveReferral();
 
   useEffect(() => {
     if (setDefaultRes) {
@@ -416,10 +417,10 @@ function OpBtn({
   }, [setDefaultRes]);
 
   useEffect(() => {
-    if (deleteRes) {
+    if (isSuccess) {
       onSuccess();
     }
-  }, [deleteRes]);
+  }, [isSuccess]);
 
   function handleFlag() {
     setDefaultAction({
@@ -431,7 +432,7 @@ function OpBtn({
     if (rD.flag === "1") return;
 
     deleteAction({
-      referral_code: rD.referral_code,
+      referralCode: rD.referral_code,
     });
   }
 

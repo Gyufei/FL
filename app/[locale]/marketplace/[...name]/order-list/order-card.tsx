@@ -1,3 +1,4 @@
+import NP from "number-precision";
 import Image from "next/image";
 import { CircleProgress } from "@/components/share/circle-progress";
 import { formatNum } from "@/lib/utils/number";
@@ -82,7 +83,7 @@ export function OrderCard({ order }: { order: IOffer }) {
             data-zero={Number(progress) === 0 ? true : false}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=true]:text-gray data-[zero=false]:text-black"
           >
-            {Math.floor(progress * 100)}%
+            {formatNum(NP.times(progress, 100))}%
           </div>
         </div>
       </div>

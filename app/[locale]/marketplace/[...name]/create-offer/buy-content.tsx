@@ -21,6 +21,7 @@ import { useTranslations } from "next-intl";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
+import { formatNum } from "@/lib/utils/number";
 
 export function BuyContent({
   marketplace,
@@ -155,7 +156,7 @@ export function BuyContent({
           }
           bottomText={
             <>
-              1 {marketplace.point_name} = ${pointPrice}
+              1 {marketplace.point_name} = ${formatNum(pointPrice)}
             </>
           }
           tokenSelect={

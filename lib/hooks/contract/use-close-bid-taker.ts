@@ -5,15 +5,21 @@ import { useTransactionRecord } from "../api/use-transactionRecord";
 import { useAccounts } from "./help/use-accounts";
 import { useBuildTransaction } from "./help/use-build-transaction";
 
-export function useUpdateReferral({
-  referrerStr,
-  referralCode,
+export function useCloseBidTaker({
+  marketplaceStr,
+  makerStr,
+  stockStr,
+  preOfferStr,
+  isSol,
 }: {
-  referrerStr: string;
-  referralCode: string;
+  marketplaceStr: string;
+  makerStr: string;
+  stockStr: string;
+  preOfferStr: string;
+  isSol: boolean;
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccounts();
+  const { getAccounts, getWalletBalanceAccount } = useAccounts();
 
   const { buildTransaction } = useBuildTransaction();
   const { recordTransaction } = useTransactionRecord();
@@ -23,29 +29,32 @@ export function useUpdateReferral({
       program.programId,
     );
 
-    const referrer = new PublicKey(referrerStr);
+    const marketPlace = new PublicKey(marketplaceStr);
+    const maker = new PublicKey(makerStr);
+    const preOffer = new PublicKey(preOfferStr);
+    const stockD = new PublicKey(stockStr);
 
-    const referralCodeData = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("create_referral_code"),
-        Buffer.from(referralCode),
-        referrer.toBuffer(),
-      ],
+    const {
+      walletBaseTokenBalance: walletDBaseTokenBalance,
+      walletPointTokenBalance: walletDPointTokenBalance,
+    } = await getWalletBalanceAccount(
       program.programId,
-    )[0];
-
-    const referralConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("referral_config"), authority!.toBuffer()],
-      program.programId,
-    )[0];
+      authority!,
+      marketPlace,
+      isSol,
+    );
 
     const methodTransaction = await program.methods
-      .updateReferralConfig(referrer, referralCode)
+      .closeBidTaker()
       .accounts({
-        authority: authority!,
+        authority,
+        userBaseTokenBalance: walletDBaseTokenBalance,
+        userPointTokenBalance: walletDPointTokenBalance,
         systemConfig,
-        referralCodeData,
-        referralConfig,
+        stock: stockD,
+        preOffer,
+        maker,
+        marketPlace,
         systemProgram,
       })
       .transaction();

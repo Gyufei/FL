@@ -1,6 +1,6 @@
 import { useSettleAskMaker } from "@/lib/hooks/contract/use-settle-ask-maker";
 import ConfirmSettleBtn from "../settle/confirm-settle-btn";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 export default function ConfirmAskMakerSettleBtn({
   isStocksLoading,
@@ -8,20 +8,16 @@ export default function ConfirmAskMakerSettleBtn({
   orderStr,
   makerStr,
   settleAmount,
-  offerStocks,
-  isTurbo,
   onSuccess,
-  isSol
+  isSol,
 }: {
   isStocksLoading: boolean;
   marketplaceStr: string;
   orderStr: string;
   makerStr: string;
   settleAmount: number;
-  offerStocks: Array<Record<string, any>>;
-  isTurbo: boolean;
   onSuccess: () => void;
-  isSol: boolean
+  isSol: boolean;
 }) {
   const {
     isLoading,
@@ -31,26 +27,14 @@ export default function ConfirmAskMakerSettleBtn({
     marketplaceStr,
     offerStr: orderStr,
     makerStr,
-    isSol
+    isSol,
   });
-
-  const stockArr = useMemo(() => {
-    return offerStocks.map((s) => {
-      return {
-        stock_account: s.stock_account,
-        offer: s?.offer || s?.offer_account,
-        authority: s.authority,
-      };
-    });
-  }, [offerStocks]);
 
   function handleConfirm() {
     if (isStocksLoading) return;
 
     writeAction({
       settleAmount,
-      stockArr,
-      isTurbo,
     });
   }
 

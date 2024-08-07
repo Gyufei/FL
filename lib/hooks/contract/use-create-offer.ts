@@ -9,7 +9,7 @@ import { useBuildTransaction } from "./help/use-build-transaction";
 
 export function useCreateOffer({
   marketplaceStr: marketplaceStr,
-  offerType
+  offerType,
 }: {
   marketplaceStr: string;
   offerType: "bid" | "ask";
@@ -33,7 +33,7 @@ export function useCreateOffer({
     tokenAmount: number;
     collateralRate: number;
     taxForSub: number;
-    settleMode: ISettleMode,
+    settleMode: ISettleMode;
     note: string;
     isSol: boolean;
   }) => {
@@ -51,15 +51,20 @@ export function useCreateOffer({
       poolUsdcTokenAccount,
       poolSolTokenAccount,
       userSolTokenAccount,
-      wsolTokenMint
+      wsolTokenMint,
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
 
     const {
       walletBaseTokenBalance: walletABaseTokenBalance,
-      walletPointTokenBalance: walletAPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
+      walletPointTokenBalance: walletAPointTokenBalance,
+    } = await getWalletBalanceAccount(
+      program.programId,
+      authority!,
+      marketPlace,
+      isSol,
+    );
 
     const maker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
@@ -67,22 +72,17 @@ export function useCreateOffer({
     )[0];
 
     const stockA = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("stock"),
-        seedAccount.publicKey.toBuffer()
-      ],
-      program.programId
+      [Buffer.from("stock"), seedAccount.publicKey.toBuffer()],
+      program.programId,
     )[0];
 
     const offerA = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("offer"),
-        seedAccount.publicKey.toBuffer()
-      ],
-      program.programId
+      [Buffer.from("offer"), seedAccount.publicKey.toBuffer()],
+      program.programId,
     )[0];
 
-    console.log(Object.entries({
+    console.log(
+      Object.entries({
         authority,
         seedAccount: seedAccount.publicKey,
         marketPlace,
@@ -100,9 +100,8 @@ export function useCreateOffer({
         pubkey2: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
         pubkey3: walletABaseTokenBalance,
         pubkey4: walletAPointTokenBalance,
-    }).map((v) => 
-      ({ [v[0]]: v[1]?.toBase58() })
-    ))
+      }).map((v) => ({ [v[0]]: v[1]?.toBase58() })),
+    );
 
     const methodTransaction = await program.methods
       .createOffer(
@@ -114,8 +113,8 @@ export function useCreateOffer({
           [offerType]: {},
         },
         {
-          [settleMode]: {}
-        }
+          [settleMode]: {},
+        },
       )
       .accounts({
         authority,
@@ -124,39 +123,48 @@ export function useCreateOffer({
         systemConfig,
         maker,
         stock: stockA,
-        offer: offerA,
         poolTokenAuthority,
         tokenMint: isSol ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         associatedTokenProgram,
         systemProgram,
-      }).remainingAccounts([
+      })
+      .remainingAccounts([
+        {
+          pubkey: offerA,
+          isSigner: false,
+          isWritable: true,
+        },
         {
           pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
-          isWritable: true
+          isWritable: true,
         },
         {
           pubkey: isSol ? poolSolTokenAccount : poolUsdcTokenAccount,
           isSigner: false,
-          isWritable: true
+          isWritable: true,
         },
         {
           pubkey: walletABaseTokenBalance,
           isSigner: false,
-          isWritable: true
+          isWritable: true,
         },
         {
           pubkey: walletAPointTokenBalance,
           isSigner: false,
-          isWritable: true
+          isWritable: true,
         },
       ])
-      // .signers([seedAccount]).rpc()
       .transaction();
 
-    const txHash = await buildTransaction(methodTransaction, program, [seedAccount], authority!);
+    const txHash = await buildTransaction(
+      methodTransaction,
+      program,
+      [seedAccount],
+      authority!,
+    );
 
     await recordTransaction({
       txHash,

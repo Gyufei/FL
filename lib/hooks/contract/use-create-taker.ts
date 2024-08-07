@@ -62,7 +62,7 @@ export function useCreateTaker({
     } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
 
     const {
-      walletBaseTokenBalance: originMarkerBaseTokenBalance,
+      walletBaseTokenBalance: originMakerBaseTokenBalance,
     } = await getWalletBalanceAccount(program.programId, originOfferAuthority, marketPlace, isSol)
 
     const {
@@ -98,7 +98,7 @@ export function useCreateTaker({
     console.log(Object.entries({
         authority: authority,
         systemConfig,
-        originMarkerBaseTokenBalance,
+        originMakerBaseTokenBalance,
         preOfferBaseTokenBalance,
         seedAccount: seedAccount.publicKey,
         stock: stockB,
@@ -120,7 +120,7 @@ export function useCreateTaker({
       .accounts({
         authority: authority,
         systemConfig,
-        originMarkerBaseTokenBalance,
+        originMakerBaseTokenBalance,
         preOfferBaseTokenBalance,
         seedAccount: seedAccount.publicKey,
         stock: stockB,

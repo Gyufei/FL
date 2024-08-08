@@ -35,26 +35,24 @@ export function TradesTable({
 
   const tradeMsgs = useMemo<any[]>(() => {
     const sortHistory = sortBy(historyData || [], "trade_at").reverse();
-    const history = sortHistory
-      .map((item: any) => {
-        return {
-          ...item,
-          timestamp: item.trade_at * 1000,
-        };
-      })
-      .map((item: any) => {
-        const token = tokens?.find(
-          (token) => token.address === item.token_mint,
-        );
-
-        return {
-          ...item,
-          token: token || item.token,
-        };
-      });
-
+    const history = sortHistory.map((item: any) => {
+      return {
+        ...item,
+        timestamp: item.trade_at * 1000,
+      };
+    });
     const msgAll = msgEvents.filter((msg) => !!msg);
-    return msgAll.concat(history || []);
+
+    const allMsg = msgAll.concat(history || []).map((item: any) => {
+      const token = tokens?.find((token) => token.address === item.token_mint);
+
+      return {
+        ...item,
+        token: token || item.token,
+      };
+    });
+
+    return allMsg;
   }, [msgEvents, historyData]);
 
   const data = useMemo(() => {

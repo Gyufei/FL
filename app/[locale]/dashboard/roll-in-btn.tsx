@@ -1,7 +1,7 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useRollin } from "@/lib/hooks/contract/use-rollin";
 import { useWalletConnect } from "@/lib/hooks/web3/use-wallet-connect";
-import { isSameDay } from "date-fns";
+import { differenceInMinutes } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
@@ -28,7 +28,9 @@ export default function RollInBtn() {
     const res = await getRollingData();
     const rollinAt = res.rollinAt * 1000;
 
-    const hasSign = isSameDay(new Date(), new Date(rollinAt));
+    const pastTime = differenceInMinutes(new Date(), new Date(rollinAt));
+    console.log(pastTime, 123);
+    const hasSign = pastTime < 60;
     setIsSign(hasSign);
   }
 
@@ -41,6 +43,7 @@ export default function RollInBtn() {
   useEffect(() => {
     if (isSuccess) {
       setIsSign(true);
+      getRollinState();
     }
   }, [isSuccess]);
 

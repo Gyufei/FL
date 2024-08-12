@@ -22,13 +22,19 @@ import { ClusterAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { DevnetRow } from "./devnet-row";
 import { isPreview, isProduction } from "@/lib/PathMap";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { ENetworks, NetworkAtom } from "@/lib/states/network";
 
-function UseNetworkSelect() {
+function UseSolanaNetworkSelect() {
+  const [network, setNetwork] = useAtom(NetworkAtom);
   const [cluster, setCluster] = useAtom(ClusterAtom);
 
   const [popOpen, setPopOpen] = useState(false);
 
   const handleSelectNet = async (c: WalletAdapterNetwork) => {
+    if (network !== ENetworks.Solana) {
+      setNetwork(ENetworks.Solana);
+    }
     if (c === cluster) return;
     setCluster(c);
   };
@@ -42,12 +48,31 @@ function UseNetworkSelect() {
   };
 }
 
+function useEthNetworkSelect() {
+  const [network, setNetwork] = useAtom(NetworkAtom);
+  // const { address, isConnected, isDisconnected } = useAccount();
+  const { open: wcModalOpen } = useWeb3Modal();
+
+  function handleConnectEth() {
+    if (network === ENetworks.Eth) return;
+    setNetwork(ENetworks.Eth);
+    wcModalOpen();
+  }
+
+  return {
+    handleConnectEth,
+  };
+}
+
 const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
   loading: () => <Skeleton className="h-10 w-10 rounded-full" />,
 });
 
 export function NetworkSelect() {
-  const { cluster, popOpen, setPopOpen, handleSelectNet } = UseNetworkSelect();
+  const { cluster, popOpen, setPopOpen, handleSelectNet } =
+    UseSolanaNetworkSelect();
+
+  // const { handleConnectEth } = useEthNetworkSelect();
 
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -100,7 +125,7 @@ export function NetworkSelect() {
           />
         )}
         {/* <div
-          onClick={() => {}}
+          onClick={() => handleConnectEth()}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >
@@ -126,7 +151,10 @@ export function NetworkSelect() {
 }
 
 export function MbNetworkSelect() {
-  const { cluster, popOpen, setPopOpen, handleSelectNet } = UseNetworkSelect();
+  const { cluster, popOpen, setPopOpen, handleSelectNet } =
+    UseSolanaNetworkSelect();
+
+  const { handleConnectEth } = useEthNetworkSelect();
 
   return (
     <Drawer open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -165,8 +193,8 @@ export function MbNetworkSelect() {
           onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
           isActive={WalletAdapterNetwork.Devnet === cluster}
         />
-        {/* <div
-          onClick={() => {}}
+        <div
+          onClick={() => handleConnectEth()}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >
@@ -185,7 +213,7 @@ export function MbNetworkSelect() {
             alt="evm chains"
             className="z-10 bg-white"
           ></Image>
-        </div> */}
+        </div>
       </DrawerContent>
     </Drawer>
   );

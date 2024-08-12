@@ -3,7 +3,8 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { isPreview } from "../PathMap";
 
 export const RPCS = {
-  TadleRPC1: process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
+  TadleRPC1:
+    process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
   TadleDevRPC1: "https://rpc.ankr.com/solana_devnet",
   solanaDevnet: "https://api.devnet.solana.com/",
   solanaTestnet: "https://api.testnet.solana.com/",
@@ -21,7 +22,7 @@ interface Cluster {
       systemConfig: string;
       poolTokenAuthority: string;
       poolTokenAccount: string;
-    }
+    };
   };
 }
 
@@ -41,11 +42,11 @@ export const DevnetCluster: Cluster = {
     pointTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",
     tadleProgram: "V2hUyeFz8NwR6QXYxFo3ixJNK5GtFvTGSifsM2RCwEJ",
     faucet: {
-      tadleFaucet: '8F8Ygn7aHZ7tNtn4WzEfsQLporeG2ppwkBQRrK15LdqZ',
-      systemConfig: '5v4PUXM3FSitkMACQ3GsCZhqHEYdgceDkg6gE8xeJuBj',
-      poolTokenAuthority: '3ZrCod6LDxX9VDdf1uRsb2KcfYj6CTLBA2gDn7MSkHiL',
-      poolTokenAccount: 'Fn7BKg1LJLxJ55aDSCvtRZHehdx8tEzo5D6CfkJtzJRC',
-    }
+      tadleFaucet: "8F8Ygn7aHZ7tNtn4WzEfsQLporeG2ppwkBQRrK15LdqZ",
+      systemConfig: "5v4PUXM3FSitkMACQ3GsCZhqHEYdgceDkg6gE8xeJuBj",
+      poolTokenAuthority: "3ZrCod6LDxX9VDdf1uRsb2KcfYj6CTLBA2gDn7MSkHiL",
+      poolTokenAccount: "Fn7BKg1LJLxJ55aDSCvtRZHehdx8tEzo5D6CfkJtzJRC",
+    },
   },
 };
 

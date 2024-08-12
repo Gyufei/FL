@@ -37,11 +37,13 @@
     "@solana/web3.js": "^1.89.1",
     "@solflare-wallet/wallet-adapter": "^1.0.3",
     "@table-library/react-table-library": "^4.1.7",
+    "@tanstack/react-query": "^5.51.23",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
     "@vercel/analytics": "^0.1.6",
     "@vercel/og": "^0.0.26",
+    "@web3modal/wagmi": "^5.0.11",
     "bn.js": "^5.2.1",
     "bs58": "^5.0.0",
     "class-variance-authority": "^0.7.0",
@@ -67,7 +69,9 @@
     "swr": "^2.2.2",
     "use-debounce": "^9.0.4",
     "use-resize-observer": "^9.1.0",
-    "vaul": "^0.9.0"
+    "vaul": "^0.9.0",
+    "viem": "^2.19.3",
+    "wagmi": "^2.12.5"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",

@@ -8,7 +8,6 @@ import { truncateAddr } from "@/lib/utils/web3";
 import WalletSelectDialog, {
   WalletSelectDialogVisibleAtom,
 } from "@/components/share/wallet-select-dialog";
-import toPubString from "@/lib/utils/pub-string";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useSignInAction } from "@/lib/hooks/web3/use-sign-in-action";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
@@ -18,10 +17,15 @@ import { useUpdateReferral } from "@/lib/hooks/contract/use-update-referral";
 import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useReferralView } from "@/lib/hooks/api/use-referral";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { ENetworks, NetworkAtom } from "@/lib/states/network";
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
   const t = useTranslations("Header");
+
+  const network = useAtomValue(NetworkAtom);
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
   );
@@ -31,26 +35,24 @@ export default function ConnectBtn() {
 
   const { trigger: viewReferral } = useReferralView();
 
-  const openWalletSelectDialog = useCallback(() => {
-    setWalletSelectDialogVisible(true);
+  const { open: wcModalOpen } = useWeb3Modal();
+  const openSolWalletSelectDialog = useCallback(() => {
+    if (network === ENetworks.Eth) {
+      wcModalOpen();
+    }
+
+    if (network === ENetworks.Solana) {
+      setWalletSelectDialogVisible(true);
+    }
   }, [setWalletSelectDialogVisible]);
 
-  const { publicKey, connected, connecting } = useWallet();
-
-  const address = toPubString(publicKey);
-  const shortAddr = useMemo(() => {
-    if (!address) return "";
-    return truncateAddr(address, {
-      nPrefix: 4,
-      nSuffix: 4,
-    });
-  }, [address]);
+  const { address, shortAddr, connected, connecting } = useWalletInfo();
 
   const token = useAtomValue(AccessTokenAtom);
   const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
 
   useEffect(() => {
-    if (referralCode) {
+    if (referralCode && address) {
       viewReferral({ referral_code: referralCode, authority: address });
     }
   }, [referralCode, viewReferral, address]);
@@ -76,7 +78,7 @@ export default function ConnectBtn() {
       <>
         <button
           className="shadow-25 h-10 rounded-full bg-[#f0f1f5] px-4 text-base leading-6 transition-all sm:h-12 sm:px-[22px]"
-          onClick={() => openWalletSelectDialog()}
+          onClick={() => openSolWalletSelectDialog()}
         >
           <span className="hidden sm:inline-block">
             {t("btn-ConnectWallet")}

@@ -1,13 +1,13 @@
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useRollin } from "@/lib/hooks/contract/use-rollin";
-import { useWalletConnect } from "@/lib/hooks/web3/use-wallet-connect";
 import { differenceInMinutes } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function RollInBtn() {
   const T = useTranslations("cd-AccountOverview");
-  const { connected } = useWalletConnect();
+  const { connected } = useWalletInfo();
 
   const {
     isLoading,

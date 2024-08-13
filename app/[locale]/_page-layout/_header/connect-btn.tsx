@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { truncateAddr } from "@/lib/utils/web3";
@@ -44,7 +43,7 @@ export default function ConnectBtn() {
     if (network === ENetworks.Solana) {
       setWalletSelectDialogVisible(true);
     }
-  }, [setWalletSelectDialogVisible]);
+  }, [setWalletSelectDialogVisible, network, wcModalOpen]);
 
   const { address, shortAddr, connected, connecting } = useWalletInfo();
 
@@ -224,7 +223,7 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
 
 function SignOutBtn() {
   const t = useTranslations("Header");
-  const { disconnect } = useWallet();
+  const { disconnect } = useWalletInfo();
   const setToken = useSetAtom(AccessTokenAtom);
 
   const handleDisconnect = () => {

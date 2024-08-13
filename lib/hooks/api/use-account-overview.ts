@@ -2,14 +2,12 @@ import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
-import { useWallet } from "@solana/wallet-adapter-react";
-import toPubString from "@/lib/utils/pub-string";
 import useSWRMutation from "swr/mutation";
+import useWalletInfo from "../web3/use-wallet-info";
 
 export function useAccountOverview() {
   const { apiEndPoint } = useEndPoint();
-  const { publicKey } = useWallet();
-  const wallet = toPubString(publicKey);
+  const { address: wallet } = useWalletInfo();
 
   const res = useSWR(
     wallet ? `${apiEndPoint}${Paths.accountOverview}?wallet=${wallet}` : null,
@@ -28,22 +26,19 @@ export function useUserNameChange() {
       arg,
     }: {
       arg: {
-        "uuid": string,
-        "user_name": string
+        uuid: string;
+        user_name: string;
       };
     },
   ) => {
     if (!arg.uuid || !arg.user_name) return null;
 
-    const res = await fetcher(
-      `${apiEndPoint}${Paths.userName}`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ...arg
-        }),
-      },
-    );
+    const res = await fetcher(`${apiEndPoint}${Paths.userName}`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...arg,
+      }),
+    });
 
     return res;
   };

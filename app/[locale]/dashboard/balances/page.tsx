@@ -11,8 +11,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
-import { useWallet } from "@solana/wallet-adapter-react";
-import toPubString from "@/lib/utils/pub-string";
 import { IBalance, useUserBalance } from "@/lib/hooks/api/use-user-balance";
 import { IToken } from "@/lib/types/token";
 import {
@@ -25,6 +23,7 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -60,8 +59,7 @@ export default function MyBalances() {
   const mbt = useTranslations("page-MyBalance");
   const [openPanel, setOpenPanel] = useState("taxIncomeData");
 
-  const { publicKey } = useWallet();
-  const wallet = toPubString(publicKey);
+  const { address: wallet } = useWalletInfo();
 
   const { data: tokens } = useTokens();
 

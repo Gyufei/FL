@@ -3,15 +3,13 @@ import Image from "next/image";
 import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { useRouter } from "@/app/navigation";
 import { useEffect, useMemo } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import toPubString from "@/lib/utils/pub-string";
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 
 export default function ReferralPage({ params }: { params: any }) {
   const referral = params.referral[0];
   const router = useRouter();
 
-  const { publicKey } = useWallet();
-  const address = toPubString(publicKey);
+  const { address } = useWalletInfo();
 
   const { data: codeData, isLoading } = useReferralCodeData({
     code: referral,

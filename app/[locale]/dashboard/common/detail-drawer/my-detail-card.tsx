@@ -8,14 +8,14 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { useTranslations } from "next-intl";
 import { isProduction } from "@/lib/PathMap";
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");
 
-  const { publicKey } = useWallet();
+  const { address } = useWalletInfo();
 
   const { orderTokenInfo, orderPointInfo, duringTGE, makerDetail } =
     useOfferFormat({
@@ -34,7 +34,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     return offer.origin_offer_detail?.maker_account || offer.maker_account;
   }, [offer]);
 
-  const isYouAreOriginMaker = publicKey?.toBase58() === originMaker;
+  const isYouAreOriginMaker = address === originMaker;
 
   const taxIncome = useMemo(() => {
     const ti = offer?.trade_tax || makerDetail?.trade_tax;

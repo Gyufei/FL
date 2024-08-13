@@ -1,8 +1,8 @@
-import { useWalletConnect } from "@/lib/hooks/web3/use-wallet-connect";
 import { useAtomValue, useSetAtom } from "jotai";
 import { WalletSelectDialogVisibleAtom } from "./wallet-select-dialog";
 import { cn } from "@/lib/utils/common";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 
 export default function WithWalletConnectBtn({
   onClick,
@@ -15,7 +15,7 @@ export default function WithWalletConnectBtn({
   shouldSignIn?: boolean;
   className?: string;
 }) {
-  const { connected } = useWalletConnect();
+  const { connected } = useWalletInfo();
 
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,

@@ -1,10 +1,9 @@
 import { ENetworks, NetworkAtom } from "@/lib/states/network";
-import toPubString from "@/lib/utils/pub-string";
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useAtomValue } from "jotai";
-import { useMemo } from "react";
-import { useAccount } from "wagmi";
+import { useCallback, useMemo } from "react";
+import { useAccount, useDisconnect } from "wagmi";
 
 export default function useWalletInfo() {
   const network = useAtomValue(NetworkAtom);
@@ -16,41 +15,43 @@ export default function useWalletInfo() {
     isConnecting: ethConnecting,
   } = useAccount();
 
+  const { disconnect: ethDisconnect } = useDisconnect();
+
   const {
     publicKey: solAddress,
     connected: solConnected,
     connecting: solConnecting,
+    disconnect: solDisconnect,
   } = useWallet();
 
-  const connected = useMemo(() => {
-    if (network === ENetworks.Eth) {
-      return ethConnected;
-    }
+  const getAboutChain = useCallback(
+    (ethThing: any, solThing: any) => {
+      if (network === ENetworks.Eth) {
+        return ethThing;
+      }
 
-    if (network === ENetworks.Solana) {
-      return solConnected;
-    }
-  }, [network, ethConnected, solConnected]);
+      if (network === ENetworks.Solana) {
+        return solThing;
+      }
+    },
+    [network],
+  );
+
+  const connected = useMemo(() => {
+    return getAboutChain(ethConnected, solConnected);
+  }, [getAboutChain, ethConnected, solConnected]);
 
   const connecting = useMemo(() => {
-    if (network === ENetworks.Eth) {
-      return ethConnecting;
-    }
-
-    if (network === ENetworks.Solana) {
-      return solConnecting;
-    }
-  }, [network, ethConnecting, solConnecting]);
+    return getAboutChain(ethConnecting, solConnecting);
+  }, [getAboutChain, ethConnecting, solConnecting]);
 
   const address = useMemo(() => {
-    if (network === ENetworks.Eth) {
-      return ethAddress;
-    }
+    return getAboutChain(ethAddress, solAddress?.toBase58());
+  }, [getAboutChain, ethAddress, solAddress]);
 
-    if (network === ENetworks.Solana) {
-      return toPubString(solAddress);
-    }
-  }, [network, ethAddress, solAddress]);
+  const disconnect = useMemo(() => {
+    return getAboutChain(ethDisconnect, solDisconnect);
+  }, [getAboutChain, ethDisconnect, solDisconnect]);
 
   const shortAddr = useMemo(() => {
     if (!address) return "";
@@ -65,5 +66,6 @@ export default function useWalletInfo() {
     shortAddr,
     connected,
     connecting,
+    disconnect,
   };
 }

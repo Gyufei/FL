@@ -4,15 +4,15 @@ import { useMemo, useState } from "react";
 import { TakerOrder, TakerOrders } from "./taker-orders";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useWallet } from "@solana/wallet-adapter-react";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useTranslations } from "next-intl";
+import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
 
 export default function OrderTabs({ order }: { order: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
   const [currentTab, setCurrentTab] = useState("orders");
 
-  const { publicKey } = useWallet();
+  const { address } = useWalletInfo();
 
   const { offerLogo, forLogo, orderEqTokenInfo, orderTokenInfo } =
     useOfferFormat({
@@ -26,7 +26,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
   const orders = useMemo(() => {
     if (!stocks) return [];
     const allStocks = onlyMe
-      ? stocks.filter((s: any) => s.authority === publicKey?.toBase58())
+      ? stocks.filter((s: any) => s.authority === address)
       : stocks;
     return allStocks.map((s: any) => {
       return {
@@ -41,7 +41,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
         order_id: s.stock_id,
       };
     }) as Array<TakerOrder>;
-  }, [stocks, onlyMe, publicKey]);
+  }, [stocks, onlyMe, address]);
 
   return (
     <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4 pb-6">

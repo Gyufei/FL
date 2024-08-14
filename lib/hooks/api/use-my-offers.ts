@@ -4,10 +4,10 @@ import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useOfferResFormat } from "../offer/use-offer-res-format";
-import useWalletInfo from "../web3/use-wallet-info";
+import { useChainWallet } from "../web3/use-chain-wallet";
 
 export function useMyOffers() {
-  const { address } = useWalletInfo();
+  const { address } = useChainWallet();
   const { apiEndPoint } = useEndPoint();
 
   const { offerResFieldFormat: orderResFieldFormat, isLoading } =

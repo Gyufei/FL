@@ -3,11 +3,11 @@ import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
 import useSWRMutation from "swr/mutation";
-import useWalletInfo from "../web3/use-wallet-info";
+import { useChainWallet } from "../web3/use-chain-wallet";
 
 export function useAccountOverview() {
   const { apiEndPoint } = useEndPoint();
-  const { address: wallet } = useWalletInfo();
+  const { address: wallet } = useChainWallet();
 
   const res = useSWR(
     wallet ? `${apiEndPoint}${Paths.accountOverview}?wallet=${wallet}` : null,

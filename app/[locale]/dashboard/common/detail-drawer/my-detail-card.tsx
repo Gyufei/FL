@@ -10,12 +10,12 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { isProduction } from "@/lib/PathMap";
-import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");
 
-  const { address } = useWalletInfo();
+  const { address } = useChainWallet();
 
   const { orderTokenInfo, orderPointInfo, duringTGE, makerDetail } =
     useOfferFormat({

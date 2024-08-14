@@ -5,7 +5,7 @@ import { useAtomValue } from "jotai";
 import { useCallback, useMemo } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 
-export default function useWalletInfo() {
+export function useChainWallet() {
   const network = useAtomValue(NetworkAtom);
 
   const {

@@ -72,7 +72,13 @@ export function NetworkSelect() {
   const { cluster, popOpen, setPopOpen, handleSelectNet } =
     UseSolanaNetworkSelect();
 
-  // const { handleConnectEth } = useEthNetworkSelect();
+  const { handleConnectEth } = useEthNetworkSelect();
+
+  function handleEthAction() {
+    if (!isProduction) {
+      handleConnectEth();
+    }
+  }
 
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -124,8 +130,8 @@ export function NetworkSelect() {
             isActive={cluster === WalletAdapterNetwork.Devnet}
           />
         )}
-        {/* <div
-          onClick={() => handleConnectEth()}
+        <div
+          onClick={() => handleEthAction()}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >
@@ -144,7 +150,7 @@ export function NetworkSelect() {
             alt="evm chains"
             className="z-10 bg-white"
           ></Image>
-        </div> */}
+        </div>
       </PopoverContent>
     </Popover>
   );

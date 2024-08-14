@@ -23,7 +23,7 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
-import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -59,7 +59,7 @@ export default function MyBalances() {
   const mbt = useTranslations("page-MyBalance");
   const [openPanel, setOpenPanel] = useState("taxIncomeData");
 
-  const { address: wallet } = useWalletInfo();
+  const { address: wallet } = useChainWallet();
 
   const { data: tokens } = useTokens();
 

@@ -1,35 +1,31 @@
-import { useWallet } from "@solana/wallet-adapter-react";
 import { useSignIn } from "../api/use-sign-in";
 import { useCallback } from "react";
-import base58 from "bs58";
 import { useSetAtom } from "jotai";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
+import { useChainWallet } from "./use-chain-wallet";
+import { useChainSignMessage } from "./use-chain-sign-message";
 
 export function useSignInAction() {
-  const { publicKey, signMessage } = useWallet();
+  const { address } = useChainWallet();
+  const { signMessage } = useChainSignMessage();
 
   const { trigger: signInApiAction } = useSignIn();
 
   const setToken = useSetAtom(AccessTokenAtom);
-  const setShowSignInDialog = useSetAtom(ShowSignDialogAtom)
+  const setShowSignInDialog = useSetAtom(ShowSignDialogAtom);
 
   const signInAction = useCallback(async () => {
     try {
-      // `publicKey` will be null if the wallet isn't connected
-      if (!publicKey) throw new Error("Wallet not connected!");
-      // `signMessage` will be undefined if the wallet doesn't support it
+      if (!address) throw new Error("Wallet not connected!");
       if (!signMessage)
         throw new Error("Wallet does not support message signing!");
-      // Encode anything as bytes
-      const message = new TextEncoder().encode("Welcome to Tadle!");
-      // Sign the bytes using the wallet
-      const signature = await signMessage(message);
-      // Verify that the bytes were signed using the private key that matches the known public key
-      const signatureStr = base58.encode(signature);
+      const message = "Welcome to Tadle!";
+      const signatureStr = await signMessage(message);
+      console.log("signatureStr", signatureStr, 123);
 
       const res = await signInApiAction({
-        wallet: publicKey.toBase58(),
-        signature: signatureStr,
+        wallet: address,
+        signature: signatureStr || "",
         ts: String(Math.floor(Date.now() / 1000)),
       });
 
@@ -40,9 +36,9 @@ export function useSignInAction() {
     } catch (error: any) {
       console.log("error", `Sign Message failed! ${error?.message}`);
     }
-  }, [publicKey, signMessage, signInApiAction, setToken, setShowSignInDialog]);
+  }, [address, signMessage, signInApiAction, setToken, setShowSignInDialog]);
 
   return {
     signInAction,
-  }
+  };
 }

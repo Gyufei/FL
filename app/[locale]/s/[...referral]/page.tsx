@@ -3,13 +3,13 @@ import Image from "next/image";
 import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { useRouter } from "@/app/navigation";
 import { useEffect, useMemo } from "react";
-import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function ReferralPage({ params }: { params: any }) {
   const referral = params.referral[0];
   const router = useRouter();
 
-  const { address } = useWalletInfo();
+  const { address } = useChainWallet();
 
   const { data: codeData, isLoading } = useReferralCodeData({
     code: referral,

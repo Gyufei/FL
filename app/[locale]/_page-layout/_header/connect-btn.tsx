@@ -18,7 +18,7 @@ import { usePathname, useRouter } from "@/app/navigation";
 import { useReferralView } from "@/lib/hooks/api/use-referral";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { ENetworks, NetworkAtom } from "@/lib/states/network";
-import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -45,7 +45,7 @@ export default function ConnectBtn() {
     }
   }, [setWalletSelectDialogVisible, network, wcModalOpen]);
 
-  const { address, shortAddr, connected, connecting } = useWalletInfo();
+  const { address, shortAddr, connected, connecting } = useChainWallet();
 
   const token = useAtomValue(AccessTokenAtom);
   const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
@@ -223,7 +223,7 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
 
 function SignOutBtn() {
   const t = useTranslations("Header");
-  const { disconnect } = useWalletInfo();
+  const { disconnect } = useChainWallet();
   const setToken = useSetAtom(AccessTokenAtom);
 
   const handleDisconnect = () => {

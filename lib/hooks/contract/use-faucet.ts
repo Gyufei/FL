@@ -35,14 +35,14 @@ export function useFaucet() {
     clusterConfig.program.faucet?.systemConfig || SolanaZeroed,
   );
   const poolTokenAuthority = new PublicKey(
-    clusterConfig.program.faucet?.poolTokenAuthority || SolanaZeroed
+    clusterConfig.program.faucet?.poolTokenAuthority || SolanaZeroed,
   );
 
   const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
 
   const poolUsdcTokenAccount = new PublicKey(
     clusterConfig.program.faucet?.poolTokenAccount || SolanaZeroed,
-  )
+  );
 
   const writeAction = async () => {
     const userUsdcTokenAccount = await getAssociatedTokenAddress(
@@ -52,7 +52,6 @@ export function useFaucet() {
       tokenProgram,
       associatedTokenProgram,
     );
-
 
     const tokenConfig = PublicKey.findProgramAddressSync(
       [

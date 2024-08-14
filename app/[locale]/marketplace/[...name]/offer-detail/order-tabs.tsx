@@ -6,13 +6,13 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
 import { useTranslations } from "next-intl";
-import useWalletInfo from "@/lib/hooks/web3/use-wallet-info";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function OrderTabs({ order }: { order: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
   const [currentTab, setCurrentTab] = useState("orders");
 
-  const { address } = useWalletInfo();
+  const { address } = useChainWallet();
 
   const { offerLogo, forLogo, orderEqTokenInfo, orderTokenInfo } =
     useOfferFormat({

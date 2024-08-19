@@ -11,10 +11,10 @@ import MyDetailCard from "./my-detail-card";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function MyAskDetail({
   order: order,
@@ -36,12 +36,12 @@ export default function MyAskDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
-    isSol,
+    isSolStable,
   } = useOfferFormat({
     offer: order,
   });
 
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
@@ -60,7 +60,7 @@ export default function MyAskDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
-    isSol,
+    isSolStable,
   });
 
   const {
@@ -72,7 +72,7 @@ export default function MyAskDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
-    isSol,
+    isSolStable,
   });
 
   function handleClose() {
@@ -102,7 +102,7 @@ export default function MyAskDetail({
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={order.marketplace.projectLogo}
-            img2={currentChain.logo}
+            img2={currentChainInfo.logo}
             name={order.marketplace.market_name}
             no={order.offer_id}
             progress={progress}

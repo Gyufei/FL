@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { useClusterConfig } from "./use-cluster-config";
+import { useSolanaConfig } from "./use-solana-config";
 import { useAtomValue } from "jotai";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/cluster";
 
 export function useRpc() {
-  const { clusterConfig } = useClusterConfig();
+  const { clusterConfig } = useSolanaConfig();
 
   const globalRpcs = useAtomValue(GlobalRpcsAtom);
   const customRpcs = useAtomValue(CustomRpcsAtom);

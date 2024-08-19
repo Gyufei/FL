@@ -1,12 +1,11 @@
-import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useAtomValue } from "jotai";
 import { useCallback, useMemo } from "react";
 import { useAccount, useDisconnect } from "wagmi";
+import { useCurrentChain } from "./use-current-chain";
 
 export function useChainWallet() {
-  const network = useAtomValue(NetworkAtom);
+  const { isEth, isSolana } = useCurrentChain();
 
   const {
     address: ethAddress,
@@ -26,15 +25,15 @@ export function useChainWallet() {
 
   const getAboutChain = useCallback(
     (ethThing: any, solThing: any) => {
-      if (network === ENetworks.Eth) {
+      if (isEth) {
         return ethThing;
       }
 
-      if (network === ENetworks.Solana) {
+      if (isSolana) {
         return solThing;
       }
     },
-    [network],
+    [isEth, isSolana],
   );
 
   const connected = useMemo(() => {

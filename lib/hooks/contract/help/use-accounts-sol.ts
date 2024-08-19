@@ -6,11 +6,11 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useClusterConfig } from "../../web3/use-cluster-config";
+import { useSolanaConfig } from "../../web3/use-solana-config";
 
-export function useAccounts() {
+export function useAccountsSol() {
   const { publicKey: authority } = useWallet();
-  const { clusterConfig } = useClusterConfig();
+  const { clusterConfig } = useSolanaConfig();
 
   async function getAccounts(programId: PublicKey) {
     const tokenProgram = TOKEN_PROGRAM_ID;
@@ -21,20 +21,18 @@ export function useAccounts() {
 
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
     const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
-    const wsolTokenMint = new PublicKey("So11111111111111111111111111111111111111112");
+    const wsolTokenMint = new PublicKey(
+      "So11111111111111111111111111111111111111112",
+    );
 
     const systemConfig = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("system_config")
-      ],
-      programId
+      [Buffer.from("system_config")],
+      programId,
     )[0];
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
-      [
-        systemConfig.toBuffer()
-      ],
-      programId
+      [systemConfig.toBuffer()],
+      programId,
     )[0];
 
     const userSolTokenAccount = PublicKey.default;
@@ -58,19 +56,19 @@ export function useAccounts() {
     const poolUsdcTokenAccount = await getAssociatedTokenAddress(
       usdcTokenMint,
       poolTokenAuthority,
-      true
+      true,
     );
 
     const poolSolTokenAccount = await getAssociatedTokenAddress(
       wsolTokenMint,
       poolTokenAuthority,
-      true
-    )
+      true,
+    );
 
     const poolPointsTokenAccount = await getAssociatedTokenAddress(
       pointTokenMint,
       poolTokenAuthority,
-      true
+      true,
     );
 
     const userConfig = PublicKey.findProgramAddressSync(
@@ -100,36 +98,43 @@ export function useAccounts() {
     };
   }
 
-  async function getWalletBalanceAccount(programId: PublicKey,  wallet: PublicKey, marketPlace: PublicKey, isSol = false) {
+  async function getWalletBalanceAccount(
+    programId: PublicKey,
+    wallet: PublicKey,
+    marketPlace: PublicKey,
+    isSolStable = false,
+  ) {
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
-    const wsolTokenMint = new PublicKey("So11111111111111111111111111111111111111112");
+    const wsolTokenMint = new PublicKey(
+      "So11111111111111111111111111111111111111112",
+    );
 
     const walletBaseTokenBalance = PublicKey.findProgramAddressSync(
       [
         Buffer.from("token_balance"),
-        (isSol ? wsolTokenMint : usdcTokenMint ).toBuffer(),
-        wallet.toBuffer()
+        (isSolStable ? wsolTokenMint : usdcTokenMint).toBuffer(),
+        wallet.toBuffer(),
       ],
-      programId
+      programId,
     )[0];
 
     const walletPointTokenBalance = PublicKey.findProgramAddressSync(
       [
         Buffer.from("point_token_balance"),
         marketPlace.toBuffer(),
-        wallet.toBuffer()
+        wallet.toBuffer(),
       ],
-      programId
+      programId,
     )[0];
 
     return {
       walletBaseTokenBalance,
       walletPointTokenBalance,
-    }
+    };
   }
 
   return {
     getAccounts,
-    getWalletBalanceAccount
+    getWalletBalanceAccount,
   };
 }

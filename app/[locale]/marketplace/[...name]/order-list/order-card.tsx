@@ -15,7 +15,7 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useMemo } from "react";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -37,7 +37,7 @@ export function OrderCard({ order }: { order: IOffer }) {
     offer: order,
   });
 
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   const orderType = order.offer_type;
 
@@ -59,7 +59,7 @@ export function OrderCard({ order }: { order: IOffer }) {
         <div className="flex items-center space-x-3">
           <TokenPairImg
             src1={order.marketplace.projectLogo}
-            src2={currentChain.logo}
+            src2={currentChainInfo.logo}
             width1={48}
             height1={48}
           />

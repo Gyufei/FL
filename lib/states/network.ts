@@ -1,3 +1,4 @@
+import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 export enum ENetworks {
@@ -8,3 +9,5 @@ export const NetworkAtom = atomWithStorage<ENetworks>(
   "network",
   ENetworks.Solana,
 );
+export const IsEthAtom = atom((get) => get(NetworkAtom) === ENetworks.Eth);
+export const IsSolanaAtom = atom((get) => get(NetworkAtom) === ENetworks.Solana);

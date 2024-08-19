@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
-import { useMakerDetail } from "../api/use-maker-detail";
+import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 import { isProduction } from "@/lib/PathMap";
-import { useTokensInfo } from "../api/token/use-token-info";
-import { useTokenPrice } from "../api/token/use-token-price";
+import { useTokensInfo } from "@/lib/hooks/api/token/use-token-info";
+import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail(
@@ -24,7 +24,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
 
-  const isSol = orderTokenInfo?.symbol === "SOL";
+  const isSolStable = orderTokenInfo?.symbol === "SOL";
 
   const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || "");
 
@@ -147,6 +147,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     isCanSettle,
     isSettled,
     makerDetail,
-    isSol,
+    isSolStable,
   };
 }

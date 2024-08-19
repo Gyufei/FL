@@ -1,17 +1,10 @@
 import Image from "next/image";
-import { useAtomValue } from "jotai";
-import { ClusterAtom } from "@/lib/states/cluster";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import SolanaDevIcon from "@/components/share/solana-dev-icon";
-import { ENetworks, NetworkAtom } from "@/lib/states/network";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { isProduction } from "@/lib/PathMap";
 
 export default function CurrChainLogo() {
-  const network = useAtomValue(NetworkAtom);
-  const cluster = useAtomValue(ClusterAtom);
-
-  const isEth = network === ENetworks.Eth;
-  const isSolana = network === ENetworks.Solana;
-  const isSolMainnet = cluster === WalletAdapterNetwork.Mainnet;
+  const { isEth, isSolana } = useCurrentChain();
 
   return (
     <div className="relative flex items-center justify-center">
@@ -26,7 +19,7 @@ export default function CurrChainLogo() {
       )}
       {isSolana && (
         <>
-          {isSolMainnet ? (
+          {isProduction ? (
             <Image
               width={24}
               height={24}
@@ -41,7 +34,7 @@ export default function CurrChainLogo() {
       )}
       <span className="hidden text-base leading-6 text-black sm:inline-block">
         {isEth && <>Ethereum</>}
-        {isSolana && <>{isSolMainnet ? "Solana" : "Solana Dev"}</>}
+        {isSolana && <>{isProduction ? "Solana" : "Solana Dev"}</>}
       </span>
     </div>
   );

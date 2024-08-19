@@ -21,7 +21,7 @@ import { IOffer } from "@/lib/types/offer";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
@@ -244,7 +244,7 @@ export function OrderTable({
 }
 
 function OrderItem({ order }: { order: IOffer }) {
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   return (
     <div className="relative h-fit w-fit">
@@ -257,7 +257,7 @@ function OrderItem({ order }: { order: IOffer }) {
       />
       <div className="absolute right-0 bottom-0 flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white bg-white">
         <Image
-          src={currentChain.logo}
+          src={currentChainInfo.logo}
           width={14}
           height={14}
           alt="avatar"

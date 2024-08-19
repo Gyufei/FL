@@ -1,12 +1,11 @@
-import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useAtomValue } from "jotai";
 import { useCallback, useMemo } from "react";
 import { useSignMessage } from "wagmi";
 import base58 from "bs58";
+import { useCurrentChain } from "./use-current-chain";
 
 export function useChainSignMessage() {
-  const network = useAtomValue(NetworkAtom);
+  const { isEth, isSolana } = useCurrentChain();
 
   const { signMessageAsync: ethSignMessage } = useSignMessage();
 
@@ -32,14 +31,14 @@ export function useChainSignMessage() {
   );
 
   const signMessage = useMemo(() => {
-    if (network === ENetworks.Eth) {
+    if (isEth) {
       return ethSignAction;
     }
 
-    if (network === ENetworks.Solana) {
+    if (isSolana) {
       return solSignAction;
     }
-  }, [network, ethSignAction, solSignAction]);
+  }, [isEth, isSolana, ethSignAction, solSignAction]);
 
   return {
     signMessage,

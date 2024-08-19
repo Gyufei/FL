@@ -4,8 +4,8 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useStockResFormat } from "../stock/use-stock-res-format";
 import { IStock } from "@/lib/types/stock";
-import { SolanaZeroed } from "@/lib/constant";
-import { useChainWallet } from "../web3/use-chain-wallet";
+import { SolanaZeroed } from "@/lib/const/solana";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export function useMyStocks() {
   const { address } = useChainWallet();

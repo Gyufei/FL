@@ -101,6 +101,9 @@ dependencies:
   '@vercel/og':
     specifier: ^0.0.26
     version: 0.0.26
+  '@wagmi/core':
+    specifier: ^2.13.4
+    version: 2.13.4(@types/react@18.0.26)(react@18.2.0)(typescript@5.2.2)(viem@2.19.3)
   '@web3modal/wagmi':
     specifier: ^5.0.11
     version: 5.0.11(@types/react@18.0.26)(@wagmi/connectors@5.1.5)(@wagmi/core@2.13.4)(react-dom@18.2.0)(react@18.2.0)(viem@2.19.3)(wagmi@2.12.5)
@@ -2936,6 +2939,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: false
     bundledDependencies:
       - napi-wasm
@@ -5898,7 +5902,7 @@ packages:
       ripple-lib: 1.10.1
       socks-proxy-agent: 6.1.1
       tslib: 2.6.2
-      ws: 8.17.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -8394,14 +8398,6 @@ packages:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-    dev: false
-
-  /bufferutil@4.0.7:
-    resolution: {integrity: sha512-kukuqc39WOHtdxtw4UScxF/WVnMFVSQVKhtx3AjZJzhd0RGZZldcrfSEbVsWWe6KNH253574cq5F+wpv0G9pJw==}
-    engines: {node: '>=6.14.2'}
-    requiresBuild: true
-    dependencies:
-      node-gyp-build: 4.6.1
     dev: false
 
   /bufferutil@4.0.8:
@@ -11116,7 +11112,7 @@ packages:
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.17.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     dev: false
 
   /iterator.prototype@1.1.0:
@@ -12207,6 +12203,10 @@ packages:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
+    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
@@ -13718,9 +13718,9 @@ packages:
       '@babel/runtime': 7.23.9
       eventemitter3: 4.0.7
       uuid: 8.3.2
-      ws: 8.17.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     optionalDependencies:
-      bufferutil: 4.0.7
+      bufferutil: 4.0.8
       utf-8-validate: 5.0.10
     dev: false
 
@@ -14953,7 +14953,7 @@ packages:
       isows: 1.0.4(ws@8.17.1)
       typescript: 5.2.2
       webauthn-p256: 0.0.5
-      ws: 8.17.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -15208,7 +15208,7 @@ packages:
         optional: true
     dev: false
 
-  /ws@8.17.1(bufferutil@4.0.7)(utf-8-validate@5.0.10):
+  /ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -15220,7 +15220,7 @@ packages:
       utf-8-validate:
         optional: true
     dependencies:
-      bufferutil: 4.0.7
+      bufferutil: 4.0.8
       utf-8-validate: 5.0.10
     dev: false
 

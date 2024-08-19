@@ -9,8 +9,8 @@ export const projectId = "554bbd76b2e66a095d2d38490bb42983"; // process.env.NEXT
 if (!projectId) throw new Error("Project ID is not defined");
 
 export const metadata = {
-  name: "AppKit",
-  description: "AppKit Example",
+  name: "Tadle",
+  description: "Tadle",
   url: "https://tadle.com", // origin must match your domain & subdomain
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };

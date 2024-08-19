@@ -116,7 +116,7 @@ export function BuyContent({
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
-      isSol: payToken?.symbol === "SOL",
+      isSolStable: payToken?.symbol === "SOL",
     });
   }
 

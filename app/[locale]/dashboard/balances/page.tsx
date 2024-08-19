@@ -266,7 +266,7 @@ export default function MyBalances() {
   function handleWithdrawToken(mode: IBalanceType, tokenName: string) {
     if (isWdTokenLoading) return;
     wdTokenAction({
-      isSol: tokenName === "SOL",
+      isSolStable: tokenName === "SOL",
       mode,
     });
   }

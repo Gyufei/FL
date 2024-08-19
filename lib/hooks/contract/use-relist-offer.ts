@@ -1,82 +1,27 @@
-import useTadleProgram from "../web3/use-tadle-program";
-import useTxStatus from "./help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "../api/use-transactionRecord";
-import { useAccounts } from "./help/use-accounts";
-import { useBuildTransaction } from "./help/use-build-transaction";
+import { useRelistOfferEth } from "./eth/use-relist-offer-eth";
+import { useChainTx } from "./help/use-chain-tx";
+import { useRelistOfferSol } from "./solana/use-relist-offer-sol";
 
 export function useRelistOffer({
   marketplaceStr,
   makerStr,
   offerStr,
   stockStr,
-  isSol,
+  isSolStable,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
   stockStr: string;
-  isSol: boolean;
+  isSolStable: boolean;
 }) {
-  const { program } = useTadleProgram();
-  const { buildTransaction } = useBuildTransaction();
-  const { recordTransaction } = useTransactionRecord();
-  const { getAccounts } = useAccounts();
+  const chainActionRes = useChainTx(useRelistOfferEth, useRelistOfferSol, {
+    marketplaceStr,
+    makerStr,
+    offerStr,
+    stockStr,
+    isSolStable,
+  });
 
-  const writeAction = async () => {
-    const {
-      tokenProgram,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      userUsdcTokenAccount,
-      poolUsdcTokenAccount,
-      poolSolTokenAccount,
-      usdcTokenMint,
-      wsolTokenMint,
-      userSolTokenAccount,
-    } = await getAccounts(program.programId);
-
-    const marketPlace = new PublicKey(marketplaceStr);
-    const offerD = new PublicKey(offerStr);
-    const maker = new PublicKey(makerStr);
-    const stockD = new PublicKey(stockStr);
-
-    const methodTransaction = await program.methods
-      .relist()
-      .accounts({
-        authority: authority,
-        systemConfig,
-        offer: offerD,
-        stock: stockD,
-
-        poolTokenAccount: isSol ? poolSolTokenAccount :  poolUsdcTokenAccount,
-        maker,
-        marketPlace,
-        tokenMint: isSol ? wsolTokenMint :  usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-      }).remainingAccounts([
-        {
-          pubkey: isSol ? userSolTokenAccount : userUsdcTokenAccount,
-          isSigner: false,
-          isWritable: true
-        }
-      ]).transaction();
-
-    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
-
-    await recordTransaction({
-      txHash,
-      note: "",
-    });
-
-    return txHash;
-  };
-
-  const wrapRes = useTxStatus(writeAction);
-
-  return wrapRes;
+  return chainActionRes;
 }

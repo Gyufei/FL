@@ -3,7 +3,7 @@ import Image from "next/image";
 import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IStock } from "@/lib/types/stock";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
@@ -41,7 +41,7 @@ export default function StockCard({
     offer: stock.pre_offer_detail,
   });
 
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   const isCanList = !afterTGE && !afterTGEPeriod && !isAskStock && !stock.offer;
 
@@ -62,7 +62,7 @@ export default function StockCard({
         >
           <TokenPairImg
             src1={stock.marketplace?.projectLogo}
-            src2={currentChain.logo}
+            src2={currentChainInfo.logo}
             width1={48}
             height1={48}
             width2={8.8}

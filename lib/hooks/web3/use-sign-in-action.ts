@@ -1,4 +1,4 @@
-import { useSignIn } from "../api/use-sign-in";
+import { useSignIn } from "@/lib/hooks/api/use-sign-in";
 import { useCallback } from "react";
 import { useSetAtom } from "jotai";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";

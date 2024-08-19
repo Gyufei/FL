@@ -1,9 +1,6 @@
-import useTadleProgram from "../web3/use-tadle-program";
-import useTxStatus from "./help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "../api/use-transactionRecord";
-import { useAccounts } from "./help/use-accounts";
-import { useBuildTransaction } from "./help/use-build-transaction";
+import { useUpdateReferralEth } from "./eth/use-update-referral-eth";
+import { useChainTx } from "./help/use-chain-tx";
+import { useUpdateReferralSol } from "./solana/use-update-referral-sol";
 
 export function useUpdateReferral({
   referrerStr,
@@ -12,60 +9,10 @@ export function useUpdateReferral({
   referrerStr: string;
   referralCode: string;
 }) {
-  const { program } = useTadleProgram();
-  const { getAccounts } = useAccounts();
+  const actionRes = useChainTx(useUpdateReferralEth, useUpdateReferralSol, {
+    referrerStr,
+    referralCode,
+  });
 
-  const { buildTransaction } = useBuildTransaction();
-  const { recordTransaction } = useTransactionRecord();
-
-  const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts(
-      program.programId,
-    );
-
-    const referrer = new PublicKey(referrerStr);
-
-    const referralCodeData = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("create_referral_code"),
-        Buffer.from(referralCode),
-        referrer.toBuffer(),
-      ],
-      program.programId,
-    )[0];
-
-    const referralConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("referral_config"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    const methodTransaction = await program.methods
-      .updateReferralConfig(referrer, referralCode)
-      .accounts({
-        authority: authority!,
-        systemConfig,
-        referralCodeData,
-        referralConfig,
-        systemProgram,
-      })
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
-
-    await recordTransaction({
-      txHash,
-      note: "",
-    });
-
-    return txHash;
-  };
-
-  const wrapRes = useTxStatus(writeAction);
-
-  return wrapRes;
+  return actionRes;
 }

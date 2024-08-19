@@ -9,19 +9,20 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRpcLatency } from "@/lib/hooks/web3/use-rpc-latency";
-import { CustomRpcsAtom, GlobalRpcsAtom, RPCS } from "@/lib/states/cluster";
+import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useClusterConfig } from "@/lib/hooks/web3/use-cluster-config";
+import { useSolanaConfig } from "@/lib/hooks/web3/use-solana-config";
 import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
 import { Connection } from "@solana/web3.js";
 import { isPreview, isProduction } from "@/lib/PathMap";
 import { getDomainName } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
+import { RPCS } from "@/lib/const/solana";
 
 export default function FooterSetting() {
   const ct = useTranslations("pop-Setting");
-  const { setClusterType, clusterConfig } = useClusterConfig();
+  const { clusterConfig } = useSolanaConfig();
   const [globalRpc, setGlobalRpc] = useAtom(GlobalRpcsAtom);
   const [customRpc, setCustomRpc] = useAtom(CustomRpcsAtom);
 
@@ -68,10 +69,6 @@ export default function FooterSetting() {
     setInputRpcActive(false);
     setInputRpcError(false);
     setShowInput(true);
-
-    if (network !== clusterConfig.network) {
-      setClusterType(network);
-    }
   }
 
   async function handleLinkCustomRpc() {
@@ -160,7 +157,9 @@ export default function FooterSetting() {
         </div>
 
         <div className="mt-4 flex flex-col space-y-2">
-          <div className="text-sm leading-5 text-black">{ct("cap-Networks")}</div>
+          <div className="text-sm leading-5 text-black">
+            {ct("cap-Networks")}
+          </div>
           {!isPreview && (
             <NetItem
               name="Tadle RPC 1"

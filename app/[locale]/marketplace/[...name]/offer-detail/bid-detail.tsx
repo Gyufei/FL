@@ -9,7 +9,7 @@ import OrderTabs from "./order-tabs";
 import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
@@ -36,12 +36,12 @@ export default function BidDetail({
     isFilled,
     orderTokenInfo,
     makerDetail,
-    isSol,
+    isSolStable,
   } = useOfferFormat({
     offer: order,
   });
 
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -74,7 +74,7 @@ export default function BidDetail({
     originOfferStr: makerDetail?.origin_offer || "",
     originOfferAuthStr: order.origin_offer_detail?.authority,
     referrerStr: referrer || "",
-    isSol,
+    isSolStable,
   });
 
   function handleSliderChange(v: number) {
@@ -106,7 +106,7 @@ export default function BidDetail({
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={order.marketplace.projectLogo}
-            img2={currentChain.logo}
+            img2={currentChainInfo.logo}
             name={order.marketplace.market_name}
             no={order.offer_id}
             progress={progress}

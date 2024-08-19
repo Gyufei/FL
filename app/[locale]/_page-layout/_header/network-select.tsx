@@ -17,31 +17,27 @@ import {
 } from "@/components/ui/drawer";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAtom } from "jotai";
-import { ClusterAtom } from "@/lib/states/cluster";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { useSetAtom } from "jotai";
 import { DevnetRow } from "./devnet-row";
 import { isPreview, isProduction } from "@/lib/PathMap";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { ENetworks, NetworkAtom } from "@/lib/states/network";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 function UseSolanaNetworkSelect() {
-  const [network, setNetwork] = useAtom(NetworkAtom);
-  const [cluster, setCluster] = useAtom(ClusterAtom);
+  const setNetwork = useSetAtom(NetworkAtom);
 
   const [popOpen, setPopOpen] = useState(false);
 
-  const handleSelectNet = async (c: WalletAdapterNetwork) => {
-    if (network !== ENetworks.Solana) {
+  const { isSolana } = useCurrentChain();
+
+  const handleSelectNet = async () => {
+    if (!isSolana) {
       setNetwork(ENetworks.Solana);
     }
-    if (c === cluster) return;
-    setCluster(c);
   };
 
   return {
-    cluster,
-    setCluster,
     popOpen,
     setPopOpen,
     handleSelectNet,
@@ -49,12 +45,13 @@ function UseSolanaNetworkSelect() {
 }
 
 function useEthNetworkSelect() {
-  const [network, setNetwork] = useAtom(NetworkAtom);
-  // const { address, isConnected, isDisconnected } = useAccount();
+  const setNetwork = useSetAtom(NetworkAtom);
   const { open: wcModalOpen } = useWeb3Modal();
 
+  const { isEth } = useCurrentChain();
+
   function handleConnectEth() {
-    if (network === ENetworks.Eth) return;
+    if (isEth) return;
     setNetwork(ENetworks.Eth);
     wcModalOpen();
   }
@@ -69,8 +66,7 @@ const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
 });
 
 export function NetworkSelect() {
-  const { cluster, popOpen, setPopOpen, handleSelectNet } =
-    UseSolanaNetworkSelect();
+  const { popOpen, setPopOpen, handleSelectNet } = UseSolanaNetworkSelect();
 
   const { handleConnectEth } = useEthNetworkSelect();
 
@@ -108,10 +104,8 @@ export function NetworkSelect() {
       >
         {!isPreview && (
           <div
-            onClick={() => handleSelectNet(WalletAdapterNetwork.Mainnet)}
-            data-state={
-              WalletAdapterNetwork.Mainnet === cluster ? "active" : "inactive"
-            }
+            onClick={() => handleSelectNet()}
+            data-state={isProduction ? "active" : "inactive"}
             className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
           >
             <Image
@@ -126,8 +120,8 @@ export function NetworkSelect() {
         )}
         {!isProduction && (
           <DevnetRow
-            onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
-            isActive={cluster === WalletAdapterNetwork.Devnet}
+            onClick={() => handleSelectNet()}
+            isActive={!isProduction}
           />
         )}
         <div
@@ -157,8 +151,7 @@ export function NetworkSelect() {
 }
 
 export function MbNetworkSelect() {
-  const { cluster, popOpen, setPopOpen, handleSelectNet } =
-    UseSolanaNetworkSelect();
+  const { popOpen, setPopOpen, handleSelectNet } = UseSolanaNetworkSelect();
 
   const { handleConnectEth } = useEthNetworkSelect();
 
@@ -180,10 +173,8 @@ export function MbNetworkSelect() {
       <DrawerContent className="p-2 pt-4">
         <DrawerTitle className="text-center">Network switching</DrawerTitle>
         <div
-          onClick={() => handleSelectNet(WalletAdapterNetwork.Mainnet)}
-          data-state={
-            WalletAdapterNetwork.Mainnet === cluster ? "active" : "inactive"
-          }
+          onClick={() => handleSelectNet()}
+          data-state={isProduction ? "active" : "inactive"}
           className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
         >
           <Image
@@ -195,10 +186,7 @@ export function MbNetworkSelect() {
           />
           <div className="flex-1 text-xs">Solana</div>
         </div>
-        <DevnetRow
-          onClick={() => handleSelectNet(WalletAdapterNetwork.Devnet)}
-          isActive={WalletAdapterNetwork.Devnet === cluster}
-        />
+        <DevnetRow onClick={() => handleSelectNet()} isActive={!isProduction} />
         <div
           onClick={() => handleConnectEth()}
           data-state={"inactive"}

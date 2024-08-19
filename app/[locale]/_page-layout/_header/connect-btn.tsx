@@ -17,14 +17,14 @@ import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useReferralView } from "@/lib/hooks/api/use-referral";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
   const t = useTranslations("Header");
 
-  const network = useAtomValue(NetworkAtom);
+  const { isEth, isSolana } = useCurrentChain();
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
   );
@@ -36,14 +36,14 @@ export default function ConnectBtn() {
 
   const { open: wcModalOpen } = useWeb3Modal();
   const openSolWalletSelectDialog = useCallback(() => {
-    if (network === ENetworks.Eth) {
+    if (isEth) {
       wcModalOpen();
     }
 
-    if (network === ENetworks.Solana) {
+    if (isSolana) {
       setWalletSelectDialogVisible(true);
     }
-  }, [setWalletSelectDialogVisible, network, wcModalOpen]);
+  }, [setWalletSelectDialogVisible, isEth, isSolana, wcModalOpen]);
 
   const { address, shortAddr, connected, connecting } = useChainWallet();
 

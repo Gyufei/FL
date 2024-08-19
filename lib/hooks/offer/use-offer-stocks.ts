@@ -1,5 +1,5 @@
 import { IOffer } from "@/lib/types/offer";
-import { useMarketStocks } from "../api/use-market-stocks";
+import { useMarketStocks } from "@/lib/hooks/api/use-market-stocks";
 import { useMemo } from "react";
 
 export default function useOfferStocks({

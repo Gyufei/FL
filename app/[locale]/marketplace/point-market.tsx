@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { formatNum } from "@/lib/utils/number";
 import { format } from "date-fns";
 import useTge from "@/lib/hooks/marketplace/useTge";
@@ -25,7 +25,7 @@ export default function PointMarket({ className }: { className?: string }) {
 
   const { checkIsDuringTge } = useTge();
 
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   const theme = useTheme({
     Table: `
@@ -122,7 +122,7 @@ export default function PointMarket({ className }: { className?: string }) {
           >
             <TokenPairImg
               src1={item?.projectLogo}
-              src2={currentChain.logo}
+              src2={currentChainInfo.logo}
               width1={32}
               height1={32}
               width2={14}

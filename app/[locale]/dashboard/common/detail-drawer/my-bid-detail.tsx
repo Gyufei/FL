@@ -7,13 +7,13 @@ import MyDetailCard from "./my-detail-card";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useEffect, useMemo } from "react";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
 import { useTranslations } from "next-intl";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function MyBidDetail({
   order,
@@ -35,12 +35,12 @@ export default function MyBidDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
-    isSol,
+    isSolStable,
   } = useOfferFormat({
     offer: order,
   });
 
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   const {
     isLoading: isClosing,
@@ -51,7 +51,7 @@ export default function MyBidDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
-    isSol,
+    isSolStable,
   });
 
   const {
@@ -63,7 +63,7 @@ export default function MyBidDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
-    isSol,
+    isSolStable,
   });
 
   const {
@@ -74,7 +74,7 @@ export default function MyBidDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
-    isSol,
+    isSolStable,
   });
 
   function handleClose() {
@@ -111,7 +111,7 @@ export default function MyBidDetail({
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={order.marketplace.projectLogo}
-            img2={currentChain.logo}
+            img2={currentChainInfo.logo}
             name={order.marketplace.market_name}
             no={order.offer_id}
             progress={progress}

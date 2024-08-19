@@ -1,8 +1,8 @@
-import { SolanaZeroed } from "@/lib/constant";
-import { useMarketplaces } from "../api/use-marketplaces";
+import { SolanaZeroed } from "@/lib/const/solana";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
-import { useEndPoint } from "../api/use-endpoint";
+import { useEndPoint } from "@/lib/hooks/api/use-endpoint";
 
 const MarketOffersMap: Record<string, any> = {}
 

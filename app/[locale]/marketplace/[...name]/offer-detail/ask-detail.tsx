@@ -10,7 +10,7 @@ import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useCurrentChain } from "@/lib/hooks/web3/use-chain";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
@@ -31,7 +31,7 @@ export default function AskDetail({
   const referrer = referrerData?.data;
 
   const { platformFee } = useGlobalConfig();
-  const { currentChain } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
   const {
     tokenPrice,
     progress,
@@ -42,7 +42,7 @@ export default function AskDetail({
     isFilled,
     orderTokenInfo,
     makerDetail,
-    isSol,
+    isSolStable,
   } = useOfferFormat({
     offer,
   });
@@ -64,7 +64,7 @@ export default function AskDetail({
     preOfferAuthStr: offer.authority,
     originOfferAuthStr: offer.origin_offer_detail?.authority,
     referrerStr: referrer || "",
-    isSol,
+    isSolStable,
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
@@ -114,7 +114,7 @@ export default function AskDetail({
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={currentChain.logo}
+            img2={currentChainInfo.logo}
             name={offer.marketplace.market_name}
             no={offer.offer_id}
             progress={progress}

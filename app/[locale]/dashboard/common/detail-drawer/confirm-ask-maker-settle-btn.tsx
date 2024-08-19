@@ -9,7 +9,7 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr,
   settleAmount,
   onSuccess,
-  isSol,
+  isSolStable,
 }: {
   isStocksLoading: boolean;
   marketplaceStr: string;
@@ -17,7 +17,7 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr: string;
   settleAmount: number;
   onSuccess: () => void;
-  isSol: boolean;
+  isSolStable: boolean;
 }) {
   const {
     isLoading,
@@ -27,7 +27,7 @@ export default function ConfirmAskMakerSettleBtn({
     marketplaceStr,
     offerStr: orderStr,
     makerStr,
-    isSol,
+    isSolStable,
   });
 
   function handleConfirm() {

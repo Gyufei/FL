@@ -1,12 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
-import { TadleAbi } from "@/lib/abi/tadle";
+import { TadleAbi } from "@/lib/abi/solana/tadle";
 import useProvider from "./use-provider";
-import { useClusterConfig } from "./use-cluster-config";
+import { useSolanaConfig } from "./use-solana-config";
 
 export default function useTadleProgram() {
   const { provider } = useProvider();
-  const { clusterConfig } = useClusterConfig();
+  const { clusterConfig } = useSolanaConfig();
 
   const programId = new PublicKey(clusterConfig.program.tadleProgram);
   const program = new anchor.Program(TadleAbi as any, programId, provider);

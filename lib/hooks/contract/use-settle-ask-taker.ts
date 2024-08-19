@@ -1,10 +1,6 @@
-import useTadleProgram from "../web3/use-tadle-program";
-import useTxStatus from "./help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { BN } from "bn.js";
-import { useTransactionRecord } from "../api/use-transactionRecord";
-import { useAccounts } from "./help/use-accounts";
-import { useBuildTransaction } from "./help/use-build-transaction";
+import { useSettleAskTakerEth } from "./eth/use-settle-ask-taker-eth";
+import { useChainTx } from "./help/use-chain-tx";
+import { useSettleAskTakerSol } from "./solana/use-settle-ask-taker-sol";
 
 export function useSettleAskTaker({
   marketplaceStr,
@@ -12,110 +8,23 @@ export function useSettleAskTaker({
   stockStr,
   preOfferStr,
   preOfferAuthorityStr,
-  isSol
+  isSolStable,
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   preOfferStr: string;
   preOfferAuthorityStr: string;
-  isSol: boolean;
+  isSolStable: boolean;
 }) {
-  const { program } = useTadleProgram();
-  const { buildTransaction } = useBuildTransaction();
-  const { recordTransaction } = useTransactionRecord();
-  const { getAccounts, getWalletBalanceAccount } = useAccounts();
+  const actionRes = useChainTx(useSettleAskTakerEth, useSettleAskTakerSol, {
+    marketplaceStr,
+    makerStr,
+    stockStr,
+    preOfferStr,
+    preOfferAuthorityStr,
+    isSolStable,
+  });
 
-  const writeAction = async ({
-    settleAmount
-  }: {
-    settleAmount: number
-  }) => {
-    const {
-      tokenProgram,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      userPointsTokenAccount,
-      poolPointsTokenAccount,
-      pointTokenMint,
-      associatedTokenProgram,
-    } = await getAccounts(program.programId);
-
-    const poolTokenAuthority = PublicKey.findProgramAddressSync(
-      [systemConfig.toBuffer()],
-      program.programId,
-    )[0];
-
-    const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
-      [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    const marketPlace = new PublicKey(marketplaceStr);
-    const stock = new PublicKey(stockStr);
-    const bidMaker = new PublicKey(makerStr);
-    const preOffer = new PublicKey(preOfferStr);
-
-    const {
-      walletBaseTokenBalance: walletBBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSol)
-
-    const preOfferAuthority = new PublicKey(preOfferAuthorityStr);
-    const {
-      walletBaseTokenBalance: walletABaseTokenBalance,
-      walletPointTokenBalance: walletAPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace, isSol)
-
-
-    const methodTransaction = await program.methods
-      .settleAskTaker(new BN(settleAmount))
-      .accounts({
-        manager: authority!,
-        authority,
-        systemConfig,
-        makerBaseTokenBalance: walletABaseTokenBalance,
-        makerPointTokenBalance: walletAPointTokenBalance,
-        userBaseTokenBalance: walletBBaseTokenBalance,
-        maker: bidMaker,
-        stock,
-        preOffer,
-        marketPlace,
-        poolTokenAuthority,
-        wsolTmpTokenAccount,
-        pointTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        pointTokenProgram: tokenProgram,
-        associatedTokenProgram,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: userPointsTokenAccount,
-          isSigner: false,
-          isWritable: true
-        },
-        {
-          pubkey: poolPointsTokenAccount,
-          isSigner: false,
-          isWritable: true
-        },
-      ]).transaction();
-
-      
-    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
-
-    await recordTransaction({
-      txHash,
-      note: "",
-    });
-
-    return txHash;
-  };
-
-  const wrapRes = useTxStatus(writeAction);
-
-  return wrapRes;
+  return actionRes;
 }

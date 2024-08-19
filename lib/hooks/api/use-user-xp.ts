@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
-import { useChainWallet } from "../web3/use-chain-wallet";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export function useUserXp() {
   const { apiEndPoint } = useEndPoint();

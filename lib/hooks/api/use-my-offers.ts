@@ -4,7 +4,7 @@ import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useOfferResFormat } from "../offer/use-offer-res-format";
-import { useChainWallet } from "../web3/use-chain-wallet";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export function useMyOffers() {
   const { address } = useChainWallet();

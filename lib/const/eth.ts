@@ -3,6 +3,10 @@ export const EthConfig = {
   contracts: {
     preMarket: "0x6b175474e89094c44da98b954eedeac495271d0f",
     usdcToken: "0x6b175474e89094c44da98b954eedeac495271d0f",
-    deliveryPlace: "0x6b175474e89094c44da98b954eedeac495271d0f"
+    ethToken: "0x6b175474e89094c44da98b954eedeac495271d0f",
+    deliveryPlace: "0x6b175474e89094c44da98b954eedeac495271d0f",
+    systemConfig: "0x6b175474e89094c44da98b954eedeac495271d0f",
+    tokenManager: "0x6b175474e89094c44da98b954eedeac495271d0f"
+
   },
 };

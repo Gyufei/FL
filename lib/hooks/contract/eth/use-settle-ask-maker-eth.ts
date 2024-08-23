@@ -1,61 +1,26 @@
-import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
-import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { DeliveryPlaceABI } from "@/lib/abi/eth/delivery-place";
 
-export function useSettleAskMakerEth({
-  marketplaceStr,
-  makerStr,
-  offerStr,
-  isSolStable,
-}: {
-  marketplaceStr: string;
-  makerStr: string;
-  offerStr: string;
-  isSolStable: boolean;
-}) {
+export function useSettleAskMakerEth({ offerStr }: { offerStr: string }) {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
   const txAction = useCallback(
-    ({
-      pointAmount,
-      tokenAmount,
-      collateralRate,
-      taxForSub,
-      settleMode,
-    }: {
-      pointAmount: number;
-      tokenAmount: number;
-      collateralRate: number;
-      taxForSub: number;
-      settleMode: ISettleMode;
-    }) => {
-      const abiAddress = ethConfig.contracts.preMarket;
-      const usdcAddress = ethConfig.contracts.usdcToken;
+    ({ settleAmount }: { settleAmount: number }) => {
+      const abiAddress = ethConfig.contracts.deliveryPlace;
 
       return writeContract({
-        abi: PreMarketABI,
+        abi: DeliveryPlaceABI,
         address: abiAddress as any,
-        functionName: "createOffer",
-        args: [
-          {
-            marketPlace: marketplaceStr as any,
-            collateralTokenAddr: usdcAddress as any,
-            points: BigInt(pointAmount),
-            amount: BigInt(tokenAmount * 1e18),
-            collateralRate: BigInt(collateralRate),
-            eachTradeTax: BigInt(taxForSub),
-            offerType: offerType === "ask" ? 0 : 1,
-            offerSettleType: settleMode === "protected" ? 0 : 1,
-          },
-        ],
+        functionName: "settleAskMaker",
+        args: [offerStr as any, BigInt(settleAmount)],
       });
     },
-    [writeContract, ethConfig, marketplaceStr, offerType],
+    [writeContract, ethConfig, offerStr],
   );
 
   return {

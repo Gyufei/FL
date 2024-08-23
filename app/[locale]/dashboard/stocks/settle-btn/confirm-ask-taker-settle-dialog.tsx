@@ -22,7 +22,7 @@ export default function ConfirmAskTakerSettleDialog({
   const T = useTranslations("dialog-Settle");
   const orderRole = "Taker";
 
-  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isSolStable } =
+  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isNativeToken } =
     useStockFormat({ stock: stock });
 
   // const [sliderMax] = useState(100);
@@ -109,7 +109,7 @@ export default function ConfirmAskTakerSettleDialog({
           </div>
 
           <ConfirmAskTakerSettleBtn
-            isSolStable={isSolStable}
+            isNativeToken={isNativeToken}
             marketplaceStr={stock.marketplace.market_place_id}
             stockStr={stock.stock_account}
             makerStr={stock.maker_account}

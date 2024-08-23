@@ -8,14 +8,14 @@ export function useSettleAskTaker({
   stockStr,
   preOfferStr,
   preOfferAuthorityStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   preOfferStr: string;
   preOfferAuthorityStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const actionRes = useChainTx(useSettleAskTakerEth, useSettleAskTakerSol, {
     marketplaceStr,
@@ -23,7 +23,7 @@ export function useSettleAskTaker({
     stockStr,
     preOfferStr,
     preOfferAuthorityStr,
-    isSolStable,
+    isNativeToken,
   });
 
   return actionRes;

@@ -102,7 +102,7 @@ export function useAccountsSol() {
     programId: PublicKey,
     wallet: PublicKey,
     marketPlace: PublicKey,
-    isSolStable = false,
+    isNativeToken = false,
   ) {
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
     const wsolTokenMint = new PublicKey(
@@ -112,7 +112,7 @@ export function useAccountsSol() {
     const walletBaseTokenBalance = PublicKey.findProgramAddressSync(
       [
         Buffer.from("token_balance"),
-        (isSolStable ? wsolTokenMint : usdcTokenMint).toBuffer(),
+        (isNativeToken ? wsolTokenMint : usdcTokenMint).toBuffer(),
         wallet.toBuffer(),
       ],
       programId,

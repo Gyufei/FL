@@ -34,7 +34,7 @@ export default function ListAskStockBtn({
   const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail, isSolStable } =
+  const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail, isNativeToken } =
     useStockFormat({
       stock: order,
     });
@@ -62,7 +62,7 @@ export default function ListAskStockBtn({
     makerStr: order.maker_account,
     stockStr: order.stock_account,
     originOfferStr: makerDetail?.origin_offer || "",
-    isSolStable,
+    isNativeToken,
   });
 
   function handleDeposit() {

@@ -1,5 +1,4 @@
 import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
-import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
@@ -8,12 +7,12 @@ export function useCloseBidOfferEth({
   marketplaceStr,
   makerStr,
   offerStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const { ethConfig } = useEthConfig();
 
@@ -22,7 +21,6 @@ export function useCloseBidOfferEth({
 
   const txAction = useCallback(() => {
     const abiAddress = ethConfig.contracts.preMarket;
-    const usdcAddress = ethConfig.contracts.usdcToken;
 
     return writeContract({
       abi: PreMarketABI,

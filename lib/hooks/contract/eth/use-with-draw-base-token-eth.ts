@@ -1,16 +1,10 @@
-import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
-import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { TokenManagerABI } from "@/lib/abi/eth/token-manager";
+import { IBalanceType } from "../use-with-draw-base-token";
 
-export function useWithDrawBaseTokenEth({
-  marketplaceStr,
-  offerType,
-}: {
-  marketplaceStr: string;
-  offerType: "bid" | "ask";
-}) {
+export function useWithDrawBaseTokenEth() {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
@@ -18,40 +12,28 @@ export function useWithDrawBaseTokenEth({
 
   const txAction = useCallback(
     ({
-      pointAmount,
-      tokenAmount,
-      collateralRate,
-      taxForSub,
-      settleMode,
+      mode,
+      isNativeToken,
     }: {
-      pointAmount: number;
-      tokenAmount: number;
-      collateralRate: number;
-      taxForSub: number;
-      settleMode: ISettleMode;
+      isNativeToken: boolean;
+      mode: IBalanceType;
     }) => {
-      const abiAddress = ethConfig.contracts.preMarket;
+      const abiAddress = ethConfig.contracts.tokenManager;
       const usdcAddress = ethConfig.contracts.usdcToken;
+      const ethAddress = ethConfig.contracts.ethToken;
+
+      const tokenAddress = isNativeToken ? ethAddress : usdcAddress;
+
+      const modeIndex = [].findIndex((i) => i === mode);
 
       return writeContract({
-        abi: PreMarketABI,
+        abi: TokenManagerABI,
         address: abiAddress as any,
-        functionName: "createOffer",
-        args: [
-          {
-            marketPlace: marketplaceStr as any,
-            collateralTokenAddr: usdcAddress as any,
-            points: BigInt(pointAmount),
-            amount: BigInt(tokenAmount * 1e18),
-            collateralRate: BigInt(collateralRate),
-            eachTradeTax: BigInt(taxForSub),
-            offerType: offerType === "ask" ? 0 : 1,
-            offerSettleType: settleMode === "protected" ? 0 : 1,
-          },
-        ],
+        functionName: "withdraw",
+        args: [tokenAddress as any, modeIndex],
       });
     },
-    [writeContract, ethConfig, marketplaceStr, offerType],
+    [writeContract, ethConfig],
   );
 
   return {

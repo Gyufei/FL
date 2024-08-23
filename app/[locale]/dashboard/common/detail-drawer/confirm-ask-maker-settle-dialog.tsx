@@ -22,7 +22,7 @@ export default function ConfirmAskMakerSettleDialog({
   // const ct = useTranslations("Common");
   const orderRole = "Maker";
 
-  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isSolStable } =
+  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isNativeToken } =
     useOfferFormat({
       offer: offer,
     });
@@ -107,7 +107,7 @@ export default function ConfirmAskMakerSettleDialog({
           </div>
 
           <ConfirmAskMakerSettleBtn
-            isSolStable={isSolStable}
+            isNativeToken={isNativeToken}
             isStocksLoading={false}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_account}

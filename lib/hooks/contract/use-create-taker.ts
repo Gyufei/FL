@@ -10,7 +10,7 @@ export function useCreateTaker({
   originOfferAuthStr,
   preOfferAuthStr,
   referrerStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   offerStr: string;
@@ -19,7 +19,7 @@ export function useCreateTaker({
   originOfferAuthStr: string;
   preOfferAuthStr: string;
   referrerStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useCreateTakerEth, useCreateTakerSol, {
     marketplaceStr,
@@ -29,7 +29,7 @@ export function useCreateTaker({
     originOfferAuthStr,
     preOfferAuthStr,
     referrerStr,
-    isSolStable,
+    isNativeToken,
   });
 
   return chainActionRes;

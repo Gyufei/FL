@@ -23,15 +23,18 @@ export function useCreateOfferEth({
       collateralRate,
       taxForSub,
       settleMode,
+      isNativeToken,
     }: {
       pointAmount: number;
       tokenAmount: number;
       collateralRate: number;
       taxForSub: number;
       settleMode: ISettleMode;
+      isNativeToken: boolean;
     }) => {
       const abiAddress = ethConfig.contracts.preMarket;
       const usdcAddress = ethConfig.contracts.usdcToken;
+      const collateralTokenAddr = isNativeToken ? usdcAddress : usdcAddress;
 
       return writeContract({
         abi: PreMarketABI,
@@ -40,7 +43,7 @@ export function useCreateOfferEth({
         args: [
           {
             marketPlace: marketplaceStr as any,
-            collateralTokenAddr: usdcAddress as any,
+            collateralTokenAddr: collateralTokenAddr as any,
             points: BigInt(pointAmount),
             amount: BigInt(tokenAmount * 1e18),
             collateralRate: BigInt(collateralRate),

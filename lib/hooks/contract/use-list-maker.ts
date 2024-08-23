@@ -7,20 +7,20 @@ export function useListStock({
   makerStr,
   stockStr,
   originOfferStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   originOfferStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useListMakerEth, useListMakerSol, {
     marketplaceStr,
     makerStr,
     stockStr,
     originOfferStr,
-    isSolStable,
+    isNativeToken,
   });
 
   return chainActionRes;

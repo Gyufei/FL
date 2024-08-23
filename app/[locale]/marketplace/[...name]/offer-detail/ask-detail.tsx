@@ -42,7 +42,7 @@ export default function AskDetail({
     isFilled,
     orderTokenInfo,
     makerDetail,
-    isSolStable,
+    isNativeToken,
   } = useOfferFormat({
     offer,
   });
@@ -64,7 +64,7 @@ export default function AskDetail({
     preOfferAuthStr: offer.authority,
     originOfferAuthStr: offer.origin_offer_detail?.authority,
     referrerStr: referrer || "",
-    isSolStable,
+    isNativeToken,
   });
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);

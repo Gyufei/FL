@@ -36,7 +36,7 @@ export default function MyAskDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
-    isSolStable,
+    isNativeToken,
   } = useOfferFormat({
     offer: order,
   });
@@ -60,7 +60,7 @@ export default function MyAskDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
-    isSolStable,
+    isNativeToken,
   });
 
   const {
@@ -72,7 +72,7 @@ export default function MyAskDetail({
     makerStr: order.maker_account,
     offerStr: order.offer_account,
     stockStr: order.stock_account,
-    isSolStable,
+    isNativeToken,
   });
 
   function handleClose() {

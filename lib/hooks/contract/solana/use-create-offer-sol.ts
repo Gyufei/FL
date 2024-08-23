@@ -27,7 +27,7 @@ export function useCreateOfferSol({
     taxForSub,
     settleMode,
     note,
-    isSolStable,
+    isNativeToken,
   }: {
     pointAmount: number;
     tokenAmount: number;
@@ -35,7 +35,7 @@ export function useCreateOfferSol({
     taxForSub: number;
     settleMode: ISettleMode;
     note: string;
-    isSolStable: boolean;
+    isNativeToken: boolean;
   }) => {
     const {
       tokenProgram,
@@ -63,7 +63,7 @@ export function useCreateOfferSol({
       program.programId,
       authority!,
       marketPlace,
-      isSolStable,
+      isNativeToken,
     );
 
     const maker = PublicKey.findProgramAddressSync(
@@ -91,13 +91,13 @@ export function useCreateOfferSol({
         stock: stockA,
         offer: offerA,
         poolTokenAuthority,
-        tokenMint: isSolStable ? wsolTokenMint : usdcTokenMint,
+        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         associatedTokenProgram,
         systemProgram,
-        pubkey1: isSolStable ? userSolTokenAccount : userUsdcTokenAccount,
-        pubkey2: isSolStable ? poolSolTokenAccount : poolUsdcTokenAccount,
+        pubkey1: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
+        pubkey2: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
         pubkey3: walletABaseTokenBalance,
         pubkey4: walletAPointTokenBalance,
       }).map((v) => ({ [v[0]]: v[1]?.toBase58() })),
@@ -124,7 +124,7 @@ export function useCreateOfferSol({
         maker,
         stock: stockA,
         poolTokenAuthority,
-        tokenMint: isSolStable ? wsolTokenMint : usdcTokenMint,
+        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         associatedTokenProgram,
@@ -137,12 +137,12 @@ export function useCreateOfferSol({
           isWritable: true,
         },
         {
-          pubkey: isSolStable ? userSolTokenAccount : userUsdcTokenAccount,
+          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true,
         },
         {
-          pubkey: isSolStable ? poolSolTokenAccount : poolUsdcTokenAccount,
+          pubkey: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
           isSigner: false,
           isWritable: true,
         },

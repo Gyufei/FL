@@ -36,7 +36,7 @@ export default function BidDetail({
     isFilled,
     orderTokenInfo,
     makerDetail,
-    isSolStable,
+    isNativeToken,
   } = useOfferFormat({
     offer: order,
   });
@@ -74,7 +74,7 @@ export default function BidDetail({
     originOfferStr: makerDetail?.origin_offer || "",
     originOfferAuthStr: order.origin_offer_detail?.authority,
     referrerStr: referrer || "",
-    isSolStable,
+    isNativeToken,
   });
 
   function handleSliderChange(v: number) {

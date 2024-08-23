@@ -1,8 +1,7 @@
-import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
-import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { SystemConfigABI } from "@/lib/abi/eth/system-config";
 
 export function useRemoveReferralEth() {
   const { ethConfig } = useEthConfig();
@@ -11,41 +10,17 @@ export function useRemoveReferralEth() {
     useWriteContract();
 
   const txAction = useCallback(
-    ({
-      pointAmount,
-      tokenAmount,
-      collateralRate,
-      taxForSub,
-      settleMode,
-    }: {
-      pointAmount: number;
-      tokenAmount: number;
-      collateralRate: number;
-      taxForSub: number;
-      settleMode: ISettleMode;
-    }) => {
-      const abiAddress = ethConfig.contracts.preMarket;
-      const usdcAddress = ethConfig.contracts.usdcToken;
+    ({ referralCode }: { referralCode: string }) => {
+      const abiAddress = ethConfig.contracts.systemConfig;
 
       return writeContract({
-        abi: PreMarketABI,
+        abi: SystemConfigABI,
         address: abiAddress as any,
-        functionName: "createOffer",
-        args: [
-          {
-            marketPlace: marketplaceStr as any,
-            collateralTokenAddr: usdcAddress as any,
-            points: BigInt(pointAmount),
-            amount: BigInt(tokenAmount * 1e18),
-            collateralRate: BigInt(collateralRate),
-            eachTradeTax: BigInt(taxForSub),
-            offerType: offerType === "ask" ? 0 : 1,
-            offerSettleType: settleMode === "protected" ? 0 : 1,
-          },
-        ],
+        functionName: "removeReferralCode",
+        args: [referralCode],
       });
     },
-    [writeContract, ethConfig, marketplaceStr, offerType],
+    [writeContract, ethConfig],
   );
 
   return {

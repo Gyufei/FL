@@ -3,38 +3,22 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/delivery-place";
 
-export function useCloseBidTakerEth({
-  marketplaceStr,
-}: // makerStr,
-// stockStr,
-// preOfferStr,
-// isSolStable,
-{
-  marketplaceStr: string;
-  makerStr: string;
-  stockStr: string;
-  preOfferStr: string;
-  isSolStable: boolean;
-}) {
+export function useCloseBidTakerEth({ stockStr }: { stockStr: string }) {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
-  const txAction = useCallback(
-    ({}) => {
-      const abiAddress = ethConfig.contracts.deliveryPlace;
-      // const usdcAddress = ethConfig.contracts.usdcToken;
+  const txAction = useCallback(() => {
+    const abiAddress = ethConfig.contracts.deliveryPlace;
 
-      return writeContract({
-        abi: DeliveryPlaceABI,
-        address: abiAddress as any,
-        functionName: "closeBidTaker",
-        args: [],
-      });
-    },
-    [writeContract, ethConfig, marketplaceStr, offerType],
-  );
+    return writeContract({
+      abi: DeliveryPlaceABI,
+      address: abiAddress as any,
+      functionName: "closeBidTaker",
+      args: [stockStr as any],
+    });
+  }, [writeContract, ethConfig, stockStr]);
 
   return {
     data,

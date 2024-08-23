@@ -24,7 +24,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
 
-  const isSolStable = orderTokenInfo?.symbol === "SOL";
+  const isNativeToken = orderTokenInfo?.symbol === "SOL";
 
   const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || "");
 
@@ -147,6 +147,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     isCanSettle,
     isSettled,
     makerDetail,
-    isSolStable,
+    isNativeToken,
   };
 }

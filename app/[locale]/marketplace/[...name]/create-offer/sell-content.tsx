@@ -118,7 +118,7 @@ export function SellContent({
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
-      isSolStable: receiveToken?.symbol === "SOL",
+      isNativeToken: receiveToken?.symbol === "SOL",
     });
   }
 

@@ -22,6 +22,7 @@ import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export function BuyContent({
   marketplace,
@@ -33,6 +34,8 @@ export function BuyContent({
   const cot = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
   const { data: stableToken } = useStableToken();
+
+  const { isEth, isSolana } = useCurrentChain();
 
   const [payTokenAmount, setPayTokenAmount] = useState("0");
   const [payToken, setPayToken] = useState<IToken>(
@@ -80,6 +83,13 @@ export function BuyContent({
     return NP.divide(payAmountValue, receivePointAmount);
   }, [payAmountValue, receivePointAmount]);
 
+  const isNativeToken = useMemo(() => {
+    if (isEth) return payToken?.symbol === "ETH";
+    if (isSolana) return payToken?.symbol === "SOL";
+
+    return false;
+  }, [isEth, isSolana, payToken?.symbol]);
+
   function handleBuyPayChange(v: string) {
     setPayTokenAmount(v);
   }
@@ -116,7 +126,7 @@ export function BuyContent({
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
-      isSolStable: payToken?.symbol === "SOL",
+      isNativeToken,
     });
   }
 

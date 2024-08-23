@@ -10,13 +10,13 @@ export function useCloseBidTakerSol({
   makerStr,
   stockStr,
   preOfferStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   preOfferStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
   const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
@@ -41,7 +41,7 @@ export function useCloseBidTakerSol({
       program.programId,
       authority!,
       marketPlace,
-      isSolStable,
+      isNativeToken,
     );
 
     const methodTransaction = await program.methods

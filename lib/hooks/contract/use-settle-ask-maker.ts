@@ -6,12 +6,12 @@ export function useSettleAskMaker({
   marketplaceStr,
   makerStr,
   offerStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(
     useSettleAskMakerEth,
@@ -20,7 +20,7 @@ export function useSettleAskMaker({
       marketplaceStr,
       makerStr,
       offerStr,
-      isSolStable,
+      isNativeToken,
     },
   );
 

@@ -20,9 +20,9 @@ export function useWithdrawBaseTokenSol() {
 
   const writeAction = async ({
     mode,
-    isSolStable,
+    isNativeToken,
   }: {
-    isSolStable: boolean;
+    isNativeToken: boolean;
     mode: IBalanceType;
   }) => {
     const {
@@ -50,7 +50,7 @@ export function useWithdrawBaseTokenSol() {
         program.programId,
         authority!,
         authority!,
-        isSolStable,
+        isNativeToken,
       );
 
     const methodTransaction = await program.methods
@@ -63,15 +63,15 @@ export function useWithdrawBaseTokenSol() {
         wsolTmpTokenAccount,
         userBaseTokenBalance,
         systemConfig,
-        poolTokenAccount: isSolStable ? poolSolTokenAccount : poolUsdcTokenAccount,
-        tokenMint: isSolStable ? wsolTokenMint : usdcTokenMint,
+        poolTokenAccount: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
+        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
       })
       .remainingAccounts([
         {
-          pubkey: isSolStable ? userSolTokenAccount : userUsdcTokenAccount,
+          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true,
         },

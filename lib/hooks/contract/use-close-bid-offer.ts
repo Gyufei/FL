@@ -6,18 +6,18 @@ export function useCloseBidOffer({
   marketplaceStr,
   makerStr,
   offerStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useCloseBidOfferEth, useCloseBidOfferSol, {
     marketplaceStr,
     makerStr,
     offerStr,
-    isSolStable,
+    isNativeToken,
   });
 
   return chainActionRes;

@@ -10,13 +10,13 @@ export function useCloseOfferSol({
   makerStr,
   offerStr,
   stockStr,
-  isSolStable
+  isNativeToken
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
   stockStr: string;
-  isSolStable: boolean
+  isNativeToken: boolean
 }) {
   const { program } = useTadleProgram();
   const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
@@ -38,7 +38,7 @@ export function useCloseOfferSol({
 
     const {
       walletBaseTokenBalance: walletDBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSolStable)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isNativeToken)
 
     const methodTransaction = await program.methods
       .closeOffer()

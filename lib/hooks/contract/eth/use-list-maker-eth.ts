@@ -1,22 +1,10 @@
 import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
-import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { generateEthAddress } from "@/lib/utils/web3";
 
-export function useListMakerEth({
-  marketplaceStr,
-  makerStr,
-  stockStr,
-  originOfferStr,
-  isSolStable,
-}: {
-  marketplaceStr: string;
-  makerStr: string;
-  stockStr: string;
-  originOfferStr: string;
-  isSolStable: boolean;
-}) {
+export function useListMakerEth() {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
@@ -24,40 +12,27 @@ export function useListMakerEth({
 
   const txAction = useCallback(
     ({
-      pointAmount,
-      tokenAmount,
+      receiveTokenAmount,
       collateralRate,
-      taxForSub,
-      settleMode,
     }: {
-      pointAmount: number;
-      tokenAmount: number;
+      receiveTokenAmount: number;
       collateralRate: number;
-      taxForSub: number;
-      settleMode: ISettleMode;
     }) => {
       const abiAddress = ethConfig.contracts.preMarket;
-      const usdcAddress = ethConfig.contracts.usdcToken;
+      const stockAddress = generateEthAddress("2", "stock");
 
       return writeContract({
         abi: PreMarketABI,
         address: abiAddress as any,
-        functionName: "createOffer",
+        functionName: "listStock",
         args: [
-          {
-            marketPlace: marketplaceStr as any,
-            collateralTokenAddr: usdcAddress as any,
-            points: BigInt(pointAmount),
-            amount: BigInt(tokenAmount * 1e18),
-            collateralRate: BigInt(collateralRate),
-            eachTradeTax: BigInt(taxForSub),
-            offerType: offerType === "ask" ? 0 : 1,
-            offerSettleType: settleMode === "protected" ? 0 : 1,
-          },
+          stockAddress,
+          BigInt(receiveTokenAmount * 1e18),
+          BigInt(collateralRate),
         ],
       });
     },
-    [writeContract, ethConfig, marketplaceStr, offerType],
+    [writeContract, ethConfig],
   );
 
   return {

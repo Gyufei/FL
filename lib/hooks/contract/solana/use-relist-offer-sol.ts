@@ -10,13 +10,13 @@ export function useRelistOfferSol({
   makerStr,
   offerStr,
   stockStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
   stockStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
@@ -51,16 +51,16 @@ export function useRelistOfferSol({
         offer: offerD,
         stock: stockD,
 
-        poolTokenAccount: isSolStable ? poolSolTokenAccount :  poolUsdcTokenAccount,
+        poolTokenAccount: isNativeToken ? poolSolTokenAccount :  poolUsdcTokenAccount,
         maker,
         marketPlace,
-        tokenMint: isSolStable ? wsolTokenMint :  usdcTokenMint,
+        tokenMint: isNativeToken ? wsolTokenMint :  usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
       }).remainingAccounts([
         {
-          pubkey: isSolStable ? userSolTokenAccount : userUsdcTokenAccount,
+          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         }

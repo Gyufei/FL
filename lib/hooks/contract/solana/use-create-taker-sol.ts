@@ -15,7 +15,7 @@ export function useCreateTakerSol({
   originOfferAuthStr,
   preOfferAuthStr,
   referrerStr,
-  isSolStable
+  isNativeToken
 }: {
   marketplaceStr: string;
   offerStr: string;
@@ -24,7 +24,7 @@ export function useCreateTakerSol({
   originOfferAuthStr: string,
   preOfferAuthStr: string,
   referrerStr: string,
-  isSolStable: boolean
+  isNativeToken: boolean
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
@@ -59,15 +59,15 @@ export function useCreateTakerSol({
     const {
       walletBaseTokenBalance: walletBBaseTokenBalance,
       walletPointTokenBalance: walletBPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isSolStable)
+    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isNativeToken)
 
     const {
       walletBaseTokenBalance: originMakerBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, originOfferAuthority, marketPlace, isSolStable)
+    } = await getWalletBalanceAccount(program.programId, originOfferAuthority, marketPlace, isNativeToken)
 
     const {
       walletBaseTokenBalance: preOfferBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace, isSolStable)
+    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace, isNativeToken)
 
     const stockB = PublicKey.findProgramAddressSync(
       [
@@ -106,8 +106,8 @@ export function useCreateTakerSol({
         originOffer: originOffer,
         maker,
         marketPlace,
-        poolTokenAccount: isSolStable ? poolSolTokenAccount : poolUsdcTokenAccount,
-        tokenMint: isSolStable ? wsolTokenMint : usdcTokenMint,
+        poolTokenAccount: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
+        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
@@ -128,8 +128,8 @@ export function useCreateTakerSol({
         originOffer: originOffer,
         maker,
         marketPlace,
-        poolTokenAccount: isSolStable ? poolSolTokenAccount : poolUsdcTokenAccount,
-        tokenMint: isSolStable ? wsolTokenMint : usdcTokenMint,
+        poolTokenAccount: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
+        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
@@ -151,7 +151,7 @@ export function useCreateTakerSol({
           isWritable: true
         },
         {
-          pubkey: isSolStable ? userSolTokenAccount : userUsdcTokenAccount,
+          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         },

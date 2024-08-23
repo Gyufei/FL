@@ -1,3 +1,11 @@
+import {
+  encodeAbiParameters,
+  encodePacked,
+  getAddress,
+  keccak256,
+  parseAbiParameters,
+} from "viem";
+
 export function truncateAddr(
   address: string,
   params = {
@@ -14,4 +22,14 @@ export function truncateAddr(
   )}`;
 
   return shorter;
+}
+
+export function generateEthAddress(_id: string, seed: string) {
+  const idBytes = encodeAbiParameters(parseAbiParameters("uint256"), [
+    BigInt(_id),
+  ]);
+  const hash = keccak256(encodePacked(["string", "bytes"], [seed, idBytes]));
+  const address = getAddress("0x" + hash.slice(-40));
+
+  return address;
 }

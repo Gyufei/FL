@@ -155,6 +155,12 @@ export function MbNetworkSelect() {
 
   const { handleConnectEth } = useEthNetworkSelect();
 
+  function handleEthAction() {
+    if (!isProduction) {
+      handleConnectEth();
+    }
+  }
+
   return (
     <Drawer open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <DrawerTrigger asChild>
@@ -188,7 +194,7 @@ export function MbNetworkSelect() {
         </div>
         <DevnetRow onClick={() => handleSelectNet()} isActive={!isProduction} />
         <div
-          onClick={() => handleConnectEth()}
+          onClick={() => handleEthAction()}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >

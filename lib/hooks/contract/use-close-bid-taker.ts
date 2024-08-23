@@ -7,20 +7,20 @@ export function useCloseBidTaker({
   makerStr,
   stockStr,
   preOfferStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   preOfferStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useCloseBidTakerEth, useCloseBidTakerSol, {
     marketplaceStr,
     makerStr,
     stockStr,
     preOfferStr,
-    isSolStable,
+    isNativeToken,
   });
 
   return chainActionRes;

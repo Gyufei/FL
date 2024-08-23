@@ -11,13 +11,13 @@ export function useListMakerSol({
   makerStr,
   stockStr,
   originOfferStr,
-  isSolStable
+  isNativeToken
 }: {
   marketplaceStr: string;
   makerStr: string;
   stockStr: string;
   originOfferStr: string;
-  isSolStable: boolean
+  isNativeToken: boolean
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
@@ -71,16 +71,16 @@ export function useListMakerSol({
         stock: stockD,
         offer: offerD,
         originOffer,
-        poolTokenAccount: isSolStable ? poolSolTokenAccount : poolUsdcTokenAccount,
+        poolTokenAccount: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
         maker,
         marketPlace,
-        tokenMint: isSolStable ? wsolTokenMint : usdcTokenMint,
+        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
       }).remainingAccounts([
         {
-          pubkey: isSolStable ? userSolTokenAccount : userUsdcTokenAccount,
+          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
           isWritable: true
         }

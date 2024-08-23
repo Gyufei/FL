@@ -10,12 +10,12 @@ export function useSettleAskMakerSol({
   marketplaceStr,
   makerStr,
   offerStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
@@ -26,12 +26,6 @@ export function useSettleAskMakerSol({
     settleAmount,
   }: {
     settleAmount: number;
-    stockArr: Array<{
-      stock_account: string;
-      offer: string;
-      authority: string;
-    }>;
-    isTurbo: boolean;
   }) => {
     const {
       tokenProgram,
@@ -62,7 +56,7 @@ export function useSettleAskMakerSol({
       program.programId,
       authority!,
       marketPlace,
-      isSolStable,
+      isNativeToken,
     );
 
     const methodTransaction = await program.methods

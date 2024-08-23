@@ -17,7 +17,7 @@ export function useStockFormat({ stock }: { stock: IStock }) {
     orderTokenInfo,
     orderEqTokenInfo,
     makerDetail,
-    isSolStable,
+    isNativeToken,
   } = useOfferFormat({
     offer: stock as unknown as IOffer,
   });
@@ -63,6 +63,6 @@ export function useStockFormat({ stock }: { stock: IStock }) {
     isSettled,
     tokenPrice,
     makerDetail,
-    isSolStable,
+    isNativeToken,
   };
 }

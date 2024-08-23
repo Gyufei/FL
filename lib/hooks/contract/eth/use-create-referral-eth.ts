@@ -1,8 +1,8 @@
-import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
-import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { generateRandomCode } from "@/lib/utils/common";
+import { SystemConfigABI } from "@/lib/abi/eth/system-config";
 
 export function useCreateReferralEth() {
   const { ethConfig } = useEthConfig();
@@ -12,40 +12,23 @@ export function useCreateReferralEth() {
 
   const txAction = useCallback(
     ({
-      pointAmount,
-      tokenAmount,
-      collateralRate,
-      taxForSub,
-      settleMode,
+      firstAmount,
+      secondAmount,
     }: {
-      pointAmount: number;
-      tokenAmount: number;
-      collateralRate: number;
-      taxForSub: number;
-      settleMode: ISettleMode;
+      firstAmount?: number;
+      secondAmount?: number;
     }) => {
-      const abiAddress = ethConfig.contracts.preMarket;
-      const usdcAddress = ethConfig.contracts.usdcToken;
+      const abiAddress = ethConfig.contracts.systemConfig;
+      const RandomCode = generateRandomCode(8);
 
       return writeContract({
-        abi: PreMarketABI,
+        abi: SystemConfigABI,
         address: abiAddress as any,
-        functionName: "createOffer",
-        args: [
-          {
-            marketPlace: marketplaceStr as any,
-            collateralTokenAddr: usdcAddress as any,
-            points: BigInt(pointAmount),
-            amount: BigInt(tokenAmount * 1e18),
-            collateralRate: BigInt(collateralRate),
-            eachTradeTax: BigInt(taxForSub),
-            offerType: offerType === "ask" ? 0 : 1,
-            offerSettleType: settleMode === "protected" ? 0 : 1,
-          },
-        ],
+        functionName: "createReferralCode",
+        args: [RandomCode, BigInt(firstAmount || 0), BigInt(secondAmount || 0)],
       });
     },
-    [writeContract, ethConfig, marketplaceStr, offerType],
+    [writeContract, ethConfig],
   );
 
   return {

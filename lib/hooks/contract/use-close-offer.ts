@@ -7,20 +7,20 @@ export function useCloseOffer({
   makerStr,
   offerStr,
   stockStr,
-  isSolStable,
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
   stockStr: string;
-  isSolStable: boolean;
+  isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useCloseOfferEth, useCloseOfferSol, {
     marketplaceStr,
     makerStr,
     offerStr,
     stockStr,
-    isSolStable,
+    isNativeToken,
   });
 
   return chainActionRes;

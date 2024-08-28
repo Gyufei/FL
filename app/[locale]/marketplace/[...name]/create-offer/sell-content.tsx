@@ -31,6 +31,7 @@ export function SellContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
+  // const CT = useTranslations("Common");
   const T = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
   const { data: stableToken } = useStableToken();
@@ -66,6 +67,26 @@ export function SellContent({
       setReceiveToken(stableToken[0]);
     }
   }, [stableToken]);
+
+  // const { isShouldApprove, checkShouldApprove, approve, isApproving } =
+  //   useApprove(receiveToken?.address);
+
+  // useEffect(() => {
+  //   async function checkApproval() {
+  //     if (receiveToken && receiveTokenAmount) {
+  //       await checkShouldApprove(receiveTokenAmount);
+  //     }
+  //   }
+  //   checkApproval();
+  // }, [receiveToken, receiveTokenAmount]);
+
+  async function handleConfirmBtnClick() {
+    // if (isShouldApprove) {
+    //   await approve(receiveTokenAmount);
+    // } else {
+    handleCreate();
+    // }
+  }
 
   const [collateralRate, setCollateralRate] = useState("");
   const [taxForSub, setTaxForSub] = useState("");
@@ -200,14 +221,18 @@ export function SellContent({
 
       <WithWalletConnectBtn
         className="w-full"
-        onClick={handleCreate}
+        onClick={handleConfirmBtnClick}
         shouldSignIn={true}
       >
         <button
           disabled={isCreateLoading}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
         >
-          {T("btn-ConfirmMakerOrder")}
+          {
+            // isShouldApprove ?
+            T("btn-ConfirmMakerOrder")
+            // : `${CT("btn-Approve")} ${receiveToken.symbol}`
+          }
         </button>
       </WithWalletConnectBtn>
     </div>

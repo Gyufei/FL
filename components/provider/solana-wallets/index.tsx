@@ -11,7 +11,7 @@ import { SolflareWalletAdapter } from "@solflare-wallet/wallet-adapter";
 import { OKXWalletAdapter } from "./okx-wallet-adapter";
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
 
-export function SolanaWalletProviders({ children }: { children?: ReactNode }) {
+export default function SolanaWalletProviders({ children }: { children?: ReactNode }) {
   const { rpc } = useRpc();
 
   const wallets = [

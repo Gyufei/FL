@@ -11,7 +11,8 @@
     "Days": "天",
     "Hours": "小时",
     "Minutes": "分钟",
-    "Seconds": "秒"
+    "Seconds": "秒",
+    "btn-Approve": "Approve"
   },
   "Header": {
     "btn-Marketplace": "市场",

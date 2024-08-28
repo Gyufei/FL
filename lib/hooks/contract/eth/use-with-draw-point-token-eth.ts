@@ -2,7 +2,7 @@ import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { useChainWallet } from "../../web3/use-chain-wallet";
-import { TokenManagerABI } from "@/lib/abi/eth/token-manager";
+import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 
 export function useWithDrawPointTokenEth() {
   const { ethConfig } = useEthConfig();

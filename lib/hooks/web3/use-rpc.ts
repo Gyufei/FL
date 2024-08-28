@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useSolanaConfig } from "./use-solana-config";
+import { useSolanaConfig } from "./solana/use-solana-config";
 import { useAtomValue } from "jotai";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/cluster";
 

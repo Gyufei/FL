@@ -4,7 +4,7 @@ import { CompactTable } from "@table-library/react-table-library/compact";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IToken } from "@/lib/types/token";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
+import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";
@@ -37,7 +37,7 @@ export function TakerOrders({
   orderTokenInfo: IToken;
 }) {
   const T = useTranslations("drawer-OfferDetail");
-  const { handleGoScan } = useGoScan();
+  const { handleGoScan } = useGoSolScan();
 
   const data = useMemo(() => {
     const orderData = orders.map((o, index) => {

@@ -20,6 +20,7 @@ import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
 import MarketCharts from "./chart/market-charts";
 import AdBanner from "./ad-banner";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const mt = useTranslations("pn-Marketplace");
@@ -64,6 +65,17 @@ export default function Marketplace({ params }: { params: { name: string } }) {
       Number(marketplace.settlement_period),
     );
   }, [marketplace, checkIsAfterTge]);
+
+  // Remove when eth is ready
+  const {isEth} = useCurrentChain();
+
+  if (isEth) {
+    return (
+      <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
+        <Image src="/img/404.png" width={480} height={360} alt="404" />
+      </div>
+    );
+  }
 
   if (
     marketplaceData &&

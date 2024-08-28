@@ -1,4 +1,4 @@
-import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
+import { PreMarketABI } from "@/lib/abi/eth/PreMarkets";
 import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
@@ -32,9 +32,11 @@ export function useCreateOfferEth({
       settleMode: ISettleMode;
       isNativeToken: boolean;
     }) => {
-      const abiAddress = ethConfig.contracts.preMarket;
+      const abiAddress = ethConfig.contracts.preMarkets;
       const usdcAddress = ethConfig.contracts.usdcToken;
-      const collateralTokenAddr = isNativeToken ? usdcAddress : usdcAddress;
+      const ethAddress = ethConfig.contracts.usdcToken;
+      const collateralTokenAddr = isNativeToken ? ethAddress : usdcAddress;
+
 
       return writeContract({
         abi: PreMarketABI,
@@ -42,10 +44,11 @@ export function useCreateOfferEth({
         functionName: "createOffer",
         args: [
           {
-            marketPlace: marketplaceStr as any,
+            marketPlace: "0xe6b1c25c9bac2b628d6e2d231f9b53b92172fc2d",
+            // marketPlace: marketplaceStr as any,
             collateralTokenAddr: collateralTokenAddr as any,
-            points: BigInt(pointAmount),
-            amount: BigInt(tokenAmount * 1e18),
+            projectPoints: BigInt(pointAmount),
+            quoteTokenAmount: BigInt(tokenAmount * 1e18),
             collateralRate: BigInt(collateralRate),
             eachTradeTax: BigInt(taxForSub),
             offerType: offerType === "ask" ? 0 : 1,

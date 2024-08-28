@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useRpcLatency } from "@/lib/hooks/web3/use-rpc-latency";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/cluster";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useSolanaConfig } from "@/lib/hooks/web3/use-solana-config";
+import { useSolanaConfig } from "@/lib/hooks/web3/solana/use-solana-config";
 import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
 import { Connection } from "@solana/web3.js";

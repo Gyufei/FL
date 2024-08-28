@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { config, projectId, metadata } from "@/lib/web3-modal-config";
+import { config, projectId, metadata } from "./web3-modal-config";
 
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 
@@ -22,7 +22,7 @@ createWeb3Modal({
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
 });
 
-export default function AppKitProvider({
+export default function Web3ModalProvider({
   children,
   initialState,
 }: {

@@ -6,11 +6,12 @@ import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
 import MainLayout from "@/app/[locale]/_page-layout/main-layout";
 import GlobalProvider from "@/components/provider/global-provider";
-import { SolanaWalletProviders } from "@/components/provider/solana-wallets";
+import SolanaWalletProviders from "@/components/provider/solana-wallets";
+import Web3ModalProvider from "@/components/provider/web3-modal";
 import "react-modern-drawer/dist/index.css";
+
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import AppKitProvider from "@/components/provider/web3-modal-provider";
 
 export const metadata = {
   title: {
@@ -70,7 +71,7 @@ export default async function RootLayout({
       <body className={cn(VideoFont.variable)}>
         <GlobalProvider>
           <JotaiProvider>
-            <AppKitProvider>
+            <Web3ModalProvider>
               <SolanaWalletProviders>
                 <SWRConfigProvider>
                   <NextIntlClientProvider messages={messages}>
@@ -78,7 +79,7 @@ export default async function RootLayout({
                   </NextIntlClientProvider>
                 </SWRConfigProvider>
               </SolanaWalletProviders>
-            </AppKitProvider>
+            </Web3ModalProvider>
           </JotaiProvider>
         </GlobalProvider>
       </body>

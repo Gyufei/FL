@@ -1,6 +1,6 @@
 import useSWRImmutable from "swr/immutable";
 import fetcher from "@/lib/fetcher";
-import { EndPointPathMap } from "@/lib/PathMap";
+import { useEndPoint } from "./use-endpoint";
 
 interface ProjectLinks {
   twitter: string;
@@ -8,9 +8,12 @@ interface ProjectLinks {
 }
 
 export function useMarketInfo() {
-  const res = useSWRImmutable<
-    Record<string, ProjectLinks>
-  >(EndPointPathMap.projectInfo, fetcher);
+  const { projectInfoEndPoint } = useEndPoint();
+
+  const res = useSWRImmutable<Record<string, ProjectLinks>>(
+    projectInfoEndPoint,
+    fetcher,
+  );
 
   return res;
 }

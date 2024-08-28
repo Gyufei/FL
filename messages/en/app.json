@@ -10,7 +10,8 @@
     "Days": "Days",
     "Hours": "Hours",
     "Minutes": "Minutes",
-    "Seconds": "Seconds"
+    "Seconds": "Seconds",
+    "btn-Approve": "Approve"
   },
   "Header": {
     "btn-Marketplace": "Marketplace",

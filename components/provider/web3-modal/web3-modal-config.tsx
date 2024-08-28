@@ -1,10 +1,9 @@
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
+import { cookieStorage, createStorage, http } from "wagmi";
+import { mainnet } from "wagmi/chains";
+import { testnet } from "./testnet";
 
-import { cookieStorage, createStorage } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
-
-// Get projectId from https://cloud.walletconnect.com
-export const projectId = "554bbd76b2e66a095d2d38490bb42983"; // process.env.NEXT_PUBLIC_PROJECT_ID;
+export const projectId = "8e507d09486ed2283f0d0922c0a02261"; // process.env.NEXT_PUBLIC_PROJECT_ID;
 
 if (!projectId) throw new Error("Project ID is not defined");
 
@@ -16,7 +15,7 @@ export const metadata = {
 };
 
 // Create wagmiConfig
-const chains = [mainnet, sepolia] as const;
+const chains = [mainnet, testnet] as const;
 export const config = defaultWagmiConfig({
   chains,
   projectId,
@@ -25,4 +24,8 @@ export const config = defaultWagmiConfig({
   storage: createStorage({
     storage: cookieStorage,
   }),
+  transports: {
+    [mainnet.id]: http(),
+    [testnet.id]: http(),
+  },
 });

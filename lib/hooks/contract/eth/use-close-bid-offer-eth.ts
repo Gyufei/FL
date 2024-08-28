@@ -1,23 +1,34 @@
-// import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { useChainWallet } from "../../web3/use-chain-wallet";
+import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 
-export function useCloseBidOfferEth() {
+export function useCloseBidOfferEth({
+  marketplaceStr,
+  makerStr,
+  offerStr,
+}: {
+  marketplaceStr: string;
+  makerStr: string;
+  offerStr: string;
+}) {
   const { ethConfig } = useEthConfig();
+
+  const { address } = useChainWallet();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
   const txAction = useCallback(() => {
-    // const abiAddress = ethConfig.contracts.preMarket;
-    // return writeContract({
-    //   abi: PreMarketABI,
-    //   address: abiAddress as any,
-    //   functionName: "closeBidOffer",
-    //   args: [],
-    // });
-  }, [writeContract, ethConfig]);
+    const abiAddress = ethConfig.contracts.deliveryPlace;
+    return writeContract({
+      abi: DeliveryPlaceABI,
+      address: abiAddress as any,
+      functionName: "closeBidOffer",
+      args: [marketplaceStr, makerStr, offerStr, address],
+    });
+  }, [writeContract, ethConfig, marketplaceStr, makerStr, offerStr, address]);
 
   return {
     data,

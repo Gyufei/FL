@@ -150,7 +150,7 @@ export default function OverviewInfo() {
                 <NoDataDisplay noData={!accountInfo}>
                   <>
                     {accountInfo?.profit < 0 ? "-" : "+"}$
-                    {formatNum(Math.abs(accountInfo?.profit))}
+                    {formatNum(Math.abs(accountInfo?.profit || 0))}
                   </>
                 </NoDataDisplay>
               </div>
@@ -194,7 +194,7 @@ export default function OverviewInfo() {
                 <NoDataDisplay noData={!accountInfo}>
                   <>
                     {accountInfo?.tax_income < 0 ? "-" : "+"}$
-                    {formatNum(Math.abs(accountInfo?.tax_income))}
+                    {formatNum(Math.abs(accountInfo?.tax_income || 0))}
                   </>
                 </NoDataDisplay>
               </div>

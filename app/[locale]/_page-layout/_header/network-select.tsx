@@ -71,9 +71,7 @@ export function NetworkSelect() {
   const { handleConnectEth } = useEthNetworkSelect();
 
   function handleEthAction() {
-    if (!isProduction) {
-      handleConnectEth();
-    }
+    handleConnectEth();
   }
 
   return (
@@ -156,9 +154,7 @@ export function MbNetworkSelect() {
   const { handleConnectEth } = useEthNetworkSelect();
 
   function handleEthAction() {
-    if (!isProduction) {
-      handleConnectEth();
-    }
+    handleConnectEth();
   }
 
   return (

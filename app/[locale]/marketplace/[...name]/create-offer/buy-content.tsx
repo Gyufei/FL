@@ -104,6 +104,7 @@ export function BuyContent({
   });
 
   function handleDeposit() {
+    console.log("deposit");
     const isPriceValid = checkMinPrice(
       pointPrice,
       Number(marketplace.minimum_price),

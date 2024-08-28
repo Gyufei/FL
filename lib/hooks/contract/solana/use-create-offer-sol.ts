@@ -1,5 +1,5 @@
 import { BN } from "bn.js";
-import useTadleProgram from "@/lib/hooks/web3/use-tadle-program";
+import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
 import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";

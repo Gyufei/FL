@@ -5,7 +5,7 @@ import { WithTip } from "../create-offer/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
+import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
@@ -13,7 +13,7 @@ import { isProduction } from "@/lib/PathMap";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
-  const { handleGoScan } = useGoScan();
+  const { handleGoScan } = useGoSolScan();
 
   const { amount, orderTokenInfo, orderPointInfo, makerDetail } =
     useOfferFormat({

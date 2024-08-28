@@ -1,7 +1,7 @@
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
-import { TokenManagerABI } from "@/lib/abi/eth/token-manager";
+import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { IBalanceType } from "../use-with-draw-base-token";
 
 export function useWithDrawBaseTokenEth() {

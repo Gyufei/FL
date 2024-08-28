@@ -8,7 +8,7 @@ import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
+import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
 import { useTranslations } from "next-intl";
 
 export default function MessageBtn() {
@@ -78,7 +78,7 @@ export default function MessageBtn() {
 }
 
 function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
-  const { handleGoScan } = useGoScan();
+  const { handleGoScan } = useGoSolScan();
 
   return (
     <div className="flex space-x-3">

@@ -6,7 +6,7 @@ import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-
 import { formatTimeObj, formatTimestamp } from "@/lib/utils/time";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
+import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { isProduction } from "@/lib/PathMap";
@@ -28,7 +28,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     return (offer as any).origin_offer_detail;
   }, [offer]);
 
-  const { handleGoScan } = useGoScan();
+  const { handleGoScan } = useGoSolScan();
 
   const originMaker = useMemo(() => {
     return offer.origin_offer_detail?.maker_account || offer.maker_account;

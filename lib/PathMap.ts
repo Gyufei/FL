@@ -1,44 +1,38 @@
-export const isPreview = process.env.NEXT_PUBLIC_IS_PREVIEW === '1'
-export const isProduction = process.env.NODE_ENV === 'production' && !isPreview
+export const isPreview = process.env.NEXT_PUBLIC_IS_PREVIEW === "1";
+export const isProduction = process.env.NODE_ENV === "production" && !isPreview;
 // export const isProduction = true;
 
 export function WithHost(path: string) {
-  const prodHost = `https://api.tadle.com`
-  const devHost = `https://preview-api.tadle.com`
+  const prodHost = `https://api.tadle.com`;
+  const devHost = `https://preview-api.tadle.com`;
   // const devHost = `https://api.tadle.com`
-  const host = isProduction ? prodHost : devHost
-  return `${host}${path}`
+  const host = isProduction ? prodHost : devHost;
+  return `${host}${path}`;
 }
 
 export function WithCDN(path: string) {
-  const devCDN = `https://preview-cdn.tadle.com`
-  const prodCDN = `https://cdn.tadle.com`
-  const cdn = isProduction ? prodCDN : devCDN
+  const devCDN = `https://preview-cdn.tadle.com`;
+  const prodCDN = `https://cdn.tadle.com`;
+  const cdn = isProduction ? prodCDN : devCDN;
   return `${cdn}${path}`;
 }
 
-export function WithProjectCDN(path: string) {
+export function WithProjectImgCDN(path: string) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/images/project/${goPath}`)
+  return WithCDN(`/images/project/${goPath}`);
 }
 
-export function WithPointCDN(path: string) {
+export function WithPointImgCDN(path: string) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/images/point/${goPath}`)
+  return WithCDN(`/images/point/${goPath}`);
 }
 
 export function WithWss() {
   const devWss = "preview-wss.tadle.com";
   const prodWss = "wss://wss.tadle.com";
-  const wss = isProduction ? prodWss : devWss
+  const wss = isProduction ? prodWss : devWss;
   return wss;
 }
-
-export const EndPointPathMap = {
-  api: WithHost(""),
-  solanaToken: WithCDN("/tokenlist/solana.json"),
-  projectInfo: WithCDN('/project_info.json'),
-};
 
 export const Paths = {
   signIn: "/user/sign_in",
@@ -60,19 +54,19 @@ export const Paths = {
   userState: "/user/state",
   userName: "/user/user_name",
   sales_volume_history: "/market_place/sales_volume_history",
-  makerSettleAccount: '/market_place/direct_settle_account',
-  tokenPrice: '/token/info',
+  makerSettleAccount: "/market_place/direct_settle_account",
+  tokenPrice: "/token/info",
 
   referral: {
-    referer: '/referral/referer',
-    create: '/referral/create',
-    updateCommission: '/referral/update_commission',
-    updateNote: '/referral/update_notes',
-    default: '/referral/default',
-    data: '/referral/referral_system_data',
-    views: '/referral/views',
-    delete: '/referral/delete',
-    codeData: '/referral/referal_rate',
-    extraRate: "/referral/referal_extra_rate"
-  }
+    referer: "/referral/referer",
+    create: "/referral/create",
+    updateCommission: "/referral/update_commission",
+    updateNote: "/referral/update_notes",
+    default: "/referral/default",
+    data: "/referral/referral_system_data",
+    views: "/referral/views",
+    delete: "/referral/delete",
+    codeData: "/referral/referal_rate",
+    extraRate: "/referral/referal_extra_rate",
+  },
 };

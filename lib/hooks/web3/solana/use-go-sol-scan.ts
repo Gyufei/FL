@@ -1,8 +1,8 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useSolanaConfig } from "./use-solana-config";
-import { useCurrentChain } from "./use-current-chain";
+import { useSolanaConfig } from "@/lib/hooks/web3/solana/use-solana-config";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
-export function useGoScan() {
+export function useGoSolScan() {
   const { isEth, isSolana } = useCurrentChain();
   const { clusterConfig } = useSolanaConfig();
 

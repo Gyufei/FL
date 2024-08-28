@@ -2,7 +2,7 @@ import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { generateRandomCode } from "@/lib/utils/common";
-import { SystemConfigABI } from "@/lib/abi/eth/system-config";
+import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
 
 export function useCreateReferralEth() {
   const { ethConfig } = useEthConfig();

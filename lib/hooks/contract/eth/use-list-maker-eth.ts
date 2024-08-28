@@ -1,4 +1,4 @@
-import { PreMarketABI } from "@/lib/abi/eth/pre-markets";
+import { PreMarketABI } from "@/lib/abi/eth/PreMarkets";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
@@ -18,7 +18,7 @@ export function useListMakerEth() {
       receiveTokenAmount: number;
       collateralRate: number;
     }) => {
-      const abiAddress = ethConfig.contracts.preMarket;
+      const abiAddress = ethConfig.contracts.preMarkets;
       const stockAddress = generateEthAddress("2", "stock");
 
       return writeContract({

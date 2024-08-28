@@ -27,6 +27,7 @@ export function useWsMsgs() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("message", onMsgEvent);
+    socket.on("error", () => {});
 
     return () => {
       socket.off("connect", onConnect);

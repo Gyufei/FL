@@ -10,7 +10,7 @@ const currentChainInfoMap = {
   },
   eth: {
     name: "Ethereum",
-    logo: "/icons/ethereum.svg",
+    logo: "/icons/eth.svg",
   },
 } as const;
 

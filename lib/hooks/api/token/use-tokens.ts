@@ -1,16 +1,18 @@
 import useSWRImmutable from "swr/immutable";
 import type { IToken } from "../../../types/token";
 import fetcher from "@/lib/fetcher";
-import { EndPointPathMap } from "@/lib/PathMap";
+import { useEndPoint } from "../use-endpoint";
 
 export function useTokens() {
+  const { tokenEndPoint } = useEndPoint();
+
   async function tFetcher() {
-    const tokens = await fetcher(EndPointPathMap.solanaToken);
+    const tokens = await fetcher(tokenEndPoint);
 
     const newTokens = tokens.map((t: Record<string, any>) => {
       const newT = {
         ...t,
-        logoURI: t.url
+        logoURI: t.url,
       } as any;
 
       delete newT.url;
@@ -29,7 +31,7 @@ export function useTokens() {
 
   const { data, isLoading, error } = useSWRImmutable<{
     tokens: Array<IToken>;
-  }>(EndPointPathMap.solanaToken, tFetcher);
+  }>(tokenEndPoint, tFetcher);
 
   return {
     data: data?.tokens,

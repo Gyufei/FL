@@ -9,7 +9,7 @@ export function useFaucetEth() {
     useWriteContract();
 
   const txAction = useCallback(() => {
-    // const abiAddress = ethConfig.contracts.preMarket;
+    // const abiAddress = ethConfig.contracts.preMarkets;
     // return writeContract({
     //   abi: PreMarketABI,
     //   address: abiAddress as any,

@@ -1,9 +1,9 @@
 import * as anchor from "@coral-xyz/anchor";
 import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
-import useProvider from "@/lib/hooks/web3/use-provider";
+import useProvider from "@/lib/hooks/web3/solana/use-provider";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useSolanaConfig } from "@/lib/hooks/web3/use-solana-config";
+import { useSolanaConfig } from "@/lib/hooks/web3/solana/use-solana-config";
 import { TadleFaucetAbi } from "@/lib/abi/solana/tadle_faucet";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,

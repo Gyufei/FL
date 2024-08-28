@@ -1,12 +1,22 @@
 import { useMemo } from "react";
-import { EndPointPathMap } from "@/lib/PathMap";
+import { WithCDN, WithHost } from "@/lib/PathMap";
 
 export function useEndPoint() {
   const apiEndPoint = useMemo(() => {
-    return EndPointPathMap.api
+    return WithHost("");
+  }, []);
+
+  const projectInfoEndPoint = useMemo(() => {
+    return WithCDN("/project_info.json");
+  }, []);
+
+  const tokenEndPoint = useMemo(() => {
+    return WithCDN("/tokenlist/solana.json");
   }, []);
 
   return {
-    apiEndPoint
+    apiEndPoint,
+    projectInfoEndPoint,
+    tokenEndPoint,
   };
 }

@@ -6,7 +6,7 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useSolanaConfig } from "../../web3/use-solana-config";
+import { useSolanaConfig } from "../../web3/solana/use-solana-config";
 
 export function useAccountsSol() {
   const { publicKey: authority } = useWallet();

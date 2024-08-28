@@ -1,7 +1,7 @@
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
-import { DeliveryPlaceABI } from "@/lib/abi/eth/delivery-place";
+import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 
 export function useSettleAskMakerEth({ offerStr }: { offerStr: string }) {
   const { ethConfig } = useEthConfig();

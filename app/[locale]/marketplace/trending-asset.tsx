@@ -13,7 +13,7 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function TrendingAsset({ className }: { className?: string }) {
-  // const ct = useTranslations("Common");
+  const ct = useTranslations("Common");
   const t = useTranslations("page-MarketList");
 
   const { data, isLoading: isLoadingFlag } = useMarketplaces();
@@ -152,12 +152,6 @@ export default function TrendingAsset({ className }: { className?: string }) {
     },
   ];
 
-  if (!tableData.nodes.length) {
-    return (
-      <div className="flex flex-1 items-center justify-center text-base text-gray"></div>
-    );
-  }
-
   return (
     <div className={cn(className, "flex flex-col")}>
       <div className="flex items-center justify-between">
@@ -166,16 +160,24 @@ export default function TrendingAsset({ className }: { className?: string }) {
           <div className="leading-6 text-black">{t("cap-TrendingAssets")}</div>
         </div>
       </div>
-      <div className="max-h-auto relative min-h-[360px] w-full flex-1 flex-col overflow-y-hidden">
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
-          <CompactTable
-            columns={COLUMNS}
-            data={tableData}
-            theme={theme}
-            layout={{ fixedHeader: true }}
-          />
+      {!tableData.nodes.length ? (
+        <>
+          <div className="max-h-auto flex min-h-[360px] flex-1 items-center justify-center text-base text-gray">
+            {ct("txt-NoData")}
+          </div>
+        </>
+      ) : (
+        <div className="max-h-auto relative min-h-[360px] w-full flex-1 flex-col overflow-y-hidden">
+          <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
+            <CompactTable
+              columns={COLUMNS}
+              data={tableData}
+              theme={theme}
+              layout={{ fixedHeader: true }}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

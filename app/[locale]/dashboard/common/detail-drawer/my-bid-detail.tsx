@@ -50,7 +50,7 @@ export default function MyBidDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
-    stockStr: order.stock_account,
+    holdingStr: order.stock_account,
     isNativeToken,
   });
 
@@ -62,7 +62,7 @@ export default function MyBidDetail({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
-    stockStr: order.stock_account,
+    holdingStr: order.stock_account,
     isNativeToken,
   });
 

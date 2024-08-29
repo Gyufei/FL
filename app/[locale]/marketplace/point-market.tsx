@@ -86,7 +86,7 @@ export default function PointMarket({ className }: { className?: string }) {
     }
 
     // Remove when eth is ready
-    const tData = isEth ? [] : data
+    const tData = isEth ? [] : data;
 
     const nodes = (tData || [])
       .filter((m) => m.status !== "offline")
@@ -269,6 +269,14 @@ export default function PointMarket({ className }: { className?: string }) {
         ),
     },
   ];
+
+  if (!tableData.nodes.length) {
+    return (
+      <div className="flex flex-1 items-center justify-center text-base text-gray">
+        {t("txt-NoMarketData")}
+      </div>
+    );
+  }
 
   return (
     <div className={cn(className, "flex flex-1 flex-col")}>

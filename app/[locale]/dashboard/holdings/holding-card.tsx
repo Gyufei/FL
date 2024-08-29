@@ -5,17 +5,17 @@ import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
-import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
+import useOfferHoldings from "@/lib/hooks/offer/use-offer-holdings";
 import DelistBtn from "./delist-btn/delist-btn";
 import { useTranslations } from "next-intl";
 
-export default function StockCard({
+export default function HoldingCard({
   stock,
   onSuccess,
 }: {
-  stock: IStock;
+  stock: IHolding;
   onSuccess: () => void;
 }) {
   const ct = useTranslations("page-MyStocks");
@@ -37,7 +37,7 @@ export default function StockCard({
 
   const isAskStock = stock.stock_type === "ask";
 
-  const { data: subOrders } = useOfferStocks({
+  const { data: subOrders } = useOfferHoldings({
     offer: stock.pre_offer_detail,
   });
 

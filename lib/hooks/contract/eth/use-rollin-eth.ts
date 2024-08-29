@@ -8,6 +8,14 @@ export function useRollinEth() {
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
+  const getRollingData = async () => {
+    // const abiAddress = ethConfig.contracts.preMarkets;
+
+    return {
+      rollinAt: new Date().getTime(),
+    };
+  };
+
   const txAction = useCallback(() => {
     // const abiAddress = ethConfig.contracts.preMarkets;
     // return writeContract({
@@ -28,5 +36,6 @@ export function useRollinEth() {
     isPending,
     isSuccess,
     write: txAction,
+    getRollingData,
   };
 }

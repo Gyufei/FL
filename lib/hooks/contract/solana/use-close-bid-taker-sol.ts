@@ -8,13 +8,13 @@ import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-tran
 export function useCloseBidTakerSol({
   marketplaceStr,
   makerStr,
-  stockStr,
+  holdingStr,
   preOfferStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
-  stockStr: string;
+  holdingStr: string;
   preOfferStr: string;
   isNativeToken: boolean;
 }) {
@@ -32,7 +32,7 @@ export function useCloseBidTakerSol({
     const marketPlace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
     const preOffer = new PublicKey(preOfferStr);
-    const stockD = new PublicKey(stockStr);
+    const stockD = new PublicKey(holdingStr);
 
     const {
       walletBaseTokenBalance: walletDBaseTokenBalance,

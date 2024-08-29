@@ -5,14 +5,14 @@ import { useSettleAskTakerSol } from "./solana/use-settle-ask-taker-sol";
 export function useSettleAskTaker({
   marketplaceStr,
   makerStr,
-  stockStr,
+  holdingStr,
   preOfferStr,
   preOfferAuthorityStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
-  stockStr: string;
+  holdingStr: string;
   preOfferStr: string;
   preOfferAuthorityStr: string;
   isNativeToken: boolean;
@@ -20,7 +20,7 @@ export function useSettleAskTaker({
   const actionRes = useChainTx(useSettleAskTakerEth, useSettleAskTakerSol, {
     marketplaceStr,
     makerStr,
-    stockStr,
+    holdingStr,
     preOfferStr,
     preOfferAuthorityStr,
     isNativeToken,

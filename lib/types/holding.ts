@@ -2,7 +2,7 @@ import { IOfferType } from "@/components/share/offer-type-select";
 import { IOffer } from "./offer";
 import { IMarketplace } from "./marketplace";
 
-export interface IStock {
+export interface IHolding {
   amount: string;
   authority: string;
   create_at: number;

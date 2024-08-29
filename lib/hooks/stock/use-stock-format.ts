@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 import { useOfferFormat } from "../offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
 
-export function useStockFormat({ stock }: { stock: IStock }) {
+export function useStockFormat({ stock }: { stock: IHolding }) {
   const {
     afterTGE,
     afterTGEPeriod,

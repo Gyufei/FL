@@ -3,7 +3,7 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 
-export function useSettleAskTakerEth({ stockStr }: { stockStr: string }) {
+export function useSettleAskTakerEth({ holdingStr }: { holdingStr: string }) {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
@@ -17,10 +17,10 @@ export function useSettleAskTakerEth({ stockStr }: { stockStr: string }) {
         abi: DeliveryPlaceABI,
         address: abiAddress as any,
         functionName: "settleAskTaker",
-        args: [stockStr as any, BigInt(settleAmount)],
+        args: [holdingStr as any, BigInt(settleAmount)],
       });
     },
-    [writeContract, ethConfig, stockStr],
+    [writeContract, ethConfig, holdingStr],
   );
 
   return {

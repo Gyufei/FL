@@ -3,11 +3,11 @@ import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useStockResFormat } from "../stock/use-stock-res-format";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 import { SolanaZeroed } from "@/lib/const/solana";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
-export function useMyStocks() {
+export function useMyHoldings() {
   const { address } = useChainWallet();
   const { apiEndPoint } = useEndPoint();
 
@@ -38,7 +38,7 @@ export function useMyStocks() {
       filedRes.map((o: Record<string, any>) => stockResFieldFormat(o)),
     );
 
-    return parsedRes as Array<IStock>;
+    return parsedRes as Array<IHolding>;
   };
 
   const res = useSWR(`my_stock:${address}${isLoading}`, marketOrdersFetcher);

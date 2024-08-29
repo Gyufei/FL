@@ -17,21 +17,21 @@ export function useStockResFormat() {
     isLoading: isOffersLoading,
   } = useOfferResFormat();
 
-  async function stockResFieldFormat(stock: Record<string, any>) {
+  async function stockResFieldFormat(holding: Record<string, any>) {
     const marketplace = marketplaceData?.find(
-      (m) => m.market_place_id === stock.market_place_account,
+      (m) => m.market_place_id === holding.market_place_account,
     );
 
-    const isPreOfferZeroed = stock.pre_offer_account === SolanaZeroed;
-    const isOfferZeroed = stock.offer_account === SolanaZeroed;
+    const isPreOfferZeroed = holding.pre_offer_account === SolanaZeroed;
+    const isOfferZeroed = holding.offer_account === SolanaZeroed;
 
     let offers = null;
     if (!isPreOfferZeroed || !isOfferZeroed) {
-      if (MarketOffersMap[stock.market_place_account]) {
-        offers = MarketOffersMap[stock.market_place_account];
+      if (MarketOffersMap[holding.market_place_account]) {
+        offers = MarketOffersMap[holding.market_place_account];
       } else {
         const rawOffers = await fetcher(
-          `${apiEndPoint}${Paths.offer}?market_place_account=${stock.market_place_account}`,
+          `${apiEndPoint}${Paths.offer}?market_place_account=${holding.market_place_account}`,
         );
         offers = await Promise.all(
           rawOffers.map((o: Record<string, any>) =>
@@ -47,14 +47,14 @@ export function useStockResFormat() {
         };
       });
 
-      MarketOffersMap[stock.market_place_account] = offers;
+      MarketOffersMap[holding.market_place_account] = offers;
     }
 
     let preOfferDetail = null;
     if (!isPreOfferZeroed) {
       preOfferDetail =
         offers.find(
-          (o: Record<string, any>) => o.offer_account === stock.pre_offer,
+          (o: Record<string, any>) => o.offer_account === holding.pre_offer,
         ) || null;
     }
 
@@ -63,16 +63,16 @@ export function useStockResFormat() {
     if (!isOfferZeroed) {
       offerDetail =
         offers.find(
-          (o: Record<string, any>) => o.offer_account === stock.offer,
+          (o: Record<string, any>) => o.offer_account === holding.offer,
         ) || null;
     }
 
     return {
-      ...stock,
+      ...holding,
       marketplace,
-      pre_offer: isPreOfferZeroed ? "" : stock.pre_offer_account,
+      pre_offer: isPreOfferZeroed ? "" : holding.pre_offer_account,
       pre_offer_detail: preOfferDetail,
-      offer: isOfferZeroed ? "" : stock.offer_account,
+      offer: isOfferZeroed ? "" : holding.offer_account,
       offer_detail: offerDetail,
     };
   }

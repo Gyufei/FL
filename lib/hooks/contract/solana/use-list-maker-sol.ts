@@ -9,13 +9,13 @@ import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-tran
 export function useListMakerSol({
   marketplaceStr,
   makerStr,
-  stockStr,
+  holdingStr,
   originOfferStr,
   isNativeToken
 }: {
   marketplaceStr: string;
   makerStr: string;
-  stockStr: string;
+  holdingStr: string;
   originOfferStr: string;
   isNativeToken: boolean
 }) {
@@ -47,7 +47,7 @@ export function useListMakerSol({
     } = await getAccounts(program.programId);
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const stockD = new PublicKey(stockStr);
+    const stockD = new PublicKey(holdingStr);
     const maker = new PublicKey(makerStr);
     const originOffer = new PublicKey(originOfferStr);
 

@@ -4,7 +4,7 @@ import { useSettleAskTaker } from "@/lib/hooks/contract/use-settle-ask-taker";
 
 export default function ConfirmAskTakerSettleBtn({
   marketplaceStr,
-  stockStr,
+  holdingStr,
   makerStr,
   preOfferStr,
   settleAmount,
@@ -13,7 +13,7 @@ export default function ConfirmAskTakerSettleBtn({
   isNativeToken,
 }: {
   marketplaceStr: string;
-  stockStr: string;
+  holdingStr: string;
   makerStr: string;
   preOfferStr: string;
   preOfferAuthorityStr: string;
@@ -28,7 +28,7 @@ export default function ConfirmAskTakerSettleBtn({
   } = useSettleAskTaker({
     marketplaceStr,
     preOfferStr,
-    stockStr,
+    holdingStr,
     preOfferAuthorityStr,
     makerStr,
     isNativeToken,

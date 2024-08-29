@@ -14,10 +14,10 @@ export default function MenuCol() {
         <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
       </MenuIcon>
       <MenuIcon
-        href={`/dashboard/stocks`}
-        isActive={pathname === `/dashboard/stocks`}
+        href={`/dashboard/holdings`}
+        isActive={pathname === `/dashboard/holdings`}
       >
-        <Image src="/icons/stocks.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/holdings.svg" width={24} height={24} alt="holdings" />
       </MenuIcon>
       <MenuIcon
         href={`/dashboard/balances`}
@@ -41,33 +41,33 @@ export default function MenuCol() {
         data-active={false}
         className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-yellow"
       >
-        <Image src="/icons/compass.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/compass.svg" width={24} height={24} alt="holdings" />
       </div>
       <div
         onClick={handleComingSoon}
         data-active={false}
         className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-yellow"
       >
-        <Image src="/icons/stats.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/stats.svg" width={24} height={24} alt="holdings" />
       </div>
       <div
         onClick={handleComingSoon}
         data-active={false}
         className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-yellow"
       >
-        <Image src="/icons/referral.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/referral.svg" width={24} height={24} alt="holdings" />
       </div> */}
       {/* <MenuIcon
         href="/dashboard/balances"
         isActive={pathname === "/dashboard/balances"}
       >
-        <Image src="/icons/wallet.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/wallet.svg" width={24} height={24} alt="holdings" />
       </MenuIcon>
       <MenuIcon href="#" isActive={pathname === "/dashboard/stats"}>
-        <Image src="/icons/stats.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/stats.svg" width={24} height={24} alt="holdings" />
       </MenuIcon>
       <MenuIcon href="#" isActive={pathname === "/dashboard/referral"}>
-        <Image src="/icons/referral.svg" width={24} height={24} alt="stocks" />
+        <Image src="/icons/referral.svg" width={24} height={24} alt="holdings" />
       </MenuIcon> */}
     </div>
   );

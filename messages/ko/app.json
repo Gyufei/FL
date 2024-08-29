@@ -11,7 +11,8 @@
     "Hours": "Hours",
     "Minutes": "Minutes",
     "Seconds": "Seconds",
-    "btn-Approve": "Approve"
+    "btn-Approve": "Approve",
+    "txt-NoData": "No Data Available"
   },
   "Header": {
     "btn-Marketplace": "Marketplace",
@@ -224,13 +225,13 @@
     "tag-Ask": "Ask",
     "tag-Bid": "Bid",
     "btn-List": "List",
-    "cap-ListStockAsAskOffer": "List Stock As Ask Offer",
+    "cap-ListStockAsAskOffer": "List Holding As Ask Offer",
     "txt-Listed": "Listed",
     "btn-Settle": "Settle",
-    "txt-YourStockAppearHere": "Your stock appear here.."
+    "txt-YourStockAppearHere": "Your holding appear here.."
   },
   "drawer-ListOrder": {
-    "cap-StockId": "Stock Id",
+    "cap-StockId": "Holding Id",
     "cap-Prev": "Prev",
     "cap-OriginatedFrom": "Originated from"
   },
@@ -292,6 +293,7 @@
     "cap-TrendingAssets": "Trending Assets",
     "th-FloorPrice": "Floor Price",
     "th-24hChange": "24h Change",
-    "txt-NotStarted": "Not Started"
+    "txt-NotStarted": "Not Started",
+    "txt-NoMarketData": "No Market Data Available"
   }
 }

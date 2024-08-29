@@ -19,13 +19,19 @@ export function useRollinSol() {
       program.programId,
     )[0];
 
-    const rollinStateData = (await program.account.rollinStateData.fetch(
-      rollinState,
-    )) as any;
+    try {
+      const rollinStateData = (await program.account.rollinStateData.fetch(
+        rollinState,
+      )) as any;
 
-    return {
-      rollinAt: rollinStateData.rollinAt.toString(),
-    };
+      return {
+        rollinAt: rollinStateData.rollinAt.toString(),
+      };
+    } catch (e) {
+      return {
+        rollinAt: "0",
+      };
+    }
   };
 
   const writeAction = async () => {

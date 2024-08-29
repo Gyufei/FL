@@ -5,10 +5,10 @@ import { useCallback } from "react";
 
 export function useRelistOfferEth({
   offerStr,
-  stockStr,
+  holdingStr,
 }: {
   offerStr: string;
-  stockStr: string;
+  holdingStr: string;
 }) {
   const { ethConfig } = useEthConfig();
 
@@ -22,9 +22,9 @@ export function useRelistOfferEth({
       abi: PreMarketABI,
       address: abiAddress as any,
       functionName: "relistStock",
-      args: [stockStr as any, offerStr as any],
+      args: [holdingStr as any, offerStr as any],
     });
-  }, [writeContract, ethConfig, stockStr, offerStr]);
+  }, [writeContract, ethConfig, holdingStr, offerStr]);
 
   return {
     data,

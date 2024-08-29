@@ -4,7 +4,7 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { generateEthAddress } from "@/lib/utils/web3";
 
-export function useCloseOfferEth({ stockStr }: { stockStr: string }) {
+export function useCloseOfferEth({ holdingStr }: { holdingStr: string }) {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
@@ -19,9 +19,9 @@ export function useCloseOfferEth({ stockStr }: { stockStr: string }) {
       abi: PreMarketABI,
       address: abiAddress as any,
       functionName: "closeOffer",
-      args: [stockStr as any, offer1Address],
+      args: [holdingStr as any, offer1Address],
     });
-  }, [writeContract, ethConfig, stockStr]);
+  }, [writeContract, ethConfig, holdingStr]);
 
   return {
     data,

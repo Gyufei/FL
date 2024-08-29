@@ -108,7 +108,7 @@ export default function ConfirmAskMakerSettleDialog({
 
           <ConfirmAskMakerSettleBtn
             isNativeToken={isNativeToken}
-            isStocksLoading={false}
+            isHoldingsLoading={false}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_account}
             makerStr={offer.maker_account}

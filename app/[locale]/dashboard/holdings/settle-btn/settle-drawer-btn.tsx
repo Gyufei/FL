@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import ConfirmAskTakerSettleDialog from "./confirm-ask-taker-settle-dialog";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 
@@ -9,7 +9,7 @@ export default function SettleDrawerBtn({
   order,
   onSuccess,
 }: {
-  order: IStock;
+  order: IHolding;
   onSuccess: () => void;
 }) {
   const mst = useTranslations("page-MyStocks");

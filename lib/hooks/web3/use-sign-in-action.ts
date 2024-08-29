@@ -21,7 +21,7 @@ export function useSignInAction() {
         throw new Error("Wallet does not support message signing!");
       const message = "Welcome to Tadle!";
       const signatureStr = await signMessage(message);
-      console.log("signatureStr", signatureStr, 123);
+      console.log("signatureStr", signatureStr);
 
       const res = await signInApiAction({
         wallet: address,

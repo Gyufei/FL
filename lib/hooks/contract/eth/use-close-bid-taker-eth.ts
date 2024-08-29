@@ -3,7 +3,7 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 
-export function useCloseBidTakerEth({ stockStr }: { stockStr: string }) {
+export function useCloseBidTakerEth({ holdingStr }: { holdingStr: string }) {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
@@ -16,9 +16,9 @@ export function useCloseBidTakerEth({ stockStr }: { stockStr: string }) {
       abi: DeliveryPlaceABI,
       address: abiAddress as any,
       functionName: "closeBidTaker",
-      args: [stockStr as any],
+      args: [holdingStr as any],
     });
-  }, [writeContract, ethConfig, stockStr]);
+  }, [writeContract, ethConfig, holdingStr]);
 
   return {
     data,

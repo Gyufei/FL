@@ -9,13 +9,13 @@ export function useCloseOfferSol({
   marketplaceStr,
   makerStr,
   offerStr,
-  stockStr,
+  holdingStr,
   isNativeToken
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  stockStr: string;
+  holdingStr: string;
   isNativeToken: boolean
 }) {
   const { program } = useTadleProgram();
@@ -34,7 +34,7 @@ export function useCloseOfferSol({
     const marketPlace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
     const offerD = new PublicKey(offerStr);
-    const stockD = new PublicKey(stockStr);
+    const stockD = new PublicKey(holdingStr);
 
     const {
       walletBaseTokenBalance: walletDBaseTokenBalance,

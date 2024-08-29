@@ -5,20 +5,20 @@ import { useCloseBidTakerSol } from "./solana/use-close-bid-taker-sol";
 export function useCloseBidTaker({
   marketplaceStr,
   makerStr,
-  stockStr,
+  holdingStr,
   preOfferStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
-  stockStr: string;
+  holdingStr: string;
   preOfferStr: string;
   isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useCloseBidTakerEth, useCloseBidTakerSol, {
     marketplaceStr,
     makerStr,
-    stockStr,
+    holdingStr,
     preOfferStr,
     isNativeToken,
   });

@@ -9,13 +9,13 @@ export function useRelistOfferSol({
   marketplaceStr,
   makerStr,
   offerStr,
-  stockStr,
+  holdingStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  stockStr: string;
+  holdingStr: string;
   isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
@@ -41,7 +41,7 @@ export function useRelistOfferSol({
     const marketPlace = new PublicKey(marketplaceStr);
     const offerD = new PublicKey(offerStr);
     const maker = new PublicKey(makerStr);
-    const stockD = new PublicKey(stockStr);
+    const stockD = new PublicKey(holdingStr);
 
     const methodTransaction = await program.methods
       .relist()

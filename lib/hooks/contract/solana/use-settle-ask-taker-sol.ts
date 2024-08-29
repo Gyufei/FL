@@ -9,14 +9,14 @@ import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-tran
 export function useSettleAskTakerSol({
   marketplaceStr,
   makerStr,
-  stockStr,
+  holdingStr,
   preOfferStr,
   preOfferAuthorityStr,
   isNativeToken
 }: {
   marketplaceStr: string;
   makerStr: string;
-  stockStr: string;
+  holdingStr: string;
   preOfferStr: string;
   preOfferAuthorityStr: string;
   isNativeToken: boolean;
@@ -54,7 +54,7 @@ export function useSettleAskTakerSol({
     )[0];
 
     const marketPlace = new PublicKey(marketplaceStr);
-    const stock = new PublicKey(stockStr);
+    const stock = new PublicKey(holdingStr);
     const bidMaker = new PublicKey(makerStr);
     const preOffer = new PublicKey(preOfferStr);
 

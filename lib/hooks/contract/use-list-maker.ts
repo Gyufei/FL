@@ -5,20 +5,20 @@ import { useListMakerSol } from "./solana/use-list-maker-sol";
 export function useListStock({
   marketplaceStr,
   makerStr,
-  stockStr,
+  holdingStr,
   originOfferStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
-  stockStr: string;
+  holdingStr: string;
   originOfferStr: string;
   isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(useListMakerEth, useListMakerSol, {
     marketplaceStr,
     makerStr,
-    stockStr,
+    holdingStr,
     originOfferStr,
     isNativeToken,
   });

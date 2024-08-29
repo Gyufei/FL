@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { useTranslations } from "next-intl";
 // import { Slider } from "@/components/ui/slider";
@@ -16,7 +16,7 @@ export default function ConfirmAskTakerSettleDialog({
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  stock: IStock;
+  stock: IHolding;
   onSuccess: () => void;
 }) {
   const T = useTranslations("dialog-Settle");
@@ -111,7 +111,7 @@ export default function ConfirmAskTakerSettleDialog({
           <ConfirmAskTakerSettleBtn
             isNativeToken={isNativeToken}
             marketplaceStr={stock.marketplace.market_place_id}
-            stockStr={stock.stock_account}
+            holdingStr={stock.stock_account}
             makerStr={stock.maker_account}
             preOfferStr={stock.pre_offer_account}
             preOfferAuthorityStr={stock.pre_offer_detail?.authority}

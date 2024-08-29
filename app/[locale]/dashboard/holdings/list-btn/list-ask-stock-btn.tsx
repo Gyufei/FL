@@ -16,7 +16,7 @@ import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { formatNum } from "@/lib/utils/number";
 import { SettleModeSelect } from "@/app/[locale]/marketplace/[...name]/create-offer/settle-mode-select";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
 import { useListStock } from "@/lib/hooks/contract/use-list-maker";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
@@ -27,7 +27,7 @@ export default function ListAskStockBtn({
   order: order,
   onSuccess,
 }: {
-  order: IStock;
+  order: IHolding;
   onSuccess: () => void;
 }) {
   const cot = useTranslations("drawer-CreateOffer");
@@ -60,7 +60,7 @@ export default function ListAskStockBtn({
   } = useListStock({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
-    stockStr: order.stock_account,
+    holdingStr: order.stock_account,
     originOfferStr: makerDetail?.origin_offer || "",
     isNativeToken,
   });

@@ -3,9 +3,9 @@ import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
 import { useStockResFormat } from "../stock/use-stock-res-format";
-import { IStock } from "@/lib/types/stock";
+import { IHolding } from "@/lib/types/holding";
 
-export function useMarketStocks({
+export function useMarketHoldings({
   marketAccount,
 }: {
   marketAccount: string;
@@ -33,7 +33,7 @@ export function useMarketStocks({
 
     const parsedRes = await Promise.all(filedRes.map((o: Record<string, any>) => stockResFieldFormat(o)));
 
-    return parsedRes as Array<IStock>;
+    return parsedRes as Array<IHolding>;
   };
 
   const res = useSWR(

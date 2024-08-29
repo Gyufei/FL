@@ -3,7 +3,7 @@ import ConfirmSettleBtn from "../settle/confirm-settle-btn";
 import { useEffect } from "react";
 
 export default function ConfirmAskMakerSettleBtn({
-  isStocksLoading,
+  isHoldingsLoading,
   marketplaceStr,
   orderStr,
   makerStr,
@@ -11,7 +11,7 @@ export default function ConfirmAskMakerSettleBtn({
   onSuccess,
   isNativeToken,
 }: {
-  isStocksLoading: boolean;
+  isHoldingsLoading: boolean;
   marketplaceStr: string;
   orderStr: string;
   makerStr: string;
@@ -31,7 +31,7 @@ export default function ConfirmAskMakerSettleBtn({
   });
 
   function handleConfirm() {
-    if (isStocksLoading) return;
+    if (isHoldingsLoading) return;
 
     writeAction({
       settleAmount,

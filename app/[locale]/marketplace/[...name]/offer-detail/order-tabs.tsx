@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { TakerOrder, TakerOrders } from "./taker-orders";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import useOfferStocks from "@/lib/hooks/offer/use-offer-stocks";
+import useOfferStocks from "@/lib/hooks/offer/use-offer-holdings";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
@@ -21,13 +21,13 @@ export default function OrderTabs({ order }: { order: IOffer }) {
 
   const [onlyMe, setOnlyMe] = useState(false);
 
-  const { data: stocks } = useOfferStocks({ offer: order });
+  const { data: holdings } = useOfferStocks({ offer: order });
 
   const orders = useMemo(() => {
-    if (!stocks) return [];
+    if (!holdings) return [];
     const allStocks = onlyMe
-      ? stocks.filter((s: any) => s.authority === address)
-      : stocks;
+      ? holdings.filter((s: any) => s.authority === address)
+      : holdings;
     return allStocks.map((s: any) => {
       return {
         create_at: s.create_at,
@@ -41,7 +41,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
         order_id: s.stock_id,
       };
     }) as Array<TakerOrder>;
-  }, [stocks, onlyMe, address]);
+  }, [holdings, onlyMe, address]);
 
   return (
     <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4 pb-6">

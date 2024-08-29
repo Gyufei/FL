@@ -23,6 +23,7 @@ import { isPreview, isProduction } from "@/lib/PathMap";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { useAccount } from "wagmi";
 
 function UseSolanaNetworkSelect() {
   const setNetwork = useSetAtom(NetworkAtom);
@@ -48,12 +49,16 @@ function useEthNetworkSelect() {
   const setNetwork = useSetAtom(NetworkAtom);
   const { open: wcModalOpen } = useWeb3Modal();
 
+  const { isConnected } = useAccount();
+
   const { isEth } = useCurrentChain();
 
   function handleConnectEth() {
     if (isEth) return;
     setNetwork(ENetworks.Eth);
-    wcModalOpen();
+    if (!isConnected) {
+      wcModalOpen();
+    }
   }
 
   return {

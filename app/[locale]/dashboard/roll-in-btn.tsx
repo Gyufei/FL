@@ -29,7 +29,6 @@ export default function RollInBtn() {
     const rollinAt = res.rollinAt * 1000;
 
     const pastTime = differenceInMinutes(new Date(), new Date(rollinAt));
-    console.log(pastTime, 123);
     const hasSign = pastTime < 60;
     setIsSign(hasSign);
   }

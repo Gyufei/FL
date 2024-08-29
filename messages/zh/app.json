@@ -2,7 +2,6 @@
   "Common": {
     "Protected": "受保护",
     "Turbo": "涡轮增压",
-    "Empty": "",
     "pl-EnterAmount": "输入数量",
     "btn-Confirm": "确认",
     "Max": "最大",
@@ -12,7 +11,8 @@
     "Hours": "小时",
     "Minutes": "分钟",
     "Seconds": "秒",
-    "btn-Approve": "Approve"
+    "btn-Approve": "Approve",
+    "txt-NoData": "无数据"
   },
   "Header": {
     "btn-Marketplace": "市场",
@@ -293,6 +293,7 @@
     "cap-TrendingAssets": "趋势资产",
     "th-FloorPrice": "地板价",
     "th-24hChange": "24h变化",
-    "txt-NotStarted": "未开始"
+    "txt-NotStarted": "未开始",
+    "txt-NoMarketData": "无市场数据"
   }
 }

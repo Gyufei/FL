@@ -13,7 +13,7 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function TrendingAsset({ className }: { className?: string }) {
-  const ct = useTranslations("Common");
+  // const ct = useTranslations("Common");
   const t = useTranslations("page-MarketList");
 
   const { data, isLoading: isLoadingFlag } = useMarketplaces();
@@ -154,9 +154,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
 
   if (!tableData.nodes.length) {
     return (
-      <div className="flex flex-1 items-center justify-center text-base text-gray">
-        {ct("txt-NoData")}
-      </div>
+      <div className="flex flex-1 items-center justify-center text-base text-gray"></div>
     );
   }
 

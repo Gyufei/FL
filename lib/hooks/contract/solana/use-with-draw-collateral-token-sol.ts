@@ -12,7 +12,7 @@ export type IBalanceType =
   | "remainingCash"
   | "makerRefund";
 
-export function useWithdrawBaseTokenSol() {
+export function useWithdrawCollateralTokenSol() {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
@@ -45,7 +45,7 @@ export function useWithdrawBaseTokenSol() {
       program.programId,
     )[0];
 
-    const { walletBaseTokenBalance: userBaseTokenBalance } =
+    const { walletCollateralTokenBalance: userCollateralTokenBalance } =
       await getWalletBalanceAccount(
         program.programId,
         authority!,
@@ -61,10 +61,12 @@ export function useWithdrawBaseTokenSol() {
         authority,
         poolTokenAuthority,
         wsolTmpTokenAccount,
-        userBaseTokenBalance,
+        userCollateralTokenBalance,
         systemConfig,
-        poolTokenAccount: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
-        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
+        poolTokenAccount: isNativeToken
+          ? poolSolTokenAccount
+          : poolUsdcTokenAccount,
+        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,

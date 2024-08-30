@@ -20,7 +20,7 @@ export function useAccountsSol() {
     const seedAccount = Keypair.generate();
 
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
-    const pointTokenMint = new PublicKey(clusterConfig.program.pointTokenMint);
+    const projectTokenMint = new PublicKey(clusterConfig.program.projectTokenMint);
     const wsolTokenMint = new PublicKey(
       "So11111111111111111111111111111111111111112",
     );
@@ -46,7 +46,7 @@ export function useAccountsSol() {
     );
 
     const userPointsTokenAccount = await getAssociatedTokenAddress(
-      pointTokenMint,
+      projectTokenMint,
       authority!,
       false,
       tokenProgram,
@@ -66,13 +66,23 @@ export function useAccountsSol() {
     );
 
     const poolPointsTokenAccount = await getAssociatedTokenAddress(
-      pointTokenMint,
+      projectTokenMint,
       poolTokenAuthority,
       true,
     );
 
     const userConfig = PublicKey.findProgramAddressSync(
       [Buffer.from("user_config"), authority!.toBuffer()],
+      programId,
+    )[0];
+
+    const platformFeeAccountUSDT = PublicKey.findProgramAddressSync(
+      [Buffer.from("platform_fee"), usdcTokenMint.toBuffer()],
+      programId,
+    )[0];
+
+    const platformFeeAccountSOL = PublicKey.findProgramAddressSync(
+      [Buffer.from("platform_fee"), wsolTokenMint.toBuffer()],
       programId,
     )[0];
 
@@ -90,11 +100,13 @@ export function useAccountsSol() {
       wsolTokenMint,
       userPointsTokenAccount,
       poolPointsTokenAccount,
-      pointTokenMint,
+      projectTokenMint,
       associatedTokenProgram,
       poolTokenAuthority,
       poolSolTokenAccount,
       userSolTokenAccount,
+      platformFeeAccountUSDT,
+      platformFeeAccountSOL,
     };
   }
 
@@ -109,7 +121,7 @@ export function useAccountsSol() {
       "So11111111111111111111111111111111111111112",
     );
 
-    const walletBaseTokenBalance = PublicKey.findProgramAddressSync(
+    const walletCollateralTokenBalance = PublicKey.findProgramAddressSync(
       [
         Buffer.from("token_balance"),
         (isNativeToken ? wsolTokenMint : usdcTokenMint).toBuffer(),
@@ -128,7 +140,7 @@ export function useAccountsSol() {
     )[0];
 
     return {
-      walletBaseTokenBalance,
+      walletCollateralTokenBalance,
       walletPointTokenBalance,
     };
   }

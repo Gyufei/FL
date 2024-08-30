@@ -1,3 +1,4 @@
+import { isProduction } from "@/lib/PathMap";
 import { socket } from "@/lib/socket";
 import { useEffect, useState } from "react";
 
@@ -24,15 +25,22 @@ export function useWsMsgs() {
       ]);
     }
 
+    function onError(error: Error) {
+      if (isProduction) {
+        console.warn("Socket.IO error:", error);
+      }
+    }
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("message", onMsgEvent);
-    socket.on("error", () => {});
+    socket.on("error", onError);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
       socket.off("message", onMsgEvent);
+      socket.off("error", onError);
     };
   }, []);
 

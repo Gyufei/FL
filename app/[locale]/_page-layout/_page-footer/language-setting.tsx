@@ -75,7 +75,7 @@ export default function LanguageSetting() {
               width={16}
               height={16}
               src={t?.logo || ""}
-              alt="select token"
+              alt="select lang"
               className="mr-2 rounded-full"
             ></Image>
             {t.label}

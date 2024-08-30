@@ -12,7 +12,7 @@ export function useSettleAskTakerSol({
   holdingStr,
   preOfferStr,
   preOfferAuthorityStr,
-  isNativeToken
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
@@ -26,11 +26,7 @@ export function useSettleAskTakerSol({
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
 
-  const writeAction = async ({
-    settleAmount
-  }: {
-    settleAmount: number
-  }) => {
+  const writeAction = async ({ settleAmount }: { settleAmount: number }) => {
     const {
       tokenProgram,
       tokenProgram2022,
@@ -39,7 +35,7 @@ export function useSettleAskTakerSol({
       systemConfig,
       userPointsTokenAccount,
       poolPointsTokenAccount,
-      pointTokenMint,
+      projectTokenMint,
       associatedTokenProgram,
     } = await getAccounts(program.programId);
 
@@ -53,21 +49,29 @@ export function useSettleAskTakerSol({
       program.programId,
     )[0];
 
-    const marketPlace = new PublicKey(marketplaceStr);
-    const stock = new PublicKey(holdingStr);
+    const marketplace = new PublicKey(marketplaceStr);
+    const holding = new PublicKey(holdingStr);
     const bidMaker = new PublicKey(makerStr);
     const preOffer = new PublicKey(preOfferStr);
 
-    const {
-      walletBaseTokenBalance: walletBBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isNativeToken)
+    const { walletCollateralTokenBalance: walletBCollateralTokenBalance } =
+      await getWalletBalanceAccount(
+        program.programId,
+        authority!,
+        marketplace,
+        isNativeToken,
+      );
 
     const preOfferAuthority = new PublicKey(preOfferAuthorityStr);
     const {
-      walletBaseTokenBalance: walletABaseTokenBalance,
-      walletPointTokenBalance: walletAPointTokenBalance
-    } = await getWalletBalanceAccount(program.programId, preOfferAuthority, marketPlace, isNativeToken)
-
+      walletCollateralTokenBalance: walletACollateralTokenBalance,
+      walletPointTokenBalance: walletAProjectTokenBalance,
+    } = await getWalletBalanceAccount(
+      program.programId,
+      preOfferAuthority,
+      marketplace,
+      isNativeToken,
+    );
 
     const methodTransaction = await program.methods
       .settleAskTaker(new BN(settleAmount))
@@ -75,37 +79,46 @@ export function useSettleAskTakerSol({
         manager: authority!,
         authority,
         systemConfig,
-        makerBaseTokenBalance: walletABaseTokenBalance,
-        makerPointTokenBalance: walletAPointTokenBalance,
-        userBaseTokenBalance: walletBBaseTokenBalance,
+        makerCollateralTokenBalance: walletACollateralTokenBalance,
+        makerProjectTokenBalance: walletAProjectTokenBalance,
+        userCollateralTokenBalance: walletBCollateralTokenBalance,
         maker: bidMaker,
-        stock,
-        preOffer,
-        marketPlace,
+        holding,
+        marketplace,
         poolTokenAuthority,
         wsolTmpTokenAccount,
-        pointTokenMint,
+        projectTokenMint,
         tokenProgram,
         tokenProgram2022,
-        pointTokenProgram: tokenProgram,
+        projectTokenProgram: tokenProgram,
         associatedTokenProgram,
         systemProgram,
       })
       .remainingAccounts([
         {
+          pubkey: preOffer,
+          isSigner: false,
+          isWritable: true,
+        },
+        {
           pubkey: userPointsTokenAccount,
           isSigner: false,
-          isWritable: true
+          isWritable: true,
         },
         {
           pubkey: poolPointsTokenAccount,
           isSigner: false,
-          isWritable: true
+          isWritable: true,
         },
-      ]).transaction();
+      ])
+      .transaction();
 
-      
-    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
+    const txHash = await buildTransaction(
+      methodTransaction,
+      program,
+      [],
+      authority!,
+    );
 
     await recordTransaction({
       txHash,

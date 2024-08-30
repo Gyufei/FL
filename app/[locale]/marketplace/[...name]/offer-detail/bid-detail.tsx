@@ -6,7 +6,7 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
+import { useCreateHolding } from "@/lib/hooks/contract/use-create-holding";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
@@ -66,7 +66,7 @@ export default function BidDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateTaker({
+  } = useCreateHolding({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,

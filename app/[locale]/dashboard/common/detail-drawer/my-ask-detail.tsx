@@ -12,7 +12,7 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
-import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
+import { useRelist } from "@/lib/hooks/contract/use-relist";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
@@ -67,7 +67,7 @@ export default function MyAskDetail({
     isLoading: isRelisting,
     write: relistAction,
     isSuccess: isRelistSuccess,
-  } = useRelistOffer({
+  } = useRelist({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,

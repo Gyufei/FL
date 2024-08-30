@@ -23,6 +23,7 @@ import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
 
 export function BuyContent({
   marketplace,
@@ -102,6 +103,17 @@ export function BuyContent({
     marketplaceStr: receivePoint?.marketplaceId || "",
     offerType: "bid",
   });
+
+  const { isShouldApprove, approveAction, isApproving, approveBtnText } =
+    useApprove(payToken?.address);
+
+  async function handleConfirmBtnClick() {
+    if (isShouldApprove) {
+      await approveAction();
+    } else {
+      handleDeposit();
+    }
+  }
 
   function handleDeposit() {
     console.log("deposit");
@@ -193,14 +205,14 @@ export function BuyContent({
 
       <WithWalletConnectBtn
         className="w-full"
-        onClick={handleDeposit}
+        onClick={handleConfirmBtnClick}
         shouldSignIn={true}
       >
         <button
-          disabled={isCreateLoading}
+          disabled={isCreateLoading || isApproving}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
         >
-          {cot("btn-ConfirmMakerOrder")}
+          {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
         </button>
       </WithWalletConnectBtn>
     </div>

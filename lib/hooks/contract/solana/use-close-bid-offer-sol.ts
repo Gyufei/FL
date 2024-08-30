@@ -9,12 +9,12 @@ export function useCloseBidOfferSol({
   marketplaceStr,
   makerStr,
   offerStr,
-  isNativeToken
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  isNativeToken: boolean
+  isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
   const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
@@ -23,33 +23,47 @@ export function useCloseBidOfferSol({
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async () => {
-    const {
-      authority,
-      systemProgram,
-      systemConfig,
-    } = await getAccounts(program.programId);
+    const { authority, systemProgram, systemConfig } = await getAccounts(
+      program.programId,
+    );
 
-    const marketPlace = new PublicKey(marketplaceStr);
+    const marketplace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
     const offerD = new PublicKey(offerStr);
 
-    const {
-      walletBaseTokenBalance: walletDBaseTokenBalance,
-    } = await getWalletBalanceAccount(program.programId, authority!, marketPlace, isNativeToken)
+    const { walletCollateralTokenBalance: walletDCollateralTokenBalance } =
+      await getWalletBalanceAccount(
+        program.programId,
+        authority!,
+        marketplace,
+        isNativeToken,
+      );
 
     const methodTransaction = await program.methods
       .closeBidOffer()
       .accounts({
         authority,
-        userBaseTokenBalance: walletDBaseTokenBalance,
+        userCollateralTokenBalance: walletDCollateralTokenBalance,
         systemConfig,
-        offer: offerD,
         maker,
-        marketPlace,
+        marketplace,
         systemProgram,
-      }).transaction();
+      })
+      .remainingAccounts([
+        {
+          pubkey: offerD,
+          isSigner: false,
+          isWritable: true,
+        },
+      ])
+      .transaction();
 
-    const txHash = await buildTransaction(methodTransaction, program, [], authority!);
+    const txHash = await buildTransaction(
+      methodTransaction,
+      program,
+      [],
+      authority!,
+    );
 
     await recordTransaction({
       txHash,

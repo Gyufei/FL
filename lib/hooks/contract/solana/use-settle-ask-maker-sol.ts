@@ -22,11 +22,7 @@ export function useSettleAskMakerSol({
   const { recordTransaction } = useTransactionRecord();
   const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
 
-  const writeAction = async ({
-    settleAmount,
-  }: {
-    settleAmount: number;
-  }) => {
+  const writeAction = async ({ settleAmount }: { settleAmount: number }) => {
     const {
       tokenProgram,
       tokenProgram2022,
@@ -35,7 +31,7 @@ export function useSettleAskMakerSol({
       systemConfig,
       userPointsTokenAccount,
       poolPointsTokenAccount,
-      pointTokenMint,
+      projectTokenMint,
       associatedTokenProgram,
       poolTokenAuthority,
     } = await getAccounts(program.programId);
@@ -45,17 +41,17 @@ export function useSettleAskMakerSol({
       program.programId,
     )[0];
 
-    const marketPlace = new PublicKey(marketplaceStr);
+    const marketplace = new PublicKey(marketplaceStr);
     const offerA = new PublicKey(offerStr);
     const maker = new PublicKey(makerStr);
 
     const {
-      walletBaseTokenBalance: walletABaseTokenBalance,
+      walletCollateralTokenBalance: walletACollateralTokenBalance,
       // walletPointTokenBalance: walletAPointTokenBalance
     } = await getWalletBalanceAccount(
       program.programId,
       authority!,
-      marketPlace,
+      marketplace,
       isNativeToken,
     );
 
@@ -65,20 +61,25 @@ export function useSettleAskMakerSol({
         manager: authority,
         authority,
         systemConfig,
-        userBaseTokenBalance: walletABaseTokenBalance,
+        userCollateralTokenBalance: walletACollateralTokenBalance,
         maker,
-        offer: offerA,
-        marketPlace,
+
+        marketplace,
         poolTokenAuthority,
         wsolTmpTokenAccount,
-        pointTokenMint,
+        projectTokenMint,
         tokenProgram,
         tokenProgram2022,
-        pointTokenProgram: tokenProgram,
+        projectTokenProgram: tokenProgram,
         associatedTokenProgram,
         systemProgram,
       })
       .remainingAccounts([
+        {
+          pubkey: offerA,
+          isSigner: false,
+          isWritable: true,
+        },
         {
           pubkey: userPointsTokenAccount,
           isSigner: false,

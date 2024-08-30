@@ -20,14 +20,17 @@ export function useCloseBidOfferEth({
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
-  const txAction = useCallback(() => {
+  const txAction = useCallback(async () => {
     const abiAddress = ethConfig.contracts.deliveryPlace;
-    return writeContract({
+
+    const callParams = {
       abi: DeliveryPlaceABI,
       address: abiAddress as any,
       functionName: "closeBidOffer",
       args: [marketplaceStr, makerStr, offerStr, address],
-    });
+    };
+
+    return writeContract(callParams);
   }, [writeContract, ethConfig, marketplaceStr, makerStr, offerStr, address]);
 
   return {

@@ -7,7 +7,7 @@ export default function useOfferHoldings({ offer }: { offer: IOffer }) {
     marketAccount: offer?.market_place_account,
   });
 
-  const offerStocks = useMemo(() => {
+  const offerHoldings = useMemo(() => {
     if (!res.data) return [];
 
     const oStocks = res.data.filter((s) => s.pre_offer === offer.offer_account);
@@ -17,6 +17,6 @@ export default function useOfferHoldings({ offer }: { offer: IOffer }) {
 
   return {
     ...res,
-    data: offerStocks,
+    data: offerHoldings,
   };
 }

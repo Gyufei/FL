@@ -15,7 +15,7 @@ import { useSolanaConfig } from "@/lib/hooks/web3/solana/use-solana-config";
 import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
 import { Connection } from "@solana/web3.js";
-import { isPreview, isProduction } from "@/lib/PathMap";
+import { isProduction } from "@/lib/PathMap";
 import { getDomainName } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
 import { RPCS } from "@/lib/const/solana";
@@ -160,7 +160,7 @@ export default function FooterSetting() {
           <div className="text-sm leading-5 text-black">
             {ct("cap-Networks")}
           </div>
-          {!isPreview && (
+          {isProduction && (
             <NetItem
               name="Tadle RPC 1"
               label="Mainnet"

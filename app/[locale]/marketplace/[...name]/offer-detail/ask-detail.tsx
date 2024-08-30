@@ -6,7 +6,7 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OrderTabs from "./order-tabs";
-import { useCreateTaker } from "@/lib/hooks/contract/use-create-taker";
+import { useCreateHolding } from "@/lib/hooks/contract/use-create-holding";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
@@ -56,7 +56,7 @@ export default function AskDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateTaker({
+  } = useCreateHolding({
     marketplaceStr: offer.market_place_account,
     makerStr: offer.maker_account,
     offerStr: offer.offer_account,

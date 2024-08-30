@@ -3,7 +3,7 @@ import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 
-export function useRelistOfferEth({
+export function useRelistEth({
   offerStr,
   holdingStr,
 }: {
@@ -21,7 +21,7 @@ export function useRelistOfferEth({
     return writeContract({
       abi: PreMarketABI,
       address: abiAddress as any,
-      functionName: "relistStock",
+      functionName: "relistHolding",
       args: [holdingStr as any, offerStr as any],
     });
   }, [writeContract, ethConfig, holdingStr, offerStr]);

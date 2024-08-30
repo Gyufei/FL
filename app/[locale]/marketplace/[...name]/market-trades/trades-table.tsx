@@ -73,6 +73,7 @@ export function TradesTable({
     const trades = tradeMsgs.map((msg) => {
       const time = (Date.now() - msg.timestamp) / 1000;
       return {
+        id: Math.floor(Math.random() * 100000),
         ...msg,
         time: time < 2 ? 2 : time,
       };

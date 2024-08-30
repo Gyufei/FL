@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 
-export function useWithDrawPointTokenEth() {
+export function useWithDrawProjectTokenEth() {
   const { ethConfig } = useEthConfig();
 
   const { address: userAddress } = useChainWallet();

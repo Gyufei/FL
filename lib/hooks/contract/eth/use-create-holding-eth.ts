@@ -4,32 +4,23 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { generateEthAddress } from "@/lib/utils/web3";
 
-export function useListMakerEth() {
+export function useCreateHoldingEth() {
   const { ethConfig } = useEthConfig();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
   const txAction = useCallback(
-    ({
-      receiveTokenAmount,
-      collateralRate,
-    }: {
-      receiveTokenAmount: number;
-      collateralRate: number;
-    }) => {
+    ({ pointAmount }: { pointAmount: number }) => {
+      const offerAddress = generateEthAddress("1", "offer");
+
       const abiAddress = ethConfig.contracts.preMarkets;
-      const stockAddress = generateEthAddress("2", "stock");
 
       return writeContract({
         abi: PreMarketABI,
         address: abiAddress as any,
-        functionName: "listStock",
-        args: [
-          stockAddress,
-          BigInt(receiveTokenAmount * 1e18),
-          BigInt(collateralRate),
-        ],
+        functionName: "createHolding",
+        args: [offerAddress, BigInt(pointAmount)],
       });
     },
     [writeContract, ethConfig],

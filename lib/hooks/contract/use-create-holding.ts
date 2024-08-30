@@ -1,8 +1,8 @@
-import { useCreateTakerEth } from "./eth/use-create-taker-eth";
+import { useCreateHoldingEth } from "./eth/use-create-holding-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useCreateTakerSol } from "./solana/use-create-taker-sol";
+import { useCreateHoldingSol } from "./solana/use-create-holding-sol";
 
-export function useCreateTaker({
+export function useCreateHolding({
   marketplaceStr,
   offerStr,
   makerStr,
@@ -21,7 +21,7 @@ export function useCreateTaker({
   referrerStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(useCreateTakerEth, useCreateTakerSol, {
+  const chainActionRes = useChainTx(useCreateHoldingEth, useCreateHoldingSol, {
     marketplaceStr,
     offerStr,
     makerStr,

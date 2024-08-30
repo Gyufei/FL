@@ -1,24 +1,27 @@
-import { useListMakerEth } from "./eth/use-list-maker-eth";
+import { useListEth } from "./eth/use-list-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useListMakerSol } from "./solana/use-list-maker-sol";
+import { useListSol } from "./solana/use-list-sol";
 
 export function useListStock({
   marketplaceStr,
   makerStr,
   holdingStr,
+  preOfferStr,
   originOfferStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   holdingStr: string;
+  preOfferStr: string;
   originOfferStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(useListMakerEth, useListMakerSol, {
+  const chainActionRes = useChainTx(useListEth, useListSol, {
     marketplaceStr,
     makerStr,
     holdingStr,
+    preOfferStr,
     originOfferStr,
     isNativeToken,
   });

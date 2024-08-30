@@ -23,6 +23,7 @@ import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
+import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
 
 export function SellContent({
   marketplace,
@@ -31,7 +32,6 @@ export function SellContent({
   marketplace: IMarketplace;
   onSuccess: () => void;
 }) {
-  // const CT = useTranslations("Common");
   const T = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
   const { data: stableToken } = useStableToken();
@@ -68,24 +68,15 @@ export function SellContent({
     }
   }, [stableToken]);
 
-  // const { isShouldApprove, checkShouldApprove, approve, isApproving } =
-  //   useApprove(receiveToken?.address);
-
-  // useEffect(() => {
-  //   async function checkApproval() {
-  //     if (receiveToken && receiveTokenAmount) {
-  //       await checkShouldApprove(receiveTokenAmount);
-  //     }
-  //   }
-  //   checkApproval();
-  // }, [receiveToken, receiveTokenAmount]);
+  const { isShouldApprove, approveAction, isApproving, approveBtnText } =
+    useApprove(receiveToken?.address);
 
   async function handleConfirmBtnClick() {
-    // if (isShouldApprove) {
-    //   await approve(receiveTokenAmount);
-    // } else {
-    handleCreate();
-    // }
+    if (isShouldApprove) {
+      await approveAction();
+    } else {
+      handleCreate();
+    }
   }
 
   const [collateralRate, setCollateralRate] = useState("");
@@ -225,14 +216,10 @@ export function SellContent({
         shouldSignIn={true}
       >
         <button
-          disabled={isCreateLoading}
+          disabled={isCreateLoading || isApproving}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
         >
-          {
-            // isShouldApprove ?
-            T("btn-ConfirmMakerOrder")
-            // : `${CT("btn-Approve")} ${receiveToken.symbol}`
-          }
+          {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
         </button>
       </WithWalletConnectBtn>
     </div>

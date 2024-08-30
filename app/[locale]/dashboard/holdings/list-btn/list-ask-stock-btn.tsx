@@ -18,7 +18,7 @@ import { formatNum } from "@/lib/utils/number";
 import { SettleModeSelect } from "@/app/[locale]/marketplace/[...name]/create-offer/settle-mode-select";
 import { IHolding } from "@/lib/types/holding";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
-import { useListStock } from "@/lib/hooks/contract/use-list-maker";
+import { useListStock } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { isProduction } from "@/lib/PathMap";
@@ -61,6 +61,7 @@ export default function ListAskStockBtn({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
     holdingStr: order.stock_account,
+    preOfferStr: order.pre_offer,
     originOfferStr: makerDetail?.origin_offer || "",
     isNativeToken,
   });

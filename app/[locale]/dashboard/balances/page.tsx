@@ -15,9 +15,9 @@ import { IBalance, useUserBalance } from "@/lib/hooks/api/use-user-balance";
 import { IToken } from "@/lib/types/token";
 import {
   IBalanceType,
-  useWithdrawBaseToken,
-} from "@/lib/hooks/contract/use-with-draw-base-token";
-import { useWithdrawPointToken } from "@/lib/hooks/contract/use-with-draw-point-token";
+  useWithdrawCollateralToken,
+} from "@/lib/hooks/contract/use-with-draw-collateral-token";
+import { useWithdrawProjectToken } from "@/lib/hooks/contract/use-with-draw-project-token";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { isProduction } from "@/lib/PathMap";
@@ -72,13 +72,13 @@ export default function MyBalances() {
     isLoading: isWdTokenLoading,
     write: wdTokenAction,
     isSuccess: isWdTokenSuccess,
-  } = useWithdrawBaseToken();
+  } = useWithdrawCollateralToken();
 
   const {
     isLoading: isWdPointLoading,
     write: wdPointAction,
     isSuccess: isWdPointSuccess,
-  } = useWithdrawPointToken();
+  } = useWithdrawProjectToken();
 
   useEffect(() => {
     if (isWdTokenSuccess || isWdPointSuccess) {

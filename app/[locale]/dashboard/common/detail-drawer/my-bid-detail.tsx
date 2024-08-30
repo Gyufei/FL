@@ -11,7 +11,7 @@ import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useEffect, useMemo } from "react";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
-import { useRelistOffer } from "@/lib/hooks/contract/use-relist-offer";
+import { useRelist } from "@/lib/hooks/contract/use-relist";
 import { useTranslations } from "next-intl";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
@@ -58,7 +58,7 @@ export default function MyBidDetail({
     isLoading: isRelisting,
     write: relistAction,
     isSuccess: isRelistSuccess,
-  } = useRelistOffer({
+  } = useRelist({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,

@@ -5,58 +5,72 @@ import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 
-export function useCloseBidTakerSol({
+export function useRelistSol({
   marketplaceStr,
   makerStr,
+  offerStr,
   holdingStr,
-  preOfferStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
+  offerStr: string;
   holdingStr: string;
-  preOfferStr: string;
   isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
-
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
+  const { getAccounts } = useAccountsSol();
 
   const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts(
-      program.programId,
-    );
-
-    const marketPlace = new PublicKey(marketplaceStr);
-    const maker = new PublicKey(makerStr);
-    const preOffer = new PublicKey(preOfferStr);
-    const stockD = new PublicKey(holdingStr);
-
     const {
-      walletBaseTokenBalance: walletDBaseTokenBalance,
-      walletPointTokenBalance: walletDPointTokenBalance,
-    } = await getWalletBalanceAccount(
-      program.programId,
-      authority!,
-      marketPlace,
-      isNativeToken,
-    );
+      tokenProgram,
+      tokenProgram2022,
+      authority,
+      systemProgram,
+      systemConfig,
+      userUsdcTokenAccount,
+      poolUsdcTokenAccount,
+      poolSolTokenAccount,
+      usdcTokenMint,
+      wsolTokenMint,
+      userSolTokenAccount,
+    } = await getAccounts(program.programId);
+
+    const marketplace = new PublicKey(marketplaceStr);
+    const offerD = new PublicKey(offerStr);
+    const maker = new PublicKey(makerStr);
+    const holdingD = new PublicKey(holdingStr);
 
     const methodTransaction = await program.methods
-      .closeBidTaker()
+      .relist()
       .accounts({
-        authority,
-        userBaseTokenBalance: walletDBaseTokenBalance,
-        userPointTokenBalance: walletDPointTokenBalance,
+        authority: authority,
         systemConfig,
-        stock: stockD,
-        preOffer,
+        holding: holdingD,
+        poolTokenAccount: isNativeToken
+          ? poolSolTokenAccount
+          : poolUsdcTokenAccount,
         maker,
-        marketPlace,
+        marketplace,
+        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
+        tokenProgram,
+        tokenProgram2022,
         systemProgram,
       })
+      .remainingAccounts([
+        {
+          pubkey: offerD,
+          isSigner: false,
+          isWritable: true,
+        },
+        {
+          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
+          isSigner: false,
+          isWritable: true,
+        },
+      ])
       .transaction();
 
     const txHash = await buildTransaction(

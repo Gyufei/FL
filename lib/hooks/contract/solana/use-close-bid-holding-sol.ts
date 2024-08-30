@@ -5,60 +5,62 @@ import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 
-export function useWithdrawPointTokenSol() {
+export function useCloseBidHoldingSol({
+  marketplaceStr,
+  makerStr,
+  holdingStr,
+  preOfferStr,
+  isNativeToken,
+}: {
+  marketplaceStr: string;
+  makerStr: string;
+  holdingStr: string;
+  preOfferStr: string;
+  isNativeToken: boolean;
+}) {
   const { program } = useTadleProgram();
+  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
+
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts } = useAccountsSol();
 
-  const writeAction = async ({
-    marketplaceStr,
-  }: {
-    marketplaceStr: string;
-  }) => {
-    const {
-      tokenProgram,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      poolTokenAuthority,
-      pointTokenMint,
-      userPointsTokenAccount,
-      poolPointsTokenAccount,
-    } = await getAccounts(program.programId);
+  const writeAction = async () => {
+    const { authority, systemProgram, systemConfig } = await getAccounts(
+      program.programId,
+    );
 
     const marketPlace = new PublicKey(marketplaceStr);
+    const maker = new PublicKey(makerStr);
+    const preOffer = new PublicKey(preOfferStr);
+    const holdingD = new PublicKey(holdingStr);
 
-    const userPointTokenBalance = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("point_token_balance"),
-        marketPlace.toBuffer(),
-        authority!.toBuffer(),
-      ],
+    const {
+      walletCollateralTokenBalance: walletDCollateralTokenBalance,
+      walletPointTokenBalance: walletDProjectTokenBalance,
+    } = await getWalletBalanceAccount(
       program.programId,
-    )[0];
+      authority!,
+      marketPlace,
+      isNativeToken,
+    );
 
     const methodTransaction = await program.methods
-      .withdrawPointToken()
+      .closeBidHolding()
       .accounts({
         authority,
-        userPointTokenBalance,
-        poolTokenAuthority,
-        marketPlace,
+        userCollateralTokenBalance: walletDCollateralTokenBalance,
+        userProjectTokenBalance: walletDProjectTokenBalance,
         systemConfig,
-        poolTokenAccount: poolPointsTokenAccount,
-        tokenMint: pointTokenMint,
-        tokenProgram,
-        tokenProgram2022,
+        holding: holdingD,
+        maker,
+        marketPlace,
         systemProgram,
-      })
-      .remainingAccounts([
+      }).remainingAccounts([
         {
-          pubkey: userPointsTokenAccount,
+          pubkey: preOffer,
           isSigner: false,
-          isWritable: true,
-        },
+          isWritable: true
+        }
       ])
       .transaction();
 

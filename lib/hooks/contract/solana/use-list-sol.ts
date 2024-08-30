@@ -6,18 +6,20 @@ import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 
-export function useListMakerSol({
+export function useListSol({
   marketplaceStr,
   makerStr,
   holdingStr,
+  preOfferStr,
   originOfferStr,
-  isNativeToken
+  isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
   holdingStr: string;
+  preOfferStr: string;
   originOfferStr: string;
-  isNativeToken: boolean
+  isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
@@ -43,50 +45,63 @@ export function useListMakerSol({
       poolSolTokenAccount,
       usdcTokenMint,
       wsolTokenMint,
-      userSolTokenAccount
+      userSolTokenAccount,
     } = await getAccounts(program.programId);
 
-    const marketPlace = new PublicKey(marketplaceStr);
-    const stockD = new PublicKey(holdingStr);
+    const marketplace = new PublicKey(marketplaceStr);
+    const holdingD = new PublicKey(holdingStr);
     const maker = new PublicKey(makerStr);
+    const preOffer = new PublicKey(preOfferStr);
     const originOffer = new PublicKey(originOfferStr);
 
     const offerD = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("offer"),
-        seedAccount.publicKey.toBuffer()
-      ],
-      program.programId
+      [Buffer.from("offer"), seedAccount.publicKey.toBuffer()],
+      program.programId,
     )[0];
 
     const methodTransaction = await program.methods
-      .list(
-        new BN(receiveTokenAmount),
-        new BN(collateralRate),
-      )
+      .list(new BN(receiveTokenAmount), new BN(collateralRate))
       .accounts({
         authority: authority,
         seedAccount: seedAccount.publicKey,
         systemConfig,
-        stock: stockD,
+        holding: holdingD,
         offer: offerD,
-        originOffer,
-        poolTokenAccount: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
+        poolTokenAccount: isNativeToken
+          ? poolSolTokenAccount
+          : poolUsdcTokenAccount,
         maker,
-        marketPlace,
-        tokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
+        marketplace,
+        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
         tokenProgram,
         tokenProgram2022,
         systemProgram,
-      }).remainingAccounts([
+      })
+      .remainingAccounts([
+        {
+          pubkey: originOffer,
+          isSigner: false,
+          isWritable: true,
+        },
+        {
+          pubkey: preOffer,
+          isSigner: false,
+          isWritable: true,
+        },
         {
           pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
           isSigner: false,
-          isWritable: true
-        }
-      ]).transaction();
+          isWritable: true,
+        },
+      ])
+      .transaction();
 
-    const txHash = await buildTransaction(methodTransaction, program, [seedAccount], authority!);
+    const txHash = await buildTransaction(
+      methodTransaction,
+      program,
+      [seedAccount],
+      authority!,
+    );
 
     await recordTransaction({
       txHash,

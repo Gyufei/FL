@@ -19,7 +19,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSetAtom } from "jotai";
 import { DevnetRow } from "./devnet-row";
-import { isPreview, isProduction } from "@/lib/PathMap";
+import { isProduction } from "@/lib/PathMap";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
@@ -105,7 +105,7 @@ export function NetworkSelect() {
         }}
         align="start"
       >
-        {!isPreview && (
+        {isProduction && (
           <div
             onClick={() => handleSelectNet()}
             data-state={isProduction ? "active" : "inactive"}

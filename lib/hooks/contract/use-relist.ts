@@ -1,25 +1,25 @@
-import { useCloseBidTakerEth } from "./eth/use-close-bid-taker-eth";
+import { useRelistEth } from "./eth/use-relist-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useCloseBidTakerSol } from "./solana/use-close-bid-taker-sol";
+import { useRelistSol } from "./solana/use-relist-sol";
 
-export function useCloseBidTaker({
+export function useRelist({
   marketplaceStr,
   makerStr,
+  offerStr,
   holdingStr,
-  preOfferStr,
   isNativeToken,
 }: {
   marketplaceStr: string;
   makerStr: string;
+  offerStr: string;
   holdingStr: string;
-  preOfferStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(useCloseBidTakerEth, useCloseBidTakerSol, {
+  const chainActionRes = useChainTx(useRelistEth, useRelistSol, {
     marketplaceStr,
     makerStr,
+    offerStr,
     holdingStr,
-    preOfferStr,
     isNativeToken,
   });
 

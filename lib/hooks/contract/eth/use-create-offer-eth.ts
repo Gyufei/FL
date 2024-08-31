@@ -37,15 +37,13 @@ export function useCreateOfferEth({
       const ethAddress = ethConfig.contracts.usdcToken;
       const collateralTokenAddr = isNativeToken ? ethAddress : usdcAddress;
 
-
       return writeContract({
         abi: PreMarketABI,
         address: abiAddress as any,
         functionName: "createOffer",
         args: [
           {
-            marketPlace: "0xe6b1c25c9bac2b628d6e2d231f9b53b92172fc2d",
-            // marketPlace: marketplaceStr as any,
+            marketPlace: marketplaceStr as any,
             collateralTokenAddr: collateralTokenAddr as any,
             projectPoints: BigInt(pointAmount),
             quoteTokenAmount: BigInt(tokenAmount * 1e18),

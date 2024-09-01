@@ -21,6 +21,10 @@ export function useTokens() {
         newT.symbol = "SOL";
       }
 
+      if (newT.symbol === "WETH") {
+        newT.symbol = "ETH";
+      }
+
       return newT;
     });
 

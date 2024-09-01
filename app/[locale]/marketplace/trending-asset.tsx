@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function TrendingAsset({ className }: { className?: string }) {
   const ct = useTranslations("Common");
@@ -63,9 +62,6 @@ export default function TrendingAsset({ className }: { className?: string }) {
     `,
   });
 
-  // Remove when eth ready
-  const { isEth } = useCurrentChain();
-
   const tableData = useMemo(() => {
     if (isLoadingFlag) {
       const nodes = range(5)
@@ -82,9 +78,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
       };
     }
 
-    const eData = isEth ? [] : data;
-
-    const nodes = (eData || [])
+    const nodes = (data || [])
       .filter((m) => m.status !== "offline")
       .map((item: any, index: number) => {
         return {
@@ -102,7 +96,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
     return {
       nodes,
     };
-  }, [data, isLoadingFlag, isEth]);
+  }, [data, isLoadingFlag]);
 
   const COLUMNS = [
     {

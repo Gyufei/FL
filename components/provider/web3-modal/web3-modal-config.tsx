@@ -2,6 +2,7 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { cookieStorage, createStorage, http } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { testnet } from "./testnet";
+import { isProduction } from "@/lib/PathMap";
 
 export const projectId = "8e507d09486ed2283f0d0922c0a02261"; // process.env.NEXT_PUBLIC_PROJECT_ID;
 
@@ -14,8 +15,11 @@ export const metadata = {
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
+const chains = isProduction
+  ? ([mainnet] as const)
+  : ([mainnet, testnet] as const);
+
 // Create wagmiConfig
-const chains = [mainnet, testnet] as const;
 export const config = defaultWagmiConfig({
   chains,
   projectId,

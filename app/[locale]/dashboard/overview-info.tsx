@@ -7,14 +7,13 @@ import {
   useUserNameChange,
 } from "@/lib/hooks/api/use-account-overview";
 import { DateRange } from "react-day-picker";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { format, subDays } from "date-fns";
 import { TadleXp } from "./tadle-xp";
 import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
 import { useTranslations } from "next-intl";
 import ReferralLink from "./referral-link";
 import RollInBtn from "./roll-in-btn";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export default function OverviewInfo() {
   const T = useTranslations("cd-AccountOverview");
@@ -24,14 +23,8 @@ export default function OverviewInfo() {
     to: undefined,
   });
 
-  // TODO: Remove when eth ready
-  const { isEth } = useCurrentChain();
-  const { data: accountInfoData, mutate: refetchAccountInfo } =
+  const { data: accountInfo, mutate: refetchAccountInfo } =
     useAccountOverview();
-  const accountInfo = useMemo(() => {
-    if (isEth) return null;
-    return accountInfoData;
-  }, [isEth, accountInfoData]);
 
   const { trigger: updateUserNameAction, data: updateRes } =
     useUserNameChange();

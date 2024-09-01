@@ -24,6 +24,7 @@ import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
 import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export function SellContent({
   marketplace,
@@ -38,6 +39,8 @@ export function SellContent({
 
   const [sellPointAmount, setSellPointAmount] = useState("");
   const [sellPoint, setSellPoint] = useState<IPoint | null>(null);
+
+  const { isEth } = useCurrentChain();
 
   useEffect(() => {
     if (points) {
@@ -130,7 +133,9 @@ export function SellContent({
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
-      isNativeToken: receiveToken?.symbol === "SOL",
+      isNativeToken: isEth
+        ? receiveToken?.symbol === "SOL"
+        : receiveToken?.symbol === "ETH",
     });
   }
 

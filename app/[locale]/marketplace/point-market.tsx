@@ -68,8 +68,6 @@ export default function PointMarket({ className }: { className?: string }) {
     `,
   });
 
-  const { isEth } = useCurrentChain();
-
   const tableData = useMemo(() => {
     if (isLoadingFlag) {
       const nodes = range(4)
@@ -85,10 +83,7 @@ export default function PointMarket({ className }: { className?: string }) {
       };
     }
 
-    // Remove when eth is ready
-    const tData = isEth ? [] : data;
-
-    const nodes = (tData || [])
+    const nodes = (data || [])
       .filter((m) => m.status !== "offline")
       .map((item: any, index: number) => {
         return {
@@ -100,7 +95,7 @@ export default function PointMarket({ className }: { className?: string }) {
     return {
       nodes,
     };
-  }, [data, isLoadingFlag, isEth]);
+  }, [data, isLoadingFlag]);
 
   function handleGo(marketId: string) {
     const path = `/marketplace/${marketId}`;

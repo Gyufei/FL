@@ -21,7 +21,7 @@ export function useMarketplaces() {
     return res as Array<IMarketplace>;
   };
 
-  const res = useSWR("marketplaces", MarketplacesFetcher);
+  const res = useSWR(`${apiEndPoint}marketplaces`, MarketplacesFetcher);
 
   return res;
 }

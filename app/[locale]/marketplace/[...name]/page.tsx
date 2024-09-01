@@ -39,6 +39,8 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   } = useMarketOffers({
     marketAccount: marketplace?.market_place_id || "",
   });
+  
+  console.log(orders);
 
   const canBuyOrders = useMemo(() => {
     const showOrder = (orders || [])?.filter((order: IOffer) =>

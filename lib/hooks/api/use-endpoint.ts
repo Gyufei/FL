@@ -5,7 +5,6 @@ import { useCurrentChain } from "../web3/use-current-chain";
 export function useEndPoint() {
   const { isEth, isSolana } = useCurrentChain();
 
-  console.log("isEth", isEth, "isSolana", isSolana);
   const apiEndPoint = useMemo(() => {
     if (isEth) {
       return WithHost("/eth");

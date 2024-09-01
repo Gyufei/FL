@@ -63,11 +63,11 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
     if (!isEth) return "";
 
     if (isApproving) {
-      return `${CT("btn-approving")} ${tokenSymbol}...`;
+      return `${CT("btn-Approving")} ${tokenSymbol}...`;
     }
 
     if (isShouldApprove) {
-      return `${CT("btn-approve")} ${tokenSymbol}`;
+      return `${CT("btn-Approve")} ${tokenSymbol}`;
     }
 
     return "";

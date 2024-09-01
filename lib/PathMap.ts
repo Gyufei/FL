@@ -17,14 +17,14 @@ export function WithCDN(path: string) {
   return `${cdn}${path}`;
 }
 
-export function WithProjectImgCDN(path: string) {
+export function WithProjectImgCDN(path: string, isEth: boolean) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/images/project/${goPath}`);
+  return WithCDN(`/${isEth ? "eth" : "solana"}/images/project/${goPath}`);
 }
 
-export function WithPointImgCDN(path: string) {
+export function WithPointImgCDN(path: string, isEth: boolean) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/images/point/${goPath}`);
+  return WithCDN(`/${isEth ? "eth" : "solana"}/images/point/${goPath}`);
 }
 
 export function WithWss() {

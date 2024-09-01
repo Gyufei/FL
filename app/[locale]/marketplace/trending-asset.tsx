@@ -117,6 +117,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
               width={16}
               height={16}
               alt="token"
+              className="rounded-full"
             />
             <div>{item.asset.symbol}</div>
           </div>

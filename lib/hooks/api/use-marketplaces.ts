@@ -4,9 +4,11 @@ import { Paths, WithPointImgCDN, WithProjectImgCDN } from "@/lib/PathMap";
 
 import { useEndPoint } from "./use-endpoint";
 import { IMarketplace } from "@/lib/types/marketplace";
+import { useCurrentChain } from "../web3/use-current-chain";
 
 export function useMarketplaces() {
   const { apiEndPoint } = useEndPoint();
+  const { isEth } = useCurrentChain();
 
   const MarketplacesFetcher = async () => {
     const res = await fetcher(
@@ -14,8 +16,8 @@ export function useMarketplaces() {
     );
 
     for (const market of res || []) {
-      market.projectLogo = WithProjectImgCDN(market.market_id);
-      market.pointLogo = WithPointImgCDN(market.market_id);
+      market.projectLogo = WithProjectImgCDN(market.market_id, isEth);
+      market.pointLogo = WithPointImgCDN(market.market_id, isEth);
     }
 
     return res as Array<IMarketplace>;

@@ -74,7 +74,6 @@ export function useOfferResFormat() {
         origin_offer_detail: originOfferDetail,
       };
     } catch (e) {
-      console.log("123", e);
       return null;
     }
   }

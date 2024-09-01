@@ -16,7 +16,6 @@ export function useMarketOffers({ marketAccount }: { marketAccount: string }) {
     const offerRes = await fetcher(
       `${apiEndPoint}${Paths.offer}?market_place_account=${marketAccount}`,
     );
-      
 
     const parsedRes = await Promise.all(
       offerRes.map((o: Record<string, any>) =>

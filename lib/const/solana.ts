@@ -4,7 +4,7 @@ export const SOLDecimals = 9;
 
 export const SolanaZeroed = "11111111111111111111111111111111";
 
-export const RPCS = {
+export const SolanaRPCS = {
   TadleRPC1:
     process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA || "https://rpc.ankr.com/solana",
   TadleDevRPC1: "https://rpc.ankr.com/solana_devnet",
@@ -14,7 +14,6 @@ export const RPCS = {
 
 interface Cluster {
   network: WalletAdapterNetwork;
-  // marginTokens: Array<string>;
   program: {
     tadleProgram: string;
     usdcTokenMint: string;
@@ -28,7 +27,7 @@ interface Cluster {
   };
 }
 
-export const MainnetCluster: Cluster = {
+export const SolanaMainnetConfig: Cluster = {
   network: WalletAdapterNetwork.Mainnet,
   program: {
     usdcTokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
@@ -37,7 +36,7 @@ export const MainnetCluster: Cluster = {
   },
 };
 
-export const DevnetCluster: Cluster = {
+export const SolanaDevnetConfig: Cluster = {
   network: WalletAdapterNetwork.Devnet,
   program: {
     usdcTokenMint: "BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ",

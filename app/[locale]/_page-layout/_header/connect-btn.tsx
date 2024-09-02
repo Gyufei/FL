@@ -184,10 +184,10 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
   useEffect(() => {
     if (isSuccess) {
       if (searchParams.get("s")) {
-        router.replace({
-          pathname: pathname,
-          query: {},
-        });
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("s");
+
+        router.replace(pathname + `?${params.toString()}`);
       }
     }
   }, [isSuccess, txHash]);

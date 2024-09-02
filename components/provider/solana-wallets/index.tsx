@@ -10,9 +10,15 @@ import {
 import { SolflareWalletAdapter } from "@solflare-wallet/wallet-adapter";
 import { OKXWalletAdapter } from "./okx-wallet-adapter";
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
-export default function SolanaWalletProviders({ children }: { children?: ReactNode }) {
-  const { rpc } = useRpc();
+export default function SolanaWalletProviders({
+  children,
+}: {
+  children?: ReactNode;
+}) {
+  const { isSolana } = useCurrentChain();
+  const { rpc, currentSolanaRpc } = useRpc();
 
   const wallets = [
     ...(typeof window === "undefined" ? [] : [new SolflareWalletAdapter()]),
@@ -26,7 +32,7 @@ export default function SolanaWalletProviders({ children }: { children?: ReactNo
 
   return (
     <ConnectionProvider
-      endpoint={rpc!}
+      endpoint={isSolana ? rpc! : currentSolanaRpc}
       config={{ disableRetryOnRateLimit: true }}
     >
       <WalletProvider wallets={wallets} onError={onError} autoConnect={true}>

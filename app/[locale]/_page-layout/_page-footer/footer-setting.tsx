@@ -9,22 +9,26 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRpcLatency } from "@/lib/hooks/web3/use-rpc-latency";
-import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/cluster";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useSolanaConfig } from "@/lib/hooks/web3/solana/use-solana-config";
-import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
-import { Connection } from "@solana/web3.js";
 import { isProduction } from "@/lib/PathMap";
 import { getDomainName } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
-import { RPCS } from "@/lib/const/solana";
+import { SolanaRPCS } from "@/lib/const/solana";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { useRpc } from "@/lib/hooks/web3/use-rpc";
 
 export default function FooterSetting() {
   const ct = useTranslations("pop-Setting");
-  const { clusterConfig } = useSolanaConfig();
-  const [globalRpc, setGlobalRpc] = useAtom(GlobalRpcsAtom);
-  const [customRpc, setCustomRpc] = useAtom(CustomRpcsAtom);
+
+  const { isSolana } = useCurrentChain();
+  const {
+    chainRpcs,
+    currentGlobalRpc,
+    currentCustomRpc,
+    setGlobalRpcAction,
+    setCustomRpcAction,
+    testRpcLatency,
+  } = useRpc();
 
   const [popOpen, setPopOpen] = useState(false);
 
@@ -37,34 +41,24 @@ export default function FooterSetting() {
   const [inputRpcLatency, setInputRpcLatency] = useState(0);
 
   useEffect(() => {
-    if (customRpc[clusterConfig.network]) {
-      setInputRpc(customRpc[clusterConfig.network]!);
+    if (currentCustomRpc) {
+      setInputRpc(currentCustomRpc);
       setInputRpcActive(true);
       setCheckedRpc(null);
       setShowInput(false);
     } else {
-      setCheckedRpc(globalRpc[clusterConfig.network]);
+      setCheckedRpc(currentGlobalRpc);
     }
-  }, [globalRpc, customRpc, clusterConfig]);
+  }, [currentCustomRpc, currentGlobalRpc]);
 
-  function handleCheck(rpc: string, network: WalletAdapterNetwork) {
+  function handleCheck(rpc: string) {
     if (checkedRpc === rpc) {
       return;
     }
 
     setCheckedRpc(rpc);
-    setGlobalRpc((prev) => {
-      return {
-        ...prev,
-        [network]: rpc,
-      };
-    });
-    setCustomRpc((prev) => {
-      return {
-        ...prev,
-        [network]: null,
-      };
-    });
+    setGlobalRpcAction(rpc);
+    setCustomRpcAction(null);
     setInputRpc("");
     setInputRpcActive(false);
     setInputRpcError(false);
@@ -79,13 +73,7 @@ export default function FooterSetting() {
     try {
       const latency = await testRpcLatency(inputRpc);
 
-      setCustomRpc((prev) => {
-        return {
-          ...prev,
-          [clusterConfig.network]: inputRpc,
-        };
-      });
-
+      setCustomRpcAction(inputRpc);
       setCheckedRpc(null);
       setInputRpcActive(true);
 
@@ -107,18 +95,6 @@ export default function FooterSetting() {
 
     getRpcMs();
   }, [inputRpc, inputRpcActive]);
-
-  async function testRpcLatency(testRpc: string) {
-    const connection = new Connection(testRpc);
-
-    const startTimestamp = Date.now();
-    await connection.getEpochInfo();
-    const endTimestamp = Date.now();
-
-    const latency = endTimestamp - startTimestamp;
-
-    return latency;
-  }
 
   function handleCheckCustomRpc() {
     return;
@@ -164,33 +140,31 @@ export default function FooterSetting() {
             <NetItem
               name="Tadle RPC 1"
               label="Mainnet"
-              rpc={RPCS.TadleRPC1}
-              checked={checkedRpc === RPCS.TadleRPC1}
-              onCheckedChange={() =>
-                handleCheck(RPCS.TadleRPC1, WalletAdapterNetwork.Mainnet)
-              }
+              rpc={chainRpcs?.TadleRPC1}
+              checked={checkedRpc === chainRpcs.TadleRPC1}
+              onCheckedChange={() => handleCheck(SolanaRPCS.TadleRPC1)}
             />
           )}
+
           {!isProduction && (
             <>
               <NetItem
                 name="Tadle Devnet RPC 1"
                 label="Devnet"
-                rpc={RPCS.TadleDevRPC1}
-                checked={checkedRpc === RPCS.TadleDevRPC1}
-                onCheckedChange={() =>
-                  handleCheck(RPCS.TadleDevRPC1, WalletAdapterNetwork.Devnet)
-                }
+                rpc={chainRpcs.TadleDevRPC1}
+                checked={checkedRpc === chainRpcs.TadleDevRPC1}
+                onCheckedChange={() => handleCheck(chainRpcs.TadleDevRPC1)}
               />
-              <NetItem
-                name="Solana Devnet RPC"
-                label="Devnet"
-                rpc={RPCS.solanaDevnet}
-                checked={checkedRpc === RPCS.solanaDevnet}
-                onCheckedChange={() =>
-                  handleCheck(RPCS.solanaDevnet, WalletAdapterNetwork.Devnet)
-                }
-              />
+
+              {isSolana && (
+                <NetItem
+                  name="Solana Devnet RPC"
+                  label="Devnet"
+                  rpc={SolanaRPCS.solanaDevnet}
+                  checked={checkedRpc === SolanaRPCS.solanaDevnet}
+                  onCheckedChange={() => handleCheck(SolanaRPCS.solanaDevnet)}
+                />
+              )}
             </>
           )}
         </div>

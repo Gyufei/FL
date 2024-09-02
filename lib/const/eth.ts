@@ -1,3 +1,9 @@
+export const EthRPCS = {
+  TadleRPC1:
+    process.env.NEXT_PUBLIC_DEFAULT_RPC_ETH || "https://rpc.ankr.com/solana",
+  TadleDevRPC1: "https://devnet-rpc.aggregation.top/",
+};
+
 export const EthTestConfig = {
   id: 1337,
   contracts: {

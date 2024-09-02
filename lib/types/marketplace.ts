@@ -24,4 +24,5 @@ export interface IMarketplace {
 
   projectLogo: string;
   pointLogo: string;
+  chain: string;
 }

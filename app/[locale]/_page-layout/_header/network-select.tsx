@@ -17,52 +17,20 @@ import {
 } from "@/components/ui/drawer";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSetAtom } from "jotai";
 import { DevnetRow } from "./devnet-row";
 import { isProduction } from "@/lib/PathMap";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
-import { useAccount } from "wagmi";
 
-function UseSolanaNetworkSelect() {
-  const setNetwork = useSetAtom(NetworkAtom);
-
+function UseNetworkSelect() {
   const [popOpen, setPopOpen] = useState(false);
 
-  const { isSolana } = useCurrentChain();
-
-  const handleSelectNet = async () => {
-    if (!isSolana) {
-      setNetwork(ENetworks.Solana);
-    }
-  };
+  const { switchToSolana, switchToEth } = useCurrentChain();
 
   return {
     popOpen,
     setPopOpen,
-    handleSelectNet,
-  };
-}
-
-function useEthNetworkSelect() {
-  const setNetwork = useSetAtom(NetworkAtom);
-  const { open: wcModalOpen } = useWeb3Modal();
-
-  const { isConnected } = useAccount();
-
-  const { isEth } = useCurrentChain();
-
-  function handleConnectEth() {
-    if (isEth) return;
-    setNetwork(ENetworks.Eth);
-    if (!isConnected) {
-      wcModalOpen();
-    }
-  }
-
-  return {
-    handleConnectEth,
+    switchToSolana,
+    switchToEth,
   };
 }
 
@@ -71,13 +39,8 @@ const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
 });
 
 export function NetworkSelect() {
-  const { popOpen, setPopOpen, handleSelectNet } = UseSolanaNetworkSelect();
-
-  const { handleConnectEth } = useEthNetworkSelect();
-
-  function handleEthAction() {
-    handleConnectEth();
-  }
+  const { popOpen, setPopOpen, switchToSolana, switchToEth } =
+    UseNetworkSelect();
 
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -107,7 +70,7 @@ export function NetworkSelect() {
       >
         {isProduction && (
           <div
-            onClick={() => handleSelectNet()}
+            onClick={() => switchToSolana()}
             data-state={isProduction ? "active" : "inactive"}
             className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
           >
@@ -123,12 +86,12 @@ export function NetworkSelect() {
         )}
         {!isProduction && (
           <DevnetRow
-            onClick={() => handleSelectNet()}
+            onClick={() => switchToSolana()}
             isActive={!isProduction}
           />
         )}
         <div
-          onClick={() => handleEthAction()}
+          onClick={() => switchToEth()}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >
@@ -154,13 +117,8 @@ export function NetworkSelect() {
 }
 
 export function MbNetworkSelect() {
-  const { popOpen, setPopOpen, handleSelectNet } = UseSolanaNetworkSelect();
-
-  const { handleConnectEth } = useEthNetworkSelect();
-
-  function handleEthAction() {
-    handleConnectEth();
-  }
+  const { popOpen, setPopOpen, switchToSolana, switchToEth } =
+    UseNetworkSelect();
 
   return (
     <Drawer open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -180,7 +138,7 @@ export function MbNetworkSelect() {
       <DrawerContent className="p-2 pt-4">
         <DrawerTitle className="text-center">Network switching</DrawerTitle>
         <div
-          onClick={() => handleSelectNet()}
+          onClick={() => switchToSolana()}
           data-state={isProduction ? "active" : "inactive"}
           className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
         >
@@ -193,9 +151,9 @@ export function MbNetworkSelect() {
           />
           <div className="flex-1 text-xs">Solana</div>
         </div>
-        <DevnetRow onClick={() => handleSelectNet()} isActive={!isProduction} />
+        <DevnetRow onClick={() => switchToSolana()} isActive={!isProduction} />
         <div
-          onClick={() => handleEthAction()}
+          onClick={() => switchToEth()}
           data-state={"inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
         >

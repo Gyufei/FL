@@ -18,6 +18,7 @@ export function useMarketplaces() {
     for (const market of res || []) {
       market.projectLogo = WithProjectImgCDN(market.market_id, isEth);
       market.pointLogo = WithPointImgCDN(market.market_id, isEth);
+      market.chain = isEth ? "eth" : "solana";
     }
 
     return res as Array<IMarketplace>;

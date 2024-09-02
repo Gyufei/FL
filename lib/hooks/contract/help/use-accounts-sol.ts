@@ -10,7 +10,7 @@ import { useSolanaConfig } from "../../web3/solana/use-solana-config";
 
 export function useAccountsSol() {
   const { publicKey: authority } = useWallet();
-  const { clusterConfig } = useSolanaConfig();
+  const { solanaConfig: clusterConfig } = useSolanaConfig();
 
   async function getAccounts(programId: PublicKey) {
     const tokenProgram = TOKEN_PROGRAM_ID;

@@ -4,7 +4,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export function useGoSolScan() {
   const { isEth, isSolana } = useCurrentChain();
-  const { clusterConfig } = useSolanaConfig();
+  const { solanaConfig: clusterConfig } = useSolanaConfig();
 
   function handleGoScan(addr: string, type: "account" | "tx" = "account") {
     if (!addr) return;

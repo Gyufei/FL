@@ -7,7 +7,7 @@ import { useSolanaConfig } from "./use-solana-config";
 
 export default function useTadleProgram() {
   const { provider } = useProvider();
-  const { clusterConfig } = useSolanaConfig();
+  const { solanaConfig: clusterConfig } = useSolanaConfig();
 
   const programId = new PublicKey(clusterConfig.program.tadleProgram);
   const program = new anchor.Program(TadleAbi as any, programId, provider);

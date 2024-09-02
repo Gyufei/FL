@@ -20,10 +20,16 @@ import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
 import MarketCharts from "./chart/market-charts";
 import AdBanner from "./ad-banner";
+import { useQueryParams } from "@/lib/hooks/common/use-query-params";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { Router } from "next/router";
+import { useRouter } from "@/app/navigation";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const mt = useTranslations("pn-Marketplace");
   const marketplaceName = decodeURIComponent(params.name[0]);
+  const router = useRouter();
+  const { isEth } = useCurrentChain();
 
   const { data: marketplaceData, isLoading: isMarketLoading } =
     useMarketplaces();
@@ -39,8 +45,6 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   } = useMarketOffers({
     marketAccount: marketplace?.market_place_id || "",
   });
-  
-  console.log(orders);
 
   const canBuyOrders = useMemo(() => {
     const showOrder = (orders || [])?.filter((order: IOffer) =>
@@ -66,6 +70,10 @@ export default function Marketplace({ params }: { params: { name: string } }) {
       Number(marketplace.settlement_period),
     );
   }, [marketplace, checkIsAfterTge]);
+
+  if (marketplaceData && marketplaceName && !marketplace) {
+    router.push("/marketplace" + "?" + `chain=${isEth ? "solana" : "eth"}`);
+  }
 
   if (
     marketplaceData &&

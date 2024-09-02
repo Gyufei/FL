@@ -15,7 +15,7 @@ import { SolanaZeroed } from "@/lib/const/solana";
 
 export function useFaucetSol() {
   const { provider } = useProvider();
-  const { clusterConfig } = useSolanaConfig();
+  const { solanaConfig: clusterConfig } = useSolanaConfig();
   const { publicKey: authority } = useWallet();
 
   const programId = new PublicKey(

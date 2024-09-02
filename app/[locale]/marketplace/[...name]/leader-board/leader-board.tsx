@@ -25,7 +25,7 @@ export default function LeaderBoard({
 }) {
   const t = useTranslations("tb-Leaderboard");
   const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
-  const [timeRange, setTimeRange] = useState<IRangeType>("hour");
+  const [timeRange, setTimeRange] = useState<IRangeType>("month");
 
   const { data: taxIncomeData, isLoading: taxIncomeLoading } =
     useTaxIncome(timeRange);

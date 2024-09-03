@@ -14,6 +14,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
+import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
 
 export default function AskDetail({
   offer,
@@ -67,6 +68,9 @@ export default function AskDetail({
     isNativeToken,
   });
 
+  const { isShouldApprove, approveAction, isApproving, approveBtnText } =
+    useApprove(orderTokenInfo?.address || "");
+
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
@@ -90,6 +94,11 @@ export default function AskDetail({
   }
 
   async function handleDeposit() {
+    if (isShouldApprove) {
+      await approveAction();
+      return;
+    }
+
     if (isDepositLoading || !receivePointAmount || !makerDetail) return;
     await writeAction({
       pointAmount: receivePointAmount,
@@ -152,12 +161,17 @@ export default function AskDetail({
             <>
               <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
                 <button
-                  disabled={isDepositLoading || !receivePointAmount}
+                  disabled={
+                    isDepositLoading || !receivePointAmount || isApproving
+                  }
                   className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:bg-gray"
                 >
-                  {T("btn-ConfirmTakerOrder")}
+                  {isShouldApprove
+                    ? approveBtnText
+                    : T("btn-ConfirmTakerOrder")}
                 </button>
               </WithWalletConnectBtn>
+
               <div className="mt-3 text-xs leading-5 text-gray">
                 {isEn && (
                   <>

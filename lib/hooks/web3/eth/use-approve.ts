@@ -74,7 +74,7 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   }
 
   const isShouldApprove = useMemo(() => {
-    if (!isEth) return false;
+    if (!isEth || !tokenAddr) return false;
 
     const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
     if (tokenSymbol === "ETH") return false;
@@ -87,7 +87,7 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   }, [allowance, allowAmount, isEth, isAllowanceLoading, tokenAddr, tokens]);
 
   const approveBtnText = useMemo(() => {
-    if (!isEth) return "";
+    if (!isEth || !tokenAddr) return "";
 
     const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
 
@@ -103,7 +103,7 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   }, [tokens, isShouldApprove, isEth, tokenAddr, CT, isApproving]);
 
   async function approveAction() {
-    if (!isEth) return;
+    if (!isEth || !tokenAddr) return;
 
     setIsApproving(true);
     const findToken = tokens?.find((t) => t.address === tokenAddr);

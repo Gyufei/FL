@@ -13,6 +13,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
+import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
 
 export default function BidDetail({
   order,
@@ -42,6 +43,9 @@ export default function BidDetail({
   });
 
   const { currentChainInfo } = useCurrentChain();
+
+  const { isShouldApprove, approveAction, isApproving, approveBtnText } =
+    useApprove(orderTokenInfo?.address || "");
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -82,6 +86,11 @@ export default function BidDetail({
   }
 
   async function handleDeposit() {
+    if (isShouldApprove) {
+      await approveAction();
+      return;
+    }
+
     if (isDepositLoading || !sellPointAmount || !makerDetail) return;
     await writeAction({
       pointAmount: sellPointAmount,
@@ -141,11 +150,11 @@ export default function BidDetail({
           ) : (
             <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
               <button
-                disabled={isDepositLoading || !sellPointAmount}
+                disabled={isDepositLoading || !sellPointAmount || isApproving}
                 onClick={handleDeposit}
                 className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
               >
-                {T("btn-ConfirmTakerOrder")}
+                {isShouldApprove ? approveBtnText : T("btn-ConfirmTakerOrder")}
               </button>
             </WithWalletConnectBtn>
           )}

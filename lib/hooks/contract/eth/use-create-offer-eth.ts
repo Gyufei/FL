@@ -46,7 +46,7 @@ export function useCreateOfferEth({
             marketPlace: marketplaceStr as any,
             collateralTokenAddr: collateralTokenAddr as any,
             projectPoints: BigInt(pointAmount),
-            quoteTokenAmount: BigInt(tokenAmount * 1e18),
+            quoteTokenAmount: BigInt(tokenAmount),
             collateralRate: BigInt(collateralRate),
             eachTradeTax: BigInt(taxForSub),
             offerType: offerType === "ask" ? 0 : 1,

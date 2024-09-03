@@ -1,12 +1,36 @@
 "use client";
+import { useQueryParams } from "@/lib/hooks/common/use-query-params";
 import PageFooter from "../_page-layout/_page-footer";
 import PointMarket from "./point-market";
 // import Post from "./post";
 // import MockMarket from "./mock-market";
 import TrendingAsset from "./trending-asset";
+import { useEffect } from "react";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 // import { redirect } from "@/app/navigation";
 
 export default function Marketplace() {
+  const { isEth, isSolana, switchToEth, switchToSolana } = useCurrentChain();
+  const { searchParams, goWithQueryParams } = useQueryParams();
+
+  useEffect(() => {
+    const chain = searchParams.get("chain");
+
+    if (!chain) {
+      goWithQueryParams("chain", isEth ? "eth" : "solana");
+    }
+  }, [isEth, isSolana, searchParams]);
+
+  useEffect(() => {
+    const chain = searchParams.get("chain");
+
+    if (chain === "eth") {
+      switchToEth();
+    } else if (chain === "solana") {
+      switchToSolana();
+    }
+  }, [searchParams]);
+
   return (
     <div className="flex h-[calc(100vh-96px)] w-full flex-col">
       <div className="flex flex-1 items-stretch">

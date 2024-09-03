@@ -10,7 +10,7 @@ export const testnet = {
   blockExplorers: {
     default: {
       name: "Testnet Explorer",
-      url: "https://test-scan.many.gold/",
+      url: "https://devnet-explorer.aggregation.top/",
     },
   },
   contracts: {},

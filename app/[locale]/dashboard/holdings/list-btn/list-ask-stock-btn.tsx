@@ -18,10 +18,9 @@ import { formatNum } from "@/lib/utils/number";
 import { SettleModeSelect } from "@/app/[locale]/marketplace/[...name]/create-offer/settle-mode-select";
 import { IHolding } from "@/lib/types/holding";
 import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
-import { useListStock } from "@/lib/hooks/contract/use-list";
+import { useList } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
-import { isProduction } from "@/lib/PathMap";
 
 export default function ListAskStockBtn({
   order: order,
@@ -34,10 +33,15 @@ export default function ListAskStockBtn({
   const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { orderPointInfo, orderTokenInfo, tokenPrice, makerDetail, isNativeToken } =
-    useStockFormat({
-      stock: order,
-    });
+  const {
+    orderPointInfo,
+    orderTokenInfo,
+    tokenPrice,
+    makerDetail,
+    isNativeToken,
+  } = useStockFormat({
+    stock: order,
+  });
 
   const [sellPointAmount] = useState(order.points);
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
@@ -57,7 +61,7 @@ export default function ListAskStockBtn({
     isLoading: isDepositLoading,
     write: writeAction,
     isSuccess,
-  } = useListStock({
+  } = useList({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
     holdingStr: order.stock_account,
@@ -73,8 +77,7 @@ export default function ListAskStockBtn({
 
     writeAction({
       receiveTokenAmount:
-        Number(receiveTokenAmount) *
-        10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
+        Number(receiveTokenAmount) * 10 ** (orderTokenInfo?.decimals || 0),
       collateralRate: Number(collateralRate || 100) * 100,
     });
   }

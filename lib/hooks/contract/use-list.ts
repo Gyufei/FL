@@ -2,7 +2,7 @@ import { useListEth } from "./eth/use-list-eth";
 import { useChainTx } from "./help/use-chain-tx";
 import { useListSol } from "./solana/use-list-sol";
 
-export function useListStock({
+export function useList({
   marketplaceStr,
   makerStr,
   holdingStr,

@@ -20,7 +20,9 @@ export function useAccountsSol() {
     const seedAccount = Keypair.generate();
 
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
-    const projectTokenMint = new PublicKey(clusterConfig.program.projectTokenMint);
+    const projectTokenMint = new PublicKey(
+      clusterConfig.program.projectTokenMint,
+    );
     const wsolTokenMint = new PublicKey(
       "So11111111111111111111111111111111111111112",
     );
@@ -113,7 +115,7 @@ export function useAccountsSol() {
   async function getWalletBalanceAccount(
     programId: PublicKey,
     wallet: PublicKey,
-    marketPlace: PublicKey,
+    marketplace: PublicKey,
     isNativeToken = false,
   ) {
     const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
@@ -133,7 +135,7 @@ export function useAccountsSol() {
     const walletPointTokenBalance = PublicKey.findProgramAddressSync(
       [
         Buffer.from("point_token_balance"),
-        marketPlace.toBuffer(),
+        marketplace.toBuffer(),
         wallet.toBuffer(),
       ],
       programId,

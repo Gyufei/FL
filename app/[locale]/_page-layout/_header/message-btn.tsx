@@ -56,23 +56,23 @@ export default function MessageBtn() {
             {showLen}
           </Badge>
         )}
-      </div>
-      <Drawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        direction="right"
-        size={500}
-        className="overflow-y-auto rounded-l-2xl p-6"
-        customIdSuffix="msg-drawer"
-      >
-        <DrawerTitle
-          title={t("cap-Notifications")}
+        <Drawer
+          open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-        />
-        {(msgEvents || []).map((i, idx) => (
-          <MsgRow key={idx} msgDetail={msgDetail} />
-        ))}
-      </Drawer>
+          direction="right"
+          size={500}
+          className="overflow-y-auto rounded-l-2xl p-6"
+          customIdSuffix="msg-drawer"
+        >
+          <DrawerTitle
+            title={t("cap-Notifications")}
+            onClose={() => setDrawerOpen(false)}
+          />
+          {(msgEvents || []).map((i, idx) => (
+            <MsgRow key={idx} msgDetail={msgDetail} />
+          ))}
+        </Drawer>
+      </div>
     </>
   );
 }

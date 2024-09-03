@@ -42,6 +42,8 @@ export function NetworkSelect() {
   const { popOpen, setPopOpen, switchToSolana, switchToEth } =
     UseNetworkSelect();
 
+  const { isEth, isSolana } = useCurrentChain();
+
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
@@ -62,7 +64,7 @@ export function NetworkSelect() {
         </div>
       </PopoverTrigger>
       <PopoverContent
-        className="flex w-[248px] flex-col items-stretch space-y-2 border-none bg-white p-2"
+        className="flex w-[218px] flex-col items-stretch space-y-2 border-none bg-white p-2"
         style={{
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}
@@ -71,7 +73,7 @@ export function NetworkSelect() {
         {isProduction && (
           <div
             onClick={() => switchToSolana()}
-            data-state={isProduction ? "active" : "inactive"}
+            data-state={isSolana ? "active" : "inactive"}
             className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
           >
             <Image
@@ -85,15 +87,12 @@ export function NetworkSelect() {
           </div>
         )}
         {!isProduction && (
-          <DevnetRow
-            onClick={() => switchToSolana()}
-            isActive={!isProduction}
-          />
+          <DevnetRow onClick={() => switchToSolana()} isActive={isSolana} />
         )}
         <div
           onClick={() => switchToEth()}
-          data-state={"inactive"}
-          className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
+          data-state={isEth ? "active" : "inactive"}
+          className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
         >
           <Image
             width={24}
@@ -102,14 +101,9 @@ export function NetworkSelect() {
             alt="evms"
             className="z-10 rounded-full bg-white"
           ></Image>
-          <div className="flex-1 text-xs">EVMs</div>
-          <Image
-            width={32}
-            height={25}
-            src="/icons/evm-chains.svg"
-            alt="evm chains"
-            className="z-10 bg-white"
-          ></Image>
+          <div className="flex-1 text-xs">
+            {isProduction ? "Ethereum" : "EthTest"}
+          </div>
         </div>
       </PopoverContent>
     </Popover>
@@ -164,14 +158,7 @@ export function MbNetworkSelect() {
             alt="evms"
             className="z-10 bg-white"
           ></Image>
-          <div className="flex-1 text-xs">EVMs</div>
-          <Image
-            width={32}
-            height={25}
-            src="/icons/evm-chains.svg"
-            alt="evm chains"
-            className="z-10 bg-white"
-          ></Image>
+          <div className="flex-1 text-xs">Ethereum</div>
         </div>
       </DrawerContent>
     </Drawer>

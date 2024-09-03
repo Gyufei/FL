@@ -12,7 +12,7 @@ export function useMarketplaces() {
 
   const MarketplacesFetcher = async () => {
     const res = await fetcher(
-      `${apiEndPoint}${Paths.marketPlace}?market_type=point`,
+      `${apiEndPoint}${Paths.marketplace}?market_type=point`,
     );
 
     for (const market of res || []) {

@@ -41,7 +41,7 @@ export const Paths = {
   myOffer: "/market_place/my_offer",
   myStock: "/market_place/my_stock",
   makerDetail: "/market_place/maker_detail",
-  marketPlace: "/market_place",
+  marketplace: "/market_place",
   addTransaction: "/transaction/add",
   taxIncome: "/user/tax_income",
   takerOrders: "/market_place/taker_orders",

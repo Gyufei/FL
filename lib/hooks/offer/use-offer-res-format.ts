@@ -39,8 +39,8 @@ export function useOfferResFormat() {
       );
 
       const isPreOfferZeroed = isEth
-        ? offer?.pre_offer_account === SolanaZeroed
-        : false;
+        ? false
+        : offer?.pre_offer_account === SolanaZeroed;
 
       let offers = null;
       let preOfferDetail = null;

@@ -137,7 +137,7 @@ export function useCreateHoldingSol({
         seedAccount: seedAccount.publicKey,
         holding: holdingB,
         maker,
-        marketPlace: marketplace,
+        marketplace,
         poolTokenAccount: isNativeToken
           ? poolSolTokenAccount
           : poolUsdcTokenAccount,

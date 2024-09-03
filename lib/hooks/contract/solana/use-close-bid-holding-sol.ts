@@ -29,7 +29,7 @@ export function useCloseBidHoldingSol({
       program.programId,
     );
 
-    const marketPlace = new PublicKey(marketplaceStr);
+    const marketplace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
     const preOffer = new PublicKey(preOfferStr);
     const holdingD = new PublicKey(holdingStr);
@@ -40,7 +40,7 @@ export function useCloseBidHoldingSol({
     } = await getWalletBalanceAccount(
       program.programId,
       authority!,
-      marketPlace,
+      marketplace,
       isNativeToken,
     );
 
@@ -53,7 +53,7 @@ export function useCloseBidHoldingSol({
         systemConfig,
         holding: holdingD,
         maker,
-        marketPlace,
+        marketplace,
         systemProgram,
       }).remainingAccounts([
         {

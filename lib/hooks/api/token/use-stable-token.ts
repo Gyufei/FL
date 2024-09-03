@@ -8,7 +8,7 @@ export function useStableToken() {
 
   const stableTokens = useMemo(() => {
     const stableTokenList = isEth
-      ? ["USDT", "WETH"]
+      ? ["USDT", "ETH"]
       : isSolana
       ? ["USDC", "SOL"]
       : [];

@@ -12,6 +12,7 @@ export function useSignInAction() {
   const { trigger: signInApiAction } = useSignIn();
 
   const setToken = useSetAtom(AccessTokenAtom);
+
   const setShowSignInDialog = useSetAtom(ShowSignDialogAtom);
 
   const signInAction = useCallback(async () => {

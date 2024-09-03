@@ -16,15 +16,12 @@ import { useUpdateReferral } from "@/lib/hooks/contract/use-update-referral";
 import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useReferralView } from "@/lib/hooks/api/use-referral";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
   const t = useTranslations("Header");
 
-  const { isEth, isSolana } = useCurrentChain();
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
   );
@@ -34,16 +31,9 @@ export default function ConnectBtn() {
 
   const { trigger: viewReferral } = useReferralView();
 
-  const { open: wcModalOpen } = useWeb3Modal();
-  const openSolWalletSelectDialog = useCallback(() => {
-    if (isEth) {
-      wcModalOpen();
-    }
-
-    if (isSolana) {
-      setWalletSelectDialogVisible(true);
-    }
-  }, [setWalletSelectDialogVisible, isEth, isSolana, wcModalOpen]);
+  const openWalletSelectDialog = useCallback(() => {
+    setWalletSelectDialogVisible(true);
+  }, [setWalletSelectDialogVisible]);
 
   const { address, shortAddr, connected, connecting } = useChainWallet();
 
@@ -77,7 +67,7 @@ export default function ConnectBtn() {
       <>
         <button
           className="shadow-25 h-10 rounded-full bg-[#f0f1f5] px-4 text-base leading-6 transition-all sm:h-12 sm:px-[22px]"
-          onClick={() => openSolWalletSelectDialog()}
+          onClick={() => openWalletSelectDialog()}
         >
           <span className="hidden sm:inline-block">
             {t("btn-ConnectWallet")}

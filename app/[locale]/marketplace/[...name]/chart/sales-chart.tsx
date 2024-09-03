@@ -221,6 +221,9 @@ export default function SalesChart({
           data: chartData?.scatter,
         },
       ],
+      accessibility: {
+        enabled: false,
+      },
     }),
     [xAxisOptions, chartData, now],
   );

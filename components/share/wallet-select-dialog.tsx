@@ -3,10 +3,11 @@ import Image from "next/image";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Wallet, useWallet } from "@solana/wallet-adapter-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WalletReadyState } from "@solana/wallet-adapter-base";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/lib/hooks/common/use-media-query";
+import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 export const WalletSelectDialogVisibleAtom = atom(false);
 
@@ -16,6 +17,8 @@ export default function WalletSelectDialog() {
   const [walletSelectDialogVisible, setWalletSelectDialogVisible] = useAtom(
     WalletSelectDialogVisibleAtom,
   );
+
+  const { isEth, wcModalOpen, wcModalClose } = useCurrentChain();
 
   const showWallets = wallets.filter(
     (w: Wallet) => w.adapter.name !== "MetaMask",
@@ -46,6 +49,20 @@ export default function WalletSelectDialog() {
       select(w.adapter.name);
       onOpenChange(false);
     }
+  }
+
+  useEffect(() => {
+    if (!isEth) return;
+
+    if (walletSelectDialogVisible) {
+      wcModalOpen();
+    } else {
+      wcModalClose();
+    }
+  }, [wcModalOpen, walletSelectDialogVisible, wcModalClose, isEth]);
+
+  if (isEth) {
+    return null;
   }
 
   if (isDesktop) {

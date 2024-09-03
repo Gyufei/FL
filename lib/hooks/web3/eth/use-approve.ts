@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { erc20Abi } from "viem";
 import { readContract } from "@wagmi/core";
-import { useAccount, useConfig } from "wagmi";
+import {
+  useAccount,
+  useConfig,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
 
 import { useCurrentChain } from "../use-current-chain";
 import { useTokens } from "../../api/token/use-tokens";
@@ -24,6 +29,15 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   const [isAllowanceLoading, setIsAllowanceLoading] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
+  const { data: hash, writeContract } = useWriteContract();
+
+  const { data: txReceipt, error: txError } = useWaitForTransactionReceipt({
+    hash,
+    query: {
+      enabled: !!hash,
+    },
+  });
+
   useEffect(() => {
     if (!isEth) {
       return;
@@ -31,6 +45,17 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
 
     readAllowance();
   }, [isEth, address, spender, tokenAddr, allowAmount]);
+
+  useEffect(() => {
+    if (txReceipt) {
+      setIsApproving(false);
+      readAllowance();
+    }
+
+    if (txError) {
+      setIsApproving(false);
+    }
+  }, [txReceipt, txError]);
 
   async function readAllowance() {
     if (!address || !spender || !tokenAddr) return;
@@ -50,17 +75,21 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
 
   const isShouldApprove = useMemo(() => {
     if (!isEth) return false;
-    if (allowance == null || isAllowanceLoading) return false;
 
+    const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
+    if (tokenSymbol === "ETH") return false;
+
+    if (allowance == null || isAllowanceLoading) return false;
     if (allowance === 0) return true;
     if (allowance < allowAmount) return true;
 
     return false;
-  }, [allowance, allowAmount, isEth, isAllowanceLoading]);
+  }, [allowance, allowAmount, isEth, isAllowanceLoading, tokenAddr, tokens]);
 
   const approveBtnText = useMemo(() => {
-    const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
     if (!isEth) return "";
+
+    const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
 
     if (isApproving) {
       return `${CT("btn-Approving")} ${tokenSymbol}...`;
@@ -71,11 +100,12 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
     }
 
     return "";
-  }, [tokens, isShouldApprove, isApproving, isEth, tokenAddr, CT]);
+  }, [tokens, isShouldApprove, isEth, tokenAddr, CT, isApproving]);
 
   async function approveAction() {
     if (!isEth) return;
 
+    setIsApproving(true);
     const findToken = tokens?.find((t) => t.address === tokenAddr);
     const isUSDT = findToken?.symbol === "USDT";
 
@@ -90,12 +120,7 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
       args: [spender, amount],
     };
 
-    const result = await readContract(config, callParams as any);
-
-    await readAllowance();
-
-    setIsApproving(true);
-    return result;
+    writeContract(callParams as any);
   }
 
   return {

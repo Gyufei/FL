@@ -105,6 +105,9 @@ export default function DepthChart(props: any) {
           color: "#D8F369",
         },
       ],
+      accessibility: {
+        enabled: false,
+      },
     }),
     [],
   );

@@ -27,19 +27,28 @@ export function StableTokenSelectDisplay({
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger>
         <div className="flex cursor-pointer items-center rounded-full bg-[#F0F1F5] p-2">
-          <Image
-            width={24}
-            height={24}
-            src={token?.logoURI}
-            alt="select token"
-            className="mr-2 rounded-full"
-          ></Image>
-          <div className="pr-[4px] text-sm leading-5 text-black">
-            {token?.symbol}
-          </div>
-          <div className="flex h-6 w-6 items-center justify-center">
-            <Image src="/icons/down.svg" width={16} height={16} alt="arrow" />
-          </div>
+          {token && (
+            <>
+              <Image
+                width={24}
+                height={24}
+                src={token?.logoURI}
+                alt="selected token"
+                className="mr-2 rounded-full"
+              ></Image>
+              <div className="pr-[4px] text-sm leading-5 text-black">
+                {token?.symbol}
+              </div>
+              <div className="flex h-6 w-6 items-center justify-center">
+                <Image
+                  src="/icons/down.svg"
+                  width={16}
+                  height={16}
+                  alt="arrow"
+                />
+              </div>
+            </>
+          )}
         </div>
       </PopoverTrigger>
       <PopoverContent
@@ -56,7 +65,7 @@ export function StableTokenSelectDisplay({
               width={24}
               height={24}
               src={t.logoURI}
-              alt="select token"
+              alt="token option"
               className="mr-2 rounded-full"
             ></Image>
             {t.symbol}

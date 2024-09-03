@@ -32,7 +32,7 @@ export function useCurrentChain() {
   const isEth = useAtomValue(IsEthAtom);
   const isSolana = useAtomValue(IsSolanaAtom);
 
-  const { open: wcModalOpen } = useWeb3Modal();
+  const { open: wcModalOpen, close: wcModalClose } = useWeb3Modal();
   const { isConnected } = useAccount();
   const { switchChain } = useSwitchChain();
 
@@ -81,13 +81,19 @@ export function useCurrentChain() {
     if (!chain) {
       goWithQueryParams("chain", isEth ? "eth" : "solana");
     }
+  }, [isAllowChainParams, isEth, isSolana, searchParams, setNetwork]);
+
+  useEffect(() => {
+    if (!isAllowChainParams) return;
+
+    const chain = searchParams.get("chain");
 
     if (chain === "eth" && !isEth) {
       setNetwork(ENetworks.Eth);
     } else if (chain === "solana" && !isSolana) {
       setNetwork(ENetworks.Solana);
     }
-  }, [isAllowChainParams, isEth, isSolana, searchParams]);
+  }, []);
 
   return {
     network,
@@ -96,5 +102,7 @@ export function useCurrentChain() {
     currentChainInfo,
     switchToEth,
     switchToSolana,
+    wcModalOpen,
+    wcModalClose,
   };
 }

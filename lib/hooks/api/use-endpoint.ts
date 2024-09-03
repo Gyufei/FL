@@ -1,49 +1,48 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { WithCDN, WithHost } from "@/lib/PathMap";
 import { useCurrentChain } from "../web3/use-current-chain";
 
 export function useEndPoint() {
   const { isEth, isSolana } = useCurrentChain();
 
-  const apiEndPoint = useMemo(() => {
-    if (isEth) {
-      return WithHost("/eth");
-    }
+  const ethApiEndPoint = WithHost("/eth");
+  const solanaApiEndPoint = WithHost("/solana");
 
-    if (isSolana) {
-      return WithHost("/solana");
-    }
+  const getEndpoint = useCallback(
+    (ethPath: string, solanaPath: string, isCDN = false) => {
+      if (isEth) return (isCDN ? WithCDN : WithHost)(ethPath);
+      if (isSolana) return (isCDN ? WithCDN : WithHost)(solanaPath);
+      return "";
+    },
+    [isEth, isSolana],
+  );
 
-    return "";
-  }, [isEth, isSolana]);
+  const apiEndPoint = useMemo(
+    () => getEndpoint("/eth", "/solana"),
+    [getEndpoint],
+  );
 
-  const projectInfoEndPoint = useMemo(() => {
-    if (isEth) {
-      return WithCDN("/eth/project_info.json");
-    }
+  const projectInfoEndPoint = useMemo(
+    () =>
+      getEndpoint("/eth/project_info.json", "/solana/project_info.json", true),
+    [getEndpoint],
+  );
 
-    if (isSolana) {
-      return WithCDN("/solana/project_info.json");
-    }
-
-    return "";
-  }, [isEth, isSolana]);
-
-  const tokenEndPoint = useMemo(() => {
-    if (isEth) {
-      return WithCDN("/eth/tokenlist/eth.json");
-    }
-
-    if (isSolana) {
-      return WithCDN("/solana/tokenlist/solana.json");
-    }
-
-    return "";
-  }, [isEth, isSolana]);
+  const tokenEndPoint = useMemo(
+    () =>
+      getEndpoint(
+        "/eth/tokenlist/eth.json",
+        "/solana/tokenlist/solana.json",
+        true,
+      ),
+    [getEndpoint],
+  );
 
   return {
     apiEndPoint,
     projectInfoEndPoint,
     tokenEndPoint,
+    ethApiEndPoint,
+    solanaApiEndPoint,
   };
 }

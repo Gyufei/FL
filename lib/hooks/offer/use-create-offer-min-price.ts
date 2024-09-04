@@ -1,4 +1,5 @@
 import { GlobalMessageAtom } from "@/lib/states/global-message";
+import { toNonExponential } from "@/lib/utils/number";
 import { useSetAtom } from "jotai";
 
 export function useCreateOfferMinPrice() {
@@ -9,7 +10,9 @@ export function useCreateOfferMinPrice() {
     if (!price || Number(price) <= minPrice80) {
       setGlobalMessage({
         type: "error",
-        message: `Point price must be greater than ${minPrice80}`,
+        message: `Point price must be greater than ${toNonExponential(
+          minPrice80,
+        )}`,
       });
       return false;
     }

@@ -73,12 +73,14 @@ export default function CreateOfferBtn({
           <TabsContent
             value="sell"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
+            forceMount={true}
           >
             <SellContent onSuccess={handleSuccess} marketplace={marketplace} />
           </TabsContent>
           <TabsContent
             value="buy"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
+            forceMount={true}
           >
             <BuyContent onSuccess={handleSuccess} marketplace={marketplace} />
           </TabsContent>

@@ -27,9 +27,9 @@ export function WithPointImgCDN(path: string, isEth: boolean) {
   return WithCDN(`/${isEth ? "eth" : "solana"}/images/point/${goPath}`);
 }
 
-export function WithWss() {
-  const devWss = "preview-wss.tadle.com";
-  const prodWss = "wss://wss.tadle.com";
+export function WithWss(path: string) {
+  const devWss = "wss://preview-wss.tadle.com" + path;
+  const prodWss = "wss://wss.tadle.com" + path;
   const wss = isProduction ? prodWss : devWss;
   return wss;
 }

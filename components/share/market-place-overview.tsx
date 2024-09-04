@@ -41,36 +41,6 @@ export default function MarketplaceOverview({
         </div>
       </div>
 
-      {/* <div className="flex items-center justify-between">
-        <div>
-          <LabelText isLoading={isLoadingFlag}>{t("lb-24hChange")}</LabelText>
-          {isLoadingFlag ? (
-            <ValueSkeleton />
-          ) : (
-            <div
-              data-up={
-                Number(marketplace!.change_rate_24h) === 0
-                  ? "zero"
-                  : Number(marketplace!.change_rate_24h) > 0
-              }
-              className="text-sm leading-5 data-[up=zero]:text-black data-[up=true]:text-green data-[up=false]:text-red"
-            >
-              {marketplace!.change_rate_24h}%
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("lb-24hVol")}</LabelText>
-          {isLoadingFlag ? (
-            <ValueSkeleton />
-          ) : (
-            <div className="flex items-center text-sm leading-5 text-black">
-              ${marketplace!.vol_24h}
-            </div>
-          )}
-        </div>
-      </div> */}
-
       <div className="flex items-center justify-between">
         <div>
           <LabelText isLoading={isLoadingFlag}>

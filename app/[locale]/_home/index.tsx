@@ -1,6 +1,6 @@
 import HomeBanner from "./home-banner";
 import MakeMoney from "./make-money";
-import MarketPlace from "./marketplace-list";
+import MarketPlace from "./trending-projects";
 import Faqs from "./faqs";
 import OutPerforms from "./outperforms";
 // import BigPicture from "./big-picture";

@@ -18,7 +18,7 @@ export interface IHolding {
   tx_hash: string;
 
   offer: string;
-  pre_offer: string;
+  pre_offer_display: string;
   offer_detail: IOffer;
   pre_offer_detail: IOffer;
 

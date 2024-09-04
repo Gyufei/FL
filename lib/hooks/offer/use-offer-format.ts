@@ -105,7 +105,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     const offerType = makerDetail?.offer_settle_type;
     const isTurbo = offerType === "turbo";
 
-    if (isTurbo && offer.pre_offer) {
+    if (isTurbo && offer.pre_offer_display) {
       return false;
     }
 
@@ -119,7 +119,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     offer.used_points,
     makerDetail,
     isLoadingMakerDetail,
-    offer.pre_offer,
+    offer.pre_offer_display,
   ]);
 
   const isSettled = useMemo(() => {

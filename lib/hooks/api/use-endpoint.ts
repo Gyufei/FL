@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { WithCDN, WithHost } from "@/lib/PathMap";
+import { WithCDN, WithHost, WithWss } from "@/lib/PathMap";
 import { useCurrentChain } from "../web3/use-current-chain";
 
 export function useEndPoint() {
@@ -38,11 +38,19 @@ export function useEndPoint() {
     [getEndpoint],
   );
 
+  const wssEndPoint = useMemo(() => {
+    if (isEth) return WithWss("/eth");
+    if (isSolana) return WithWss("/solana");
+
+    return "";
+  }, [isEth, isSolana]);
+
   return {
     apiEndPoint,
     projectInfoEndPoint,
     tokenEndPoint,
     ethApiEndPoint,
     solanaApiEndPoint,
+    wssEndPoint,
   };
 }

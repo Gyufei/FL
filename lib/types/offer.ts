@@ -32,7 +32,7 @@ export interface IOffer {
   trade_tax: string;
 
   marketplace: IMarketplace;
-  pre_offer: string;
+  pre_offer_display: string;
   pre_offer_detail: IOffer,
   origin_offer_detail: IOffer
 }

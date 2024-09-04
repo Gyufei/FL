@@ -8,7 +8,7 @@ import { IMakerDetail } from "@/lib/types/maker-detail";
 export function useMakerDetail({ makerId }: { makerId: string | undefined }) {
   const { apiEndPoint } = useEndPoint();
 
-  const MakerFetcher = async () => {
+  const makerFetcher = async () => {
     if (!makerId) return null;
 
     const res = await fetcher(
@@ -18,7 +18,7 @@ export function useMakerDetail({ makerId }: { makerId: string | undefined }) {
     return res as IMakerDetail;
   };
 
-  const res = useSWR(`makerId=${makerId}`, MakerFetcher);
+  const res = useSWR(`makerId=${makerId}`, makerFetcher);
 
   return res;
 }

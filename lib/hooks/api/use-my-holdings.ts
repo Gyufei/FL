@@ -27,7 +27,7 @@ export function useMyHoldings() {
         const res = {
           ...o,
           offer_account: o.offer,
-          pre_offer_account: o.pre_offer,
+          pre_offer_account: o.pre_offer_account,
         };
 
         return res;

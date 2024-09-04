@@ -3,12 +3,11 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { useAllChainMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
-import { useRouter } from "@/app/navigation";
+import { redirect } from "@/app/navigation";
 import MarketplaceContent from "./marketplace-content";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
-  const router = useRouter();
   const { isEth } = useCurrentChain();
 
   const { data: allMarket, isLoading: isMarketLoading } =
@@ -26,7 +25,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   if (!allMarket || !marketplaceName) return null;
 
   if (marketplace && !isCurrentChainMarket) {
-    router.push("/marketplace");
+    redirect("/marketplace");
   }
 
   if (!marketplace) {

@@ -5,13 +5,13 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useOfferResFormat } from "../offer/use-offer-res-format";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { getMarketOffers } from "@/lib/helper/market-offer-cache";
 
 export function useMyOffers() {
   const { address } = useChainWallet();
   const { apiEndPoint } = useEndPoint();
 
-  const { offerResFieldFormat: orderResFieldFormat, isLoading } =
-    useOfferResFormat();
+  const { offerResFieldFormat, isLoading } = useOfferResFormat();
 
   const marketOrdersFetcher = async () => {
     if (!address || isLoading) return [];
@@ -20,8 +20,15 @@ export function useMyOffers() {
       `${apiEndPoint}${Paths.myOffer}?authority=${address}`,
     );
 
+    const marketOffers = await getMarketOffers(
+      apiEndPoint,
+      orderRes.map((o: Record<string, any>) => o.market_place_account),
+    );
+
     const parsedRes = await Promise.all(
-      orderRes.map((o: Record<string, any>) => orderResFieldFormat(o)),
+      orderRes.map((o: Record<string, any>) =>
+        offerResFieldFormat(o, marketOffers[o.market_place_account]),
+      ),
     );
 
     return parsedRes as Array<IOffer>;

@@ -53,7 +53,7 @@ export function TradesTable({
     });
 
     return allMsg;
-  }, [msgEvents, historyData]);
+  }, [msgEvents, historyData, tokens]);
 
   const data = useMemo(() => {
     if (isLoadingFlag) {
@@ -86,7 +86,7 @@ export function TradesTable({
     return {
       nodes: tableData,
     };
-  }, [tradeMsgs, type, marketplace, isLoadingFlag]);
+  }, [tradeMsgs, type, isLoadingFlag]);
 
   const theme = useTheme({
     Table: `
@@ -111,25 +111,20 @@ export function TradesTable({
       font-weight: 400;
       line-height: 18px;
 
-      &:nth-of-type(n+3) {
-        text-align: right;
+      &:nth-of-type(3) {
+        text-align: center;
       }
-
     `,
     HeaderCell: `
       color: #c0c4cc;
       border-bottom: 1px solid #eee;
-
-      &:nth-of-type(3) {
-        text-align: center;
-      }
     `,
     Cell: `
       color: #2d2e33;
       height: 40px;
 
       &:nth-of-type(3) {
-        text-align: right;
+        text-align: center;
       }
     `,
   });
@@ -148,7 +143,7 @@ export function TradesTable({
       label: t("th-ItemId"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
-          <Skeleton className="h-[16px] w-[100px]" />
+          <Skeleton className="h-[16px] w-[80px]" />
         ) : (
           <div>#{trade.item_id}</div>
         ),
@@ -157,9 +152,9 @@ export function TradesTable({
       label: t("th-Value"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
-          <Skeleton className="h-[16px] w-[50px]" />
+          <Skeleton className="h-[16px] w-[100px]" />
         ) : (
-          <div className="flex w-full items-center justify-end">
+          <div className="flex w-full items-center justify-end pr-4">
             <span>{formatNum(trade.token_amount)}</span>
             {trade.token && (
               <Image
@@ -179,7 +174,7 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
         ) : (
-          <div>{formatNum(trade.amount)}</div>
+          <div>{formatNum(trade.amount, 2, true)}</div>
         ),
     },
     {

@@ -1,8 +1,9 @@
 import { isProduction } from "@/lib/PathMap";
-import { socket } from "@/lib/socket";
+import { useSocket } from "./use-socket";
 import { useEffect, useState } from "react";
 
 export function useWsMsgs() {
+  const { socket } = useSocket();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [msgEvents, setMsgEvents] = useState<any[]>([]);
 

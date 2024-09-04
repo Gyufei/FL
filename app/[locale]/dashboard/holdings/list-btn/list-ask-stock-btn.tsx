@@ -65,7 +65,7 @@ export default function ListAskStockBtn({
     marketplaceStr: order.marketplace.market_place_id,
     makerStr: order.maker_account,
     holdingStr: order.stock_account,
-    preOfferStr: order.pre_offer,
+    preOfferStr: order.pre_offer_account,
     originOfferStr: makerDetail?.origin_offer || "",
     isNativeToken,
   });

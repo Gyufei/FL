@@ -4,6 +4,8 @@ export const EthRPCS = {
   TadleDevRPC1: "https://devnet-rpc.aggregation.top/",
 };
 
+export const EthZeroed = "0x0000000000000000000000000000000000000000";
+
 export const EthTestConfig = {
   id: 1337,
   contracts: {

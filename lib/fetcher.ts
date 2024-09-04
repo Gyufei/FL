@@ -59,6 +59,11 @@ export default async function fetcher(
     }
 
     const json = await res.json();
+
+    if (json.code === 500) {
+      return null;
+    }
+
     return json?.data || json;
   } catch (e) {
     console.log(e);

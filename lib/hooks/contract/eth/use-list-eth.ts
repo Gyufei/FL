@@ -2,15 +2,17 @@ import { PreMarketABI } from "@/lib/abi/eth/PreMarkets";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useListEth({ holdingStr }: { holdingStr: string }) {
   const { ethConfig } = useEthConfig();
+  const { getGasParams } = useGasEth();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
   const txAction = useCallback(
-    ({
+    async ({
       receiveTokenAmount,
       collateralRate,
     }: {
@@ -19,18 +21,21 @@ export function useListEth({ holdingStr }: { holdingStr: string }) {
     }) => {
       const abiAddress = ethConfig.contracts.preMarkets;
 
-      return writeContract({
+      const callParams = {
         abi: PreMarketABI,
         address: abiAddress as any,
         functionName: "listHolding",
-        args: [
-          holdingStr,
-          BigInt(receiveTokenAmount),
-          BigInt(collateralRate),
-        ],
+        args: [holdingStr, BigInt(receiveTokenAmount), BigInt(collateralRate)],
+      };
+
+      const gasParams = await getGasParams(callParams);
+
+      return writeContract({
+        ...callParams,
+        ...gasParams,
       });
     },
-    [writeContract, ethConfig, holdingStr],
+    [writeContract, ethConfig, holdingStr, getGasParams],
   );
 
   return {

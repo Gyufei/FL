@@ -8,6 +8,7 @@ import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 import { isProduction } from "@/lib/PathMap";
 import { useTokensInfo } from "@/lib/hooks/api/token/use-token-info";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
+import { useIsNativeToken } from "../api/token/use-is-native-token";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail(
@@ -24,7 +25,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
 
-  const isNativeToken = orderTokenInfo?.symbol === "SOL";
+  const { isNativeToken } = useIsNativeToken(orderTokenInfo || null);
 
   const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || "");
 

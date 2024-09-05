@@ -24,6 +24,7 @@ import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -79,6 +80,8 @@ export default function MyBalances() {
     write: wdPointAction,
     isSuccess: isWdPointSuccess,
   } = useWithdrawProjectToken();
+
+  const { checkIsNativeToken } = useIsNativeToken();
 
   useEffect(() => {
     if (isWdTokenSuccess || isWdPointSuccess) {
@@ -263,10 +266,10 @@ export default function MyBalances() {
     setOpenPanel(panelIndex);
   }
 
-  function handleWithdrawToken(mode: IBalanceType, tokenName: string) {
+  function handleWithdrawToken(mode: IBalanceType, tokenInfo: IToken | null) {
     if (isWdTokenLoading) return;
     wdTokenAction({
-      isNativeToken: tokenName === "SOL",
+      isNativeToken: checkIsNativeToken(tokenInfo),
       mode,
     });
   }
@@ -315,7 +318,7 @@ export default function MyBalances() {
                           !item.isPoint
                             ? handleWithdrawToken(
                                 item.withdrawerName!,
-                                i.tokenInfo.symbol || "",
+                                i.tokenInfo || null,
                               )
                             : handleWithdrawPoint(
                                 i.tokenInfo.marketplaceId || "",

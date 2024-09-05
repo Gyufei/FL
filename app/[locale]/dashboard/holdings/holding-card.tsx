@@ -6,7 +6,7 @@ import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IHolding } from "@/lib/types/holding";
-import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+import { useHoldingFormat } from "@/lib/hooks/stock/use-holding-format";
 import useOfferHoldings from "@/lib/hooks/offer/use-offer-holdings";
 import DelistBtn from "./delist-btn/delist-btn";
 import { useTranslations } from "next-intl";
@@ -29,7 +29,7 @@ export default function HoldingCard({
     tokenTotalPrice,
     forLogo,
     isCanSettle,
-  } = useStockFormat({
+  } = useHoldingFormat({
     stock,
   });
 

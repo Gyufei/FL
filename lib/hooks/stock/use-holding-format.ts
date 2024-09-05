@@ -3,7 +3,7 @@ import { IHolding } from "@/lib/types/holding";
 import { useOfferFormat } from "../offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
 
-export function useStockFormat({ stock }: { stock: IHolding }) {
+export function useHoldingFormat({ stock }: { stock: IHolding }) {
   const {
     afterTGE,
     afterTGEPeriod,

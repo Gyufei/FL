@@ -24,7 +24,7 @@ import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
 import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 
 export function SellContent({
   marketplace,
@@ -35,12 +35,10 @@ export function SellContent({
 }) {
   const T = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
-  const { data: stableToken } = useStableToken();
+  const { data: stableTokens } = useStableToken();
 
   const [sellPointAmount, setSellPointAmount] = useState("");
   const [sellPoint, setSellPoint] = useState<IPoint | null>(null);
-
-  const { isEth } = useCurrentChain();
 
   useEffect(() => {
     if (points) {
@@ -53,23 +51,21 @@ export function SellContent({
   }, [points, marketplace]);
 
   const [receiveTokenAmount, setReceiveAmount] = useState("");
-  const [receiveToken, setReceiveToken] = useState<IToken>(
-    stableToken[0] ||
-      ({
-        symbol: "",
-        logoURI: "/icons/empty.svg",
-        decimals: isProduction ? 6 : 9,
-      } as IToken),
-  );
+  const [receiveToken, setReceiveToken] = useState<IToken>({
+    symbol: "",
+    logoURI: "/icons/empty.svg",
+    decimals: isProduction ? 6 : 9,
+  } as IToken);
 
+  const { isNativeToken } = useIsNativeToken(receiveToken);
   const { data: tokenPrice } = useTokenPrice(receiveToken?.address || "");
   const { checkMinPrice } = useCreateOfferMinPrice();
 
   useEffect(() => {
-    if (stableToken) {
-      setReceiveToken(stableToken[0]);
+    if (stableTokens) {
+      setReceiveToken(stableTokens[0]);
     }
-  }, [stableToken]);
+  }, [stableTokens]);
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     useApprove(receiveToken?.address);
@@ -128,14 +124,15 @@ export function SellContent({
 
     writeAction({
       pointAmount: Number(sellPointAmount),
-      tokenAmount: Number(receiveTokenAmount) * 10 ** receiveToken.decimals,
+      tokenAmount: NP.times(
+        receiveTokenAmount,
+        10 ** receiveToken.decimals,
+      ).toFixed(),
       collateralRate: Number(collateralRate || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,
       note: note,
-      isNativeToken: isEth
-        ? receiveToken?.symbol === "SOL"
-        : receiveToken?.symbol === "ETH",
+      isNativeToken,
     });
   }
 

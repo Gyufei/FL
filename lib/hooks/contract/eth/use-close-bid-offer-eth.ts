@@ -3,6 +3,7 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useCloseBidOfferEth({
   marketplaceStr,
@@ -14,6 +15,7 @@ export function useCloseBidOfferEth({
   offerStr: string;
 }) {
   const { ethConfig } = useEthConfig();
+  const { getGasParams } = useGasEth();
 
   const { address } = useChainWallet();
 
@@ -30,8 +32,21 @@ export function useCloseBidOfferEth({
       args: [marketplaceStr, makerStr, offerStr, address],
     };
 
-    return writeContract(callParams);
-  }, [writeContract, ethConfig, marketplaceStr, makerStr, offerStr, address]);
+    const gasParams = await getGasParams(callParams);
+
+    return writeContract({
+      ...callParams,
+      ...gasParams,
+    });
+  }, [
+    writeContract,
+    ethConfig,
+    marketplaceStr,
+    makerStr,
+    offerStr,
+    address,
+    getGasParams,
+  ]);
 
   return {
     data,

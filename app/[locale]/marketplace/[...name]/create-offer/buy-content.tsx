@@ -22,8 +22,8 @@ import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
+import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 
 export function BuyContent({
   marketplace,
@@ -34,19 +34,20 @@ export function BuyContent({
 }) {
   const cot = useTranslations("drawer-CreateOffer");
   const { data: points } = useMarketPoints();
-  const { data: stableToken } = useStableToken();
-
-  const { isEth, isSolana } = useCurrentChain();
+  const { data: stableTokens } = useStableToken();
 
   const [payTokenAmount, setPayTokenAmount] = useState("0");
-  const [payToken, setPayToken] = useState<IToken>(
-    stableToken[0] ||
-      ({
-        symbol: "",
-        logoURI: "/icons/empty.svg",
-        decimals: isProduction ? 6 : 9,
-      } as IToken),
-  );
+  const [payToken, setPayToken] = useState<IToken>({
+    symbol: "",
+    logoURI: "/icons/empty.svg",
+    decimals: isProduction ? 6 : 9,
+  } as IToken);
+
+  useEffect(() => {
+    if (stableTokens) {
+      setPayToken(stableTokens[0]);
+    }
+  }, [stableTokens]);
 
   useEffect(() => {
     if (points) {
@@ -58,6 +59,7 @@ export function BuyContent({
     }
   }, [points, marketplace]);
 
+  const { isNativeToken } = useIsNativeToken(payToken);
   const { data: tokenPrice } = useTokenPrice(payToken?.address || "");
   const { checkMinPrice } = useCreateOfferMinPrice();
 
@@ -84,13 +86,6 @@ export function BuyContent({
     return NP.divide(payAmountValue, receivePointAmount);
   }, [payAmountValue, receivePointAmount]);
 
-  const isNativeToken = useMemo(() => {
-    if (isEth) return payToken?.symbol === "ETH";
-    if (isSolana) return payToken?.symbol === "SOL";
-
-    return false;
-  }, [isEth, isSolana, payToken?.symbol]);
-
   function handleBuyPayChange(v: string) {
     setPayTokenAmount(v);
   }
@@ -116,7 +111,6 @@ export function BuyContent({
   }
 
   function handleDeposit() {
-    console.log("deposit");
     const isPriceValid = checkMinPrice(
       pointPrice,
       Number(marketplace.minimum_price),
@@ -133,7 +127,10 @@ export function BuyContent({
     }
 
     writeAction({
-      tokenAmount: Number(payTokenAmount) * 10 ** payToken.decimals,
+      tokenAmount: NP.times(
+        Number(payTokenAmount),
+        10 ** payToken.decimals,
+      ).toFixed(),
       pointAmount: Number(receivePointAmount),
       collateralRate: Number(collateralRate || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,

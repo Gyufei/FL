@@ -9,7 +9,6 @@ import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
-import { isProduction } from "@/lib/PathMap";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
@@ -199,10 +198,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
                 $
                 {NP.divide(
                   offer?.trade_tax || 0,
-                  Math.pow(
-                    10,
-                    orderTokenInfo?.decimals || (isProduction ? 6 : 9),
-                  ),
+                  Math.pow(10, orderTokenInfo?.decimals || 0),
                 )}
               </div>
             </div>

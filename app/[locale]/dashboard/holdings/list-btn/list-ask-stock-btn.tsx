@@ -17,7 +17,7 @@ import ListInfo from "./list-info";
 import { formatNum } from "@/lib/utils/number";
 import { SettleModeSelect } from "@/app/[locale]/marketplace/[...name]/create-offer/settle-mode-select";
 import { IHolding } from "@/lib/types/holding";
-import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+import { useHoldingFormat } from "@/lib/hooks/stock/use-holding-format";
 import { useList } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
@@ -39,7 +39,7 @@ export default function ListAskStockBtn({
     tokenPrice,
     makerDetail,
     isNativeToken,
-  } = useStockFormat({
+  } = useHoldingFormat({
     stock: order,
   });
 
@@ -47,7 +47,7 @@ export default function ListAskStockBtn({
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [collateralRate, setCollateralRate] = useState(
-    String(Number(order.pre_offer_detail.collateral_rate) / 100),
+    String(Number(order?.pre_offer_detail?.collateral_rate) / 100),
   );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
   const settleMode = makerDetail?.offer_settle_type || "protected";
@@ -76,8 +76,10 @@ export default function ListAskStockBtn({
     }
 
     writeAction({
-      receiveTokenAmount:
-        Number(receiveTokenAmount) * 10 ** (orderTokenInfo?.decimals || 0),
+      receiveTokenAmount: NP.times(
+        Number(receiveTokenAmount),
+        10 ** (orderTokenInfo?.decimals || 0),
+      ).toFixed(),
       collateralRate: Number(collateralRate || 100) * 100,
     });
   }

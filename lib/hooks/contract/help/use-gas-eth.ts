@@ -1,40 +1,44 @@
 import NP from "number-precision";
-import { encodeFunctionData, parseGwei } from "viem";
-import { useConfig, useGasPrice } from "wagmi";
-import { estimateGas } from "@wagmi/core";
+import { useConfig, useGasPrice, usePublicClient } from "wagmi";
+import { useCallback } from "react";
 
 export function useGasEth() {
   const config = useConfig();
   const { data: gasPrice } = useGasPrice();
 
-  async function getGasParams(callParams: Record<string, any>) {
-    try {
-      const encodeCallData = encodeFunctionData(callParams as any);
+  const publicClient = usePublicClient();
 
-      const estGas = await estimateGas(config, {
-        data: encodeCallData,
-      });
+  const getGasParams = useCallback(
+    async (callParams: Record<string, any>) => {
+      try {
+        const estGas = await publicClient!.estimateContractGas(
+          callParams as any,
+        );
 
-      const gasLimit = NP.times(Number(estGas), 130 / 100);
-      const maxFeePerGas = Number(gasPrice);
-      const maxPriorityFeePerGas = Math.ceil(NP.times(maxFeePerGas, 0.05));
+        const gasLimit = NP.times(Number(estGas), 130 / 100).toFixed();
+        const maxPriorityFeePerGas = Math.ceil(
+          NP.times(Number(gasPrice), 0.05),
+        );
 
-      const gasParams: {
-        maxFeePerGas?: bigint;
-        gas?: bigint;
-        maxPriorityFeePerGas?: bigint;
-      } = {
-        maxFeePerGas: parseGwei(String(maxFeePerGas)),
-        gas: parseGwei(String(gasLimit)),
-        maxPriorityFeePerGas: parseGwei(String(maxPriorityFeePerGas)),
-      };
+        const gasParams: {
+          maxFeePerGas?: bigint;
+          gas?: bigint;
+          maxPriorityFeePerGas?: bigint;
+        } = {
+          maxFeePerGas: gasPrice,
+          gas: BigInt(gasLimit),
+          maxPriorityFeePerGas: BigInt(maxPriorityFeePerGas),
+        };
 
-      return gasParams;
-    } catch (e) {
-      console.error("calc gas error: =>", e);
-      return {};
-    }
-  }
+        console.log(gasParams);
+        return gasParams;
+      } catch (e) {
+        console.error("calc gas error: =>", e);
+        return {};
+      }
+    },
+    [config, gasPrice],
+  );
 
   return {
     getGasParams,

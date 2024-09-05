@@ -3,6 +3,7 @@ import { ISettleMode } from "@/lib/types/maker-detail";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useCreateOfferEth({
   marketplaceStr,
@@ -12,12 +13,13 @@ export function useCreateOfferEth({
   offerType: "bid" | "ask";
 }) {
   const { ethConfig } = useEthConfig();
+  const { getGasParams } = useGasEth();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
   const txAction = useCallback(
-    ({
+    async ({
       pointAmount,
       tokenAmount,
       collateralRate,
@@ -34,12 +36,13 @@ export function useCreateOfferEth({
     }) => {
       const abiAddress = ethConfig.contracts.preMarkets;
       const usdcAddress = ethConfig.contracts.usdcToken;
-      const ethAddress = ethConfig.contracts.usdcToken;
+      const ethAddress = ethConfig.contracts.ethToken;
       const collateralTokenAddr = isNativeToken ? ethAddress : usdcAddress;
 
-      return writeContract({
+      const valueParams = isNativeToken ? { value: BigInt(tokenAmount) } : {};
+
+      const callParams = {
         abi: PreMarketABI,
-        address: abiAddress as any,
         functionName: "createOffer",
         args: [
           {
@@ -53,9 +56,18 @@ export function useCreateOfferEth({
             offerSettleType: settleMode === "protected" ? 0 : 1,
           },
         ],
+        address: abiAddress as any,
+        ...valueParams,
+      };
+
+      const gasParams = await getGasParams(callParams);
+
+      return writeContract({
+        ...callParams,
+        ...gasParams,
       });
     },
-    [writeContract, ethConfig, marketplaceStr, offerType],
+    [writeContract, ethConfig, marketplaceStr, offerType, getGasParams],
   );
 
   return {

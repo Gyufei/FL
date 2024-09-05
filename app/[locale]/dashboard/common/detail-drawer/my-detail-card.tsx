@@ -9,7 +9,6 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { isProduction } from "@/lib/PathMap";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
@@ -40,10 +39,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     const ti = offer?.trade_tax || makerDetail?.trade_tax;
 
     const tax = Number(ti || 0);
-    const fmtTax = NP.divide(
-      tax,
-      10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
-    );
+    const fmtTax = NP.divide(tax, 10 ** (orderTokenInfo?.decimals || 0));
 
     return fmtTax;
   }, [makerDetail, offer, orderTokenInfo]);

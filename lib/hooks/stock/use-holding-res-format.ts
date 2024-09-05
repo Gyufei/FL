@@ -3,9 +3,13 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useEndPoint } from "@/lib/hooks/api/use-endpoint";
 import { useOfferResFormat } from "../offer/use-offer-res-format";
 import { getMarketOffer } from "@/lib/helper/market-offer-cache";
+import { EthZeroed } from "@/lib/const/eth";
+import { useCurrentChain } from "../web3/use-current-chain";
 
-export function useStockResFormat() {
+export function useHoldingResFormat() {
   const { apiEndPoint } = useEndPoint();
+  const { isEth } = useCurrentChain();
+
   const { data: marketplaceData, isLoading: isMarketLoading } =
     useMarketplaces();
 
@@ -17,8 +21,12 @@ export function useStockResFormat() {
       (m) => m.market_place_id === holding.market_place_account,
     );
 
-    const isPreOfferZeroed = holding.pre_offer_account === SolanaZeroed;
-    const isOfferZeroed = holding.offer_account === SolanaZeroed;
+    const isPreOfferZeroed = isEth
+      ? holding.pre_offer_account === EthZeroed
+      : holding.pre_offer_account === SolanaZeroed;
+    const isOfferZeroed = isEth
+      ? holding.offer_account === EthZeroed
+      : holding.offer_account === SolanaZeroed;
 
     let offers = null;
     if (!isPreOfferZeroed || !isOfferZeroed) {

@@ -3,15 +3,17 @@ import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { IBalanceType } from "../use-with-draw-collateral-token";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useWithDrawCollateralTokenEth() {
   const { ethConfig } = useEthConfig();
+  const { getGasParams } = useGasEth();
 
   const { data, error, isError, isPending, isSuccess, writeContract } =
     useWriteContract();
 
   const txAction = useCallback(
-    ({
+    async ({
       mode,
       isNativeToken,
     }: {
@@ -26,14 +28,21 @@ export function useWithDrawCollateralTokenEth() {
 
       const modeIndex = [].findIndex((i) => i === mode);
 
-      return writeContract({
+      const callParams = {
         abi: TokenManagerABI,
         address: abiAddress as any,
         functionName: "withdraw",
         args: [tokenAddress as any, modeIndex],
+      };
+
+      const gasParams = await getGasParams(callParams);
+
+      return writeContract({
+        ...callParams,
+        ...gasParams,
       });
     },
-    [writeContract, ethConfig],
+    [writeContract, ethConfig, getGasParams],
   );
 
   return {

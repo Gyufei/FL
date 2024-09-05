@@ -4,7 +4,7 @@ import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import { IHolding } from "@/lib/types/holding";
-import { useStockFormat } from "@/lib/hooks/stock/use-stock-format";
+import { useHoldingFormat } from "@/lib/hooks/stock/use-holding-format";
 import { useTranslations } from "next-intl";
 // import { Slider } from "@/components/ui/slider";
 
@@ -23,7 +23,7 @@ export default function ConfirmAskTakerSettleDialog({
   const orderRole = "Taker";
 
   const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isNativeToken } =
-    useStockFormat({ stock: stock });
+    useHoldingFormat({ stock: stock });
 
   // const [sliderMax] = useState(100);
   // const [sliderValue, setSliderValue] = useState(100);

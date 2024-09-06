@@ -3,7 +3,7 @@ import { IHolding } from "@/lib/types/holding";
 import { useOfferFormat } from "../offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
 
-export function useHoldingFormat({ stock }: { stock: IHolding }) {
+export function useHoldingFormat({ holding }: { holding: IHolding }) {
   const {
     afterTGE,
     afterTGEPeriod,
@@ -19,30 +19,30 @@ export function useHoldingFormat({ stock }: { stock: IHolding }) {
     makerDetail,
     isNativeToken,
   } = useOfferFormat({
-    offer: stock as unknown as IOffer,
+    offer: holding as unknown as IOffer,
   });
 
-  const stockType = stock.stock_type;
+  const stockType = holding.stock_type;
 
   const tokenLogo = orderTokenInfo?.logoURI || "/icons/empty.svg";
   const pointLogo = orderPointInfo?.logoURI || "/icons/empty.svg";
 
-  const offerValue = stockType === "ask" ? stock.points : amount;
-  const forValue = stockType === "ask" ? amount : stock.points;
+  const offerValue = stockType === "ask" ? holding.points : amount;
+  const forValue = stockType === "ask" ? amount : holding.points;
   const offerLogo = stockType === "ask" ? pointLogo : tokenLogo;
   const forLogo = stockType === "ask" ? tokenLogo : pointLogo;
 
   const isCanSettle = useMemo(() => {
     return (
       afterTGE &&
-      !["finished"].includes(stock.stock_status) &&
+      !["finished"].includes(holding.stock_status) &&
       stockType === "ask"
     );
-  }, [stock.stock_status, afterTGE, stockType]);
+  }, [holding.stock_status, afterTGE, stockType]);
 
   const isSettled = useMemo(() => {
-    return ["settled", "finished"].includes(stock.stock_status);
-  }, [stock.stock_status]);
+    return ["settled", "finished"].includes(holding.stock_status);
+  }, [holding.stock_status]);
 
   return {
     afterTGE,

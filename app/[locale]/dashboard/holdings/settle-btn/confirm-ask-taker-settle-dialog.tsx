@@ -4,32 +4,37 @@ import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import { IHolding } from "@/lib/types/holding";
-import { useHoldingFormat } from "@/lib/hooks/stock/use-holding-format";
+import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
 import { useTranslations } from "next-intl";
 // import { Slider } from "@/components/ui/slider";
 
 export default function ConfirmAskTakerSettleDialog({
   open,
   onOpenChange,
-  stock,
+  holding,
   onSuccess,
 }: {
   open: boolean;
   onOpenChange: (_open: boolean) => void;
-  stock: IHolding;
+  holding: IHolding;
   onSuccess: () => void;
 }) {
   const T = useTranslations("dialog-Settle");
   const orderRole = "Taker";
 
-  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isNativeToken } =
-    useHoldingFormat({ stock: stock });
+  const {
+    amount,
+    tokenTotalPrice,
+    orderPointInfo,
+    afterTGEPeriod,
+    isNativeToken,
+  } = useHoldingFormat({ holding });
 
   // const [sliderMax] = useState(100);
   // const [sliderValue, setSliderValue] = useState(100);
   const [sliderValue] = useState(100);
 
-  const pointAmount = !afterTGEPeriod ? stock.points : 0;
+  const pointAmount = !afterTGEPeriod ? holding.points : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   function handleSuccess() {
@@ -50,7 +55,7 @@ export default function ConfirmAskTakerSettleDialog({
               {T("lb-AskOfferNo")}
             </div>
             <div className="text-sm leading-5 text-black">
-              #{(stock as any).stock_id || (stock as any).offer_id}
+              #{(holding as any).stock_id || (holding as any).offer_id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">
@@ -110,11 +115,11 @@ export default function ConfirmAskTakerSettleDialog({
 
           <ConfirmAskTakerSettleBtn
             isNativeToken={isNativeToken}
-            marketplaceStr={stock.marketplace.market_place_id}
-            holdingStr={stock.stock_account}
-            makerStr={stock.maker_account}
-            preOfferStr={stock.pre_offer_account}
-            preOfferAuthorityStr={stock.pre_offer_detail?.authority}
+            marketplaceStr={holding.marketplace.market_place_id}
+            holdingStr={holding.stock_account}
+            makerStr={holding.maker_account}
+            preOfferStr={holding.pre_offer_account}
+            preOfferAuthorityStr={holding.pre_offer_detail?.authority}
             settleAmount={settleAmount}
             onSuccess={handleSuccess}
           />

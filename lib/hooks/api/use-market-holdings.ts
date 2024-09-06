@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
-import { useHoldingResFormat } from "../stock/use-holding-res-format";
+import { useHoldingResFormat } from "../holding/use-holding-res-format";
 import { IHolding } from "@/lib/types/holding";
 
 export function useMarketHoldings({
@@ -18,7 +18,7 @@ export function useMarketHoldings({
       if (!marketAccount || isLoading) return [];
 
       const orderRes = await fetcher(
-        `${apiEndPoint}${Paths.stock}?market_place_account=${marketAccount}`,
+        `${apiEndPoint}${Paths.holding}?market_place_account=${marketAccount}`,
       );
 
     const filedRes = orderRes.map((o: Record<string, any>) => {

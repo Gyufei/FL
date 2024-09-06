@@ -8,6 +8,7 @@ interface BaseHookResult {
   error: Error | null;
   data: any;
   write: (...args: any) => any;
+  [key: string]: any;
 }
 
 export function useChainTx(

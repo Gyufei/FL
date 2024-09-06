@@ -17,12 +17,12 @@ import ListInfo from "./list-info";
 import { formatNum } from "@/lib/utils/number";
 import { SettleModeSelect } from "@/app/[locale]/marketplace/[...name]/create-offer/settle-mode-select";
 import { IHolding } from "@/lib/types/holding";
-import { useHoldingFormat } from "@/lib/hooks/stock/use-holding-format";
+import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
 import { useList } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 
-export default function ListAskStockBtn({
+export default function ListAskHoldingBtn({
   order: order,
   onSuccess,
 }: {
@@ -40,7 +40,7 @@ export default function ListAskStockBtn({
     makerDetail,
     isNativeToken,
   } = useHoldingFormat({
-    stock: order,
+    holding: order,
   });
 
   const [sellPointAmount] = useState(order.points);

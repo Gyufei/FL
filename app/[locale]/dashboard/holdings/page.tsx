@@ -52,7 +52,7 @@ export default function MyHoldings() {
           {(sortOrders || []).map((order) => (
             <HoldingCard
               key={order.stock_id}
-              stock={order}
+              holding={order}
               onSuccess={refreshOrders}
             />
           ))}

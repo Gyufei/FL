@@ -32,7 +32,7 @@ export default function SettleDrawerBtn({
       </WithWalletConnectBtn>
 
       <ConfirmAskTakerSettleDialog
-        stock={order}
+        holding={order}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
         onSuccess={onSuccess}

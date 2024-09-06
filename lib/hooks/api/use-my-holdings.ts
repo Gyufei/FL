@@ -2,7 +2,7 @@ import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
-import { useHoldingResFormat } from "../stock/use-holding-res-format";
+import { useHoldingResFormat } from "../holding/use-holding-res-format";
 import { IHolding } from "@/lib/types/holding";
 import { SolanaZeroed } from "@/lib/const/solana";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";

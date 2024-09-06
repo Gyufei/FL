@@ -1,21 +1,21 @@
 import { formatNum } from "@/lib/utils/number";
 import Image from "next/image";
-import ListAskStockBtn from "./list-btn/list-ask-stock-btn";
+import ListAskHoldingBtn from "./list-btn/list-ask-holding-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IHolding } from "@/lib/types/holding";
-import { useHoldingFormat } from "@/lib/hooks/stock/use-holding-format";
+import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
 import useOfferHoldings from "@/lib/hooks/offer/use-offer-holdings";
 import DelistBtn from "./delist-btn/delist-btn";
 import { useTranslations } from "next-intl";
 
 export default function HoldingCard({
-  stock,
+  holding,
   onSuccess,
 }: {
-  stock: IHolding;
+  holding: IHolding;
   onSuccess: () => void;
 }) {
   const ct = useTranslations("page-MyStocks");
@@ -30,26 +30,27 @@ export default function HoldingCard({
     forLogo,
     isCanSettle,
   } = useHoldingFormat({
-    stock,
+    holding,
   });
 
   const { setAnchorValue } = useAnchor();
 
-  const isAskStock = stock.stock_type === "ask";
+  const isAskStock = holding.stock_type === "ask";
 
   const { data: subOrders } = useOfferHoldings({
-    offer: stock.pre_offer_detail,
+    offer: holding.pre_offer_detail,
   });
 
   const { currentChainInfo } = useCurrentChain();
 
-  const isCanList = !afterTGE && !afterTGEPeriod && !isAskStock && !stock.offer;
+  const isCanList =
+    !afterTGE && !afterTGEPeriod && !isAskStock && !holding.offer;
 
-  const isListed = !afterTGE && !isAskStock && stock.offer;
+  const isListed = !afterTGE && !isAskStock && holding.offer;
 
   function handleOpenDetail() {
     setAnchorValue(
-      stock.offer_detail?.offer_id || stock.pre_offer_detail?.offer_id,
+      holding.offer_detail?.offer_id || holding.pre_offer_detail?.offer_id,
     );
   }
 
@@ -61,7 +62,7 @@ export default function HoldingCard({
           onClick={handleOpenDetail}
         >
           <TokenPairImg
-            src1={stock.marketplace?.projectLogo}
+            src1={holding.marketplace?.projectLogo}
             src2={currentChainInfo.logo}
             width1={48}
             height1={48}
@@ -71,16 +72,16 @@ export default function HoldingCard({
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {stock.marketplace?.market_name}
+              {holding.marketplace?.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{stock.stock_id}
+              #{holding.stock_id}
             </div>
           </div>
         </div>
 
         <div
-          data-type={stock.stock_type}
+          data-type={holding.stock_type}
           className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
         >
           {!isAskStock ? ct("tag-Bid") : ct("tag-Ask")}
@@ -103,7 +104,7 @@ export default function HoldingCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} / {stock.marketplace.point_name}
+            ${formatNum(pointPerPrice, 6)} / {holding.marketplace.point_name}
           </div>
         </div>
         <Image
@@ -134,9 +135,13 @@ export default function HoldingCard({
 
       <div className="flex items-center justify-between pt-4">
         <ManToMans num={subOrders?.length || 0} isAsk={isAskStock} />
-        {isCanList && <ListAskStockBtn order={stock} onSuccess={onSuccess} />}
+        {isCanList && (
+          <ListAskHoldingBtn order={holding} onSuccess={onSuccess} />
+        )}
         {isListed && <DelistBtn />}
-        {isCanSettle && <SettleDrawerBtn order={stock} onSuccess={onSuccess} />}
+        {isCanSettle && (
+          <SettleDrawerBtn order={holding} onSuccess={onSuccess} />
+        )}
       </div>
     </div>
   );

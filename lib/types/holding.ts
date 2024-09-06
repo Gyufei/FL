@@ -11,15 +11,13 @@ export interface IHolding {
   points: string;
   stock_account: string;
   stock_id: string;
-  stock_type: IOfferType,
-  stock_status: "unknown" |
-            "initialized" |
-            "finished"
+  stock_type: IOfferType;
+  stock_status: "unknown" | "initialized" | "finished";
   tx_hash: string;
 
   offer: string;
-  pre_offer_display: string;
   offer_detail: IOffer;
+  pre_offer_display: string;
   pre_offer_detail: IOffer;
 
   offer_account: string;

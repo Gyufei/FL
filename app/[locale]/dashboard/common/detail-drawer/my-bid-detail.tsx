@@ -1,19 +1,24 @@
+import { useEffect } from "react";
+import { useTranslations } from "next-intl";
+
+import { IOffer } from "@/lib/types/offer";
 import { formatNum } from "@/lib/utils/number";
+
 import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
-import { SwapItemPanel } from "./swap-item-panel";
 import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
 import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-tip";
-import MyDetailCard from "./my-detail-card";
-import { IOffer } from "@/lib/types/offer";
+
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
-import { useEffect, useMemo } from "react";
-import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
-import { useTranslations } from "next-intl";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+
+import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
+import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
+
+import MyDetailCard from "./my-detail-card";
+import { SwapItemPanel } from "./swap-item-panel";
 
 export default function MyBidDetail({
   order,
@@ -32,6 +37,8 @@ export default function MyBidDetail({
     orderTokenInfo,
     orderPointInfo,
     isSettled,
+    isCanceled,
+    isClosed,
     afterTGE,
     afterTGEPeriod,
     isFilled,
@@ -91,12 +98,6 @@ export default function MyBidDetail({
     if (isRelisting) return;
     relistAction?.(undefined);
   }
-
-  const isCanceled = order.offer_status === "canceled";
-
-  const isClosed = useMemo(() => {
-    return ["filled", "canceled", "settled"].includes(order.offer_status);
-  }, [order]);
 
   useEffect(() => {
     if (isBidCloseSuccess || isCloseSuccess || isRelistSuccess) {

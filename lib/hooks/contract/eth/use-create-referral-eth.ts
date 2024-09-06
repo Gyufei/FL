@@ -4,13 +4,13 @@ import { useCallback } from "react";
 import { generateRandomCode } from "@/lib/utils/common";
 import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
 import { useGasEth } from "../help/use-gas-eth";
+import useTxStatus from "../help/use-tx-status";
 
 export function useCreateReferralEth() {
   const { ethConfig } = useEthConfig();
   const { getGasParams } = useGasEth();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(
     async ({
@@ -32,20 +32,15 @@ export function useCreateReferralEth() {
 
       const gasParams = await getGasParams(callParams);
 
-      return writeContract({
+      return writeContractAsync({
         ...callParams,
         ...gasParams,
       });
     },
-    [writeContract, ethConfig, getGasParams],
+    [writeContractAsync, ethConfig, getGasParams],
   );
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

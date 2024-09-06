@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 import { useGasEth } from "../help/use-gas-eth";
+import useTxStatus from "../help/use-tx-status";
 
 export function useCloseBidOfferEth({
   marketplaceStr,
@@ -19,8 +20,7 @@ export function useCloseBidOfferEth({
 
   const { address } = useChainWallet();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(async () => {
     const abiAddress = ethConfig.contracts.deliveryPlace;
@@ -34,12 +34,12 @@ export function useCloseBidOfferEth({
 
     const gasParams = await getGasParams(callParams);
 
-    return writeContract({
+    return writeContractAsync({
       ...callParams,
       ...gasParams,
     });
   }, [
-    writeContract,
+    writeContractAsync,
     ethConfig,
     marketplaceStr,
     makerStr,
@@ -48,12 +48,7 @@ export function useCloseBidOfferEth({
     getGasParams,
   ]);
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

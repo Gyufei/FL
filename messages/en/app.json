@@ -140,6 +140,7 @@
     "btn-RelistThisOffer": "Relist this offer",
     "btn-OfferClosed": "Offer Closed",
     "btn-CloseThisOffer": "Close this offer",
+    "btn-AbortThisOffer": "Abort this offer",
     "btn-CloseBidOffer": "Close Bid Offer",
     "btn-AwaitingSettlement": "Awaiting Settlement...",
 

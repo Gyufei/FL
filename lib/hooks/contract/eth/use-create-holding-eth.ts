@@ -3,13 +3,13 @@ import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { useGasEth } from "../help/use-gas-eth";
+import useTxStatus from "../help/use-tx-status";
 
 export function useCreateHoldingEth({ offerStr }: { offerStr: string }) {
   const { ethConfig } = useEthConfig();
   const { getGasParams } = useGasEth();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(
     async ({ pointAmount }: { pointAmount: number }) => {
@@ -24,20 +24,15 @@ export function useCreateHoldingEth({ offerStr }: { offerStr: string }) {
 
       const gasParams = await getGasParams(callParams);
 
-      return writeContract({
+      return writeContractAsync({
         ...callParams,
         ...gasParams,
       });
     },
-    [writeContract, ethConfig, offerStr, getGasParams],
+    [writeContractAsync, ethConfig, offerStr, getGasParams],
   );
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

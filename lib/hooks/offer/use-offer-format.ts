@@ -45,17 +45,16 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const tokenLogo = orderTokenInfo?.logoURI || "/icons/empty.svg";
   const pointLogo = orderPointInfo?.logoURI || "/icons/empty.svg";
 
-  const orderType = offer.offer_type;
-
   const amount = NP.divide(
     offer.amount,
     10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
   );
 
-  const offerValue = orderType === "ask" ? offer.points : amount;
-  const forValue = orderType === "ask" ? amount : offer.points;
-  const offerLogo = orderType === "ask" ? pointLogo : tokenLogo;
-  const forLogo = orderType === "ask" ? tokenLogo : pointLogo;
+  const offerType = offer.offer_type;
+  const offerValue = offerType === "ask" ? offer.points : amount;
+  const forValue = offerType === "ask" ? amount : offer.points;
+  const offerLogo = offerType === "ask" ? pointLogo : tokenLogo;
+  const forLogo = offerType === "ask" ? tokenLogo : pointLogo;
 
   const tokenTotalPrice = NP.times(amount, tokenPrice);
   const pointPerPrice = NP.divide(tokenTotalPrice, offer.points);
@@ -103,8 +102,8 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     if (!afterTGE) return false;
     if (isLoadingMakerDetail) return false;
 
-    const offerType = makerDetail?.offer_settle_type;
-    const isTurbo = offerType === "turbo";
+    const offerSettleType = makerDetail?.offer_settle_type;
+    const isTurbo = offerSettleType === "turbo";
 
     if (isTurbo && offer.pre_offer_display) {
       return false;
@@ -127,27 +126,60 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     return ["settled", "finished"].includes(offer.offer_status);
   }, [offer.offer_status]);
 
+  const isCanceled = offer.offer_status === "canceled";
+
+  const isClosed = useMemo(() => {
+    return ["filled", "canceled", "settled"].includes(offer.offer_status);
+  }, [offer.offer_status]);
+
+  const isCanAbort = useMemo(() => {
+    if (!makerDetail) return false;
+    if (offer.offer_type === "bid") return false;
+
+    if (["unknown", "settled"].includes(offer.offer_status)) return false;
+
+    const offerSettleType = makerDetail?.offer_settle_type;
+    const isProtected = offerSettleType === "protected";
+    const isTurbo = offerSettleType === "turbo";
+
+    if (isProtected) {
+      return ["initialize_v2"].includes(offer.abort_offer_status);
+    }
+
+    if (isTurbo) {
+      return !!offer.pre_offer_display;
+    }
+
+    return false;
+  }, [offer, makerDetail]);
+
   return {
+    orderDuration,
     afterTGE,
     afterTGEPeriod,
     duringTGE,
-    isFilled,
+
     amount,
-    tokenPrice,
     progress,
     offerValue,
     forValue,
     offerLogo,
     forLogo,
-    orderDuration,
+    makerDetail,
+
+    tokenPrice,
+    isNativeToken,
     tokenTotalPrice,
     pointPerPrice,
     orderPointInfo,
     orderTokenInfo,
     orderEqTokenInfo,
+
     isCanSettle,
     isSettled,
-    makerDetail,
-    isNativeToken,
+    isFilled,
+    isCanceled,
+    isClosed,
+    isCanAbort,
   };
 }

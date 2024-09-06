@@ -1,14 +1,14 @@
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import useTxStatus from "../help/use-tx-status";
 // import { useGasEth } from "../help/use-gas-eth";
 
 export function useRollinEth() {
   const { ethConfig } = useEthConfig();
   // const { getGasParams } = useGasEth();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const getRollingData = async () => {
     // const abiAddress = ethConfig.contracts.preMarkets;
@@ -31,19 +31,16 @@ export function useRollinEth() {
     // };
     //
     // const gasParams = await getGasParams(callParams);
-    // return writeContract({
+    // return writeContractAsync({
     //   ...callParams,
     //   ...gasParams,
     // });
-  }, [writeContract, ethConfig]);
+  }, [writeContractAsync, ethConfig]);
+
+  const wrapRes = useTxStatus(txAction);
 
   return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
+    ...wrapRes,
     getRollingData,
   };
 }

@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { useGasEth } from "../help/use-gas-eth";
+import useTxStatus from "../help/use-tx-status";
 
 export function useWithDrawProjectTokenEth() {
   const { ethConfig } = useEthConfig();
@@ -11,8 +12,7 @@ export function useWithDrawProjectTokenEth() {
 
   const { address: userAddress } = useChainWallet();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(async () => {
     const abiAddress = ethConfig.contracts.tokenManager;
@@ -27,18 +27,13 @@ export function useWithDrawProjectTokenEth() {
 
     const gasParams = await getGasParams(callParams);
 
-    return writeContract({
+    return writeContractAsync({
       ...callParams,
       ...gasParams,
     });
-  }, [writeContract, ethConfig, userAddress, getGasParams]);
+  }, [writeContractAsync, ethConfig, userAddress, getGasParams]);
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

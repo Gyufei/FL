@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { formatNum } from "@/lib/utils/number";
@@ -15,6 +15,7 @@ import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 
 export default function MyAskDetail({
   order: order,
@@ -37,6 +38,9 @@ export default function MyAskDetail({
     afterTGEPeriod,
     isFilled,
     isNativeToken,
+    isCanceled,
+    isClosed,
+    isCanAbort,
   } = useOfferFormat({
     offer: order,
   });
@@ -45,17 +49,23 @@ export default function MyAskDetail({
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
-  const isCanceled = order.offer_status === "canceled";
-
-  const isClosed = useMemo(() => {
-    return ["filled", "canceled", "settled"].includes(order.offer_status);
-  }, [order]);
-
   const {
     isLoading: isClosing,
     write: closeAction,
     isSuccess: isCloseSuccess,
   } = useCloseOffer({
+    marketplaceStr: order.market_place_account,
+    makerStr: order.maker_account,
+    offerStr: order.offer_account,
+    holdingStr: order.stock_account,
+    isNativeToken,
+  });
+
+  const {
+    isLoading: isAborting,
+    write: abortAction,
+    isSuccess: isAbortSuccess,
+  } = useAbortAskOffer({
     marketplaceStr: order.market_place_account,
     makerStr: order.maker_account,
     offerStr: order.offer_account,
@@ -80,6 +90,11 @@ export default function MyAskDetail({
     closeAction?.(undefined);
   }
 
+  function handleAbort() {
+    if (isAborting) return;
+    abortAction?.(undefined);
+  }
+
   function handleRelist() {
     if (isRelisting) return;
     relistAction?.(undefined);
@@ -90,10 +105,10 @@ export default function MyAskDetail({
   }
 
   useEffect(() => {
-    if (isCloseSuccess || isRelistSuccess) {
+    if (isCloseSuccess || isRelistSuccess || isAbortSuccess) {
       onSuccess();
     }
-  }, [isCloseSuccess, isRelistSuccess, onSuccess]);
+  }, [isCloseSuccess, isRelistSuccess, isAbortSuccess, onSuccess]);
 
   return (
     <>
@@ -142,72 +157,95 @@ export default function MyAskDetail({
             tokenLogo={orderTokenInfo?.logoURI || "/icons/empty.png"}
           />
 
-          {isCanSettle ? (
-            <WithWalletConnectBtn onClick={handleSettle} shouldSignIn={true}>
-              <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                {ot("btn-SettleThisOffer")}
-              </button>
-            </WithWalletConnectBtn>
-          ) : (
-            <>
-              {isSettled || afterTGEPeriod ? (
-                <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                  {ot("btn-SettlementCompleted")}
+          <div className="flex items-center justify-between gap-2">
+            {isCanSettle ? (
+              <WithWalletConnectBtn
+                className="flex-1"
+                onClick={handleSettle}
+                shouldSignIn={true}
+              >
+                <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                  {ot("btn-SettleThisOffer")}
                 </button>
-              ) : (
-                <>
-                  {isCanceled ? (
-                    !afterTGE ? (
-                      <WithWalletConnectBtn
-                        onClick={handleRelist}
-                        shouldSignIn={true}
-                      >
-                        <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
-                          {ot("btn-RelistThisOffer")}
+              </WithWalletConnectBtn>
+            ) : (
+              <>
+                {isSettled || afterTGEPeriod ? (
+                  <button className="pointer-events-none mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                    {ot("btn-SettlementCompleted")}
+                  </button>
+                ) : (
+                  <>
+                    {isCanceled ? (
+                      afterTGE ? (
+                        <button
+                          disabled={true}
+                          className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                        >
+                          {ot("btn-OfferClosed")}
                         </button>
-                      </WithWalletConnectBtn>
-                    ) : (
-                      <button
-                        disabled={true}
-                        className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
-                      >
-                        {ot("btn-OfferClosed")}
-                      </button>
-                    )
-                  ) : (
-                    <>
-                      {!isClosed && !afterTGE ? (
-                        <>
-                          <WithWalletConnectBtn
-                            onClick={handleClose}
-                            shouldSignIn={true}
-                          >
-                            <button
-                              disabled={isClosing}
-                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
-                            >
-                              {ot("btn-CloseThisOffer")}
-                            </button>
-                          </WithWalletConnectBtn>
-                          <>
-                            {isFilled && (
-                              <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                {ot("txt-YouHaveTheOptionToClose")}
-                              </div>
-                            )}
-                          </>
-                        </>
                       ) : (
-                        <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                          {ot("btn-AwaitingSettlement")}
-                        </button>
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
+                        <WithWalletConnectBtn
+                          onClick={handleRelist}
+                          shouldSignIn={true}
+                        >
+                          <button className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                            {ot("btn-RelistThisOffer")}
+                          </button>
+                        </WithWalletConnectBtn>
+                      )
+                    ) : (
+                      <>
+                        {isClosed || afterTGE ? (
+                          <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                            {ot("btn-AwaitingSettlement")}
+                          </button>
+                        ) : (
+                          <>
+                            <WithWalletConnectBtn
+                              className="flex-1"
+                              onClick={handleClose}
+                              shouldSignIn={true}
+                            >
+                              <button
+                                disabled={isClosing}
+                                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
+                              >
+                                {ot("btn-CloseThisOffer")}
+                              </button>
+                            </WithWalletConnectBtn>
+
+                            <>
+                              {isFilled && (
+                                <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
+                                  {ot("txt-YouHaveTheOptionToClose")}
+                                </div>
+                              )}
+                            </>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
+            {isCanAbort && (
+              <WithWalletConnectBtn
+                className="flex-1"
+                onClick={handleAbort}
+                shouldSignIn={true}
+              >
+                <button
+                  disabled={isAborting}
+                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+                >
+                  {ot("btn-AbortThisOffer")}
+                </button>
+              </WithWalletConnectBtn>
+            )}
+          </div>
         </div>
 
         {/* right card */}

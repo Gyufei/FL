@@ -3,6 +3,7 @@ import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
 import { useGasEth } from "../help/use-gas-eth";
+import useTxStatus from "../help/use-tx-status";
 
 export function useAbortAskOfferEth({
   holdingStr,
@@ -14,8 +15,7 @@ export function useAbortAskOfferEth({
   const { ethConfig } = useEthConfig();
   const { getGasParams } = useGasEth();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(async () => {
     const abiAddress = ethConfig.contracts.preMarkets;
@@ -29,18 +29,13 @@ export function useAbortAskOfferEth({
 
     const gasParams = await getGasParams(callParams);
 
-    return writeContract({
+    return writeContractAsync({
       ...callParams,
       ...gasParams,
     });
-  }, [writeContract, ethConfig, holdingStr, offerStr, getGasParams]);
+  }, [writeContractAsync, ethConfig, holdingStr, offerStr, getGasParams]);
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

@@ -4,13 +4,13 @@ import { useCallback } from "react";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { IBalanceType } from "../use-with-draw-collateral-token";
 import { useGasEth } from "../help/use-gas-eth";
+import useTxStatus from "../help/use-tx-status";
 
 export function useWithDrawCollateralTokenEth() {
   const { ethConfig } = useEthConfig();
   const { getGasParams } = useGasEth();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(
     async ({
@@ -37,20 +37,15 @@ export function useWithDrawCollateralTokenEth() {
 
       const gasParams = await getGasParams(callParams);
 
-      return writeContract({
+      return writeContractAsync({
         ...callParams,
         ...gasParams,
       });
     },
-    [writeContract, ethConfig, getGasParams],
+    [writeContractAsync, ethConfig, getGasParams],
   );
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

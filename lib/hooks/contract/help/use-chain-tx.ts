@@ -1,14 +1,20 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useCurrentChain } from "../../web3/use-current-chain";
-import { useSetAtom } from "jotai";
-import { GlobalMessageAtom } from "@/lib/states/global-message";
+
+interface BaseHookResult {
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  error: Error | null;
+  data: any;
+  write: (...args: any) => any;
+}
 
 export function useChainTx(
-  hookEth: any,
-  hookSolana: any,
+  hookEth: (args: Record<string, any> | undefined) => BaseHookResult,
+  hookSolana: (args: Record<string, any> | undefined) => BaseHookResult,
   args: Record<string, any> | undefined,
-) {
-  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
+): BaseHookResult {
   const { isEth, isSolana } = useCurrentChain();
 
   const actionResEth = hookEth(args);
@@ -22,24 +28,16 @@ export function useChainTx(
     if (isSolana) {
       return actionResSol;
     }
+
+    return {
+      isLoading: false,
+      isSuccess: false,
+      isError: false,
+      error: null,
+      data: null,
+      write: () => {},
+    };
   }, [actionResEth, actionResSol, isEth, isSolana]);
-
-  useEffect(() => {
-    if (isEth && actionResEth.isSuccess) {
-      setGlobalMessage({
-        type: "success",
-        message: "Successfully",
-      });
-    }
-
-    if (isEth && actionResEth.isError) {
-      // setGlobalMessage({
-      //   type: "error",
-      //   message: e?.message || errorTip || "Fail: Some error occur",
-      // });
-      console.error("error", actionResEth.error);
-    }
-  }, [isEth, actionResEth, setGlobalMessage]);
 
   return chainActionRes;
 }

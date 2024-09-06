@@ -1,12 +1,12 @@
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useCallback } from "react";
+import useTxStatus from "../help/use-tx-status";
 
 export function useFaucetEth() {
   const { ethConfig } = useEthConfig();
 
-  const { data, error, isError, isPending, isSuccess, writeContract } =
-    useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(() => {
     // const abiAddress = ethConfig.contracts.preMarkets;
@@ -16,14 +16,12 @@ export function useFaucetEth() {
     //   functionName: "createOffer",
     //   args: [],
     // });
-  }, [writeContract, ethConfig]);
+    return new Promise((resolve) => {
+      resolve(true);
+    });
+  }, [writeContractAsync, ethConfig]);
 
-  return {
-    data,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    write: txAction,
-  };
+  const wrapRes = useTxStatus(txAction);
+
+  return wrapRes;
 }

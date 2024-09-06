@@ -12,7 +12,7 @@ export interface IOffer {
 
   offer_id: string;
   offer_account: string;
-  offer_status: 
+  offer_status:
     | "unknown"
     | "virgin"
     | "ongoing"
@@ -30,9 +30,14 @@ export interface IOffer {
   pre_offer_account: string;
   stock_account: string;
   trade_tax: string;
+  abort_offer_status:
+    | "initialize_v1"
+    | "initialize_v2"
+    | "allocation_propagated"
+    | "aborted";
 
   marketplace: IMarketplace;
   pre_offer_display: string;
-  pre_offer_detail: IOffer,
-  origin_offer_detail: IOffer
+  pre_offer_detail: IOffer;
+  origin_offer_detail: IOffer;
 }

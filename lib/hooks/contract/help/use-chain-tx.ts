@@ -11,10 +11,10 @@ interface BaseHookResult {
   [key: string]: any;
 }
 
-export function useChainTx(
-  hookEth: (args: Record<string, any> | undefined) => BaseHookResult,
-  hookSolana: (args: Record<string, any> | undefined) => BaseHookResult,
-  args: Record<string, any> | undefined,
+export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
+  hookEth: (args: T) => K,
+  hookSolana: (args: T) => K,
+  args: T,
 ): BaseHookResult {
   const { isEth, isSolana } = useCurrentChain();
 

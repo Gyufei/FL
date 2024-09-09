@@ -13,13 +13,9 @@ export function useCreateReferralEth() {
   const { writeContractAsync } = useWriteContract();
 
   const txAction = useCallback(
-    async ({
-      firstAmount,
-      secondAmount,
-    }: {
-      firstAmount?: number;
-      secondAmount?: number;
-    }) => {
+    async (args?: { firstAmount?: number; secondAmount?: number }) => {
+      const { firstAmount = 300000, secondAmount = 0 } = args || {};
+
       const abiAddress = ethConfig.contracts.systemConfig;
       const RandomCode = generateRandomCode(8);
 

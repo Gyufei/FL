@@ -9,7 +9,7 @@ import { generateRandomCode } from "@/lib/utils/common";
 
 export function useCreateReferralSol() {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol();
+  const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
@@ -20,7 +20,7 @@ export function useCreateReferralSol() {
   }) => {
     const RandomCode = generateRandomCode(8);
     const { firstAmount = 300000, secondAmount = 0 } = args || {};
-    const { authority, systemProgram } = await getAccounts(program.programId);
+    const { authority, systemProgram } = await getAccounts();
 
     const referralCodeData = PublicKey.findProgramAddressSync(
       [

@@ -16,7 +16,9 @@ export function useWithdrawCollateralTokenSol() {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
+  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
+    program.programId,
+  );
 
   const writeAction = async ({
     mode,
@@ -38,7 +40,7 @@ export function useWithdrawCollateralTokenSol() {
       poolUsdcTokenAccount,
       wsolTokenMint,
       userSolTokenAccount,
-    } = await getAccounts(program.programId);
+    } = await getAccounts();
 
     const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
       [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
@@ -46,12 +48,7 @@ export function useWithdrawCollateralTokenSol() {
     )[0];
 
     const { walletCollateralTokenBalance: userCollateralTokenBalance } =
-      await getWalletBalanceAccount(
-        program.programId,
-        authority!,
-        authority!,
-        isNativeToken,
-      );
+      await getWalletBalanceAccount(authority!, authority!, isNativeToken);
 
     const methodTransaction = await program.methods
       .withdrawBaseToken({

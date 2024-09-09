@@ -14,24 +14,26 @@ export function useWithDrawProjectTokenEth() {
 
   const { writeContractAsync } = useWriteContract();
 
-  const txAction = useCallback(async () => {
-    const abiAddress = ethConfig.contracts.tokenManager;
-    const usdcAddress = ethConfig.contracts.usdcToken;
+  const txAction = useCallback(
+    async ({ tokenAddress }: { tokenAddress: string }) => {
+      const abiAddress = ethConfig.contracts.tokenManager;
 
-    const callParams = {
-      abi: TokenManagerABI,
-      address: abiAddress as any,
-      functionName: "withdrawPlatformFee",
-      args: [usdcAddress as any, userAddress],
-    };
+      const callParams = {
+        abi: TokenManagerABI,
+        address: abiAddress as any,
+        functionName: "withdrawPlatformFee",
+        args: [tokenAddress as any, userAddress],
+      };
 
-    const gasParams = await getGasParams(callParams);
+      const gasParams = await getGasParams(callParams);
 
-    return writeContractAsync({
-      ...callParams,
-      ...gasParams,
-    });
-  }, [writeContractAsync, ethConfig, userAddress, getGasParams]);
+      return writeContractAsync({
+        ...callParams,
+        ...gasParams,
+      });
+    },
+    [writeContractAsync, ethConfig, userAddress, getGasParams],
+  );
 
   const wrapRes = useTxStatus(txAction);
 

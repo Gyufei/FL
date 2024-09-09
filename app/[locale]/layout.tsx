@@ -1,5 +1,7 @@
 import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
@@ -9,9 +11,6 @@ import GlobalProvider from "@/components/provider/global-provider";
 import SolanaWalletProviders from "@/components/provider/solana-wallets";
 import Web3ModalProvider from "@/components/provider/web3-modal";
 import "react-modern-drawer/dist/index.css";
-
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 
 export const metadata = {
   title: {

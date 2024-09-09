@@ -6,10 +6,10 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 
 export default function SettleDrawerBtn({
-  order,
+  holding,
   onSuccess,
 }: {
-  order: IHolding;
+  holding: IHolding;
   onSuccess: () => void;
 }) {
   const mst = useTranslations("page-MyStocks");
@@ -32,7 +32,7 @@ export default function SettleDrawerBtn({
       </WithWalletConnectBtn>
 
       <ConfirmAskTakerSettleDialog
-        holding={order}
+        holding={holding}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
         onSuccess={onSuccess}

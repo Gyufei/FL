@@ -128,6 +128,7 @@ export function SellContent({
         receiveTokenAmount,
         10 ** receiveToken.decimals,
       ).toFixed(),
+      collateralTokenAddr: receiveToken.address,
       collateralRate: Number(collateralRate || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,

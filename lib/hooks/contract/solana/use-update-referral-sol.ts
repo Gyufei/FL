@@ -13,15 +13,13 @@ export function useUpdateReferralSol({
   referralCode: string;
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol();
+  const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts(
-      program.programId,
-    );
+    const { authority, systemProgram, systemConfig } = await getAccounts();
 
     const referrer = new PublicKey(referrerStr);
 

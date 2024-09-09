@@ -21,7 +21,7 @@ export function useRelistSol({
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts } = useAccountsSol();
+  const { getAccounts } = useAccountsSol(program.programId);
 
   const writeAction = async () => {
     const {
@@ -36,7 +36,7 @@ export function useRelistSol({
       usdcTokenMint,
       wsolTokenMint,
       userSolTokenAccount,
-    } = await getAccounts(program.programId);
+    } = await getAccounts();
 
     const marketplace = new PublicKey(marketplaceStr);
     const offerD = new PublicKey(offerStr);

@@ -15,17 +15,12 @@ export function useWithDrawCollateralTokenEth() {
   const txAction = useCallback(
     async ({
       mode,
-      isNativeToken,
+      tokenAddress,
     }: {
-      isNativeToken: boolean;
+      tokenAddress: string;
       mode: IBalanceType;
     }) => {
       const abiAddress = ethConfig.contracts.tokenManager;
-      const usdcAddress = ethConfig.contracts.usdcToken;
-      const ethAddress = ethConfig.contracts.ethToken;
-
-      const tokenAddress = isNativeToken ? ethAddress : usdcAddress;
-
       const modeIndex = [].findIndex((i) => i === mode);
 
       const callParams = {

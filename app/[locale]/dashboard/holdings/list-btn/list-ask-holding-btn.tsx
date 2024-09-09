@@ -23,10 +23,10 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 
 export default function ListAskHoldingBtn({
-  order: order,
+  holding,
   onSuccess,
 }: {
-  order: IHolding;
+  holding: IHolding;
   onSuccess: () => void;
 }) {
   const cot = useTranslations("drawer-CreateOffer");
@@ -40,14 +40,14 @@ export default function ListAskHoldingBtn({
     makerDetail,
     isNativeToken,
   } = useHoldingFormat({
-    holding: order,
+    holding: holding,
   });
 
-  const [sellPointAmount] = useState(order.points);
+  const [sellPointAmount] = useState(holding.points);
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [collateralRate, setCollateralRate] = useState(
-    String(Number(order?.pre_offer_detail?.collateral_rate) / 100),
+    String(Number(holding?.pre_offer_detail?.collateral_rate) / 100),
   );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
   const settleMode = makerDetail?.offer_settle_type || "protected";
@@ -62,10 +62,10 @@ export default function ListAskHoldingBtn({
     write: writeAction,
     isSuccess,
   } = useList({
-    marketplaceStr: order.marketplace.market_place_id,
-    makerStr: order.maker_account,
-    holdingStr: order.stock_account,
-    preOfferStr: order.pre_offer_account,
+    marketplaceStr: holding.marketplace.market_place_id,
+    makerStr: holding.maker_account,
+    holdingStr: holding.stock_account,
+    preOfferStr: holding.pre_offer_account,
     originOfferStr: makerDetail?.origin_offer || "",
     isNativeToken,
   });
@@ -113,15 +113,15 @@ export default function ListAskHoldingBtn({
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <ListInfo
-              id={order.stock_id}
+              id={holding.stock_id}
               inherit={
-                order?.pre_offer_detail?.maker_account ||
-                order?.offer_detail?.maker_account ||
+                holding?.pre_offer_detail?.maker_account ||
+                holding?.offer_detail?.maker_account ||
                 ""
               }
               origin={
-                order?.pre_offer_detail?.offer_id ||
-                order?.offer_detail?.offer_id ||
+                holding?.pre_offer_detail?.offer_id ||
+                holding?.offer_detail?.offer_id ||
                 ""
               }
             />
@@ -132,7 +132,7 @@ export default function ListAskHoldingBtn({
               topText={<>{cot("txt-YouWillSell")}</>}
               bottomText={
                 <>
-                  1 {order.marketplace.point_name} = ${formatNum(pointPrice)}
+                  1 {holding.marketplace.point_name} = ${formatNum(pointPrice)}
                 </>
               }
               isCanInput={false}
@@ -155,7 +155,7 @@ export default function ListAskHoldingBtn({
                   {cot("txt-YouDLikeToReceive")}
                   <WithTip align="start">
                     {cot("tip-YouDLikeToReceive", {
-                      pointName: order.marketplace.point_name,
+                      pointName: holding.marketplace.point_name,
                     })}
                   </WithTip>
                 </div>

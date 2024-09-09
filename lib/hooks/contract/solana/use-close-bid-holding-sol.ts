@@ -19,15 +19,15 @@ export function useCloseBidHoldingSol({
   isNativeToken: boolean;
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
+  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
+    program.programId,
+  );
 
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts(
-      program.programId,
-    );
+    const { authority, systemProgram, systemConfig } = await getAccounts();
 
     const marketplace = new PublicKey(marketplaceStr);
     const maker = new PublicKey(makerStr);
@@ -37,12 +37,7 @@ export function useCloseBidHoldingSol({
     const {
       walletCollateralTokenBalance: walletDCollateralTokenBalance,
       walletPointTokenBalance: walletDProjectTokenBalance,
-    } = await getWalletBalanceAccount(
-      program.programId,
-      authority!,
-      marketplace,
-      isNativeToken,
-    );
+    } = await getWalletBalanceAccount(authority!, marketplace, isNativeToken);
 
     const methodTransaction = await program.methods
       .closeBidHolding()
@@ -55,12 +50,13 @@ export function useCloseBidHoldingSol({
         maker,
         marketplace,
         systemProgram,
-      }).remainingAccounts([
+      })
+      .remainingAccounts([
         {
           pubkey: preOffer,
           isSigner: false,
-          isWritable: true
-        }
+          isWritable: true,
+        },
       ])
       .transaction();
 

@@ -269,15 +269,17 @@ export default function MyBalances() {
   function handleWithdrawToken(mode: IBalanceType, tokenInfo: IToken | null) {
     if (isWdTokenLoading) return;
     wdTokenAction({
+      tokenAddress: tokenInfo?.address,
       isNativeToken: checkIsNativeToken(tokenInfo),
       mode,
     });
   }
 
-  function handleWithdrawPoint(market: string) {
+  function handleWithdrawPoint(tokenInfo: IToken | null) {
     if (isWdPointLoading) return;
     wdPointAction({
-      marketplaceStr: market,
+      marketplaceStr: (tokenInfo as any).marketplaceId,
+      tokenAddress: tokenInfo?.address,
     });
   }
 
@@ -320,9 +322,7 @@ export default function MyBalances() {
                                 item.withdrawerName!,
                                 i.tokenInfo || null,
                               )
-                            : handleWithdrawPoint(
-                                i.tokenInfo.marketplaceId || "",
-                              )
+                            : handleWithdrawPoint(i.tokenInfo || null)
                         }
                       />
                     ))}

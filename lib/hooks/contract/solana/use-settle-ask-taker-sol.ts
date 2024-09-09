@@ -24,7 +24,9 @@ export function useSettleAskTakerSol({
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
+  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
+    program.programId,
+  );
 
   const writeAction = async ({ settleAmount }: { settleAmount: number }) => {
     const {
@@ -37,7 +39,7 @@ export function useSettleAskTakerSol({
       poolPointsTokenAccount,
       projectTokenMint,
       associatedTokenProgram,
-    } = await getAccounts(program.programId);
+    } = await getAccounts();
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
       [systemConfig.toBuffer()],
@@ -55,19 +57,13 @@ export function useSettleAskTakerSol({
     const preOffer = new PublicKey(preOfferStr);
 
     const { walletCollateralTokenBalance: walletBCollateralTokenBalance } =
-      await getWalletBalanceAccount(
-        program.programId,
-        authority!,
-        marketplace,
-        isNativeToken,
-      );
+      await getWalletBalanceAccount(authority!, marketplace, isNativeToken);
 
     const preOfferAuthority = new PublicKey(preOfferAuthorityStr);
     const {
       walletCollateralTokenBalance: walletACollateralTokenBalance,
       walletPointTokenBalance: walletAProjectTokenBalance,
     } = await getWalletBalanceAccount(
-      program.programId,
       preOfferAuthority,
       marketplace,
       isNativeToken,

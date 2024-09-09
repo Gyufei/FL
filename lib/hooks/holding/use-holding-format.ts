@@ -22,27 +22,36 @@ export function useHoldingFormat({ holding }: { holding: IHolding }) {
     offer: holding as unknown as IOffer,
   });
 
-  const stockType = holding.stock_type;
+  const holdingType = holding.stock_type;
 
   const tokenLogo = orderTokenInfo?.logoURI || "/icons/empty.svg";
   const pointLogo = orderPointInfo?.logoURI || "/icons/empty.svg";
 
-  const offerValue = stockType === "ask" ? holding.points : amount;
-  const forValue = stockType === "ask" ? amount : holding.points;
-  const offerLogo = stockType === "ask" ? pointLogo : tokenLogo;
-  const forLogo = stockType === "ask" ? tokenLogo : pointLogo;
+  const offerValue = holdingType === "ask" ? holding.points : amount;
+  const forValue = holdingType === "ask" ? amount : holding.points;
+  const offerLogo = holdingType === "ask" ? pointLogo : tokenLogo;
+  const forLogo = holdingType === "ask" ? tokenLogo : pointLogo;
 
   const isCanSettle = useMemo(() => {
     return (
       afterTGE &&
       !["finished"].includes(holding.stock_status) &&
-      stockType === "ask"
+      holdingType === "ask"
     );
-  }, [holding.stock_status, afterTGE, stockType]);
+  }, [holding.stock_status, afterTGE, holdingType]);
 
   const isSettled = useMemo(() => {
     return ["settled", "finished"].includes(holding.stock_status);
   }, [holding.stock_status]);
+
+  const isCanAbort = useMemo(() => {
+    return (
+      holdingType === "bid" &&
+      ["initialized"].includes(holding.stock_status) &&
+      holding.pre_offer_detail &&
+      holding.pre_offer_detail?.abort_offer_status === "aborted"
+    );
+  }, [holding, holdingType]);
 
   return {
     afterTGE,
@@ -59,10 +68,11 @@ export function useHoldingFormat({ holding }: { holding: IHolding }) {
     orderPointInfo,
     orderTokenInfo,
     orderEqTokenInfo,
-    isCanSettle,
-    isSettled,
     tokenPrice,
     makerDetail,
     isNativeToken,
+    isCanSettle,
+    isSettled,
+    isCanAbort,
   };
 }

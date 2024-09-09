@@ -7,13 +7,13 @@ import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-tran
 
 export function useRollinSol() {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol();
+  const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
 
   const getRollingData = async () => {
-    const { authority } = await getAccounts(program.programId);
+    const { authority } = await getAccounts();
     const rollinState = PublicKey.findProgramAddressSync(
       [Buffer.from("rollin_state"), authority!.toBuffer()],
       program.programId,
@@ -35,7 +35,7 @@ export function useRollinSol() {
   };
 
   const writeAction = async () => {
-    const { authority, systemProgram } = await getAccounts(program.programId);
+    const { authority, systemProgram } = await getAccounts();
 
     const rollinState = PublicKey.findProgramAddressSync(
       [Buffer.from("rollin_state"), authority!.toBuffer()],

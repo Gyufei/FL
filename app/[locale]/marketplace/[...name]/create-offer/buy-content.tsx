@@ -132,6 +132,7 @@ export function BuyContent({
         10 ** payToken.decimals,
       ).toFixed(),
       pointAmount: Number(receivePointAmount),
+      collateralTokenAddr: payToken.address,
       collateralRate: Number(collateralRate || 100) * 100,
       taxForSub: Number(taxForSub || 3) * 100,
       settleMode: settleMode,

@@ -8,47 +8,59 @@ import {
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useSolanaConfig } from "../../web3/solana/use-solana-config";
 
-export function useAccountsSol() {
+export function useAccountsSol(programId: PublicKey) {
   const { publicKey: authority } = useWallet();
   const { solanaConfig: clusterConfig } = useSolanaConfig();
 
-  async function getAccounts(programId: PublicKey) {
+  async function getAccounts() {
     const tokenProgram = TOKEN_PROGRAM_ID;
     const tokenProgram2022 = TOKEN_2022_PROGRAM_ID;
     const associatedTokenProgram = ASSOCIATED_TOKEN_PROGRAM_ID;
     const systemProgram = SystemProgram.programId;
     const seedAccount = Keypair.generate();
 
-    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
-    const projectTokenMint = new PublicKey(
-      clusterConfig.program.projectTokenMint,
-    );
-    const wsolTokenMint = new PublicKey(
-      "So11111111111111111111111111111111111111112",
-    );
-
     const systemConfig = PublicKey.findProgramAddressSync(
       [Buffer.from("system_config")],
       programId,
     )[0];
+
+    const userConfig = PublicKey.findProgramAddressSync(
+      [Buffer.from("user_config"), authority!.toBuffer()],
+      programId,
+    )[0];
+
+    const projectTokenMint = new PublicKey(
+      clusterConfig.program.projectTokenMint,
+    );
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
       [systemConfig.toBuffer()],
       programId,
     )[0];
 
-    const userSolTokenAccount = PublicKey.default;
-
-    const userUsdcTokenAccount = await getAssociatedTokenAddress(
-      usdcTokenMint,
+    const userPointsTokenAccount = await getAssociatedTokenAddress(
+      projectTokenMint,
       authority!,
       false,
       tokenProgram,
       associatedTokenProgram,
     );
 
-    const userPointsTokenAccount = await getAssociatedTokenAddress(
+    const poolPointsTokenAccount = await getAssociatedTokenAddress(
       projectTokenMint,
+      poolTokenAuthority,
+      true,
+    );
+
+    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
+    const wsolTokenMint = new PublicKey(
+      "So11111111111111111111111111111111111111112",
+    );
+
+    const userSolTokenAccount = PublicKey.default;
+
+    const userUsdcTokenAccount = await getAssociatedTokenAddress(
+      usdcTokenMint,
       authority!,
       false,
       tokenProgram,
@@ -66,17 +78,6 @@ export function useAccountsSol() {
       poolTokenAuthority,
       true,
     );
-
-    const poolPointsTokenAccount = await getAssociatedTokenAddress(
-      projectTokenMint,
-      poolTokenAuthority,
-      true,
-    );
-
-    const userConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("user_config"), authority!.toBuffer()],
-      programId,
-    )[0];
 
     const platformFeeAccountUSDT = PublicKey.findProgramAddressSync(
       [Buffer.from("platform_fee"), usdcTokenMint.toBuffer()],
@@ -113,7 +114,6 @@ export function useAccountsSol() {
   }
 
   async function getWalletBalanceAccount(
-    programId: PublicKey,
     wallet: PublicKey,
     marketplace: PublicKey,
     isNativeToken = false,

@@ -9,7 +9,7 @@ export function useWithdrawProjectTokenSol() {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts } = useAccountsSol();
+  const { getAccounts } = useAccountsSol(program.programId);
 
   const writeAction = async ({
     marketplaceStr,
@@ -26,7 +26,7 @@ export function useWithdrawProjectTokenSol() {
       projectTokenMint,
       userPointsTokenAccount,
       poolPointsTokenAccount,
-    } = await getAccounts(program.programId);
+    } = await getAccounts();
 
     const marketplace = new PublicKey(marketplaceStr);
 

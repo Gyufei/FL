@@ -8,8 +8,9 @@ import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IHolding } from "@/lib/types/holding";
 import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
 import useOfferHoldings from "@/lib/hooks/offer/use-offer-holdings";
-import DelistBtn from "./delist-btn/delist-btn";
+import DelistBtn from "./delist-btn";
 import { useTranslations } from "next-intl";
+import AbortHoldingBtn from "./abort-holding-btn";
 
 export default function HoldingCard({
   holding,
@@ -29,6 +30,7 @@ export default function HoldingCard({
     tokenTotalPrice,
     forLogo,
     isCanSettle,
+    isCanAbort,
   } = useHoldingFormat({
     holding,
   });
@@ -136,11 +138,14 @@ export default function HoldingCard({
       <div className="flex items-center justify-between pt-4">
         <ManToMans num={subOrders?.length || 0} isAsk={isAskStock} />
         {isCanList && (
-          <ListAskHoldingBtn order={holding} onSuccess={onSuccess} />
+          <ListAskHoldingBtn holding={holding} onSuccess={onSuccess} />
         )}
         {isListed && <DelistBtn />}
         {isCanSettle && (
-          <SettleDrawerBtn order={holding} onSuccess={onSuccess} />
+          <SettleDrawerBtn holding={holding} onSuccess={onSuccess} />
+        )}
+        {isCanAbort && (
+          <AbortHoldingBtn holding={holding} onSuccess={onSuccess} />
         )}
       </div>
     </div>

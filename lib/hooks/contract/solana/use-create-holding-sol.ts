@@ -29,7 +29,9 @@ export function useCreateHoldingSol({
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
+  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
+    program.programId,
+  );
 
   const writeAction = async ({ pointAmount }: { pointAmount: number }) => {
     const {
@@ -48,7 +50,7 @@ export function useCreateHoldingSol({
       wsolTokenMint,
       platformFeeAccountUSDT,
       platformFeeAccountSOL,
-    } = await getAccounts(program.programId);
+    } = await getAccounts();
 
     const marketplace = new PublicKey(marketplaceStr);
     const preOffer = new PublicKey(offerStr);
@@ -61,16 +63,10 @@ export function useCreateHoldingSol({
     const {
       walletCollateralTokenBalance: walletBCollateralTokenBalance,
       walletPointTokenBalance: walletBPointTokenBalance,
-    } = await getWalletBalanceAccount(
-      program.programId,
-      authority!,
-      marketplace,
-      isNativeToken,
-    );
+    } = await getWalletBalanceAccount(authority!, marketplace, isNativeToken);
 
     const { walletCollateralTokenBalance: originMakerCollateralTokenBalance } =
       await getWalletBalanceAccount(
-        program.programId,
         originOfferAuthority,
         marketplace,
         isNativeToken,
@@ -78,7 +74,6 @@ export function useCreateHoldingSol({
 
     const { walletCollateralTokenBalance: preOfferCollateralTokenBalance } =
       await getWalletBalanceAccount(
-        program.programId,
         preOfferAuthority,
         marketplace,
         isNativeToken,

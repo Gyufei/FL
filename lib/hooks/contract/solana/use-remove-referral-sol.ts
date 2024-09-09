@@ -7,13 +7,13 @@ import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-tran
 
 export function useRemoveReferralSol() {
   const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol();
+  const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
 
   const writeAction = async ({ referralCode }: { referralCode: string }) => {
-    const { authority, systemProgram } = await getAccounts(program.programId);
+    const { authority, systemProgram } = await getAccounts();
 
     const referralCodeData = PublicKey.findProgramAddressSync(
       [

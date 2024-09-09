@@ -15,7 +15,9 @@ export function useCreateOfferSol({
   offerType: "bid" | "ask";
 }) {
   const { program } = useTadleProgram();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol();
+  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
+    program.programId,
+  );
 
   const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord();
@@ -52,19 +54,12 @@ export function useCreateOfferSol({
       poolSolTokenAccount,
       userSolTokenAccount,
       wsolTokenMint,
-    } = await getAccounts(program.programId);
+    } = await getAccounts();
 
     const marketplace = new PublicKey(marketplaceStr);
 
-    const {
-      walletCollateralTokenBalance: walletACollateralTokenBalance,
-      walletPointTokenBalance: walletAPointTokenBalance,
-    } = await getWalletBalanceAccount(
-      program.programId,
-      authority!,
-      marketplace,
-      isNativeToken,
-    );
+    const { walletCollateralTokenBalance, walletPointTokenBalance } =
+      await getWalletBalanceAccount(authority!, marketplace, isNativeToken);
 
     const maker = PublicKey.findProgramAddressSync(
       [Buffer.from("marker"), seedAccount.publicKey.toBuffer()],
@@ -80,28 +75,6 @@ export function useCreateOfferSol({
       [Buffer.from("offer"), seedAccount.publicKey.toBuffer()],
       program.programId,
     )[0];
-
-    console.log(
-      Object.entries({
-        authority,
-        seedAccount: seedAccount.publicKey,
-        marketplace,
-        systemConfig,
-        maker,
-        holding: holdingA,
-        offer: offerA,
-        poolTokenAuthority,
-        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        associatedTokenProgram,
-        systemProgram,
-        pubkey1: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
-        pubkey2: isNativeToken ? poolSolTokenAccount : poolUsdcTokenAccount,
-        pubkey3: walletACollateralTokenBalance,
-        pubkey4: walletAPointTokenBalance,
-      }).map((v) => ({ [v[0]]: v[1]?.toBase58() })),
-    );
 
     const methodTransaction = await program.methods
       .createOffer(
@@ -147,12 +120,12 @@ export function useCreateOfferSol({
           isWritable: true,
         },
         {
-          pubkey: walletACollateralTokenBalance,
+          pubkey: walletCollateralTokenBalance,
           isSigner: false,
           isWritable: true,
         },
         {
-          pubkey: walletAPointTokenBalance,
+          pubkey: walletPointTokenBalance,
           isSigner: false,
           isWritable: true,
         },
@@ -170,7 +143,7 @@ export function useCreateOfferSol({
       txHash,
       note,
     });
-    
+
     console.log("txHash", txHash);
 
     return txHash;

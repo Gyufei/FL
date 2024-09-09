@@ -60,7 +60,15 @@ export function useRpc() {
     }
 
     return globalRpcs["solana"][solanaConfig.network];
-  }, [currentGlobalRpcs, saveRpcNetKey]);
+  }, [customRpcs, globalRpcs, solanaConfig]);
+
+  const currentEthRpc = useMemo(() => {
+    if (customRpcs["eth"][ethConfig.id]) {
+      return customRpcs["eth"][ethConfig.id];
+    }
+
+    return globalRpcs["eth"][ethConfig.id];
+  }, [customRpcs, globalRpcs, ethConfig]);
 
   const rpc = useMemo(() => {
     if (currentCustomRpcs[saveRpcNetKey]) {
@@ -133,6 +141,7 @@ export function useRpc() {
     currentGlobalRpc,
     currentCustomRpc,
     currentSolanaRpc,
+    currentEthRpc,
     setGlobalRpcAction,
     setCustomRpcAction,
     testRpcLatency,

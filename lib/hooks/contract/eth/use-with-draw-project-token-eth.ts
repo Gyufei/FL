@@ -1,10 +1,10 @@
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
-import { useCallback } from "react";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useWithDrawProjectTokenEth() {
   const { ethConfig } = useEthConfig();
@@ -12,28 +12,33 @@ export function useWithDrawProjectTokenEth() {
 
   const { address: userAddress } = useChainWallet();
 
+  const { recordTransaction } = useTransactionRecord();
   const { writeContractAsync } = useWriteContract();
 
-  const txAction = useCallback(
-    async ({ tokenAddress }: { tokenAddress: string }) => {
-      const abiAddress = ethConfig.contracts.tokenManager;
+  const txAction = async ({ tokenAddress }: { tokenAddress: string }) => {
+    const abiAddress = ethConfig.contracts.tokenManager;
 
-      const callParams = {
-        abi: TokenManagerABI,
-        address: abiAddress as any,
-        functionName: "withdrawPlatformFee",
-        args: [tokenAddress as any, userAddress],
-      };
+    const callParams = {
+      abi: TokenManagerABI,
+      address: abiAddress as any,
+      functionName: "withdrawPlatformFee",
+      args: [tokenAddress as any, userAddress],
+    };
 
-      const gasParams = await getGasParams(callParams);
+    const gasParams = await getGasParams(callParams);
 
-      return writeContractAsync({
-        ...callParams,
-        ...gasParams,
-      });
-    },
-    [writeContractAsync, ethConfig, userAddress, getGasParams],
-  );
+    const txHash = await writeContractAsync({
+      ...callParams,
+      ...gasParams,
+    });
+
+    await recordTransaction({
+      txHash,
+      note: "",
+    });
+
+    return txHash;
+  };
 
   const wrapRes = useTxStatus(txAction);
 

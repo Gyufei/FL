@@ -1,17 +1,18 @@
 import { useWriteContract } from "wagmi";
-import { useCallback } from "react";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 import { useEthConfig } from "../../web3/use-eth-config";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useCloseBidHoldingEth({ holdingStr }: { holdingStr: string }) {
   const { ethConfig } = useEthConfig();
   const { getGasParams } = useGasEth();
 
+  const { recordTransaction } = useTransactionRecord();
   const { writeContractAsync } = useWriteContract();
 
-  const txAction = useCallback(async () => {
+  const txAction = async () => {
     const abiAddress = ethConfig.contracts.deliveryPlace;
 
     const callParams = {
@@ -23,11 +24,17 @@ export function useCloseBidHoldingEth({ holdingStr }: { holdingStr: string }) {
 
     const gasParams = await getGasParams(callParams);
 
-    return writeContractAsync({
+    const txHash = await writeContractAsync({
       ...callParams,
       ...gasParams,
     });
-  }, [writeContractAsync, ethConfig, holdingStr, getGasParams]);
+    await recordTransaction({
+      txHash,
+      note: "",
+    });
+
+    return txHash;
+  };
 
   const wrapRes = useTxStatus(txAction);
 

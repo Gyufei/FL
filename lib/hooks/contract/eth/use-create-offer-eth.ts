@@ -4,6 +4,7 @@ import { useEthConfig } from "../../web3/use-eth-config";
 import { useWriteContract } from "wagmi";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useCreateOfferEth({
   marketplaceStr,
@@ -15,6 +16,7 @@ export function useCreateOfferEth({
   const { ethConfig } = useEthConfig();
   const { getGasParams } = useGasEth();
 
+  const { recordTransaction } = useTransactionRecord();
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async ({
@@ -58,10 +60,16 @@ export function useCreateOfferEth({
 
     const gasParams = await getGasParams(callParams);
 
-    return writeContractAsync({
+    const txHash = await writeContractAsync({
       ...callParams,
       ...gasParams,
     });
+    await recordTransaction({
+      txHash,
+      note: "",
+    });
+
+    return txHash;
   };
 
   const wrapRes = useTxStatus(txAction);

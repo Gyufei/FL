@@ -1,6 +1,6 @@
-import { useCloseBidHoldingEth } from "./eth/use-close-bid-holding-eth";
+import { useAbortBidHoldingEth } from "./eth/use-abort-bid-holding-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useCloseBidHoldingSol } from "./solana/use-close-bid-holding-sol";
+import { useAbortBidHoldingSol } from "./solana/use-abort-bid-holding-sol";
 
 export function useAbortBidHolding({
   marketplaceStr,
@@ -16,8 +16,8 @@ export function useAbortBidHolding({
   isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(
-    useCloseBidHoldingEth,
-    useCloseBidHoldingSol,
+    useAbortBidHoldingEth,
+    useAbortBidHoldingSol,
     {
       marketplaceStr,
       makerStr,

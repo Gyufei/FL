@@ -18,7 +18,7 @@ export default function WalletSelectDialog() {
     WalletSelectDialogVisibleAtom,
   );
 
-  const { isEth, wcModalOpen, wcModalClose } = useCurrentChain();
+  const { isEth, wcModalOpen, wcModalClose, isWcModalOpen } = useCurrentChain();
 
   const showWallets = wallets.filter(
     (w: Wallet) => w.adapter.name !== "MetaMask",
@@ -50,6 +50,12 @@ export default function WalletSelectDialog() {
       onOpenChange(false);
     }
   }
+
+  useEffect(() => {
+    if (isEth && !isWcModalOpen) {
+      onOpenChange(false);
+    }
+  }, [isEth, isWcModalOpen]);
 
   useEffect(() => {
     if (!isEth) return;

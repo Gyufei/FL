@@ -8,7 +8,7 @@ import {
   NetworkAtom,
 } from "@/lib/states/network";
 import { useSwitchChain } from "wagmi";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react";
 
 import { useEthConfig } from "./use-eth-config";
 import { useQueryParams } from "../common/use-query-params";
@@ -30,6 +30,7 @@ export function useCurrentChain() {
   const isSolana = useAtomValue(IsSolanaAtom);
 
   const { open: wcModalOpen, close: wcModalClose } = useWeb3Modal();
+  const { open: isWcModalOpen } = useWeb3ModalState();
   const { switchChain } = useSwitchChain();
 
   const { ethConfig } = useEthConfig();
@@ -71,6 +72,7 @@ export function useCurrentChain() {
     currentChainInfo,
     switchToEth,
     switchToSolana,
+    isWcModalOpen,
     wcModalOpen,
     wcModalClose,
   };

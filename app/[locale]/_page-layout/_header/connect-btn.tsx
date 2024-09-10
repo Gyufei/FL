@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { truncateAddr } from "@/lib/utils/web3";
@@ -46,14 +46,19 @@ export default function ConnectBtn() {
     }
   }, [referralCode, viewReferral, address]);
 
+  const [hasShow, setHasShow] = useState(false);
+
   useEffect(() => {
+    if (hasShow) return;
+
     setTimeout(() => {
       const noConnect = !connecting && !connected && !address;
       if (noConnect) {
         setWalletSelectDialogVisible(true);
+        setHasShow(true);
       }
     }, 500);
-  }, [connecting, connected, address, setWalletSelectDialogVisible]);
+  }, [hasShow, connecting, connected, address, setWalletSelectDialogVisible]);
 
   useEffect(() => {
     if (address && (referralCode || !token)) {

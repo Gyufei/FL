@@ -69,8 +69,8 @@ export default function ContactUs() {
           className="mb-8 sm:mb-0"
         />
         <div className="flex flex-wrap items-center justify-between gap-x-10 sm:flex-nowrap">
-          <LinkItem href={DiscordLink}>{t("lb-SubmitTicket")}</LinkItem>
-          <LinkItem href="">{t("lb-ListingProposal")}</LinkItem>
+          {/* <LinkItem href={DiscordLink}>{t("lb-SubmitTicket")}</LinkItem>
+          <LinkItem href="">{t("lb-ListingProposal")}</LinkItem> */}
           <LinkItem href="">{t("lb-ContactUs")}</LinkItem>
           <LinkItem href={DocLink}>{t("lb-Docs")}</LinkItem>
         </div>

@@ -1,4 +1,4 @@
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
@@ -7,7 +7,7 @@ import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useWithDrawProjectTokenEth() {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { address: userAddress } = useChainWallet();
@@ -16,7 +16,7 @@ export function useWithDrawProjectTokenEth() {
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async ({ tokenAddress }: { tokenAddress: string }) => {
-    const abiAddress = ethConfig.contracts.tokenManager;
+    const abiAddress = evmConfig.contracts.tokenManager;
 
     const callParams = {
       abi: TokenManagerABI,

@@ -3,6 +3,7 @@ import { WalletSelectDialogVisibleAtom } from "./wallet-select-dialog";
 import { cn } from "@/lib/utils/common";
 import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useSwitchInEvm } from "@/lib/hooks/web3/evm/use-switch-in-evm";
 
 export default function WithWalletConnectBtn({
   onClick,
@@ -16,6 +17,7 @@ export default function WithWalletConnectBtn({
   className?: string;
 }) {
   const { connected } = useChainWallet();
+  const { checkAndSwitchInEvm } = useSwitchInEvm();
 
   const setWalletSelectDialogVisible = useSetAtom(
     WalletSelectDialogVisibleAtom,
@@ -30,6 +32,7 @@ export default function WithWalletConnectBtn({
     } else if (connected && shouldSignIn && !token) {
       setShowSignInDialog(true);
     } else {
+      checkAndSwitchInEvm();
       onClick();
     }
   }

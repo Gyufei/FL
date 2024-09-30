@@ -23,7 +23,7 @@ import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
-import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
+import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 
 export function SellContent({

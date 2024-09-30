@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { truncateAddr } from "@/lib/utils/web3";
 import WalletSelectDialog, {
   WalletSelectDialogVisibleAtom,
@@ -17,6 +22,8 @@ import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useReferralView } from "@/lib/hooks/api/use-referral";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useSwitchInEvm } from "@/lib/hooks/web3/evm/use-switch-in-evm";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -86,6 +93,9 @@ export default function ConnectBtn() {
 
   return (
     <Dialog open={showSignIn} onOpenChange={(isOpen) => setShowSignIn(isOpen)}>
+      <VisuallyHidden asChild>
+        <DialogTitle>Connect Dialog</DialogTitle>
+      </VisuallyHidden>
       <DialogTrigger asChild>
         <button className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:border-transparent hover:bg-yellow sm:h-12">
           <div className="flex items-center">
@@ -103,6 +113,7 @@ export default function ConnectBtn() {
         style={{
           boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
         }}
+        aria-describedby={undefined}
       >
         {referralCode ? (
           <ReferralSignInBtn referralCode={referralCode} />
@@ -119,6 +130,12 @@ export default function ConnectBtn() {
 export function ContinueBtn() {
   const t = useTranslations("Header");
   const { signInAction } = useSignInAction();
+  const { checkAndSwitchInEvm } = useSwitchInEvm();
+
+  function handleSignIn() {
+    checkAndSwitchInEvm();
+    signInAction();
+  }
 
   return (
     <>
@@ -130,7 +147,7 @@ export function ContinueBtn() {
       </div>
       <div className="mt-10 w-full">
         <button
-          onClick={signInAction}
+          onClick={handleSignIn}
           className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
         >
           {t("btn-Continue")}

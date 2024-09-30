@@ -8,27 +8,33 @@ import { useCurrentChain } from "../web3/use-current-chain";
 import { useMemo } from "react";
 
 export function useAllChainMarketplaces() {
-  const { ethApiEndPoint, solanaApiEndPoint } = useEndPoint();
+  const { ethApiEndPoint, solanaApiEndPoint, bscApiEndPoint } = useEndPoint();
 
   const AllChainMarketplacesFetcher = async () => {
-    const [ethRes, solanaRes] = await Promise.all([
+    const [ethRes, bscRes, solanaRes] = await Promise.all([
       fetcher(`${ethApiEndPoint}${Paths.marketplace}?market_type=point`),
+      fetcher(`${bscApiEndPoint}${Paths.marketplace}?market_type=point`),
       fetcher(`${solanaApiEndPoint}${Paths.marketplace}?market_type=point`),
     ]);
 
-    const processMarketplaces = (markets: any[], isEth: boolean) => {
+    const processMarketplaces = (markets: any[], chain: string) => {
       return (markets || []).map((market) => ({
         ...market,
-        projectLogo: WithProjectImgCDN(market.market_id, isEth),
-        pointLogo: WithPointImgCDN(market.market_id, isEth),
-        chain: isEth ? "eth" : "solana",
+        projectLogo: WithProjectImgCDN(market.market_id, chain),
+        pointLogo: WithPointImgCDN(market.market_id, chain),
+        chain,
       }));
     };
 
-    const ethMarkets = processMarketplaces(ethRes, true);
-    const solanaMarkets = processMarketplaces(solanaRes, false);
+    const ethMarkets = processMarketplaces(ethRes, "eth");
+    const bscMarkets = processMarketplaces(bscRes, "bsc");
+    const solanaMarkets = processMarketplaces(solanaRes, "solana");
 
-    return [...ethMarkets, ...solanaMarkets] as Array<IMarketplace>;
+    return [
+      ...ethMarkets,
+      ...bscMarkets,
+      ...solanaMarkets,
+    ] as Array<IMarketplace>;
   };
 
   const res = useSWR("all-chain-marketplaces", AllChainMarketplacesFetcher);
@@ -37,14 +43,14 @@ export function useAllChainMarketplaces() {
 }
 
 export function useMarketplaces() {
-  const { isEth } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
   const allMarketRes = useAllChainMarketplaces();
 
-  const currentChain = isEth ? "eth" : "solana";
-
   const marketData = useMemo(() => {
-    return allMarketRes.data?.filter((market) => market.chain === currentChain);
-  }, [allMarketRes.data, currentChain]);
+    return allMarketRes.data?.filter(
+      (market) => market.chain === currentChainInfo.alias,
+    );
+  }, [allMarketRes.data, currentChainInfo]);
 
   return {
     ...allMarketRes,

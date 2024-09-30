@@ -1,19 +1,19 @@
 import { useWriteContract } from "wagmi";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useCloseBidHoldingEth({ holdingStr }: { holdingStr: string }) {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { recordTransaction } = useTransactionRecord();
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async () => {
-    const abiAddress = ethConfig.contracts.deliveryPlace;
+    const abiAddress = evmConfig.contracts.deliveryPlace;
 
     const callParams = {
       abi: DeliveryPlaceABI,

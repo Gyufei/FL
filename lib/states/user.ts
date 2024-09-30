@@ -9,6 +9,6 @@ export const AccessTokenAtom = atomWithStorage<string>(
   "",
   undefined,
   {
-    unstable_getOnInit: true,
+    getOnInit: true,
   },
 );

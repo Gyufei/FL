@@ -1,4 +1,4 @@
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { generateRandomCode } from "@/lib/utils/common";
 import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
@@ -7,7 +7,7 @@ import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useCreateReferralEth() {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { recordTransaction } = useTransactionRecord();
@@ -19,7 +19,7 @@ export function useCreateReferralEth() {
   }) => {
     const { firstAmount = 300000, secondAmount = 0 } = args || {};
 
-    const abiAddress = ethConfig.contracts.systemConfig;
+    const abiAddress = evmConfig.contracts.systemConfig;
     const RandomCode = generateRandomCode(8);
 
     const callParams = {

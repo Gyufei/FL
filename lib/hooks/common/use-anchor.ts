@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export function useAnchor() {
-  const [anchor, setAnchor] = useState('');
+  const [anchor, setAnchor] = useState("");
 
   useEffect(() => {
     const handleHashChange = () => {
       setAnchor(window.location.hash.substring(1));
     };
 
-    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
 
     setAnchor(window.location.hash.substring(1));
 
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
 
@@ -22,7 +22,7 @@ export function useAnchor() {
   };
 
   return {
-    anchor, 
-    setAnchorValue
+    anchor,
+    setAnchorValue,
   };
 }

@@ -1,11 +1,9 @@
-import { SolanaZeroed } from "@/lib/const/solana";
-import { EthZeroed } from "@/lib/const/eth";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useCurrentChain } from "../web3/use-current-chain";
 
 export function useOfferResFormat() {
   const { data: marketplaceData, isLoading } = useMarketplaces();
-  const { isEth } = useCurrentChain();
+  const { currentChainInfo } = useCurrentChain();
 
   async function offerResFieldFormat(
     offer: Record<string, any>,
@@ -16,20 +14,22 @@ export function useOfferResFormat() {
         (m) => m.market_place_id === offer.market_place_account,
       );
 
-      const isPreOfferZeroed = isEth
-        ? offer?.pre_offer_account === EthZeroed
-        : offer?.pre_offer_account === SolanaZeroed;
+      const offsMap = preOffers.reduce(
+        (acc: Record<string, any>, o: Record<string, any>) => {
+          acc[o.offer_account] = o;
+          return acc;
+        },
+        {},
+      );
+
+      const isPreOfferZeroed =
+        offer?.pre_offer_account === currentChainInfo?.zeroAddr;
 
       let preOfferDetail = null;
       let originOfferDetail = null;
       if (!isPreOfferZeroed) {
-        preOfferDetail =
-          preOffers.find(
-            (o: Record<string, any>) =>
-              o.offer_account === offer?.pre_offer_account,
-          ) || null;
-
-        originOfferDetail = getOriginOffer(preOffers, preOfferDetail);
+        preOfferDetail = offsMap[offer.pre_offer_account] || null;
+        originOfferDetail = getOriginOffer(preOfferDetail, offsMap);
       } else {
         preOfferDetail = offer;
         originOfferDetail = offer;
@@ -43,22 +43,21 @@ export function useOfferResFormat() {
         origin_offer_detail: originOfferDetail,
       };
     } catch (e) {
+      console.log(e);
       return null;
     }
   }
 
   const getOriginOffer = (
-    offs: any[],
     off: Record<string, any>,
+    offsMap: Record<string, any>,
   ): Record<string, any> => {
-    if (off && off.pre_offer_account !== SolanaZeroed) {
-      const target =
-        offs.find(
-          (o: Record<string, any>) =>
-            o.offer_account === off?.pre_offer_account,
-        ) || null;
+    const isPreZero = off?.pre_offer_account === currentChainInfo.zeroAddr;
 
-      return getOriginOffer(offs, target);
+    if (off && !isPreZero) {
+      const target = offsMap[off.pre_offer_account] || null;
+
+      return getOriginOffer(target, offsMap);
     } else {
       return off;
     }

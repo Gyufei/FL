@@ -17,20 +17,20 @@ import {
 } from "@/components/ui/drawer";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { DevnetRow } from "./devnet-row";
 import { isProduction } from "@/lib/PathMap";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 function UseNetworkSelect() {
   const [popOpen, setPopOpen] = useState(false);
 
-  const { switchToSolana, switchToEth } = useCurrentChain();
+  const { switchToSolana, switchToEth, switchToBsc } = useCurrentChain();
 
   return {
     popOpen,
     setPopOpen,
     switchToSolana,
     switchToEth,
+    switchToBsc,
   };
 }
 
@@ -39,10 +39,10 @@ const CurrChainLogo = dynamic(() => import("./curr-chain-logo"), {
 });
 
 export function NetworkSelect() {
-  const { popOpen, setPopOpen, switchToSolana, switchToEth } =
+  const { popOpen, setPopOpen, switchToSolana, switchToEth, switchToBsc } =
     UseNetworkSelect();
 
-  const { isEth, isSolana } = useCurrentChain();
+  const { isEth, isSolana, isBsc } = useCurrentChain();
 
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
@@ -70,25 +70,20 @@ export function NetworkSelect() {
         }}
         align="start"
       >
-        {isProduction && (
-          <div
-            onClick={() => switchToSolana()}
-            data-state={isSolana ? "active" : "inactive"}
-            className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
-          >
-            <Image
-              width={24}
-              height={24}
-              src="/icons/solana.svg"
-              alt="chain logo"
-              className="z-10 rounded-full bg-white"
-            />
-            <div className="flex-1 text-xs">Solana</div>
-          </div>
-        )}
-        {!isProduction && (
-          <DevnetRow onClick={() => switchToSolana()} isActive={isSolana} />
-        )}
+        <div
+          onClick={() => switchToSolana()}
+          data-state={isSolana ? "active" : "inactive"}
+          className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
+        >
+          <Image
+            width={24}
+            height={24}
+            src="/icons/solana.svg"
+            alt="chain logo"
+            className="z-10 rounded-full bg-white"
+          />
+          <div className="flex-1 text-xs">Solana</div>
+        </div>
         <div
           onClick={() => switchToEth()}
           data-state={isEth ? "active" : "inactive"}
@@ -103,6 +98,22 @@ export function NetworkSelect() {
           ></Image>
           <div className="flex-1 text-xs">
             {isProduction ? "Ethereum" : "EthTest"}
+          </div>
+        </div>
+        <div
+          onClick={() => switchToBsc()}
+          data-state={isBsc ? "active" : "inactive"}
+          className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
+        >
+          <Image
+            width={24}
+            height={24}
+            src="/icons/bsc.svg"
+            alt="evms"
+            className="z-10 rounded-full bg-white"
+          ></Image>
+          <div className="flex-1 text-xs">
+            {isProduction ? "BNB Chain" : "BNB Test"}
           </div>
         </div>
       </PopoverContent>
@@ -145,7 +156,6 @@ export function MbNetworkSelect() {
           />
           <div className="flex-1 text-xs">Solana</div>
         </div>
-        <DevnetRow onClick={() => switchToSolana()} isActive={!isProduction} />
         <div
           onClick={() => switchToEth()}
           data-state={"inactive"}

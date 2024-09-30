@@ -19,10 +19,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
-  const progress = Number(
-    (Number(offer.used_points) / Number(offer.points)).toFixed(2),
-  );
-
   const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
 
   const { isNativeToken } = useIsNativeToken(orderTokenInfo || null);
@@ -48,6 +44,10 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const amount = NP.divide(
     offer.amount,
     10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
+  );
+
+  const progress = Number(
+    (Number(offer.used_points) / Number(offer.points)).toFixed(2),
   );
 
   const offerType = offer.offer_type;

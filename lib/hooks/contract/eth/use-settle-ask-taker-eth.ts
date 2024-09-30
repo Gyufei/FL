@@ -1,4 +1,4 @@
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 import { useGasEth } from "../help/use-gas-eth";
@@ -6,14 +6,14 @@ import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useSettleAskTakerEth({ holdingStr }: { holdingStr: string }) {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { recordTransaction } = useTransactionRecord();
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async ({ settleAmount }: { settleAmount: number }) => {
-    const abiAddress = ethConfig.contracts.deliveryPlace;
+    const abiAddress = evmConfig.contracts.deliveryPlace;
 
     const callParams = {
       abi: DeliveryPlaceABI,

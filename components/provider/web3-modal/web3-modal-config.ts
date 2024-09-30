@@ -1,6 +1,6 @@
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { cookieStorage, createStorage, http } from "wagmi";
-import { mainnet } from "wagmi/chains";
+import { mainnet, bsc, bscTestnet } from "wagmi/chains";
 import { testnet } from "./testnet";
 import { isProduction } from "@/lib/PathMap";
 
@@ -16,8 +16,8 @@ export const metadata = {
 };
 
 const chains = isProduction
-  ? ([mainnet] as const)
-  : ([mainnet, testnet] as const);
+  ? ([mainnet, bsc] as const)
+  : ([mainnet, bsc, bscTestnet, testnet] as const);
 
 // Create wagmiConfig
 export const config = defaultWagmiConfig({
@@ -28,8 +28,16 @@ export const config = defaultWagmiConfig({
   storage: createStorage({
     storage: cookieStorage,
   }),
+  auth: {
+    email: false,
+    socials: [],
+    showWallets: true,
+    walletFeatures: true,
+  },
   transports: {
     [mainnet.id]: http(),
+    [bsc.id]: http(),
+    [bscTestnet.id]: http(),
     [testnet.id]: http(),
   },
 });

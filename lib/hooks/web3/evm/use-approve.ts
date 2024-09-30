@@ -11,13 +11,13 @@ import {
 import { useCurrentChain } from "../use-current-chain";
 import { useTokens } from "../../api/token/use-tokens";
 import { USDTAbi } from "@/lib/abi/eth/USDT";
-import { useEthConfig } from "../use-eth-config";
+import { useEvmConfig } from "../use-evm-config";
 import { useTranslations } from "next-intl";
 
 export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   const config = useConfig();
-  const { ethConfig } = useEthConfig();
-  const spender = ethConfig.contracts.tokenManager;
+  const { evmConfig } = useEvmConfig();
+  const spender = evmConfig.contracts.tokenManager;
 
   const CT = useTranslations("Common");
 

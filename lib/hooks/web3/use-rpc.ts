@@ -1,96 +1,78 @@
 import { useCallback, useMemo } from "react";
-import { useSolanaConfig } from "./solana/use-solana-config";
 import { useAtom } from "jotai";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
-import { useEthConfig } from "./use-eth-config";
-import { EthRPCS } from "@/lib/const/eth";
-import { SolanaRPCS } from "@/lib/const/solana";
 import { useCurrentChain } from "./use-current-chain";
 import { Connection } from "@solana/web3.js";
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
 import { isProduction } from "@/lib/PathMap";
 import { testnet } from "@/components/provider/web3-modal/testnet";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export function useRpc() {
-  const { isEth, isSolana } = useCurrentChain();
-
-  const { ethConfig } = useEthConfig();
-  const { solanaConfig } = useSolanaConfig();
+  const { isEvm, currentChainInfo } = useCurrentChain();
 
   const [globalRpcs, setGlobalRpc] = useAtom(GlobalRpcsAtom);
   const [customRpcs, setCustomRpc] = useAtom(CustomRpcsAtom);
 
-  const chainRpcs = useMemo(() => {
-    if (isEth) {
-      return EthRPCS;
-    }
-
-    if (isSolana) {
-      return SolanaRPCS;
-    }
-
-    return SolanaRPCS;
-  }, [isEth, isSolana]);
-
-  const saveRpcChainKey = useMemo(() => (isEth ? "eth" : "solana"), [isEth]);
-  const saveRpcNetKey = useMemo(() => {
-    return isEth ? ethConfig.id : solanaConfig.network;
-  }, [isEth, solanaConfig, ethConfig]);
-
-  const currentGlobalRpcs = useMemo(() => {
-    return globalRpcs[saveRpcChainKey];
-  }, [globalRpcs, saveRpcChainKey]);
-
-  const currentCustomRpcs = useMemo(() => {
-    return customRpcs[saveRpcChainKey];
-  }, [customRpcs, saveRpcChainKey]);
+  const chainRpcs = currentChainInfo.rpcs;
+  const saveRpcChainKey = currentChainInfo.alias;
+  const saveRpcNetKey = currentChainInfo.network;
 
   const currentGlobalRpc = useMemo(() => {
-    return currentGlobalRpcs[saveRpcNetKey];
-  }, [currentGlobalRpcs, saveRpcNetKey]);
+    return globalRpcs[saveRpcNetKey];
+  }, [globalRpcs, saveRpcNetKey]);
 
   const currentCustomRpc = useMemo(() => {
-    return currentCustomRpcs[saveRpcNetKey];
-  }, [currentCustomRpcs, saveRpcNetKey]);
+    return customRpcs[saveRpcNetKey];
+  }, [customRpcs, saveRpcNetKey]);
 
   const currentSolanaRpc = useMemo(() => {
-    if (customRpcs["solana"][solanaConfig.network]) {
-      return customRpcs["solana"][solanaConfig.network];
+    const alias = ChainConfigs.solana.alias;
+
+    if (customRpcs[alias]) {
+      return customRpcs[alias];
     }
 
-    return globalRpcs["solana"][solanaConfig.network];
-  }, [customRpcs, globalRpcs, solanaConfig]);
+    return globalRpcs[alias];
+  }, [customRpcs, globalRpcs]);
 
   const currentEthRpc = useMemo(() => {
-    if (customRpcs["eth"][ethConfig.id]) {
-      return customRpcs["eth"][ethConfig.id];
+    const alias = ChainConfigs.eth.alias;
+    if (customRpcs[alias]) {
+      return customRpcs[alias];
     }
 
-    return globalRpcs["eth"][ethConfig.id];
-  }, [customRpcs, globalRpcs, ethConfig]);
+    return globalRpcs[alias];
+  }, [customRpcs, globalRpcs]);
+
+  const currentBscRpc = useMemo(() => {
+    const alias = ChainConfigs.bsc.alias;
+    if (customRpcs[alias]) {
+      return customRpcs[alias];
+    }
+
+    return globalRpcs[alias];
+  }, [customRpcs, globalRpcs]);
 
   const rpc = useMemo(() => {
-    if (currentCustomRpcs[saveRpcNetKey]) {
-      return currentCustomRpcs[saveRpcNetKey]!;
+    if (customRpcs[saveRpcChainKey]) {
+      return customRpcs[saveRpcChainKey]!;
     }
 
-    return currentGlobalRpcs[saveRpcNetKey];
-  }, [currentGlobalRpcs, currentCustomRpcs, saveRpcNetKey]);
+    return globalRpcs[saveRpcChainKey];
+  }, [globalRpcs, customRpcs, saveRpcChainKey]);
 
   const setGlobalRpcAction = useCallback(
     (rpcStr: string) => {
       return setGlobalRpc((prev) => {
         return {
           ...prev,
-          [saveRpcChainKey]: {
-            ...prev[saveRpcChainKey],
-            [saveRpcNetKey]: rpcStr,
-          },
+          [saveRpcChainKey]: rpcStr,
         };
       });
     },
-    [setGlobalRpc, saveRpcChainKey, saveRpcNetKey],
+    [setGlobalRpc, saveRpcChainKey],
   );
 
   const setCustomRpcAction = useCallback(
@@ -98,10 +80,7 @@ export function useRpc() {
       return setCustomRpc((prev) => {
         return {
           ...prev,
-          [saveRpcChainKey]: {
-            ...prev[saveRpcChainKey],
-            [saveRpcNetKey]: rpcStr,
-          },
+          [saveRpcChainKey]: rpcStr,
         };
       });
     },
@@ -112,7 +91,7 @@ export function useRpc() {
     let startTimestamp: number;
     let endTimestamp: number;
 
-    if (isEth) {
+    if (isEvm) {
       const publicClient = createPublicClient({
         chain: isProduction ? mainnet : testnet,
         transport: http(testRpc),
@@ -136,12 +115,11 @@ export function useRpc() {
 
   return {
     chainRpcs,
-    currentGlobalRpcs,
-    currentCustomRpcs,
     currentGlobalRpc,
     currentCustomRpc,
     currentSolanaRpc,
     currentEthRpc,
+    currentBscRpc,
     setGlobalRpcAction,
     setCustomRpcAction,
     testRpcLatency,

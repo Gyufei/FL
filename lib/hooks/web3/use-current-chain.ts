@@ -3,6 +3,7 @@ import { useAtom, useAtomValue } from "jotai";
 
 import {
   ENetworks,
+  isBscAtom,
   IsEthAtom,
   IsSolanaAtom,
   NetworkAtom,
@@ -10,52 +11,52 @@ import {
 import { useSwitchChain } from "wagmi";
 import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react";
 
-import { useEthConfig } from "./use-eth-config";
 import { useQueryParams } from "../common/use-query-params";
-
-const currentChainInfoMap = {
-  solana: {
-    name: "Solana",
-    logo: "/icons/solana.svg",
-  },
-  eth: {
-    name: "Ethereum",
-    logo: "/icons/eth.svg",
-  },
-} as const;
+import { ChainConfigs, IChainConfig } from "@/lib/const/chain-config";
 
 export function useCurrentChain() {
   const [network, setNetwork] = useAtom(NetworkAtom);
   const isEth = useAtomValue(IsEthAtom);
+  const isBsc = useAtomValue(isBscAtom);
   const isSolana = useAtomValue(IsSolanaAtom);
+  const isEvm = isEth || isBsc;
 
   const { open: wcModalOpen, close: wcModalClose } = useWeb3Modal();
   const { open: isWcModalOpen } = useWeb3ModalState();
-  const { switchChain } = useSwitchChain();
-
-  const { ethConfig } = useEthConfig();
+  const { switchChainAsync } = useSwitchChain();
 
   const { goWithQueryParams } = useQueryParams();
 
   const currentChainInfo = useMemo(() => {
     if (isEth) {
-      return currentChainInfoMap.eth;
+      return ChainConfigs.eth;
+    } else if (isBsc) {
+      return ChainConfigs.bsc;
     } else if (isSolana) {
-      return currentChainInfoMap.solana;
+      return ChainConfigs.solana;
     }
 
     return {
       name: "",
+      alias: "",
       logo: "/icons/empty.svg",
-    };
-  }, [isEth, isSolana]);
+    } as IChainConfig;
+  }, [isEth, isSolana, isBsc]);
 
-  function switchToEth() {
+  async function switchToEth() {
     if (isEth) return;
 
     setNetwork(ENetworks.Eth);
-    switchChain({ chainId: ethConfig.id });
+    await switchChainAsync({ chainId: ChainConfigs.eth.network as number });
     goWithQueryParams("chain", "eth");
+  }
+
+  async function switchToBsc() {
+    if (isBsc) return;
+
+    setNetwork(ENetworks.Bsc);
+    await switchChainAsync({ chainId: ChainConfigs.bsc.network as number });
+    goWithQueryParams("chain", "bsc");
   }
 
   function switchToSolana() {
@@ -69,9 +70,12 @@ export function useCurrentChain() {
     network,
     isEth,
     isSolana,
+    isBsc,
+    isEvm,
     currentChainInfo,
     switchToEth,
     switchToSolana,
+    switchToBsc,
     isWcModalOpen,
     wcModalOpen,
     wcModalClose,

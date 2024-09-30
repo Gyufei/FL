@@ -11,20 +11,20 @@ export function WithHost(path: string) {
 }
 
 export function WithCDN(path: string) {
-  const devCDN = `https://preview-cdn.tadle.com`;
   const prodCDN = `https://cdn.tadle.com`;
+  const devCDN = `https://preview-cdn.tadle.com`;
   const cdn = isProduction ? prodCDN : devCDN;
   return `${cdn}${path}`;
 }
 
-export function WithProjectImgCDN(path: string, isEth: boolean) {
+export function WithProjectImgCDN(path: string, chain: string) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/${isEth ? "eth" : "solana"}/images/project/${goPath}`);
+  return WithCDN(`/${chain}/images/project/${goPath}`);
 }
 
-export function WithPointImgCDN(path: string, isEth: boolean) {
+export function WithPointImgCDN(path: string, chain: string) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
-  return WithCDN(`/${isEth ? "eth" : "solana"}/images/point/${goPath}`);
+  return WithCDN(`/${chain}/images/point/${goPath}`);
 }
 
 export function WithWss(path: string) {
@@ -53,7 +53,7 @@ export const Paths = {
   marketTrades: "/market_place/maker_trades_history",
   userState: "/user/state",
   userName: "/user/user_name",
-  sales_volume_history: "/market_place/sales_volume_history",
+  salesVolumeHistory: "/market_place/sales_volume_history",
   makerSettleAccount: "/market_place/direct_settle_account",
   tokenPrice: "/token/info",
 

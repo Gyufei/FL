@@ -16,14 +16,14 @@ export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
   hookSolana: (args: T) => K,
   args: T,
 ): BaseHookResult {
-  const { isEth, isSolana } = useCurrentChain();
+  const { isEvm, isSolana } = useCurrentChain();
 
-  const actionResEth = hookEth(args);
+  const actionResEvm = hookEth(args);
   const actionResSol = hookSolana(args);
 
   const chainActionRes = useMemo(() => {
-    if (isEth) {
-      return actionResEth;
+    if (isEvm) {
+      return actionResEvm;
     }
 
     if (isSolana) {
@@ -38,7 +38,7 @@ export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
       data: null,
       write: () => {},
     };
-  }, [actionResEth, actionResSol, isEth, isSolana]);
+  }, [actionResEvm, actionResSol, isEvm, isSolana]);
 
   return chainActionRes;
 }

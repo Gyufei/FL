@@ -18,7 +18,7 @@ export default function WalletSelectDialog() {
     WalletSelectDialogVisibleAtom,
   );
 
-  const { isEth, wcModalOpen, wcModalClose, isWcModalOpen } = useCurrentChain();
+  const { isEvm, wcModalOpen, wcModalClose, isWcModalOpen } = useCurrentChain();
 
   const showWallets = wallets.filter(
     (w: Wallet) => w.adapter.name !== "MetaMask",
@@ -52,22 +52,22 @@ export default function WalletSelectDialog() {
   }
 
   useEffect(() => {
-    if (isEth && !isWcModalOpen) {
+    if (isEvm && !isWcModalOpen) {
       onOpenChange(false);
     }
-  }, [isEth, isWcModalOpen]);
+  }, [isEvm, isWcModalOpen]);
 
   useEffect(() => {
-    if (!isEth) return;
+    if (!isEvm) return;
 
     if (walletSelectDialogVisible) {
       wcModalOpen();
     } else {
       wcModalClose();
     }
-  }, [wcModalOpen, walletSelectDialogVisible, wcModalClose, isEth]);
+  }, [wcModalOpen, walletSelectDialogVisible, wcModalClose, isEvm]);
 
-  if (isEth) {
+  if (isEvm) {
     return null;
   }
 
@@ -76,9 +76,10 @@ export default function WalletSelectDialog() {
       <Dialog
         open={walletSelectDialogVisible}
         onOpenChange={(isOpen) => onOpenChange(isOpen)}
+        aria-describedby={undefined}
       >
         <DialogContent className="w-[400px] border-none bg-white p-0 pb-6 md:w-[400px]">
-          <DialogTitle className="justify-center px-6 pt-4 pl-[120px] text-xl leading-[30px] text-black">
+          <DialogTitle className="justify-center px-6 pl-[120px] pt-4 text-xl leading-[30px] text-black">
             Connect a wallet
           </DialogTitle>
           <div className="flex flex-col space-y-4 px-6 pb-4">
@@ -106,7 +107,7 @@ export default function WalletSelectDialog() {
                 {wallet.readyState !== WalletReadyState.Installed && (
                   <div
                     data-state={hoverWallet === wallet.adapter.name}
-                    className="flex cursor-pointer items-center justify-center rounded-full border border-black py-[2px] px-[12px] text-black data-[state=true]:border-yellow data-[state=true]:bg-yellow"
+                    className="flex cursor-pointer items-center justify-center rounded-full border border-black px-[12px] py-[2px] text-black data-[state=true]:border-yellow data-[state=true]:bg-yellow"
                     onClick={() => goToWallet(wallet)}
                   >
                     <div className="text-sm leading-5 text-black">Install</div>
@@ -154,7 +155,7 @@ export default function WalletSelectDialog() {
                 {wallet.readyState !== WalletReadyState.Installed && (
                   <div
                     data-state={hoverWallet === wallet.adapter.name}
-                    className="flex cursor-pointer items-center justify-center rounded-full border border-black py-[2px] px-[12px] data-[state=true]:border-yellow"
+                    className="flex cursor-pointer items-center justify-center rounded-full border border-black px-[12px] py-[2px] data-[state=true]:border-yellow"
                     onClick={() => goToWallet(wallet)}
                   >
                     <div

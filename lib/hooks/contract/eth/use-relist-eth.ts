@@ -1,5 +1,5 @@
 import { PreMarketABI } from "@/lib/abi/eth/PreMarkets";
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
@@ -12,14 +12,14 @@ export function useRelistEth({
   offerStr: string;
   holdingStr: string;
 }) {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { recordTransaction } = useTransactionRecord();
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async () => {
-    const abiAddress = ethConfig.contracts.preMarkets;
+    const abiAddress = evmConfig.contracts.preMarkets;
 
     const callParams = {
       abi: PreMarketABI,

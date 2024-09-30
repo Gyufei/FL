@@ -9,6 +9,7 @@ import { IOffer } from "@/lib/types/offer";
 import { upperFirst } from "lodash";
 import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 import { useTranslations } from "next-intl";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function OfferDetailDrawer({
   orders,
@@ -19,6 +20,7 @@ export default function OfferDetailDrawer({
 }) {
   const ct = useTranslations("Common");
   const ot = useTranslations("drawer-OfferDetail");
+  const { connected } = useChainWallet();
   const { anchor: orderId, setAnchorValue } = useAnchor();
 
   const order = useMemo(() => {
@@ -38,7 +40,7 @@ export default function OfferDetailDrawer({
   const isAsk = order?.offer_type === "ask";
 
   useEffect(() => {
-    if (order) {
+    if (order && connected) {
       setDrawerOpen(true);
     }
 
@@ -59,7 +61,9 @@ export default function OfferDetailDrawer({
     setAnchorValue("");
   }
 
-  if (!order) return null;
+  if (!order) {
+    return null;
+  }
 
   return (
     <>

@@ -5,13 +5,13 @@ import base58 from "bs58";
 import { useCurrentChain } from "./use-current-chain";
 
 export function useChainSignMessage() {
-  const { isEth, isSolana } = useCurrentChain();
+  const { isEvm, isSolana } = useCurrentChain();
 
   const { signMessageAsync: ethSignMessage } = useSignMessage();
 
   const { signMessage: solSignMessage } = useWallet();
 
-  const ethSignAction = useCallback(
+  const evmSignAction = useCallback(
     async (msg: string) => {
       const result = ethSignMessage({ message: msg });
       return result;
@@ -31,14 +31,14 @@ export function useChainSignMessage() {
   );
 
   const signMessage = useMemo(() => {
-    if (isEth) {
-      return ethSignAction;
+    if (isEvm) {
+      return evmSignAction;
     }
 
     if (isSolana) {
       return solSignAction;
     }
-  }, [isEth, isSolana, ethSignAction, solSignAction]);
+  }, [isEvm, isSolana, evmSignAction, solSignAction]);
 
   return {
     signMessage,

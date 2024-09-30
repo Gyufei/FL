@@ -20,6 +20,7 @@ export function useSignInAction() {
       if (!address) throw new Error("Wallet not connected!");
       if (!signMessage)
         throw new Error("Wallet does not support message signing!");
+
       const message = "Welcome to Tadle!";
       const signatureStr = await signMessage(message);
       console.log("signatureStr", signatureStr);

@@ -10,22 +10,25 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 // import { redirect } from "@/app/navigation";
 
 export default function Marketplace() {
-  const { isEth, isSolana, switchToEth, switchToSolana } = useCurrentChain();
+  const { currentChainInfo, switchToBsc, switchToEth, switchToSolana } =
+    useCurrentChain();
   const { searchParams, goWithQueryParams } = useQueryParams();
 
   useEffect(() => {
     const chain = searchParams.get("chain");
 
     if (!chain) {
-      goWithQueryParams("chain", isEth ? "eth" : "solana");
+      goWithQueryParams("chain", currentChainInfo.alias);
     }
-  }, [isEth, isSolana, searchParams]);
+  }, [currentChainInfo, searchParams]);
 
   useEffect(() => {
     const chain = searchParams.get("chain");
 
     if (chain === "eth") {
       switchToEth();
+    } else if (chain === "bsc") {
+      switchToBsc();
     } else if (chain === "solana") {
       switchToSolana();
     }

@@ -132,7 +132,7 @@ export function OfferTypeSelect({
             <div className="flex flex-1 items-center justify-between">
               <div
                 data-checked={types.includes(t.value)}
-                className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
+                className="ml-[5px] text-xs leading-[18px] data-[checked=false]:text-gray data-[checked=true]:text-black"
               >
                 {getI18nLabel(t.label)}
               </div>

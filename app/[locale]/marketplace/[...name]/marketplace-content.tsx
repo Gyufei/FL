@@ -4,21 +4,21 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
 
-import MarketTrades from "@/app/[locale]/marketplace/[...name]/market-trades/market-trades";
-import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
-import OrderList from "@/app/[locale]/marketplace/[...name]/order-list/order-list";
 import LeaderBoard from "@/app/[locale]/marketplace/[...name]/leader-board/leader-board";
+import AdBanner from "./ad-banner";
+import OrderList from "@/app/[locale]/marketplace/[...name]/order-list/order-list";
+import MarketplaceCard from "./marketplace-card";
+import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
+import CreateOfferBtn from "./create-offer-btn";
+// import MarketTrades from "@/app/[locale]/marketplace/[...name]/market-trades/market-trades";
+// import MarketCharts from "./chart/market-charts";
+import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 import { IOffer } from "@/lib/types/offer";
 
-import MarketplaceCard from "./marketplace-card";
-import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
-import CreateOfferBtn from "./create-offer-btn";
-import MarketCharts from "./chart/market-charts";
-import AdBanner from "./ad-banner";
 import { IMarketplace } from "@/lib/types/marketplace";
 
 export default function MarketplaceContent({
@@ -39,8 +39,8 @@ export default function MarketplaceContent({
   });
 
   const canBuyOrders = useMemo(() => {
-    const showOrder = (orders || [])?.filter((order: IOffer) =>
-      ["virgin", "ongoing", "filled"].includes(order.offer_status),
+    const showOrder = (orders || [])?.filter((ord: IOffer) =>
+      ["virgin", "ongoing", "filled"].includes(ord.offer_status),
     );
     const sortO = sortBy(showOrder, "status");
 
@@ -79,14 +79,22 @@ export default function MarketplaceContent({
               marketplace={marketplace}
               isLoading={isMarketLoading}
             />
+            <div className="h-fit">
+              {marketplace && (
+                <CreateOfferBtn
+                  marketplace={marketplace}
+                  onSuccess={refreshOrders}
+                />
+              )}
+            </div>
             <LeaderBoard isLoading={isMarketLoading} className="shrink grow" />
             <AdBanner className="shrink grow-0" />
           </div>
           <div
             className="flex-1"
             style={{
-              minHeight: "min(calc(100vh - 156px), 619px)",
-              maxHeight: "max(calc(100vh - 156px), 619px)",
+              minHeight: "min(calc(100vh - 156px), 691px)",
+              maxHeight: "max(calc(100vh - 156px), 691px)",
             }}
           >
             {isAfterTge ? (
@@ -106,18 +114,18 @@ export default function MarketplaceContent({
               </div>
             ) : (
               <>
-                <OfferDetailDrawer
-                  orders={orders || []}
-                  onSuccess={refreshOrders}
-                />
                 <OrderList
                   orders={canBuyOrders || []}
                   isLoading={isMarketLoading || isOrdersLoading}
                 />
+                <OfferDetailDrawer
+                  orders={orders || []}
+                  onSuccess={refreshOrders}
+                />
               </>
             )}
           </div>
-          <div className="flex w-[368px] flex-col px-6">
+          {/* <div className="flex w-[368px] flex-col px-6">
             <MarketTrades
               marketplace={marketplace}
               isLoading={isMarketLoading}
@@ -133,7 +141,7 @@ export default function MarketplaceContent({
             </div>
 
             {marketplace && <MarketCharts marketplace={marketplace} />}
-          </div>
+          </div> */}
         </div>
         <PageFooter />
       </div>

@@ -13,14 +13,11 @@ import { Input } from "@/components/ui/input";
 import { isProduction } from "@/lib/PathMap";
 import { getDomainName } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
-import { SolanaRPCS } from "@/lib/const/solana";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
 
 export default function FooterSetting() {
   const ct = useTranslations("pop-Setting");
 
-  const { isSolana } = useCurrentChain();
   const {
     chainRpcs,
     currentGlobalRpc,
@@ -136,37 +133,13 @@ export default function FooterSetting() {
           <div className="text-sm leading-5 text-black">
             {ct("cap-Networks")}
           </div>
-          {isProduction && (
-            <NetItem
-              name="Tadle RPC 1"
-              label="Mainnet"
-              rpc={chainRpcs?.TadleRPC1}
-              checked={checkedRpc === chainRpcs.TadleRPC1}
-              onCheckedChange={() => handleCheck(SolanaRPCS.TadleRPC1)}
-            />
-          )}
-
-          {!isProduction && (
-            <>
-              <NetItem
-                name="Tadle Devnet RPC 1"
-                label="Devnet"
-                rpc={chainRpcs.TadleDevRPC1}
-                checked={checkedRpc === chainRpcs.TadleDevRPC1}
-                onCheckedChange={() => handleCheck(chainRpcs.TadleDevRPC1)}
-              />
-
-              {isSolana && (
-                <NetItem
-                  name="Solana Devnet RPC"
-                  label="Devnet"
-                  rpc={SolanaRPCS.solanaDevnet}
-                  checked={checkedRpc === SolanaRPCS.solanaDevnet}
-                  onCheckedChange={() => handleCheck(SolanaRPCS.solanaDevnet)}
-                />
-              )}
-            </>
-          )}
+          <NetItem
+            name="Tadle RPC 1"
+            label="Mainnet"
+            rpc={chainRpcs?.TadleRPC1}
+            checked={checkedRpc === chainRpcs.TadleRPC1}
+            onCheckedChange={() => handleCheck(chainRpcs.TadleRPC1)}
+          />
         </div>
 
         <div className="relative mt-4 border-t border-dashed border-[#eee] pt-4">

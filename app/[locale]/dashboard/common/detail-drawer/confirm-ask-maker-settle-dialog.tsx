@@ -44,6 +44,7 @@ export default function ConfirmAskMakerSettleDialog({
       <DialogContent
         overlayClassName="z-[110]"
         className="z-[110] flex w-[400px] flex-col items-center gap-0 rounded-3xl border-none bg-white p-6"
+        aria-describedby={undefined}
       >
         <DialogTitle>Settle Ask Offer</DialogTitle>
         <div className="mt-[30px] w-full">

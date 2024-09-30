@@ -18,7 +18,7 @@ import { useMemo } from "react";
 import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
-import { useGoSolScan } from "@/lib/hooks/web3/solana/use-go-sol-scan";
+import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
@@ -331,7 +331,7 @@ function OrderRole({ offer }: { offer: IOffer }) {
 }
 
 function OrderHash({ offer }: { offer: IOffer }) {
-  const { handleGoScan } = useGoSolScan();
+  const { handleGoScan } = useGoScan();
 
   const hash = offer.tx_hash;
 

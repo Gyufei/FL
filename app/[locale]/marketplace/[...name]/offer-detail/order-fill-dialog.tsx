@@ -13,7 +13,11 @@ export default function OrderFillDialog({
   res: Record<string, any>;
 }) {
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
+    <Dialog
+      aria-describedby={undefined}
+      open={open}
+      onOpenChange={(isOpen) => onOpenChange(isOpen)}
+    >
       <DialogContent
         overlayClassName="z-[110]"
         className="z-[110] flex w-[400px] flex-col gap-0 rounded-3xl border-none bg-white p-6"

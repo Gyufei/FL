@@ -1,4 +1,4 @@
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { IBalanceType } from "../use-with-draw-collateral-token";
@@ -7,7 +7,7 @@ import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 
 export function useWithDrawCollateralTokenEth() {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { recordTransaction } = useTransactionRecord();
@@ -20,7 +20,7 @@ export function useWithDrawCollateralTokenEth() {
     tokenAddress: string;
     mode: IBalanceType;
   }) => {
-    const abiAddress = ethConfig.contracts.tokenManager;
+    const abiAddress = evmConfig.contracts.tokenManager;
     const modeIndex = [].findIndex((i) => i === mode);
 
     const callParams = {

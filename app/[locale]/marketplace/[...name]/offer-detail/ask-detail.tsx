@@ -14,7 +14,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
-import { useApprove } from "@/lib/hooks/web3/eth/use-approve";
+import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 
 export default function AskDetail({
   offer,

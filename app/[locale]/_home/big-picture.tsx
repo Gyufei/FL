@@ -29,7 +29,7 @@ export default function BigPicture() {
         >
           <source src={videoSrc} type="application/x-mpegURL"></source>
         </video>
-        <div className="absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center justify-center bg-[rgba(45,46,51,0.3)]">
+        <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-[rgba(45,46,51,0.3)]">
           <Image src="/icons/play.svg" width={120} height={120} alt="play" />
         </div>
       </div>

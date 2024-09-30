@@ -35,7 +35,7 @@ export default function DateRangePickerDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog aria-describedby={undefined} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         className="w-[838px] border-none bg-white p-4"

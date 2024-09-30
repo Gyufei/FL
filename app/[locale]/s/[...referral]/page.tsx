@@ -1,8 +1,9 @@
 "use client";
-import Image from "next/image";
-import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
-import { useRouter } from "@/app/navigation";
 import { useEffect, useMemo } from "react";
+import Image from "next/image";
+
+import { useRouter } from "@/app/navigation";
+import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function ReferralPage({ params }: { params: any }) {

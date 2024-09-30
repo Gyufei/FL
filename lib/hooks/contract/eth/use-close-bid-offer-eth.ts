@@ -1,4 +1,4 @@
-import { useEthConfig } from "../../web3/use-eth-config";
+import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
@@ -15,7 +15,7 @@ export function useCloseBidOfferEth({
   makerStr: string;
   offerStr: string;
 }) {
-  const { ethConfig } = useEthConfig();
+  const { evmConfig } = useEvmConfig();
   const { getGasParams } = useGasEth();
 
   const { address } = useChainWallet();
@@ -24,7 +24,7 @@ export function useCloseBidOfferEth({
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async () => {
-    const abiAddress = ethConfig.contracts.deliveryPlace;
+    const abiAddress = evmConfig.contracts.deliveryPlace;
 
     const callParams = {
       abi: DeliveryPlaceABI,

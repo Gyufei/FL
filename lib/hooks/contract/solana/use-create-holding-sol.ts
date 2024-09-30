@@ -5,7 +5,7 @@ import { BN } from "bn.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
-import { SolanaZeroed } from "@/lib/const/solana";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export function useCreateHoldingSol({
   marketplaceStr,
@@ -58,7 +58,7 @@ export function useCreateHoldingSol({
     const originOffer = new PublicKey(originOfferStr);
     const originOfferAuthority = new PublicKey(originOfferAuthStr);
     const preOfferAuthority = new PublicKey(preOfferAuthStr);
-    const referrer = new PublicKey(referrerStr || SolanaZeroed);
+    const referrer = new PublicKey(referrerStr || ChainConfigs.solana.zeroAddr);
 
     const {
       walletCollateralTokenBalance: walletBCollateralTokenBalance,

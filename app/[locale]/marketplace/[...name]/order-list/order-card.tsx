@@ -31,7 +31,7 @@ export function OrderCard({ order }: { order: IOffer }) {
     offerLogo,
     forLogo,
     pointPerPrice,
-    orderDuration,
+    // orderDuration,
     tokenTotalPrice,
   } = useOfferFormat({
     offer: order,
@@ -81,7 +81,7 @@ export function OrderCard({ order }: { order: IOffer }) {
           />
           <div
             data-zero={Number(progress) === 0 ? true : false}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=true]:text-gray data-[zero=false]:text-black"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=false]:text-black data-[zero=true]:text-gray"
           >
             {formatNum(NP.times(progress, 100))}%
           </div>
@@ -149,7 +149,7 @@ export function OrderCard({ order }: { order: IOffer }) {
 
       <div className="flex items-center justify-between pt-3">
         <div className="text-xs leading-[18px] text-lightgray">
-          {orderDuration}
+          {/* {orderDuration} */}
         </div>
         <div className="flex items-center">
           {order.order_note && (
@@ -182,18 +182,19 @@ export function OrderCard({ order }: { order: IOffer }) {
             <WithWalletConnectBtn
               onClick={() => handleShowOrderOffer(order.offer_id)}
             >
-              <button className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
+              <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 {orderType === "ask" ? t("btn-Buy") : t("btn-Sell")}
               </button>
             </WithWalletConnectBtn>
           )}
           {done && (
-            <button
+            <WithWalletConnectBtn
               onClick={() => handleShowOrderOffer(order.offer_id)}
-              className="flex items-center justify-center rounded-full border border-[#eee] py-1 px-[18px] text-sm leading-5 text-black hover:border-transparent hover:bg-yellow"
             >
-              {t("btn-Detail")}
-            </button>
+              <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
+                {t("btn-Detail")}
+              </button>
+            </WithWalletConnectBtn>
           )}
         </div>
       </div>
@@ -218,7 +219,7 @@ export function OrderCardSkeleton() {
           <CircleProgress percentage={0} className="scale-[1.1429]" />
           <div
             data-zero={true}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=true]:text-gray data-[zero=false]:text-black"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs leading-[18px] data-[zero=false]:text-black data-[zero=true]:text-gray"
           >
             0%
           </div>

@@ -10,7 +10,7 @@ import { useSolanaConfig } from "../../web3/solana/use-solana-config";
 
 export function useAccountsSol(programId: PublicKey) {
   const { publicKey: authority } = useWallet();
-  const { solanaConfig: clusterConfig } = useSolanaConfig();
+  const { solanaConfig } = useSolanaConfig();
 
   async function getAccounts() {
     const tokenProgram = TOKEN_PROGRAM_ID;
@@ -30,7 +30,7 @@ export function useAccountsSol(programId: PublicKey) {
     )[0];
 
     const projectTokenMint = new PublicKey(
-      clusterConfig.program.projectTokenMint,
+      solanaConfig.contracts.projectTokenMint,
     );
 
     const poolTokenAuthority = PublicKey.findProgramAddressSync(
@@ -52,7 +52,7 @@ export function useAccountsSol(programId: PublicKey) {
       true,
     );
 
-    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
+    const usdcTokenMint = new PublicKey(solanaConfig.contracts.usdcTokenMint);
     const wsolTokenMint = new PublicKey(
       "So11111111111111111111111111111111111111112",
     );
@@ -118,7 +118,7 @@ export function useAccountsSol(programId: PublicKey) {
     marketplace: PublicKey,
     isNativeToken = false,
   ) {
-    const usdcTokenMint = new PublicKey(clusterConfig.program.usdcTokenMint);
+    const usdcTokenMint = new PublicKey(solanaConfig.contracts.usdcTokenMint);
     const wsolTokenMint = new PublicKey(
       "So11111111111111111111111111111111111111112",
     );

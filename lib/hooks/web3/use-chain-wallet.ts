@@ -5,16 +5,16 @@ import { useAccount, useDisconnect } from "wagmi";
 import { useCurrentChain } from "./use-current-chain";
 
 export function useChainWallet() {
-  const { isEth, isSolana } = useCurrentChain();
+  const { isEvm, isSolana } = useCurrentChain();
 
   const {
-    address: ethAddress,
-    isConnected: ethConnected,
+    address: evmAddress,
+    isConnected: evmConnected,
     // isDisconnected: isEthDisconnected,
-    isConnecting: ethConnecting,
+    isConnecting: evmConnecting,
   } = useAccount();
 
-  const { disconnect: ethDisconnect } = useDisconnect();
+  const { disconnect: evmDisconnect } = useDisconnect();
 
   const {
     publicKey: solAddress,
@@ -24,33 +24,33 @@ export function useChainWallet() {
   } = useWallet();
 
   const getAboutChain = useCallback(
-    (ethThing: any, solThing: any) => {
-      if (isEth) {
-        return ethThing;
+    (evmThing: any, bscThing: any, solThing: any) => {
+      if (isEvm) {
+        return evmThing;
       }
 
       if (isSolana) {
         return solThing;
       }
     },
-    [isEth, isSolana],
+    [isEvm, isSolana],
   );
 
   const connected = useMemo(() => {
-    return getAboutChain(ethConnected, solConnected);
-  }, [getAboutChain, ethConnected, solConnected]);
+    return getAboutChain(evmConnected, evmConnected, solConnected);
+  }, [getAboutChain, evmConnected, solConnected]);
 
   const connecting = useMemo(() => {
-    return getAboutChain(ethConnecting, solConnecting);
-  }, [getAboutChain, ethConnecting, solConnecting]);
+    return getAboutChain(evmConnecting, evmConnecting, solConnecting);
+  }, [getAboutChain, evmConnecting, solConnecting]);
 
   const address = useMemo(() => {
-    return getAboutChain(ethAddress, solAddress?.toBase58());
-  }, [getAboutChain, ethAddress, solAddress]);
+    return getAboutChain(evmAddress, evmAddress, solAddress?.toBase58());
+  }, [getAboutChain, evmAddress, solAddress]);
 
   const disconnect = useMemo(() => {
-    return getAboutChain(ethDisconnect, solDisconnect);
-  }, [getAboutChain, ethDisconnect, solDisconnect]);
+    return getAboutChain(evmDisconnect, evmDisconnect, solDisconnect);
+  }, [getAboutChain, evmDisconnect, solDisconnect]);
 
   const shortAddr = useMemo(() => {
     if (!address) return "";

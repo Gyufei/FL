@@ -5,14 +5,14 @@ import useTxStatus from "../help/use-tx-status";
 // import { useGasEth } from "../help/use-gas-eth";
 
 export function useRollinEth() {
-  // const { ethConfig } = useEthConfig();
+  // const { evmConfig } = useEvmConfig();
   // // const { getGasParams } = useGasEth();
 
   // const { recordTransaction } = useTransactionRecord();
   // const { writeContractAsync } = useWriteContract();
 
   const getRollingData = async () => {
-    // const abiAddress = ethConfig.contracts.preMarkets;
+    // const abiAddress = evmConfig.contracts.preMarkets;
 
     return {
       rollinAt: new Date().getTime(),
@@ -20,7 +20,7 @@ export function useRollinEth() {
   };
 
   const txAction = async () => {
-    // const abiAddress = ethConfig.contracts.preMarkets;
+    // const abiAddress = evmConfig.contracts.preMarkets;
     // const callParams = {
     //   abi: PreMarketABI,
     //   address: abiAddress as any,

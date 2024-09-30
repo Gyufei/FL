@@ -43,7 +43,11 @@ export default function ConfirmAskTakerSettleDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => onOpenChange(isOpen)}
+      aria-describedby={undefined}
+    >
       <DialogContent
         overlayClassName="z-[110]"
         className="z-[110] flex w-[400px] flex-col items-center gap-0 rounded-3xl border-none bg-white p-6"

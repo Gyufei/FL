@@ -80,7 +80,7 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     network: isProduction ? 56 : 97,
     rpcs: {
       TadleRPC1:
-        process.env.NEXT_PUBLIC_DEFAULT_RPC_ETH || "https://rpc.ankr.com/bsc",
+        process.env.NEXT_PUBLIC_DEFAULT_RPC_BSC || "https://rpc.ankr.com/bsc",
       TadleDevRPC1: "https://rpc.ankr.com/bsc_testnet_chapel",
     },
     contracts: isProduction

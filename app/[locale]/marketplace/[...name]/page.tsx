@@ -8,7 +8,7 @@ import MarketplaceContent from "./marketplace-content";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
-  const { isEth } = useCurrentChain();
+  const { isEth, isBsc } = useCurrentChain();
   const router = useRouter();
 
   const { data: allMarket, isLoading: isMarketLoading } =
@@ -20,8 +20,8 @@ export default function Marketplace({ params }: { params: { name: string } }) {
 
   const isCurrentChainMarket = useMemo(() => {
     if (!marketplace) return false;
-    return marketplace.chain === (isEth ? "eth" : "solana");
-  }, [marketplace, isEth]);
+    return marketplace.chain === (isEth ? "eth" : isBsc ? "bsc" : "solana");
+  }, [marketplace, isEth, isBsc]);
 
   if (!allMarket || !marketplaceName) return null;
 

@@ -2,12 +2,12 @@ import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import NP from "number-precision";
 
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
 import MainLayout from "@/app/[locale]/_page-layout/main-layout";
-import GlobalProvider from "@/components/provider/global-provider";
 import SolanaWalletProviders from "@/components/provider/solana-wallets";
 import Web3ModalProvider from "@/components/provider/web3-modal";
 import "react-modern-drawer/dist/index.css";
@@ -64,23 +64,22 @@ export default async function RootLayout({
   params: { locale: string };
 }) {
   const messages = await getMessages();
+  NP.enableBoundaryChecking(false);
 
   return (
     <html lang={locale}>
       <body className={cn(VideoFont.variable)}>
-        <GlobalProvider>
-          <JotaiProvider>
-            <Web3ModalProvider>
-              <SolanaWalletProviders>
-                <SWRConfigProvider>
-                  <NextIntlClientProvider messages={messages}>
-                    <MainLayout>{children}</MainLayout>
-                  </NextIntlClientProvider>
-                </SWRConfigProvider>
-              </SolanaWalletProviders>
-            </Web3ModalProvider>
-          </JotaiProvider>
-        </GlobalProvider>
+        <JotaiProvider>
+          <Web3ModalProvider>
+            <SolanaWalletProviders>
+              <SWRConfigProvider>
+                <NextIntlClientProvider messages={messages}>
+                  <MainLayout>{children}</MainLayout>
+                </NextIntlClientProvider>
+              </SWRConfigProvider>
+            </SolanaWalletProviders>
+          </Web3ModalProvider>
+        </JotaiProvider>
       </body>
     </html>
   );

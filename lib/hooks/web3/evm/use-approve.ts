@@ -21,7 +21,7 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
 
   const CT = useTranslations("Common");
 
-  const { isEth } = useCurrentChain();
+  const { isEvm } = useCurrentChain();
   const { address } = useAccount();
   const { data: tokens } = useTokens();
 
@@ -39,12 +39,12 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   });
 
   useEffect(() => {
-    if (!isEth) {
+    if (!isEvm) {
       return;
     }
 
     readAllowance();
-  }, [isEth, address, spender, tokenAddr, allowAmount]);
+  }, [isEvm, address, spender, tokenAddr, allowAmount]);
 
   useEffect(() => {
     if (txReceipt) {
@@ -74,7 +74,7 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
   }
 
   const isShouldApprove = useMemo(() => {
-    if (!isEth || !tokenAddr) return false;
+    if (!isEvm || !tokenAddr) return false;
 
     const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
     if (tokenSymbol === "ETH") return false;
@@ -84,10 +84,10 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
     if (allowance < allowAmount) return true;
 
     return false;
-  }, [allowance, allowAmount, isEth, isAllowanceLoading, tokenAddr, tokens]);
+  }, [allowance, allowAmount, isEvm, isAllowanceLoading, tokenAddr, tokens]);
 
   const approveBtnText = useMemo(() => {
-    if (!isEth || !tokenAddr) return "";
+    if (!isEvm || !tokenAddr) return "";
 
     const tokenSymbol = tokens?.find((t) => t.address === tokenAddr)?.symbol;
 
@@ -100,10 +100,10 @@ export function useApprove(tokenAddr: string, allowAmount: number = 0) {
     }
 
     return "";
-  }, [tokens, isShouldApprove, isEth, tokenAddr, CT, isApproving]);
+  }, [tokens, isShouldApprove, isEvm, tokenAddr, CT, isApproving]);
 
   async function approveAction() {
-    if (!isEth || !tokenAddr) return;
+    if (!isEvm || !tokenAddr) return;
 
     setIsApproving(true);
     const findToken = tokens?.find((t) => t.address === tokenAddr);

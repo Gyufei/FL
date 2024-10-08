@@ -13,7 +13,7 @@ export default function MainLayout({
     localStorage.removeItem("gRPC");
     localStorage.removeItem("cRPC");
     localStorage.removeItem("globalRpcs");
-    localStorage.removeItem("customRpcs")
+    localStorage.removeItem("customRpcs");
   }, []);
 
   return (

@@ -13,6 +13,8 @@
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
     "@emotion/react": "^11.13.3",
+    "@privy-io/react-auth": "^1.88.4",
+    "@privy-io/wagmi": "^0.2.12",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.0",

@@ -3,7 +3,7 @@ import { useCurrentChain } from "../../web3/use-current-chain";
 import { IToken } from "@/lib/types/token";
 
 export function useIsNativeToken(token?: IToken | null) {
-  const { isEth, isSolana } = useCurrentChain();
+  const { isEth, isBsc, isSolana } = useCurrentChain();
 
   const checkIsNativeToken = useCallback(
     (token: IToken | null) => {
@@ -13,13 +13,17 @@ export function useIsNativeToken(token?: IToken | null) {
         return token.symbol === "ETH";
       }
 
+      if (isBsc) {
+        return token.symbol === "BNB";
+      }
+
       if (isSolana) {
         return token.symbol === "SOL";
       }
 
       return false;
     },
-    [isEth, isSolana],
+    [isEth, isBsc, isSolana],
   );
 
   const isNativeToken = useMemo(() => {

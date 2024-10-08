@@ -18,12 +18,10 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     alias: "solana",
     logo: "/icons/solana.svg",
     rpcs: {
-      TadleRPC1:
-        process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA ||
-        "https://rpc.ankr.com/solana",
-      TadleDevRPC1: "https://rpc.ankr.com/solana_devnet",
-      solanaDevnet: "https://api.devnet.solana.com/",
-      solanaTestnet: "https://api.testnet.solana.com/",
+      TadleRPC1: isProduction
+        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA ||
+          "https://rpc.ankr.com/solana"
+        : "https://rpc.ankr.com/solana_devnet",
     },
     zeroAddr: "11111111111111111111111111111111",
     network: isProduction
@@ -51,9 +49,9 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 1 : 1337,
     rpcs: {
-      TadleRPC1:
-        process.env.NEXT_PUBLIC_DEFAULT_RPC_ETH || "https://rpc.ankr.com/eth",
-      TadleDevRPC1: "https://devnet-rpc.aggregation.top/",
+      TadleRPC1: isProduction
+        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_ETH || "https://rpc.ankr.com/eth"
+        : "https://devnet-rpc.aggregation.top/",
     },
     contracts: isProduction
       ? {
@@ -79,9 +77,9 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 56 : 97,
     rpcs: {
-      TadleRPC1:
-        process.env.NEXT_PUBLIC_DEFAULT_RPC_BSC || "https://rpc.ankr.com/bsc",
-      TadleDevRPC1: "https://rpc.ankr.com/bsc_testnet_chapel",
+      TadleRPC1: isProduction
+        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_BSC || "https://rpc.ankr.com/bsc"
+        : "https://rpc.ankr.com/bsc_testnet_chapel",
     },
     contracts: isProduction
       ? {

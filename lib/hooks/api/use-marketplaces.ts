@@ -8,12 +8,15 @@ import { useCurrentChain } from "../web3/use-current-chain";
 import { useMemo } from "react";
 
 export function useAllChainMarketplaces() {
-  const { ethApiEndPoint, solanaApiEndPoint, bscApiEndPoint } = useEndPoint();
+  // TODO: BSC add
+  // const { ethApiEndPoint, solanaApiEndPoint, bscApiEndPoint } = useEndPoint();
+  const { ethApiEndPoint, solanaApiEndPoint } = useEndPoint();
 
   const AllChainMarketplacesFetcher = async () => {
     const [ethRes, bscRes, solanaRes] = await Promise.all([
       fetcher(`${ethApiEndPoint}${Paths.marketplace}?market_type=point`),
-      fetcher(`${bscApiEndPoint}${Paths.marketplace}?market_type=point`),
+      [],
+      // fetcher(`${bscApiEndPoint}${Paths.marketplace}?market_type=point`),
       fetcher(`${solanaApiEndPoint}${Paths.marketplace}?market_type=point`),
     ]);
 

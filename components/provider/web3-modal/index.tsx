@@ -1,26 +1,17 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { config, projectId, metadata } from "./web3-modal-config";
-
-import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { getEvmWagmiConfig } from "./wagmi-config";
+import { State } from "wagmi";
+import { PrivyProvider } from "@privy-io/react-auth";
+import { WagmiProvider } from "@privy-io/wagmi";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import { State, WagmiProvider } from "wagmi";
+import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
+import { useAtomValue } from "jotai";
 
 // Setup queryClient
 const queryClient = new QueryClient();
-
-if (!projectId) throw new Error("Project ID is not defined");
-
-// Create modal
-createWeb3Modal({
-  metadata,
-  wagmiConfig: config,
-  projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
-});
 
 export default function Web3ModalProvider({
   children,
@@ -29,9 +20,21 @@ export default function Web3ModalProvider({
   children: ReactNode;
   initialState?: State;
 }) {
+  const globalRpcs = useAtomValue(GlobalRpcsAtom);
+  const customRpcs = useAtomValue(CustomRpcsAtom);
+
+  const wagmiConfig = getEvmWagmiConfig({
+    ethRpc: customRpcs.eth || globalRpcs.eth,
+    bscRpc: customRpcs.bsc || globalRpcs.bsc,
+  });
+
   return (
-    <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </WagmiProvider>
+    <PrivyProvider appId="cm1zw8i5x0467pxhlk18wzyat" config={{}}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={wagmiConfig} initialState={initialState}>
+          {children}
+        </WagmiProvider>
+      </QueryClientProvider>
+    </PrivyProvider>
   );
 }

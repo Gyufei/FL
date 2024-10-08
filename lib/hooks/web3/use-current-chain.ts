@@ -9,10 +9,10 @@ import {
   NetworkAtom,
 } from "@/lib/states/network";
 import { useSwitchChain } from "wagmi";
-import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react";
 
 import { useQueryParams } from "../common/use-query-params";
 import { ChainConfigs, IChainConfig } from "@/lib/const/chain-config";
+import { useLogin, useModalStatus } from "@privy-io/react-auth";
 
 export function useCurrentChain() {
   const [network, setNetwork] = useAtom(NetworkAtom);
@@ -21,8 +21,9 @@ export function useCurrentChain() {
   const isSolana = useAtomValue(IsSolanaAtom);
   const isEvm = isEth || isBsc;
 
-  const { open: wcModalOpen, close: wcModalClose } = useWeb3Modal();
-  const { open: isWcModalOpen } = useWeb3ModalState();
+  const wcModalClose = () => {};
+  const { login: wcModalOpen } = useLogin();
+  const { isOpen: isWcModalOpen } = useModalStatus();
   const { switchChainAsync } = useSwitchChain();
 
   const { goWithQueryParams } = useQueryParams();

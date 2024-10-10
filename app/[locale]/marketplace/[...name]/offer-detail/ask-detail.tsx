@@ -159,7 +159,7 @@ export default function AskDetail({
             </>
           ) : (
             <>
-              <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
+              <WithWalletConnectBtn onClick={handleDeposit} >
                 <button
                   disabled={
                     isDepositLoading || !receivePointAmount || isApproving

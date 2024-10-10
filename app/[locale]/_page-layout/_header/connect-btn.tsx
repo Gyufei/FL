@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -8,85 +7,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { truncateAddr } from "@/lib/utils/web3";
-import WalletSelectDialog, {
-  WalletSelectDialogVisibleAtom,
-} from "@/components/share/wallet-select-dialog";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useSignInAction } from "@/lib/hooks/web3/use-sign-in-action";
-import { AccessTokenAtom, ShowSignDialogAtom } from "@/lib/states/user";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { useUpdateReferral } from "@/lib/hooks/contract/use-update-referral";
-import { useReferralCodeData } from "@/lib/hooks/api/use-referral-data";
-import { usePathname, useRouter } from "@/app/navigation";
-import { useReferralView } from "@/lib/hooks/api/use-referral";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useSwitchInEvm } from "@/lib/hooks/web3/evm/use-switch-in-evm";
+import { usePrivyWallet } from "@/lib/hooks/web3/use-privy-wallet";
+import { useState } from "react";
+import { useLogout } from "@privy-io/react-auth";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
   const t = useTranslations("Header");
 
-  const setWalletSelectDialogVisible = useSetAtom(
-    WalletSelectDialogVisibleAtom,
-  );
-
-  const query = useSearchParams();
-  const referralCode = query.get("s") || "";
-
-  const { trigger: viewReferral } = useReferralView();
-
-  const openWalletSelectDialog = useCallback(() => {
-    setWalletSelectDialogVisible(true);
-  }, [setWalletSelectDialogVisible]);
-
-  const { address, shortAddr, connected, connecting } = useChainWallet();
-
-  const token = useAtomValue(AccessTokenAtom);
-  const [showSignIn, setShowSignIn] = useAtom(ShowSignDialogAtom);
-
-  useEffect(() => {
-    if (referralCode && address) {
-      viewReferral({ referral_code: referralCode, authority: address });
-    }
-  }, [referralCode, viewReferral, address]);
-
-  const [hasShow, setHasShow] = useState(false);
-
-  useEffect(() => {
-    if (hasShow) return;
-
-    setTimeout(() => {
-      const noConnect = !connecting && !connected && !address;
-      if (noConnect) {
-        setWalletSelectDialogVisible(true);
-        setHasShow(true);
-      }
-    }, 500);
-  }, [hasShow, connecting, connected, address, setWalletSelectDialogVisible]);
-
-  useEffect(() => {
-    if (address && (referralCode || !token)) {
-      setShowSignIn(true);
-      return;
-    }
-  }, [address, setShowSignIn, token, referralCode]);
+  const { toConnectWallet } = usePrivyWallet();
+  const { shortAddr, connected, connecting } = useChainWallet();
+  const [showSignIn, setShowSignIn] = useState(false);
 
   if (!connected) {
     return (
       <>
         <button
           className="shadow-25 h-10 rounded-full bg-[#f0f1f5] px-4 text-base leading-6 transition-all sm:h-12 sm:px-[22px]"
-          onClick={() => openWalletSelectDialog()}
+          onClick={() => toConnectWallet()}
         >
           <span className="hidden sm:inline-block">
             {t("btn-ConnectWallet")}
           </span>
           <span className="inline-block sm:hidden">{t("btn-Connect")}</span>
         </button>
-        <WalletSelectDialog />
       </>
     );
   }
@@ -115,132 +62,20 @@ export default function ConnectBtn() {
         }}
         aria-describedby={undefined}
       >
-        {referralCode ? (
-          <ReferralSignInBtn referralCode={referralCode} />
-        ) : token ? (
-          <SignOutBtn />
-        ) : (
-          <ContinueBtn />
-        )}
+        <SignOutBtn />
       </DialogContent>
     </Dialog>
   );
 }
 
-export function ContinueBtn() {
-  const t = useTranslations("Header");
-  const { signInAction } = useSignInAction();
-  const { checkAndSwitchInEvm } = useSwitchInEvm();
-
-  function handleSignIn() {
-    checkAndSwitchInEvm();
-    signInAction();
-  }
-
-  return (
-    <>
-      <div className="mb-3 text-xl leading-[30px] text-black">
-        {t("cap-YouAreSignedOut")}
-      </div>
-      <div className="min-h-10 px-5 text-center text-sm leading-5 text-black">
-        {t("txt-SignAMessageInYourWallet")}
-      </div>
-      <div className="mt-10 w-full">
-        <button
-          onClick={handleSignIn}
-          className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
-        >
-          {t("btn-Continue")}
-        </button>
-      </div>
-    </>
-  );
-}
-
-export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
-  const t = useTranslations("Header");
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const { data: codeData } = useReferralCodeData({ code: referralCode });
-
-  const referrerStr = useMemo(() => {
-    if (!codeData) return "";
-    return codeData.authority;
-  }, [codeData]);
-
-  const shortAddr = useMemo(() => {
-    if (!referrerStr) return "";
-    return truncateAddr(referrerStr, {
-      nPrefix: 4,
-      nSuffix: 4,
-    });
-  }, [referrerStr]);
-
-  const {
-    data: txHash,
-    isLoading: isUpdating,
-    isSuccess,
-    write: writeAction,
-  } = useUpdateReferral({
-    referrerStr,
-    referralCode,
-  });
-
-  function handleSignInReferral() {
-    if (isUpdating || !codeData) return;
-    writeAction(undefined);
-  }
-
-  useEffect(() => {
-    if (isSuccess) {
-      if (searchParams.get("s")) {
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("s");
-
-        router.replace(pathname + `?${params.toString()}`);
-      }
-    }
-  }, [isSuccess, txHash]);
-
-  return (
-    <>
-      <div className="mb-3 text-xl leading-[30px] text-black">
-        {t("cap-Welcome")}
-      </div>
-      <div className="min-h-10 px-5 text-center text-sm leading-5 text-black">
-        {t.rich("txt-YourFriendSentYouAnOnboardingInvitation", {
-          name: (_chunks: any) => (
-            <span className="text-green">{shortAddr}</span>
-          ),
-          num: (_chunks: any) => (
-            <span className="text-green">
-              {Number(codeData?.authority_rate || 0) / 10 ** 4 + "%"}
-            </span>
-          ),
-        })}
-      </div>
-      <div className="mt-10 w-full">
-        <button
-          onClick={handleSignInReferral}
-          className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
-        >
-          {t("btn-SignIn")}
-        </button>
-      </div>
-    </>
-  );
-}
-
 function SignOutBtn() {
   const t = useTranslations("Header");
+  const { logout } = useLogout();
   const { disconnect } = useChainWallet();
-  const setToken = useSetAtom(AccessTokenAtom);
 
   const handleDisconnect = () => {
+    logout();
     disconnect();
-    setToken("");
   };
 
   return (

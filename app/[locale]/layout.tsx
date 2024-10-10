@@ -2,14 +2,13 @@ import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import NP from "number-precision";
 
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
 import MainLayout from "@/app/[locale]/_page-layout/main-layout";
 import SolanaWalletProviders from "@/components/provider/solana-wallets";
-import Web3ModalProvider from "@/components/provider/web3-modal";
+import Web3ModalProvider from "@/components/provider/wallet-context";
 import "react-modern-drawer/dist/index.css";
 
 export const metadata = {
@@ -64,7 +63,6 @@ export default async function RootLayout({
   params: { locale: string };
 }) {
   const messages = await getMessages();
-  NP.enableBoundaryChecking(false);
 
   return (
     <html lang={locale}>

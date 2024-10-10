@@ -6,7 +6,7 @@ import { Connection } from "@solana/web3.js";
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
 import { isProduction } from "@/lib/PathMap";
-import { testnet } from "@/components/provider/web3-modal/testnet";
+import { testnet } from "@/components/provider/wallet-context/testnet";
 import { ChainConfigs } from "@/lib/const/chain-config";
 
 export function useRpc() {

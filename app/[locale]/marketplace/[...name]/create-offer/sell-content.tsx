@@ -216,7 +216,7 @@ export function SellContent({
       <WithWalletConnectBtn
         className="w-full"
         onClick={handleConfirmBtnClick}
-        shouldSignIn={true}
+        
       >
         <button
           disabled={isCreateLoading || isApproving}

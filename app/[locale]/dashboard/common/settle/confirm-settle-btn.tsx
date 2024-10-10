@@ -13,7 +13,7 @@ export default function ConfirmSettleBtn({
     <WithWalletConnectBtn
       className="w-full"
       onClick={onClick}
-      shouldSignIn={true}
+      
     >
       <button
         disabled={disabled}

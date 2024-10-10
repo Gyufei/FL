@@ -22,7 +22,7 @@ export default function NavigationBtns() {
   return (
     <div className="hidden flex-1 items-center space-x-5 sm:flex">
       <WithWalletConnectBtn
-        shouldSignIn={true}
+        
         onClick={() => handleClick(`/dashboard`)}
       >
         <div>

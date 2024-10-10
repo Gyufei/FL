@@ -162,7 +162,7 @@ export default function MyBidDetail({
                 !afterTGE ? (
                   <WithWalletConnectBtn
                     onClick={handleRelist}
-                    shouldSignIn={true}
+                    
                   >
                     <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                       {ot("btn-RelistThisOffer")}
@@ -187,7 +187,7 @@ export default function MyBidDetail({
                       {afterTGE ? (
                         <WithWalletConnectBtn
                           onClick={handleBidClose}
-                          shouldSignIn={true}
+                          
                         >
                           <button
                             disabled={isBidClosing}
@@ -200,7 +200,7 @@ export default function MyBidDetail({
                         <>
                           <WithWalletConnectBtn
                             onClick={handleClose}
-                            shouldSignIn={true}
+                            
                           >
                             <button
                               disabled={isClosing}

@@ -4,9 +4,9 @@ import { testnet } from "./testnet";
 import { isProduction } from "@/lib/PathMap";
 import { createConfig } from "@privy-io/wagmi";
 
-const chains = isProduction
+export const supportedChains = isProduction
   ? ([mainnet, bsc] as const)
-  : ([mainnet, bsc, bscTestnet, testnet] as const);
+  : ([mainnet, bsc, testnet, bscTestnet] as const);
 
 export function getEvmWagmiConfig({
   ethRpc,
@@ -26,7 +26,7 @@ export function getEvmWagmiConfig({
       };
 
   return createConfig({
-    chains,
+    chains: supportedChains,
     ssr: true,
     storage: createStorage({
       storage: cookieStorage,

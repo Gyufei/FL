@@ -23,7 +23,7 @@ export default function SettleDrawerBtn({
     <div>
       <WithWalletConnectBtn
         onClick={() => handleDrawerOpen(true)}
-        shouldSignIn={true}
+        
       >
         <div className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black data-[disabled=true]:bg-gray">
           <Image src="/icons/settle.svg" width={16} height={16} alt="list" />

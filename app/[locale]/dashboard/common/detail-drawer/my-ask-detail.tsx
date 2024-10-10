@@ -162,7 +162,7 @@ export default function MyAskDetail({
               <WithWalletConnectBtn
                 className="flex-1"
                 onClick={handleSettle}
-                shouldSignIn={true}
+                
               >
                 <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                   {ot("btn-SettleThisOffer")}
@@ -187,7 +187,7 @@ export default function MyAskDetail({
                       ) : (
                         <WithWalletConnectBtn
                           onClick={handleRelist}
-                          shouldSignIn={true}
+                          
                         >
                           <button className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                             {ot("btn-RelistThisOffer")}
@@ -205,7 +205,7 @@ export default function MyAskDetail({
                             <WithWalletConnectBtn
                               className="flex-1"
                               onClick={handleClose}
-                              shouldSignIn={true}
+                              
                             >
                               <button
                                 disabled={isClosing}
@@ -235,7 +235,7 @@ export default function MyAskDetail({
               <WithWalletConnectBtn
                 className="flex-1"
                 onClick={handleAbort}
-                shouldSignIn={true}
+                
               >
                 <button
                   disabled={isAborting}

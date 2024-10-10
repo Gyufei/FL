@@ -12,7 +12,6 @@ import { useSwitchChain } from "wagmi";
 
 import { useQueryParams } from "../common/use-query-params";
 import { ChainConfigs, IChainConfig } from "@/lib/const/chain-config";
-import { useLogin, useModalStatus } from "@privy-io/react-auth";
 
 export function useCurrentChain() {
   const [network, setNetwork] = useAtom(NetworkAtom);
@@ -21,9 +20,6 @@ export function useCurrentChain() {
   const isSolana = useAtomValue(IsSolanaAtom);
   const isEvm = isEth || isBsc;
 
-  const wcModalClose = () => {};
-  const { login: wcModalOpen } = useLogin();
-  const { isOpen: isWcModalOpen } = useModalStatus();
   const { switchChainAsync } = useSwitchChain();
 
   const { goWithQueryParams } = useQueryParams();
@@ -77,8 +73,5 @@ export function useCurrentChain() {
     switchToEth,
     switchToSolana,
     switchToBsc,
-    isWcModalOpen,
-    wcModalOpen,
-    wcModalClose,
   };
 }

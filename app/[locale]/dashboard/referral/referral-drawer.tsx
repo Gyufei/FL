@@ -197,7 +197,7 @@ export default function DetailDrawer({
         <WithWalletConnectBtn
           className="w-full"
           onClick={handleSaveRate}
-          shouldSignIn={true}
+          
         >
           <button
             // disabled={isCreateLoading}

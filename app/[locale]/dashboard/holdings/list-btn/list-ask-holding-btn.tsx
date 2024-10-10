@@ -95,7 +95,7 @@ export default function ListAskHoldingBtn({
     <div>
       <WithWalletConnectBtn
         onClick={() => setDrawerOpen(true)}
-        shouldSignIn={true}
+        
       >
         <ListBtn />
       </WithWalletConnectBtn>
@@ -194,7 +194,7 @@ export default function ListAskHoldingBtn({
             <OrderNoteAndFee value={note} onValueChange={setNote} type="sell" />
           </div>
 
-          <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
+          <WithWalletConnectBtn onClick={handleDeposit} >
             <button
               disabled={isDepositLoading}
               className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"

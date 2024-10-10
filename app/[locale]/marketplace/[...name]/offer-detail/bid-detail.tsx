@@ -148,7 +148,7 @@ export default function BidDetail({
               {T("btn-Offer100%Filled")}
             </button>
           ) : (
-            <WithWalletConnectBtn onClick={handleDeposit} shouldSignIn={true}>
+            <WithWalletConnectBtn onClick={handleDeposit} >
               <button
                 disabled={isDepositLoading || !sellPointAmount || isApproving}
                 onClick={handleDeposit}

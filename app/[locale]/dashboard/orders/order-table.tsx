@@ -358,7 +358,7 @@ function DetailBtn({ onClick }: { onClick: () => void }) {
     <WithWalletConnectBtn
       className="flex w-fit"
       onClick={onClick}
-      shouldSignIn={true}
+      
     >
       <div className="flex h-7 w-full cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black">
         {ct("Detail")}

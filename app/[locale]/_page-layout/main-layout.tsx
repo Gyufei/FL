@@ -2,6 +2,8 @@
 import Header from "@/app/[locale]/_page-layout/_header";
 import GlobalActionTip from "@/components/share/global-action-tip";
 import { useEffect } from "react";
+import ReferralDialog from "./_common/referral-dialog";
+import NP from "number-precision";
 
 export default function MainLayout({
   children,
@@ -14,7 +16,10 @@ export default function MainLayout({
     localStorage.removeItem("cRPC");
     localStorage.removeItem("globalRpcs");
     localStorage.removeItem("customRpcs");
+    localStorage.removeItem("access_token");
   }, []);
+
+  NP.enableBoundaryChecking(false);
 
   return (
     <div className="h-screen w-screen overflow-y-auto overflow-x-hidden bg-white">
@@ -26,6 +31,7 @@ export default function MainLayout({
       </div>
 
       <GlobalActionTip />
+      <ReferralDialog />
     </div>
   );
 }

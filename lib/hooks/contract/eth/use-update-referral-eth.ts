@@ -1,5 +1,7 @@
-import { useEvmConfig } from "../../web3/use-evm-config";
-import { useWriteContract } from "wagmi";
+import {
+  useEvmConfig,
+  useWriteContract,
+} from "@/lib/hooks/web3/use-evm-config";
 import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";

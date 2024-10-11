@@ -1,5 +1,7 @@
-// import { useEthConfig } from "../../web3/use-eth-config";
-// import { useWriteContract } from "wagmi";
+// import {
+//   useEvmConfig,
+//   useWriteContract,
+// } from "@/lib/hooks/web3/use-evm-config";
 // import { useCallback } from "react";
 import useTxStatus from "../help/use-tx-status";
 // import { useGasEth } from "../help/use-gas-eth";

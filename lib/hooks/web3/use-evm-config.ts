@@ -2,6 +2,8 @@ import { ChainConfigs } from "@/lib/const/chain-config";
 import { useMemo } from "react";
 import { useCurrentChain } from "./use-current-chain";
 
+export { useWriteContract } from "wagmi";
+
 export function useEvmConfig() {
   const { isEth, isBsc } = useCurrentChain();
 

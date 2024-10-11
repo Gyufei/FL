@@ -1,5 +1,7 @@
-import { useEvmConfig } from "../../web3/use-evm-config";
-import { useWriteContract } from "wagmi";
+import {
+  useEvmConfig,
+  useWriteContract,
+} from "@/lib/hooks/web3/use-evm-config";
 import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
 import { IBalanceType } from "../use-with-draw-collateral-token";
 import { useGasEth } from "../help/use-gas-eth";

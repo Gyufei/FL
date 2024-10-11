@@ -1,5 +1,7 @@
-import { useEvmConfig } from "../../web3/use-evm-config";
-import { useWriteContract } from "wagmi";
+import {
+  useEvmConfig,
+  useWriteContract,
+} from "@/lib/hooks/web3/use-evm-config";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 import { useGasEth } from "../help/use-gas-eth";

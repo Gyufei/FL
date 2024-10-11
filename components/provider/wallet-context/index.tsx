@@ -9,7 +9,7 @@ import { WagmiProvider } from "@privy-io/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
 import { useAtomValue } from "jotai";
-// eslint-disable-next-line
+// @ts-expect-error ignore this error
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 
 // Setup queryClient

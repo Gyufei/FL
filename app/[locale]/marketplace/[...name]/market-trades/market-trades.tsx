@@ -8,13 +8,11 @@ import { useTranslations } from "next-intl";
 
 export default function MarketTrades({
   marketplace,
-  isLoading = false,
 }: {
   marketplace: IMarketplace | undefined;
-  isLoading?: boolean;
 }) {
   const t = useTranslations("tb-MarketTrades");
-  const isLoadingFlag = !marketplace || isLoading;
+  const isLoadingFlag = !marketplace;
   const [tradeType, setTradeType] = useState<ITradeType>("All");
 
   function handleTradeTypeChange(t: ITradeType) {

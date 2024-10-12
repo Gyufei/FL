@@ -26,7 +26,7 @@ export function useChainWallet() {
   } = useWallet();
 
   const getAboutChain = useCallback(
-    (evmThing: any, bscThing: any, solThing: any, defaultThing?: any) => {
+    (evmThing: any, bnbThing: any, solThing: any, defaultThing?: any) => {
       if (!ready || !authenticated) {
         return defaultThing;
       }

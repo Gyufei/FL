@@ -1,16 +1,17 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { getEvmWagmiConfig, supportedChains } from "./wagmi-config";
 import { State } from "wagmi";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { WagmiProvider } from "@privy-io/wagmi";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
-import { useAtomValue } from "jotai";
-// @ts-expect-error ignore this error
+// @ts-expect-error ignore this error of declare
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+import { useAtomValue } from "jotai";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { getEvmWagmiConfig, supportedChains } from "./wagmi-config";
+
+import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
 
 // Setup queryClient
 const queryClient = new QueryClient();
@@ -33,11 +34,11 @@ export default function Web3ModalProvider({
   const customRpcs = useAtomValue(CustomRpcsAtom);
 
   const ethRpc = customRpcs.eth || globalRpcs.eth;
-  const bscRpc = customRpcs.bsc || globalRpcs.bsc;
+  const bnbRpc = customRpcs.bnb || globalRpcs.bnb;
 
   const wagmiConfig = getEvmWagmiConfig({
     ethRpc,
-    bscRpc,
+    bnbRpc,
   });
 
   return (

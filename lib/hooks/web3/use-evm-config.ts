@@ -5,19 +5,19 @@ import { useCurrentChain } from "./use-current-chain";
 export { useWriteContract } from "wagmi";
 
 export function useEvmConfig() {
-  const { isEth, isBsc } = useCurrentChain();
+  const { isEth, isBnb } = useCurrentChain();
 
   const evmConfig = useMemo(() => {
     if (isEth) {
       return ChainConfigs.eth;
     }
 
-    if (isBsc) {
-      return ChainConfigs.bsc;
+    if (isBnb) {
+      return ChainConfigs.bnb;
     }
 
     return ChainConfigs.eth;
-  }, [isEth, isBsc]);
+  }, [isEth, isBnb]);
 
   return {
     evmConfig,

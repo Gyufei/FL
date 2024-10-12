@@ -106,7 +106,7 @@ export default function HoldingCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} / {holding.marketplace.point_name}
+            ${formatNum(pointPerPrice, 6)} / {holding.marketplace.item_name}
           </div>
         </div>
         <Image

@@ -144,7 +144,7 @@ export default function AskDetail({
             topText={<>{T("txt-YouGet")}</>}
             bottomText={
               <>
-                1 {offer.marketplace.point_name} = ${formatNum(pointPerPrice)}
+                1 {offer.marketplace.item_name} = ${formatNum(pointPerPrice)}
               </>
             }
             value={String(receivePointAmount)}

@@ -16,13 +16,7 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 
-export default function LeaderBoard({
-  className,
-  isLoading,
-}: {
-  className?: string;
-  isLoading: boolean;
-}) {
+export default function LeaderBoard({ className }: { className?: string }) {
   const t = useTranslations("tb-Leaderboard");
   const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("month");
@@ -35,7 +29,7 @@ export default function LeaderBoard({
     useTradingVol(timeRange);
 
   const isLoadingFlag =
-    isLoading || taxIncomeLoading || makerOrdersLoading || tradingVolLoading;
+    taxIncomeLoading || makerOrdersLoading || tradingVolLoading;
 
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
@@ -214,7 +208,7 @@ export default function LeaderBoard({
         </div>
       </div>
       <div className="max-h-auto relative min-h-[187.5px] w-full flex-1 flex-col overflow-y-hidden">
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
+        <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-1 flex-col">
           <CompactTable
             columns={COLUMNS}
             data={tableData}

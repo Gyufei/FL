@@ -118,7 +118,7 @@ export default function PointMarket({ className }: { className?: string }) {
         ) : (
           <div
             className="flex cursor-pointer items-center pl-2"
-            onClick={() => handleGo(item.market_id)}
+            onClick={() => handleGo(item.market_symbol)}
           >
             <TokenPairImg
               src1={item?.projectLogo}
@@ -282,7 +282,7 @@ export default function PointMarket({ className }: { className?: string }) {
         </div>
       </div>
       <div className="max-h-auto relative min-h-[296px] w-full flex-1 flex-col overflow-y-hidden">
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-1 flex-col">
+        <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-1 flex-col">
           <CompactTable
             columns={COLUMNS}
             data={tableData}
@@ -306,7 +306,7 @@ function PercentText({ num }: { num: number }) {
   return (
     <div
       data-greater={Number(num) === 0 ? "zero" : isGreater}
-      className="text-[10px] leading-4 data-[greater=zero]:text-black data-[greater=true]:text-green data-[greater=false]:text-red"
+      className="text-[10px] leading-4 data-[greater=false]:text-red data-[greater=true]:text-green data-[greater=zero]:text-black"
     >
       {Number(num) === 0
         ? "0"

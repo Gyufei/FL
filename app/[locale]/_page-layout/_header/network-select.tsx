@@ -25,7 +25,7 @@ export function NetworkSelect() {
   const {
     isEth,
     isSolana,
-    isBsc,
+    isBnb,
     switchToSolana,
     switchToEth,
     switchToBsc,
@@ -99,17 +99,17 @@ export function NetworkSelect() {
         </div>
         <div
           onClick={() => switchToBsc()}
-          data-state={isBsc ? "active" : "inactive"}
+          data-state={isBnb ? "active" : "inactive"}
           className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
         >
           <Image
             width={24}
             height={24}
-            src="/icons/bsc.svg"
+            src="/icons/bnb.svg"
             alt="evms"
             className="z-10 rounded-full bg-white"
           ></Image>
-          <div className="flex-1 text-xs">{ChainConfigs.bsc.name}</div>
+          <div className="flex-1 text-xs">{ChainConfigs.bnb.name}</div>
         </div>
       </PopoverContent>
     </Popover>
@@ -190,7 +190,7 @@ export function MbNetworkSelect() {
             alt="evms"
             className="z-10 bg-white"
           ></Image>
-          <div className="flex-1 text-xs">{ChainConfigs.bsc.name}</div>
+          <div className="flex-1 text-xs">{ChainConfigs.bnb.name}</div>
         </div>
       </DrawerContent>
     </Drawer>

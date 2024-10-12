@@ -70,15 +70,15 @@ export const ChainConfigs: Record<string, IChainConfig> = {
         },
     isEvm: true,
   },
-  bsc: {
+  bnb: {
     name: "BNB Chain",
-    alias: "bsc",
-    logo: "/icons/bsc.svg",
+    alias: "bnb",
+    logo: "/icons/bnb.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 56 : 97,
     rpcs: {
       TadleRPC1: isProduction
-        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_BSC || "https://rpc.ankr.com/bsc"
+        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_BSC || "https://rpc.ankr.com/bnb"
         : "https://rpc.ankr.com/bsc_testnet_chapel",
     },
     contracts: isProduction

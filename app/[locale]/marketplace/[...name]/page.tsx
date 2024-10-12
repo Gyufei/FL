@@ -1,34 +1,18 @@
 "use client";
 import Image from "next/image";
-import { useMemo } from "react";
-import { useAllChainMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
-import { useRouter } from "@/app/navigation";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceContent from "./marketplace-content";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
-  const { isEth, isBsc } = useCurrentChain();
-  const router = useRouter();
 
-  const { data: allMarket, isLoading: isMarketLoading } =
-    useAllChainMarketplaces();
+  const { data: markets } = useMarketplaces();
 
-  const marketplace = allMarket?.find(
-    (marketplace) => marketplace.market_id === marketplaceName,
+  const marketplace = markets?.find(
+    (marketplace) => marketplace.market_symbol === marketplaceName,
   );
 
-  const isCurrentChainMarket = useMemo(() => {
-    if (!marketplace) return false;
-    return marketplace.chain === (isEth ? "eth" : isBsc ? "bsc" : "solana");
-  }, [marketplace, isEth, isBsc]);
-
-  if (!allMarket || !marketplaceName) return null;
-
-  if (marketplace && !isCurrentChainMarket) {
-    router.push("/marketplace");
-    return null;
-  }
+  if (!markets || !marketplaceName) return null;
 
   if (!marketplace) {
     return (
@@ -38,10 +22,5 @@ export default function Marketplace({ params }: { params: { name: string } }) {
     );
   }
 
-  return (
-    <MarketplaceContent
-      marketplace={marketplace}
-      isMarketLoading={isMarketLoading}
-    />
-  );
+  return <MarketplaceContent marketplace={marketplace} />;
 }

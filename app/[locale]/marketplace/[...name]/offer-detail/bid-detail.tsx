@@ -125,7 +125,7 @@ export default function BidDetail({
             topText={<>{T("txt-YouWillSell")}</>}
             bottomText={
               <>
-                1 {order.marketplace.point_name} = ${formatNum(pointPerPrice)}
+                1 {order.marketplace.item_name} = ${formatNum(pointPerPrice)}
               </>
             }
             value={String(sellPointAmount)}

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import {
-  DiscordLink,
   DocLink,
   handleGoDiscord,
   handleGoGithub,
@@ -19,7 +18,7 @@ export default function ContactUs() {
     <div className="bg-[#F9FAF2] px-4 pt-[60px] sm:px-[120px]">
       <div className="flex flex-col items-end justify-between sm:flex-row">
         <div className="flex w-full flex-col items-center sm:w-fit sm:items-start">
-          <div className="text-center text-2xl leading-9 text-black sm:text-[40px] sm:text-4xl sm:leading-[54px]">
+          <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:text-[40px] sm:leading-[54px]">
             {t("cap-StayInTheLoopWithUs")}
           </div>
           <SubscribeInput />
@@ -60,7 +59,7 @@ export default function ContactUs() {
         </div>
       </div>
 
-      <div className="flex flex-col items-start justify-between py-[60px] px-0 sm:flex-row sm:items-center">
+      <div className="flex flex-col items-start justify-between px-0 py-[60px] sm:flex-row sm:items-center">
         <Image
           src="/icons/logo.svg"
           width={75}
@@ -77,7 +76,7 @@ export default function ContactUs() {
       </div>
 
       <div
-        className="flex h-10 items-center justify-between py-[24px] px-0"
+        className="flex h-10 items-center justify-between px-0 py-[24px]"
         style={{
           boxShadow: "inset 0px 1px 0px 0px #EEEEEE",
         }}

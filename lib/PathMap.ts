@@ -4,7 +4,8 @@ export const isProduction = process.env.NODE_ENV === "production" && !isPreview;
 
 export function WithHost(path: string) {
   const prodHost = `https://api.tadle.com`;
-  const devHost = `https://preview-api.tadle.com`;
+  // const devHost = `https://apis.tadle.com`;
+  const devHost = `https://private-anon-0bbf28024d-tadle.apiary-mock.com`;
   // const devHost = `https://api.tadle.com`
   const host = isProduction ? prodHost : devHost;
   return `${host}${path}`;
@@ -35,27 +36,30 @@ export function WithWss(path: string) {
 }
 
 export const Paths = {
-  signIn: "/user/sign_in",
+  // signIn: "/user/sign_in",
+  markets: "/markets",
   offer: "/market_place/offer",
   holding: "/market_place/stock",
   myOffer: "/market_place/my_offer",
   myStock: "/market_place/my_stock",
   makerDetail: "/market_place/maker_detail",
-  marketplace: "/market_place",
-  addTransaction: "/transaction/add",
-  taxIncome: "/user/tax_income",
   takerOrders: "/market_place/taker_orders",
+  marketTrades: "/market_place/maker_trades_history",
+  salesVolumeHistory: "/market_place/sales_volume_history",
+  makerSettleAccount: "/market_place/direct_settle_account",
+
+  taxIncome: "/user/tax_income",
   accountOverview: "/user/overview",
   makerOrders: "/user/maker_orders",
   userBalance: "/user/token_balance",
   userXpPoints: "/user/xp_points",
   tradingVol: "/user/trade_vol",
-  marketTrades: "/market_place/maker_trades_history",
   userState: "/user/state",
   userName: "/user/user_name",
-  salesVolumeHistory: "/market_place/sales_volume_history",
-  makerSettleAccount: "/market_place/direct_settle_account",
+
   tokenPrice: "/token/info",
+
+  addTransaction: "/transaction/add",
 
   referral: {
     referer: "/referral/referer",

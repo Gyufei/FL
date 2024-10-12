@@ -122,7 +122,7 @@ export default function MyBalances() {
         );
 
         const tokenInfo = {
-          symbol: market?.point_name,
+          symbol: market?.item_name,
           logoURI: market?.pointLogo,
           marketplaceId: t.market_place_account,
         } as unknown as IToken;

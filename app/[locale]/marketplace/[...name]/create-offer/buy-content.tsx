@@ -170,14 +170,14 @@ export function BuyContent({
               {cot("txt-YouDLikeToReceive")}
               <WithTip align="start">
                 {cot("tip-YouDLikeToReceive", {
-                  pointName: marketplace.point_name,
+                  pointName: marketplace.item_name,
                 })}
               </WithTip>
             </div>
           }
           bottomText={
             <>
-              1 {marketplace.point_name} = ${formatNum(pointPrice)}
+              1 {marketplace.item_name} = ${formatNum(pointPrice)}
             </>
           }
           tokenSelect={

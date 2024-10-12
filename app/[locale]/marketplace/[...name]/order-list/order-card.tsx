@@ -106,7 +106,7 @@ export function OrderCard({ order }: { order: IOffer }) {
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
             {orderType === "ask" ? (
               <>
-                ${formatNum(pointPerPrice, 6)} / {order.marketplace.point_name}
+                ${formatNum(pointPerPrice, 6)} / {order.marketplace.item_name}
               </>
             ) : (
               <>${formatNum(tokenTotalPrice)}</>
@@ -140,7 +140,7 @@ export function OrderCard({ order }: { order: IOffer }) {
               <>${formatNum(tokenTotalPrice)}</>
             ) : (
               <>
-                ${formatNum(pointPerPrice, 6)} / {order.marketplace.point_name}
+                ${formatNum(pointPerPrice, 6)} / {order.marketplace.item_name}
               </>
             )}
           </div>

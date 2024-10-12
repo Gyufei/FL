@@ -132,7 +132,7 @@ export default function ListAskHoldingBtn({
               topText={<>{cot("txt-YouWillSell")}</>}
               bottomText={
                 <>
-                  1 {holding.marketplace.point_name} = ${formatNum(pointPrice)}
+                  1 {holding.marketplace.item_name} = ${formatNum(pointPrice)}
                 </>
               }
               isCanInput={false}
@@ -155,7 +155,7 @@ export default function ListAskHoldingBtn({
                   {cot("txt-YouDLikeToReceive")}
                   <WithTip align="start">
                     {cot("tip-YouDLikeToReceive", {
-                      pointName: holding.marketplace.point_name,
+                      pointName: holding.marketplace.item_name,
                     })}
                   </WithTip>
                 </div>

@@ -1,12 +1,12 @@
 import { ChainConfigs } from "@/lib/const/chain-config";
 import { useMemo } from "react";
 
-export function useBscConfig() {
-  const bscConfig = useMemo(() => {
-    return ChainConfigs.bsc;
+export function useBnbConfig() {
+  const bnbConfig = useMemo(() => {
+    return ChainConfigs.bnb;
   }, []);
 
   return {
-    bscConfig,
+    bnbConfig,
   };
 }

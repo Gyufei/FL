@@ -26,7 +26,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || "");
 
   const orderPointInfo: IPoint = {
-    symbol: offer.marketplace.point_name,
+    symbol: offer.marketplace.item_name,
     logoURI: offer.marketplace.pointLogo,
     marketplaceId: offer.marketplace.market_place_id,
     marketName: offer.marketplace.market_name,

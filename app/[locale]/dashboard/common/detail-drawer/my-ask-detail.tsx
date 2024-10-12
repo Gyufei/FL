@@ -140,7 +140,7 @@ export default function MyAskDetail({
             isCanInput={false}
             bottomText={
               <>
-                1 {order.marketplace.point_name} = ${pointPerPrice}
+                1 {order.marketplace.item_name} = ${pointPerPrice}
               </>
             }
             topText={
@@ -148,7 +148,7 @@ export default function MyAskDetail({
                 {ot("txt-YouGet")}
                 <WithTip align="start">
                   {ot("tip-YouGet", {
-                    pointName: order.marketplace.point_name,
+                    pointName: order.marketplace.item_name,
                   })}
                 </WithTip>
               </div>

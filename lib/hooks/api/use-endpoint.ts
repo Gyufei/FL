@@ -3,33 +3,26 @@ import { WithCDN, WithHost, WithWss } from "@/lib/PathMap";
 import { useCurrentChain } from "../web3/use-current-chain";
 
 export function useEndPoint() {
-  const { isEth, isSolana, isBsc } = useCurrentChain();
-
-  const ethApiEndPoint = WithHost("/eth");
-  const solanaApiEndPoint = WithHost("/solana");
-  const bscApiEndPoint = WithHost("/bsc");
+  const { isEth, isSolana, isBnb } = useCurrentChain();
 
   const getEndpoint = useCallback(
-    (ethPath: string, solanaPath: string, bscPath: string, isCDN = false) => {
+    (ethPath: string, solanaPath: string, bnbPath: string, isCDN = false) => {
       if (isEth) return (isCDN ? WithCDN : WithHost)(ethPath);
       if (isSolana) return (isCDN ? WithCDN : WithHost)(solanaPath);
-      if (isBsc) return (isCDN ? WithCDN : WithHost)(bscPath);
+      if (isBnb) return (isCDN ? WithCDN : WithHost)(bnbPath);
       return "";
     },
-    [isEth, isSolana, isBsc],
+    [isEth, isSolana, isBnb],
   );
 
-  const apiEndPoint = useMemo(
-    () => getEndpoint("/eth", "/solana", "/bsc"),
-    [getEndpoint],
-  );
+  const apiEndPoint = useMemo(() => getEndpoint("", "", ""), [getEndpoint]);
 
   const projectInfoEndPoint = useMemo(
     () =>
       getEndpoint(
         "/eth/project_info.json",
         "/solana/project_info.json",
-        "/bsc/project_info.json",
+        "/bnb/project_info.json",
         true,
       ),
     [getEndpoint],
@@ -40,7 +33,7 @@ export function useEndPoint() {
       getEndpoint(
         "/eth/tokenlist/eth.json",
         "/solana/tokenlist/solana.json",
-        "/bsc/tokenlist/bsc.json",
+        "/bnb/tokenlist/bnb.json",
         true,
       ),
     [getEndpoint],
@@ -49,18 +42,15 @@ export function useEndPoint() {
   const wssEndPoint = useMemo(() => {
     if (isEth) return WithWss("/eth");
     if (isSolana) return WithWss("/solana");
-    if (isBsc) return WithWss("/bsc");
+    if (isBnb) return WithWss("/bnb");
 
     return "";
-  }, [isEth, isSolana, isBsc]);
+  }, [isEth, isSolana, isBnb]);
 
   return {
     apiEndPoint,
     projectInfoEndPoint,
     tokenEndPoint,
-    ethApiEndPoint,
-    solanaApiEndPoint,
-    bscApiEndPoint,
     wssEndPoint,
   };
 }

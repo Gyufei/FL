@@ -47,7 +47,7 @@ export function useRpc() {
   }, [customRpcs, globalRpcs]);
 
   const currentBscRpc = useMemo(() => {
-    const alias = ChainConfigs.bsc.alias;
+    const alias = ChainConfigs.bnb.alias;
     if (customRpcs[alias]) {
       return customRpcs[alias];
     }

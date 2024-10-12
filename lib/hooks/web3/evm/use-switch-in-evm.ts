@@ -5,7 +5,7 @@ import { ChainConfigs } from "@/lib/const/chain-config";
 
 export function useSwitchInEvm() {
   const chainId = useChainId();
-  const { isSolana, isBsc, isEth, switchToEth, switchToBsc } =
+  const { isSolana, isBnb, isEth, switchToEth, switchToBsc } =
     useCurrentChain();
 
   const checkAndSwitchInEvm = useCallback(async () => {
@@ -13,12 +13,12 @@ export function useSwitchInEvm() {
       return;
     }
 
-    if (isBsc && chainId !== ChainConfigs.bsc.network) {
+    if (isBnb && chainId !== ChainConfigs.bnb.network) {
       switchToEth();
     } else if (isEth && chainId !== ChainConfigs.eth.network) {
       switchToBsc();
     }
-  }, [isSolana, isBsc, isEth, switchToEth, switchToBsc, chainId]);
+  }, [isSolana, isBnb, isEth, switchToEth, switchToBsc, chainId]);
 
   return {
     checkAndSwitchInEvm,

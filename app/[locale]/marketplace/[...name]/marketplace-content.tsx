@@ -23,10 +23,8 @@ import { IMarketplace } from "@/lib/types/marketplace";
 
 export default function MarketplaceContent({
   marketplace,
-  isMarketLoading,
 }: {
   marketplace: IMarketplace;
-  isMarketLoading: boolean;
 }) {
   const mt = useTranslations("pn-Marketplace");
 
@@ -77,7 +75,6 @@ export default function MarketplaceContent({
             <MarketplaceCard
               className="basic-[180px] h-[180px] shrink-0 grow-0"
               marketplace={marketplace}
-              isLoading={isMarketLoading}
             />
             <div className="h-fit">
               {marketplace && (
@@ -87,7 +84,7 @@ export default function MarketplaceContent({
                 />
               )}
             </div>
-            <LeaderBoard isLoading={isMarketLoading} className="shrink grow" />
+            <LeaderBoard className="shrink grow" />
             <AdBanner className="shrink grow-0" />
           </div>
           <div
@@ -116,7 +113,7 @@ export default function MarketplaceContent({
               <>
                 <OrderList
                   orders={canBuyOrders || []}
-                  isLoading={isMarketLoading || isOrdersLoading}
+                  isLoading={isOrdersLoading}
                 />
                 <OfferDetailDrawer
                   orders={orders || []}
@@ -128,7 +125,6 @@ export default function MarketplaceContent({
           {/* <div className="flex w-[368px] flex-col px-6">
             <MarketTrades
               marketplace={marketplace}
-              isLoading={isMarketLoading}
             />
 
             <div className="h-[80px] py-4">

@@ -152,7 +152,7 @@ export function SellContent({
           topText={<>{T("txt-YouWillSell")}</>}
           bottomText={
             <>
-              1 {marketplace.point_name} = ${formatNum(pointPrice)}
+              1 {marketplace.item_name} = ${formatNum(pointPrice)}
             </>
           }
           tokenSelect={
@@ -175,7 +175,7 @@ export function SellContent({
               <WithTip align="start">
                 <div className="relative">
                   {T("tip-YouDLikeToReceive", {
-                    pointName: marketplace.point_name,
+                    pointName: marketplace.item_name,
                   })}
                   <Image
                     src="/icons/info-tip.svg"

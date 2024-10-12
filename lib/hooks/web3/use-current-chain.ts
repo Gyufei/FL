@@ -10,25 +10,22 @@ import {
 } from "@/lib/states/network";
 import { useSwitchChain } from "wagmi";
 
-import { useQueryParams } from "../common/use-query-params";
 import { ChainConfigs, IChainConfig } from "@/lib/const/chain-config";
 
 export function useCurrentChain() {
   const [network, setNetwork] = useAtom(NetworkAtom);
   const isEth = useAtomValue(IsEthAtom);
-  const isBsc = useAtomValue(isBscAtom);
+  const isBnb = useAtomValue(isBscAtom);
   const isSolana = useAtomValue(IsSolanaAtom);
-  const isEvm = isEth || isBsc;
+  const isEvm = isEth || isBnb;
 
   const { switchChainAsync } = useSwitchChain();
-
-  const { goWithQueryParams } = useQueryParams();
 
   const currentChainInfo = useMemo(() => {
     if (isEth) {
       return ChainConfigs.eth;
-    } else if (isBsc) {
-      return ChainConfigs.bsc;
+    } else if (isBnb) {
+      return ChainConfigs.bnb;
     } else if (isSolana) {
       return ChainConfigs.solana;
     }
@@ -38,36 +35,33 @@ export function useCurrentChain() {
       alias: "",
       logo: "/icons/empty.svg",
     } as IChainConfig;
-  }, [isEth, isSolana, isBsc]);
+  }, [isEth, isSolana, isBnb]);
 
   async function switchToEth() {
     if (isEth) return;
 
     setNetwork(ENetworks.Eth);
     await switchChainAsync({ chainId: ChainConfigs.eth.network as number });
-    goWithQueryParams("chain", "eth");
   }
 
   async function switchToBsc() {
-    if (isBsc) return;
+    if (isBnb) return;
 
     setNetwork(ENetworks.Bsc);
-    await switchChainAsync({ chainId: ChainConfigs.bsc.network as number });
-    goWithQueryParams("chain", "bsc");
+    await switchChainAsync({ chainId: ChainConfigs.bnb.network as number });
   }
 
   function switchToSolana() {
     if (isSolana) return;
 
     setNetwork(ENetworks.Solana);
-    goWithQueryParams("chain", "solana");
   }
 
   return {
     network,
     isEth,
     isSolana,
-    isBsc,
+    isBnb,
     isEvm,
     currentChainInfo,
     switchToEth,

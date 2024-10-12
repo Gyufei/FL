@@ -2,7 +2,7 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { isProduction } from "@/lib/PathMap";
 
 export function useGoScan() {
-  const { isEth, isBsc, isSolana } = useCurrentChain();
+  const { isEth, isBnb, isSolana } = useCurrentChain();
 
   function handleGoScan(addr: string, type: "account" | "tx" = "account") {
     if (!addr) return;
@@ -16,7 +16,7 @@ export function useGoScan() {
       window.open(`https://etherscan.io/${goType}/${addr}`, "_blank");
     }
 
-    if (isBsc) {
+    if (isBnb) {
       window.open(`https://bscscan.com/${goType}/${addr}`, "_blank");
     }
 

@@ -20,7 +20,7 @@ export function useMarketPoints() {
     .map((market) => (
       {
         logoURI: market.pointLogo,
-        symbol: market.point_name,
+        symbol: market.item_name,
         marketplaceId: market.market_place_id,
         marketName: market.market_name
       }

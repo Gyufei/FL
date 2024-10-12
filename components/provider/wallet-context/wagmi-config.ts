@@ -10,18 +10,18 @@ export const supportedChains = isProduction
 
 export function getEvmWagmiConfig({
   ethRpc,
-  bscRpc,
+  bnbRpc,
 }: {
   ethRpc: string;
-  bscRpc: string;
+  bnbRpc: string;
 }) {
   const transports = isProduction
     ? {
         [mainnet.id]: http(ethRpc),
-        [bsc.id]: http(bscRpc),
+        [bsc.id]: http(bnbRpc),
       }
     : {
-        [bscTestnet.id]: http(bscRpc),
+        [bscTestnet.id]: http(bnbRpc),
         [testnet.id]: http(),
       };
 

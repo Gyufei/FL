@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useAllChainMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useRouter } from "@/app/navigation";
 import { useTranslations } from "next-intl";
@@ -12,8 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TrendingProject() {
   const t = useTranslations("Home");
-  const { data: marketplaceData, isLoading: isLoadingFlag } =
-    useAllChainMarketplaces();
+  const { data: marketplaceData, isLoading: isLoadingFlag } = useMarketplaces();
   const { checkIsAfterTge } = useTge();
 
   const markets = useMemo(() => {
@@ -30,7 +29,7 @@ export default function TrendingProject() {
       <div className="mt-6 flex w-full flex-col items-start gap-x-5 gap-y-9 px-4 py-5 sm:grid sm:grid-cols-4 sm:flex-row sm:items-stretch sm:overflow-x-hidden">
         {(markets || []).map((marketplace) => (
           <ItemCard
-            key={marketplace.market_id}
+            key={marketplace.market_symbol}
             marketplace={marketplace}
             isLoadingFlag={isLoadingFlag}
           />
@@ -51,7 +50,7 @@ function ItemCard({
   const router = useRouter();
 
   function handleGo() {
-    router.push(`/marketplace/${marketplace.market_id}`);
+    router.push(`/marketplace/${marketplace.market_symbol}`);
   }
 
   return (
@@ -129,7 +128,7 @@ function ItemCard({
                     ? "zero"
                     : Number(marketplace!.change_rate_24h) > 0
                 }
-                className="text-sm leading-5 data-[up=zero]:text-black data-[up=true]:text-green data-[up=false]:text-red"
+                className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
               >
                 {marketplace!.change_rate_24h}%
               </div>

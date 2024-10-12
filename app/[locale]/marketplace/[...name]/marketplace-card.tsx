@@ -24,13 +24,11 @@ import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
 export default function MarketplaceCard({
   marketplace,
   className,
-  isLoading = false,
 }: {
   marketplace: IMarketplace | undefined;
   className?: string;
-  isLoading?: boolean;
 }) {
-  const isLoadingFlag = !marketplace || isLoading;
+  const isLoadingFlag = !marketplace;
 
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
@@ -39,7 +37,7 @@ export default function MarketplaceCard({
 
   const projectInfo = useMemo(() => {
     if (!marketplace || !marketInfos) return;
-    const projectInfo = marketInfos[marketplace.market_id];
+    const projectInfo = marketInfos[marketplace.market_symbol];
 
     return projectInfo;
   }, [marketplace, marketInfos]);
@@ -223,9 +221,9 @@ function FoldPop() {
       .map((marketplace) => {
         return {
           name: marketplace.market_name,
-          id: marketplace.market_id,
+          id: marketplace.market_symbol,
           tokenLogo: marketplace.projectLogo,
-          link: marketplace.market_id,
+          link: marketplace.market_symbol,
         };
       });
   }, [marketplaceData, checkIsAfterTge]);
@@ -270,7 +268,7 @@ function FoldPop() {
             width={20}
             height={20}
             alt="search"
-            className="absolute top-[10px] left-[7px]"
+            className="absolute left-[7px] top-[10px]"
           />
           <Input
             placeholder={t("Search")}

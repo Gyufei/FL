@@ -7,14 +7,14 @@ const socketMap = new Map<string, Socket>();
 
 export function useSocket() {
   const { wssEndPoint } = useEndPoint();
-  const { isEth, isBsc } = useCurrentChain();
+  const { isEth, isBnb } = useCurrentChain();
 
   const socket = useMemo(() => {
-    const key = `${isEth ? "eth" : isBsc ? "bsc" : "solana"}`;
+    const key = `${isEth ? "eth" : isBnb ? "bnb" : "solana"}`;
     const so = socketMap.get(key) || io(wssEndPoint);
     socketMap.set(key, so);
     return so;
-  }, [isEth, isBsc, wssEndPoint]);
+  }, [isEth, isBnb, wssEndPoint]);
 
   return {
     socket,

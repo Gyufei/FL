@@ -12,7 +12,7 @@ export default function Post() {
 
   return (
     <div className="mt-4 flex flex-col rounded-3xl bg-[#fafafa] p-4">
-      <div className="text-xs leading-[18px] text-lightgray mb-[10px]">
+      <div className="mb-[10px] text-xs leading-[18px] text-lightgray">
         {format(postData.time, "MMMM d, yyyy")}
       </div>
       <div className="mb-2 flex h-10 items-center rounded-lg bg-yellow px-[10px] text-xl leading-[30px] text-black">
@@ -21,10 +21,12 @@ export default function Post() {
       <div className="mb-[10px] text-xl leading-[30px] text-black">
         {postData.subTitle}
       </div>
-      <div className="text-sm leading-5 text-lightgray line-clamp-6">{postData.content}</div>
-      <div className="flex items-center justify-between mt-[14px]">
+      <div className="line-clamp-6 text-sm leading-5 text-lightgray">
+        {postData.content}
+      </div>
+      <div className="mt-[14px] flex items-center justify-between">
         <div className="h-[2px] w-10 rounded-lg bg-lightgray"></div>
-        <div className="flex items-center cursor-pointer">
+        <div className="flex cursor-pointer items-center">
           <div className="text-sm leading-5 text-lightgray">Read</div>
           <Image
             src="/icons/right-arrow-gray.svg"

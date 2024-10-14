@@ -14,7 +14,7 @@ export function useMarketplaces(chain?: string) {
 
     const markets = mars.map((m: any) => {
       // TODO: add chain
-      const chain = m.chain || "solana";
+      const chain = m.chain || "eth";
 
       return {
         ...m,

@@ -4,9 +4,8 @@ export const isProduction = process.env.NODE_ENV === "production" && !isPreview;
 
 export function WithHost(path: string) {
   const prodHost = `https://api.tadle.com`;
-  // const devHost = `https://apis.tadle.com`;
-  const devHost = `https://private-anon-0bbf28024d-tadle.apiary-mock.com`;
-  // const devHost = `https://api.tadle.com`
+  const devHost = `https://apis.tadle.com`;
+  // const devHost = `https://private-anon-0bbf28024d-tadle.apiary-mock.com`;
   const host = isProduction ? prodHost : devHost;
   return `${host}${path}`;
 }

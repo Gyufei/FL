@@ -20,16 +20,16 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
     });
 
   const totalColl = useMemo(() => {
-    if (Number(offer.collateral_rate) <= 100) {
+    if (Number(offer.collateral_ratio) <= 100) {
       return amount;
     } else {
-      return NP.times(amount, Number(offer.collateral_rate) / 10 ** 4);
+      return NP.times(amount, Number(offer.collateral_ratio) / 10 ** 4);
     }
 
     return amount;
-  }, [amount, offer.collateral_rate]);
+  }, [amount, offer.collateral_ratio]);
 
-  const orderType = offer.offer_type;
+  const orderType = offer.entry.direction;
 
   const originOffer = useMemo(() => {
     return (offer as any).origin_offer_detail;
@@ -57,7 +57,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offer.points)} Vol
+            {formatNum(offer.item_amount)} Vol
           </div>
           <Image
             src={orderPointInfo.logoURI}
@@ -77,13 +77,13 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(offer?.authority || "", {
+            {truncateAddr(offer?.offer_maker || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(offer?.authority || "")}
+            onClick={() => handleGoScan(offer?.offer_maker || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -118,7 +118,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
-            {NP.divide(offer.collateral_rate, 100)}%
+            {NP.divide(offer.collateral_ratio, 100)}%
           </div>
         </div>
       </DetailRow>
@@ -173,13 +173,13 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
                 #{originOffer?.offer_id}
               </div>
               <div className="text-sm leading-5 text-black">
-                {truncateAddr(originOffer?.offer_account || "", {
+                {truncateAddr(originOffer?.offer_id || "", {
                   nPrefix: 4,
                   nSuffix: 4,
                 })}
               </div>
               <Image
-                onClick={() => handleGoScan(originOffer?.maker_account)}
+                onClick={() => handleGoScan(originOffer?.offer_maker)}
                 src="/icons/right-45.svg"
                 width={16}
                 height={16}
@@ -197,7 +197,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
               <div className="text-sm leading-5 text-green">
                 $
                 {NP.divide(
-                  offer?.trade_tax || 0,
+                  offer?.trade_tax_accum || 0,
                   Math.pow(10, orderTokenInfo?.decimals || 0),
                 )}
               </div>

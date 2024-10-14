@@ -20,7 +20,7 @@ const PrivyAppId = "cm1zw8i5x0467pxhlk18wzyat";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
-  shouldAutoConnect: true,
+  shouldAutoConnect: false,
 });
 
 export default function Web3ModalProvider({

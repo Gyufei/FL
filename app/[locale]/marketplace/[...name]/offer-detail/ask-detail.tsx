@@ -59,11 +59,11 @@ export default function AskDetail({
     write: writeAction,
   } = useCreateHolding({
     marketplaceStr: offer.market_place_account,
-    makerStr: offer.maker_account,
-    offerStr: offer.offer_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
     originOfferStr: makerDetail?.origin_offer || "",
-    preOfferAuthStr: offer.authority,
-    originOfferAuthStr: offer.origin_offer_detail?.authority,
+    preOfferAuthStr: offer.offer_maker,
+    originOfferAuthStr: offer.origin_offer_detail?.offer_maker,
     referrerStr: referrer || "",
     isNativeToken,
   });
@@ -74,15 +74,18 @@ export default function AskDetail({
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return NP.minus(offer.points, offer.used_points);
+    return NP.minus(offer.item_amount, offer.taken_item_amount);
   }, [offer]);
 
   const payTokenAmount = useMemo(() => {
     if (!receivePointAmount) return "0";
-    const pay = NP.times(NP.divide(receivePointAmount, offer.points), forValue);
+    const pay = NP.times(
+      NP.divide(receivePointAmount, offer.item_amount),
+      forValue,
+    );
     const payWithFee = NP.times(pay, 1 + platformFee + tradeFee);
     return formatNum(payWithFee);
-  }, [receivePointAmount, forValue, offer.points, tradeFee, platformFee]);
+  }, [receivePointAmount, forValue, offer.item_amount, tradeFee, platformFee]);
 
   const payTokenTotalPrice = useMemo(() => {
     if (!payTokenAmount) return "0";
@@ -135,7 +138,7 @@ export default function AskDetail({
             value={payTokenAmount}
             tokenLogo={forLogo}
             canGoMax={sliderCanMax}
-            sliderMax={Number(offer.points)}
+            sliderMax={Number(offer.item_amount)}
             sliderValue={receivePointAmount}
             setSliderValue={handleSliderChange}
           />
@@ -159,7 +162,7 @@ export default function AskDetail({
             </>
           ) : (
             <>
-              <WithWalletConnectBtn onClick={handleDeposit} >
+              <WithWalletConnectBtn onClick={handleDeposit}>
                 <button
                   disabled={
                     isDepositLoading || !receivePointAmount || isApproving

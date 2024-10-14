@@ -1,33 +1,21 @@
 /* eslint-disable no-undef */
 "use client";
 
-export async function plainFetcher(
-  input: URL | RequestInfo,
-  init?: RequestInit | undefined,
-) {
-  const res = await fetch(input, init);
-
-  if (!res.ok) {
-    const error = new Error(
-      "An error occurred while fetching the data.",
-    ) as any;
-
-    const resBody = await res.text();
-    error.info = resBody.length > 100 ? "Failed: An error occurred" : resBody;
-    error.status = res.status;
-
-    throw error;
-  }
-
-  return res;
-}
+import { withSecure } from "acclism-manifest";
+import { WithHost } from "./PathMap";
 
 export default async function fetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
 ) {
   try {
-    const res = await fetch(input, init);
+    const access_key = "aK15X6c9";
+    const seedApiUrl = WithHost("/seed/apply");
+    const private_key = "1234";
+
+    const newFetch = withSecure(fetch, access_key, private_key, seedApiUrl);
+
+    const res = await newFetch(input, init);
 
     if (!res.ok) {
       const error = new Error(

@@ -50,15 +50,15 @@ export default function BidDetail({
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return NP.minus(order.points, order.used_points);
+    return NP.minus(order.item_amount, order.taken_item_amount);
   }, [order]);
 
   const receiveTokenAmount = useMemo(() => {
     if (!sellPointAmount) return "0";
     return String(
-      NP.times(NP.divide(sellPointAmount, order.points), offerValue),
+      NP.times(NP.divide(sellPointAmount, order.item_amount), offerValue),
     );
-  }, [sellPointAmount, offerValue, order.points]);
+  }, [sellPointAmount, offerValue, order.item_amount]);
 
   const receiveTokenTotalPrice = useMemo(() => {
     if (!receiveTokenAmount) return "0";
@@ -72,11 +72,11 @@ export default function BidDetail({
     write: writeAction,
   } = useCreateHolding({
     marketplaceStr: order.market_place_account,
-    makerStr: order.maker_account,
-    offerStr: order.offer_account,
-    preOfferAuthStr: order.authority,
+    makerStr: order.offer_maker,
+    offerStr: order.offer_id,
+    preOfferAuthStr: order.offer_maker,
     originOfferStr: makerDetail?.origin_offer || "",
-    originOfferAuthStr: order.origin_offer_detail?.authority,
+    originOfferAuthStr: order.origin_offer_detail?.offer_maker,
     referrerStr: referrer || "",
     isNativeToken,
   });
@@ -130,7 +130,7 @@ export default function BidDetail({
             }
             value={String(sellPointAmount)}
             canGoMax={sliderCanMax}
-            sliderMax={Number(order.points)}
+            sliderMax={Number(order.item_amount)}
             sliderValue={sellPointAmount}
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
@@ -148,7 +148,7 @@ export default function BidDetail({
               {T("btn-Offer100%Filled")}
             </button>
           ) : (
-            <WithWalletConnectBtn onClick={handleDeposit} >
+            <WithWalletConnectBtn onClick={handleDeposit}>
               <button
                 disabled={isDepositLoading || !sellPointAmount || isApproving}
                 onClick={handleDeposit}

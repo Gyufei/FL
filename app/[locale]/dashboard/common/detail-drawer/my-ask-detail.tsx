@@ -55,8 +55,8 @@ export default function MyAskDetail({
     isSuccess: isCloseSuccess,
   } = useCloseOffer({
     marketplaceStr: order.market_place_account,
-    makerStr: order.maker_account,
-    offerStr: order.offer_account,
+    makerStr: order.offer_maker,
+    offerStr: order.offer_id,
     holdingStr: order.stock_account,
     isNativeToken,
   });
@@ -67,8 +67,8 @@ export default function MyAskDetail({
     isSuccess: isAbortSuccess,
   } = useAbortAskOffer({
     marketplaceStr: order.market_place_account,
-    makerStr: order.maker_account,
-    offerStr: order.offer_account,
+    makerStr: order.offer_maker,
+    offerStr: order.offer_id,
     holdingStr: order.stock_account,
     isNativeToken,
   });
@@ -79,8 +79,8 @@ export default function MyAskDetail({
     isSuccess: isRelistSuccess,
   } = useRelist({
     marketplaceStr: order.market_place_account,
-    makerStr: order.maker_account,
-    offerStr: order.offer_account,
+    makerStr: order.offer_maker,
+    offerStr: order.offer_id,
     holdingStr: order.stock_account,
     isNativeToken,
   });
@@ -127,7 +127,7 @@ export default function MyAskDetail({
             className="mt-5"
             topText={<>{ot("txt-YouHaveToSell")}</>}
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
-            value={order.points}
+            value={String(order.item_amount)}
             tokenLogo={orderPointInfo.logoURI}
             onValueChange={() => {}}
             isCanInput={false}
@@ -159,11 +159,7 @@ export default function MyAskDetail({
 
           <div className="flex items-center justify-between gap-2">
             {isCanSettle ? (
-              <WithWalletConnectBtn
-                className="flex-1"
-                onClick={handleSettle}
-                
-              >
+              <WithWalletConnectBtn className="flex-1" onClick={handleSettle}>
                 <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                   {ot("btn-SettleThisOffer")}
                 </button>
@@ -185,10 +181,7 @@ export default function MyAskDetail({
                           {ot("btn-OfferClosed")}
                         </button>
                       ) : (
-                        <WithWalletConnectBtn
-                          onClick={handleRelist}
-                          
-                        >
+                        <WithWalletConnectBtn onClick={handleRelist}>
                           <button className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                             {ot("btn-RelistThisOffer")}
                           </button>
@@ -205,7 +198,6 @@ export default function MyAskDetail({
                             <WithWalletConnectBtn
                               className="flex-1"
                               onClick={handleClose}
-                              
                             >
                               <button
                                 disabled={isClosing}
@@ -232,11 +224,7 @@ export default function MyAskDetail({
             )}
 
             {isCanAbort && (
-              <WithWalletConnectBtn
-                className="flex-1"
-                onClick={handleAbort}
-                
-              >
+              <WithWalletConnectBtn className="flex-1" onClick={handleAbort}>
                 <button
                   disabled={isAborting}
                   className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"

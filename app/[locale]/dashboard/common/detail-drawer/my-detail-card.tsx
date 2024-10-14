@@ -21,7 +21,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       offer: offer,
     });
 
-  const isAsk = offer.offer_type === "ask";
+  const isAsk = offer.entry.direction === "sell";
 
   const originOffer = useMemo(() => {
     return (offer as any).origin_offer_detail;
@@ -30,13 +30,13 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const { handleGoScan } = useGoScan();
 
   const originMaker = useMemo(() => {
-    return offer.origin_offer_detail?.maker_account || offer.maker_account;
+    return offer.origin_offer_detail?.offer_maker || offer.offer_maker;
   }, [offer]);
 
   const isYouAreOriginMaker = address === originMaker;
 
   const taxIncome = useMemo(() => {
-    const ti = offer?.trade_tax || makerDetail?.trade_tax;
+    const ti = offer?.trade_tax_accum || makerDetail?.trade_tax;
 
     const tax = Number(ti || 0);
     const fmtTax = NP.divide(tax, 10 ** (orderTokenInfo?.decimals || 0));
@@ -78,8 +78,8 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offer.used_points, 2, true)} /{" "}
-            {formatNum(offer.points, 2, true)} pts
+            {formatNum(offer.taken_item_amount, 2, true)} /{" "}
+            {formatNum(offer.item_amount, 2, true)} pts
           </div>
           <Image
             src={orderPointInfo.logoURI}
@@ -112,7 +112,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-[#FFA95B]">
-            {Number(offer.collateral_rate) / 100}%
+            {Number(offer.collateral_ratio) / 100}%
           </div>
         </div>
       </DetailRow>
@@ -124,19 +124,14 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
             #{originOffer?.offer_id || offer?.offer_id}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(
-              originOffer?.maker_account || offer.maker_account || "",
-              {
-                nPrefix: 4,
-                nSuffix: 4,
-              },
-            )}
+            {truncateAddr(originOffer?.offer_maker || offer.offer_maker || "", {
+              nPrefix: 4,
+              nSuffix: 4,
+            })}
           </div>
           <Image
             onClick={() =>
-              handleGoScan(
-                originOffer?.maker_account || offer.maker_account || "",
-              )
+              handleGoScan(originOffer?.offer_maker || offer.offer_maker || "")
             }
             src="/icons/right-45.svg"
             width={16}

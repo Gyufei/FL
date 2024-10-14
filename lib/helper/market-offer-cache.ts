@@ -3,18 +3,18 @@ import { Paths } from "@/lib/PathMap";
 
 const MarketOffersMap = new Map<string, Array<Record<string, any>>>();
 
-export async function getMarketOffer(apiPath: string, marketAccount: string) {
-  const marketOffers = MarketOffersMap.get(marketAccount);
+export async function getMarketOffer(apiPath: string, marketSymbol: string) {
+  const marketOffers = MarketOffersMap.get(marketSymbol);
 
   if (marketOffers) {
     return marketOffers;
   }
 
   const res = await fetcher(
-    `${apiPath}${Paths.offer}?market_place_account=${marketAccount}`,
+    `${apiPath}${Paths.offer}?market_symbol=${marketSymbol}`,
   );
 
-  MarketOffersMap.set(marketAccount, res);
+  MarketOffersMap.set(marketSymbol, res);
 
   return res;
 }

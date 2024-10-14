@@ -21,7 +21,7 @@ export function useHoldingResFormat() {
 
     const isPreOfferZeroed =
       holding.pre_offer_account === currentChainInfo.zeroAddr;
-    const isOfferZeroed = holding.offer_account === currentChainInfo.zeroAddr;
+    const isOfferZeroed = holding.offer_id === currentChainInfo.zeroAddr;
 
     let offers = null;
     if (!isPreOfferZeroed || !isOfferZeroed) {
@@ -49,7 +49,7 @@ export function useHoldingResFormat() {
       preOfferDetail =
         offers!.find(
           (o: Record<string, any>) =>
-            o.offer_account === holding.pre_offer_account,
+            o.offer_id === holding.pre_offer_account,
         ) || null;
     }
 
@@ -58,7 +58,7 @@ export function useHoldingResFormat() {
     if (!isOfferZeroed) {
       offerDetail =
         offers!.find(
-          (o: Record<string, any>) => o.offer_account === holding.offer,
+          (o: Record<string, any>) => o.offer_id === holding.offer,
         ) || null;
     }
 
@@ -67,7 +67,7 @@ export function useHoldingResFormat() {
       marketplace,
       pre_offer_display: isPreOfferZeroed ? "" : holding.pre_offer_account,
       pre_offer_detail: preOfferDetail,
-      offer: isOfferZeroed ? "" : holding.offer_account,
+      offer: isOfferZeroed ? "" : holding.offer_id,
       offer_detail: offerDetail,
     };
   }

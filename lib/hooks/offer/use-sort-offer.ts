@@ -22,15 +22,15 @@ export function useSortOffer(orders: Array<any>) {
     let sortArr = orders;
     if (sortField === "Collateral") {
       const collateralFunc = (order: IOffer) => {
-        return order.amount
+        return order.item_amount;
       };
       sortArr = sortBy(orders, [collateralFunc]);
     }
 
     if (sortField === "Price") {
       const priceFunc = (order: IOffer) => {
-        const amount = order.amount
-        const pointPerPrice = NP.divide(amount, order.points);
+        const amount = order.item_amount;
+        const pointPerPrice = NP.divide(amount, order.item_amount);
         return pointPerPrice;
       };
       sortArr = sortBy(orders, [priceFunc]);

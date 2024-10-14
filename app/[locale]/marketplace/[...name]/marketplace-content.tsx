@@ -33,12 +33,12 @@ export default function MarketplaceContent({
     mutate: refreshOrders,
     isLoading: isOrdersLoading,
   } = useMarketOffers({
-    marketAccount: marketplace?.market_place_id || "",
+    marketSymbol: marketplace?.market_symbol || "",
   });
 
   const canBuyOrders = useMemo(() => {
     const showOrder = (orders || [])?.filter((ord: IOffer) =>
-      ["virgin", "ongoing", "filled"].includes(ord.offer_status),
+      ["virgin", "ongoing", "filled"].includes(ord.status),
     );
     const sortO = sortBy(showOrder, "status");
 

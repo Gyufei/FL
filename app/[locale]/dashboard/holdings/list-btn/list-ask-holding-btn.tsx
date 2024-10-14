@@ -47,7 +47,7 @@ export default function ListAskHoldingBtn({
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [collateralRate, setCollateralRate] = useState(
-    String(Number(holding?.pre_offer_detail?.collateral_rate) / 100),
+    String(Number(holding?.pre_offer_detail?.collateral_ratio) / 100),
   );
   const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
   const settleMode = makerDetail?.offer_settle_type || "protected";
@@ -63,7 +63,7 @@ export default function ListAskHoldingBtn({
     isSuccess,
   } = useList({
     marketplaceStr: holding.marketplace.market_place_id,
-    makerStr: holding.maker_account,
+    makerStr: holding.offer_maker,
     holdingStr: holding.stock_account,
     preOfferStr: holding.pre_offer_account,
     originOfferStr: makerDetail?.origin_offer || "",
@@ -115,8 +115,8 @@ export default function ListAskHoldingBtn({
             <ListInfo
               id={holding.stock_id}
               inherit={
-                holding?.pre_offer_detail?.maker_account ||
-                holding?.offer_detail?.maker_account ||
+                holding?.pre_offer_detail?.offer_maker ||
+                holding?.offer_detail?.offer_maker ||
                 ""
               }
               origin={

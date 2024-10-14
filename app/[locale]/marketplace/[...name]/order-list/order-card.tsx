@@ -39,14 +39,14 @@ export function OrderCard({ order }: { order: IOffer }) {
 
   const { currentChainInfo } = useCurrentChain();
 
-  const orderType = order.offer_type;
+  const orderType = order.entry.direction;
 
   const showBuy = useMemo(() => {
-    return ["virgin", "ongoing"].includes(order.offer_status);
+    return ["virgin", "ongoing"].includes(order.status);
   }, [order]);
 
   const done = useMemo(() => {
-    return ["filled", "settled"].includes(order.offer_status);
+    return ["filled", "settled"].includes(order.status);
   }, [order]);
 
   function handleShowOrderOffer(oId: string) {
@@ -152,7 +152,7 @@ export function OrderCard({ order }: { order: IOffer }) {
           {/* {orderDuration} */}
         </div>
         <div className="flex items-center">
-          {order.order_note && (
+          {order.note && (
             <div
               data-right={showBuy}
               className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full data-[right=true]:mr-3"
@@ -169,7 +169,7 @@ export function OrderCard({ order }: { order: IOffer }) {
                     />
                   </TooltipTrigger>
                   <TooltipContent className="w-[200px]">
-                    <p className="text-xs leading-[18px]">{order.order_note}</p>
+                    <p className="text-xs leading-[18px]">{order.note}</p>
                     <TooltipArrow asChild>
                       <CTooltipArrow />
                     </TooltipArrow>

@@ -33,10 +33,10 @@ export default function OrderTabs({ order }: { order: IOffer }) {
         create_at: s.create_at,
         deposits: s.amount,
         from: "",
-        points: s.points,
+        points: s.item_amount,
         sub_no: s.stock_id,
         to: "",
-        total_points: s?.pre_offer_detail?.points || 0,
+        total_points: s?.pre_offer_detail?.item_amount || 0,
         tx_hash: s.tx_hash,
         order_id: s.stock_id,
       };
@@ -53,7 +53,7 @@ export default function OrderTabs({ order }: { order: IOffer }) {
         <TabsList className="flex items-end justify-between p-0">
           <div className="flex items-center justify-start space-x-10">
             <TabsTrigger
-              className="flex w-[105px] items-center pt-0 pl-0 pb-[10px] leading-6 data-[state=active]:border-b-2 data-[state=inactive]:border-transparent data-[state=active]:border-lightgray data-[state=inactive]:text-lightgray data-[state=active]:text-black"
+              className="flex w-[105px] items-center pb-[10px] pl-0 pt-0 leading-6 data-[state=active]:border-b-2 data-[state=active]:border-lightgray data-[state=inactive]:border-transparent data-[state=active]:text-black data-[state=inactive]:text-lightgray"
               value="orders"
             >
               {T("cap-TakerOrders")}

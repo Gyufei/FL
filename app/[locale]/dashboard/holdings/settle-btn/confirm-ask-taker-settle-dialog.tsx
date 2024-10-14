@@ -121,9 +121,9 @@ export default function ConfirmAskTakerSettleDialog({
             isNativeToken={isNativeToken}
             marketplaceStr={holding.marketplace.market_place_id}
             holdingStr={holding.stock_account}
-            makerStr={holding.maker_account}
+            makerStr={holding.offer_maker}
             preOfferStr={holding.pre_offer_account}
-            preOfferAuthorityStr={holding.pre_offer_detail?.authority}
+            preOfferAuthorityStr={holding.pre_offer_detail?.offer_maker}
             settleAmount={settleAmount}
             onSuccess={handleSuccess}
           />

@@ -5,7 +5,6 @@ import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
-import { isProduction } from "@/lib/PathMap";
 import { useTokensInfo } from "@/lib/hooks/api/token/use-token-info";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useIsNativeToken } from "../api/token/use-is-native-token";
@@ -13,7 +12,7 @@ import { useIsNativeToken } from "../api/token/use-is-native-token";
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail(
     {
-      makerId: offer.maker_account,
+      makerId: offer.offer_maker,
     },
   );
 
@@ -41,29 +40,26 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const tokenLogo = orderTokenInfo?.logoURI || "/icons/empty.svg";
   const pointLogo = orderPointInfo?.logoURI || "/icons/empty.svg";
 
-  const amount = NP.divide(
-    offer.amount,
-    10 ** (orderTokenInfo?.decimals || (isProduction ? 6 : 9)),
-  );
+  const amount = NP.times(offer.item_amount, offer.price);
 
   const progress = Number(
-    (Number(offer.used_points) / Number(offer.points)).toFixed(2),
+    (Number(offer.taken_item_amount) / Number(offer.item_amount)).toFixed(2),
   );
 
-  const offerType = offer.offer_type;
-  const offerValue = offerType === "ask" ? offer.points : amount;
-  const forValue = offerType === "ask" ? amount : offer.points;
-  const offerLogo = offerType === "ask" ? pointLogo : tokenLogo;
-  const forLogo = offerType === "ask" ? tokenLogo : pointLogo;
+  const offerType = offer.entry.direction;
+  const offerValue = offerType === "sell" ? offer.item_amount : amount;
+  const forValue = offerType === "buy" ? amount : offer.item_amount;
+  const offerLogo = offerType === "sell" ? pointLogo : tokenLogo;
+  const forLogo = offerType === "buy" ? tokenLogo : pointLogo;
 
   const tokenTotalPrice = NP.times(amount, tokenPrice);
-  const pointPerPrice = NP.divide(tokenTotalPrice, offer.points);
+  const pointPerPrice = NP.divide(tokenTotalPrice, offer.item_amount);
 
   const orderDuration = formatTimeDuration(
     Math.floor(NP.minus(Date.now() / 1000, offer.create_at)),
   );
 
-  const isFilled = offer.used_points === offer.points;
+  const isFilled = offer.taken_item_amount === offer.item_amount;
 
   const afterTGE = useMemo(() => {
     return checkIsAfterTge(
@@ -110,33 +106,33 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     }
 
     return (
-      !["canceled", "settled"].includes(offer.offer_status) ||
-      (offer.offer_status === "canceled" && Number(offer.used_points) > 0)
+      !["canceled", "settled"].includes(offer.status) ||
+      (offer.status === "canceled" && Number(offer.taken_item_amount) > 0)
     );
   }, [
-    offer.offer_status,
+    offer.status,
     afterTGE,
-    offer.used_points,
+    offer.taken_item_amount,
     makerDetail,
     isLoadingMakerDetail,
     offer.pre_offer_display,
   ]);
 
   const isSettled = useMemo(() => {
-    return ["settled", "finished"].includes(offer.offer_status);
-  }, [offer.offer_status]);
+    return ["settled", "finished"].includes(offer.status);
+  }, [offer.status]);
 
-  const isCanceled = offer.offer_status === "canceled";
+  const isCanceled = offer.status === "canceled";
 
   const isClosed = useMemo(() => {
-    return ["filled", "canceled", "settled"].includes(offer.offer_status);
-  }, [offer.offer_status]);
+    return ["filled", "canceled", "settled"].includes(offer.status);
+  }, [offer.status]);
 
   const isCanAbort = useMemo(() => {
     if (!makerDetail) return false;
-    if (offer.offer_type === "bid") return false;
+    if (offer.entry.direction === "buy") return false;
 
-    if (["unknown", "settled"].includes(offer.offer_status)) return false;
+    if (["unknown", "settled"].includes(offer.status)) return false;
 
     const offerSettleType = makerDetail?.offer_settle_type;
     const isProtected = offerSettleType === "protected";

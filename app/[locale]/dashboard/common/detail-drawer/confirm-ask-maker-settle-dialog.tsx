@@ -31,7 +31,7 @@ export default function ConfirmAskMakerSettleDialog({
   // const [sliderValue, setSliderValue] = useState(100);
   const [sliderValue] = useState(100);
 
-  const pointAmount = !afterTGEPeriod ? offer.used_points : 0;
+  const pointAmount = !afterTGEPeriod ? offer.taken_item_amount : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   function handleSuccess() {
@@ -111,8 +111,8 @@ export default function ConfirmAskMakerSettleDialog({
             isNativeToken={isNativeToken}
             isHoldingsLoading={false}
             marketplaceStr={offer.marketplace.market_place_id}
-            orderStr={offer.offer_account}
-            makerStr={offer.maker_account}
+            orderStr={offer.offer_id}
+            makerStr={offer.offer_maker}
             settleAmount={settleAmount}
             onSuccess={handleSuccess}
           />

@@ -20,7 +20,7 @@ export default function OrderList({
   orders: Array<IOffer>;
   isLoading: boolean;
 }) {
-  const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["ask"]);
+  const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
   const [searchText, setSearchText] = useState("");
 
   const {
@@ -33,7 +33,7 @@ export default function OrderList({
 
   const filterOrders = useMemo(() => {
     const typeOrders = (sortOrders || [])?.filter((o: IOffer) =>
-      orderTypes.includes(o.offer_type as IOfferType),
+      orderTypes.includes(o.entry.direction as IOfferType),
     );
 
     if (!searchText) {

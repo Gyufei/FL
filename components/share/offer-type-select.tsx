@@ -8,16 +8,16 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTranslations } from "next-intl";
 
-export type IOfferType = "ask" | "bid";
+export type IOfferType = "sell" | "buy";
 
 export const OfferTypes: { label: string; value: IOfferType }[] = [
   {
     label: "Sells / Asks",
-    value: "ask",
+    value: "sell",
   },
   {
     label: "Buys / Bids",
-    value: "bid",
+    value: "buy",
   },
 ];
 
@@ -74,7 +74,7 @@ export function OfferTypeSelect({
           className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-none data-[open=true]:bg-yellow"
         >
           <Image
-            src={types[0] === "ask" ? "/icons/buys.svg" : "/icons/sells.svg"}
+            src={types[0] === "sell" ? "/icons/buys.svg" : "/icons/sells.svg"}
             width={20}
             height={20}
             alt="type icon"
@@ -106,12 +106,12 @@ export function OfferTypeSelect({
             className="flex cursor-pointer items-center rounded-xl px-3 py-2 data-[checked=true]:bg-[#FAFAFA]"
             onClick={() => handleClickOpt(t.value)}
           >
-            {t.value === "ask" ? (
+            {t.value === "buy" ? (
               <Image
                 src={
-                  types[0] === "ask"
-                    ? "/icons/buys.svg"
-                    : "/icons/buys-gray.svg"
+                  types[0] === "sell"
+                    ? "/icons/sells.svg"
+                    : "/icons/sells-gray.svg"
                 }
                 width={20}
                 height={20}
@@ -120,9 +120,9 @@ export function OfferTypeSelect({
             ) : (
               <Image
                 src={
-                  t.value === "bid"
-                    ? "/icons/sells.svg"
-                    : "/icons/sells-gray.svg"
+                  types[0] === "buy"
+                    ? "/icons/buys.svg"
+                    : "/icons/buys-gray.svg"
                 }
                 width={20}
                 height={20}

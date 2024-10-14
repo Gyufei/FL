@@ -29,13 +29,13 @@ export default function DetailDrawer({
   }, [orders, orderId]);
 
   const { data: makerDetail } = useMakerDetail({
-    makerId: order?.maker_account,
+    makerId: order?.offer_maker,
   });
 
   const settleMode = upperFirst(makerDetail?.offer_settle_type);
 
   const isAsk = useMemo(() => {
-    return order?.offer_type === "ask";
+    return order?.entry.direction === "sell";
   }, [order]);
 
   function handleDrawerClose() {

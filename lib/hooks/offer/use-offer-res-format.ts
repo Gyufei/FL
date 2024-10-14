@@ -10,13 +10,14 @@ export function useOfferResFormat() {
     preOffers: any[],
   ) {
     try {
+      console.log(offer);
       const marketplace = marketplaceData?.find(
-        (m) => m.market_place_id === offer.market_place_account,
+        (m) => m.market_symbol === offer.entry.market_symbol,
       );
 
       const offsMap = preOffers.reduce(
         (acc: Record<string, any>, o: Record<string, any>) => {
-          acc[o.offer_account] = o;
+          acc[o.offer_id] = o;
           return acc;
         },
         {},

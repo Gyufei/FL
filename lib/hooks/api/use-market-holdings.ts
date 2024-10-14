@@ -5,41 +5,36 @@ import fetcher from "@/lib/fetcher";
 import { useHoldingResFormat } from "../holding/use-holding-res-format";
 import { IHolding } from "@/lib/types/holding";
 
-export function useMarketHoldings({
-  marketAccount,
-}: {
-  marketAccount: string;
-}) {
+export function useMarketHoldings({ marketSymbol }: { marketSymbol: string }) {
   const { apiEndPoint } = useEndPoint();
 
   const { stockResFieldFormat, isLoading } = useHoldingResFormat();
 
   const marketStocksFetcher = async () => {
-      if (!marketAccount || isLoading) return [];
+    if (!marketSymbol || isLoading) return [];
 
-      const orderRes = await fetcher(
-        `${apiEndPoint}${Paths.holding}?market_place_account=${marketAccount}`,
-      );
+    const orderRes = await fetcher(
+      `${apiEndPoint}${Paths.holding}?market_symbol=${marketSymbol}`,
+    );
 
     const filedRes = orderRes.map((o: Record<string, any>) => {
       const res = {
         ...o,
-        offer_account: o.offer,
+        offer_id: o.offer,
         pre_offer_account: o.pre_offer_account,
-      }
+      };
 
       return res;
     });
 
-    const parsedRes = await Promise.all(filedRes.map((o: Record<string, any>) => stockResFieldFormat(o)));
+    const parsedRes = await Promise.all(
+      filedRes.map((o: Record<string, any>) => stockResFieldFormat(o)),
+    );
 
     return parsedRes as Array<IHolding>;
   };
 
-  const res = useSWR(
-    `market-stock:${marketAccount}`,
-    marketStocksFetcher,
-  );
+  const res = useSWR(`market-stock:${marketSymbol}`, marketStocksFetcher);
 
   return {
     ...res,

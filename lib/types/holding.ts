@@ -6,7 +6,7 @@ export interface IHolding {
   amount: string;
   authority: string;
   create_at: number;
-  maker_account: string;
+  offer_maker: string;
   market_place_account: string;
   points: string;
   stock_account: string;
@@ -20,7 +20,7 @@ export interface IHolding {
   pre_offer_display: string;
   pre_offer_detail: IOffer;
 
-  offer_account: string;
+  offer_id: string;
   pre_offer_account: string;
 
   marketplace: IMarketplace;

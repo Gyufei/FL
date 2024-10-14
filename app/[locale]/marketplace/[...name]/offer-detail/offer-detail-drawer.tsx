@@ -28,7 +28,7 @@ export default function OfferDetailDrawer({
   }, [orders, orderId]);
 
   const { data: makerDetail } = useMakerDetail({
-    makerId: order?.maker_account,
+    makerId: order?.offer_maker,
   });
 
   const settleMode = upperFirst(makerDetail?.offer_settle_type);
@@ -37,7 +37,7 @@ export default function OfferDetailDrawer({
   const [orderFillDialog, setOrderFillDialog] = useState(false);
   const [resultOrder, setResultOrder] = useState<any | null>(null);
 
-  const isAsk = order?.offer_type === "ask";
+  const isAsk = order?.entry.direction === "sell";
 
   useEffect(() => {
     if (order && connected) {

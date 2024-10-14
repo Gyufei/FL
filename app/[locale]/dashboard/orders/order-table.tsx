@@ -57,8 +57,8 @@ export function OrderTable({
       })
       .filter((o) => {
         const oRole = "Maker";
-        const oStatus = o.offer_status;
-        const oType = o.offer_type;
+        const oStatus = o.status;
+        const oType = o.entry.direction;
 
         const isRole = role === "All" || role === oRole;
         const isStatus = status === "All" || status.toLowerCase() === oStatus;

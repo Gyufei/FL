@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 
 export default function MyOrders() {
   const T = useTranslations("page-MyOrders");
-  const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["ask"]);
+  const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
 

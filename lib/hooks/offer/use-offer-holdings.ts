@@ -4,13 +4,13 @@ import { useMemo } from "react";
 
 export default function useOfferHoldings({ offer }: { offer: IOffer }) {
   const res = useMarketHoldings({
-    marketAccount: offer?.market_place_account,
+    marketSymbol: offer?.market_place_account,
   });
 
   const offerHoldings = useMemo(() => {
     if (!res.data) return [];
 
-    const oStocks = res.data.filter((s) => s.pre_offer_account === offer.offer_account);
+    const oStocks = res.data.filter((s) => s.pre_offer_account === offer.offer_id);
 
     return oStocks;
   }, [res.data, offer]);

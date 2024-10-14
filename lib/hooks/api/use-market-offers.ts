@@ -4,14 +4,14 @@ import { useOfferResFormat } from "../offer/use-offer-res-format";
 import { IOffer } from "@/lib/types/offer";
 import { getMarketOffer } from "@/lib/helper/market-offer-cache";
 
-export function useMarketOffers({ marketAccount }: { marketAccount: string }) {
+export function useMarketOffers({ marketSymbol }: { marketSymbol: string }) {
   const { apiEndPoint } = useEndPoint();
   const { offerResFieldFormat, isLoading } = useOfferResFormat();
 
   const marketOffersFetcher = async () => {
-    if (!marketAccount || isLoading) return [];
+    if (!marketSymbol || isLoading) return [];
 
-    const offerRes = await getMarketOffer(apiEndPoint, marketAccount);
+    const offerRes = await getMarketOffer(apiEndPoint, marketSymbol);
 
     const parsedRes = await Promise.all(
       offerRes.map((o: Record<string, any>) =>
@@ -23,7 +23,7 @@ export function useMarketOffers({ marketAccount }: { marketAccount: string }) {
   };
 
   const res = useSWR(
-    `market-offer:${apiEndPoint}-${marketAccount}-${isLoading}`,
+    `market-offer:${apiEndPoint}-${marketSymbol}-${isLoading}`,
     marketOffersFetcher,
   );
 

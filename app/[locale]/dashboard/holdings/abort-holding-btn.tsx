@@ -22,8 +22,8 @@ export default function AbortHoldingBtn({
     isSuccess,
   } = useAbortBidHolding({
     marketplaceStr: holding.marketplace.market_place_id,
-    makerStr: holding.maker_account,
-    offerStr: holding.offer_account,
+    makerStr: holding.offer_maker,
+    offerStr: holding.offer_id,
     holdingStr: holding.stock_account,
     isNativeToken: isNativeToken,
   });

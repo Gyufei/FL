@@ -10,8 +10,6 @@ import OrderList from "@/app/[locale]/marketplace/[...name]/order-list/order-lis
 import MarketplaceCard from "./marketplace-card";
 import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
-// import MarketTrades from "@/app/[locale]/marketplace/[...name]/market-trades/market-trades";
-// import MarketCharts from "./chart/market-charts";
 import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 
 import useTge from "@/lib/hooks/marketplace/useTge";
@@ -122,22 +120,6 @@ export default function MarketplaceContent({
               </>
             )}
           </div>
-          {/* <div className="flex w-[368px] flex-col px-6">
-            <MarketTrades
-              marketplace={marketplace}
-            />
-
-            <div className="h-[80px] py-4">
-              {marketplace && (
-                <CreateOfferBtn
-                  marketplace={marketplace}
-                  onSuccess={refreshOrders}
-                />
-              )}
-            </div>
-
-            {marketplace && <MarketCharts marketplace={marketplace} />}
-          </div> */}
         </div>
         <PageFooter />
       </div>

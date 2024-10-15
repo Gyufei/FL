@@ -3,7 +3,6 @@ import MakeMoney from "./make-money";
 import MarketPlace from "./trending-projects";
 import Faqs from "./faqs";
 import OutPerforms from "./outperforms";
-// import BigPicture from "./big-picture";
 import GetStart from "./get-start";
 import ContactUs from "./contact-us";
 
@@ -13,7 +12,6 @@ export default function Home() {
       <HomeBanner />
       <MakeMoney />
       <OutPerforms />
-      {/* <BigPicture /> */}
       <GetStart />
       <MarketPlace />
       <Faqs />

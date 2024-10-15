@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
-import OrderTabs from "./order-tabs";
+import OfferTabs from "./offer-tabs";
 import { useCreateHolding } from "@/lib/hooks/contract/use-create-holding";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
@@ -16,10 +16,10 @@ import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 
 export default function BidDetail({
-  order,
+  offer,
   onSuccess,
 }: {
-  order: IOffer;
+  offer: IOffer;
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const T = useTranslations("drawer-OfferDetail");
@@ -35,11 +35,10 @@ export default function BidDetail({
     forLogo,
     pointPerPrice,
     isFilled,
-    orderTokenInfo,
-    makerDetail,
+    offerTokenInfo: orderTokenInfo,
     isNativeToken,
   } = useOfferFormat({
-    offer: order,
+    offer: offer,
   });
 
   const { currentChainInfo } = useCurrentChain();
@@ -50,15 +49,15 @@ export default function BidDetail({
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return NP.minus(order.item_amount, order.taken_item_amount);
-  }, [order]);
+    return NP.minus(offer.item_amount, offer.taken_item_amount);
+  }, [offer]);
 
   const receiveTokenAmount = useMemo(() => {
     if (!sellPointAmount) return "0";
     return String(
-      NP.times(NP.divide(sellPointAmount, order.item_amount), offerValue),
+      NP.times(NP.divide(sellPointAmount, offer.item_amount), offerValue),
     );
-  }, [sellPointAmount, offerValue, order.item_amount]);
+  }, [sellPointAmount, offerValue, offer.item_amount]);
 
   const receiveTokenTotalPrice = useMemo(() => {
     if (!receiveTokenAmount) return "0";
@@ -71,12 +70,15 @@ export default function BidDetail({
     isSuccess,
     write: writeAction,
   } = useCreateHolding({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
-    preOfferAuthStr: order.offer_maker,
-    originOfferStr: makerDetail?.origin_offer || "",
-    originOfferAuthStr: order.origin_offer_detail?.offer_maker,
+    // originOfferStr: makerDetail?.origin_offer || "",
+    // marketplaceStr: order.market_place_account,
+    // originOfferAuthStr: order.origin_offer_detail?.offer_maker,
+    originOfferStr: "",
+    marketplaceStr: "",
+    originOfferAuthStr: "",
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    preOfferAuthStr: offer.offer_maker,
     referrerStr: referrer || "",
     isNativeToken,
   });
@@ -91,7 +93,7 @@ export default function BidDetail({
       return;
     }
 
-    if (isDepositLoading || !sellPointAmount || !makerDetail) return;
+    if (isDepositLoading || !sellPointAmount) return;
     await writeAction({
       pointAmount: sellPointAmount,
     });
@@ -114,10 +116,10 @@ export default function BidDetail({
         {/* left card */}
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={order.marketplace.projectLogo}
+            img1={offer.marketplace.projectLogo}
             img2={currentChainInfo.logo}
-            name={order.marketplace.market_name}
-            no={order.offer_id}
+            name={offer.marketplace.market_name}
+            no={String(offer.entry.id)}
             progress={progress}
           />
 
@@ -125,12 +127,12 @@ export default function BidDetail({
             topText={<>{T("txt-YouWillSell")}</>}
             bottomText={
               <>
-                1 {order.marketplace.item_name} = ${formatNum(pointPerPrice)}
+                1 {offer.marketplace.item_name} = ${formatNum(pointPerPrice)}
               </>
             }
             value={String(sellPointAmount)}
             canGoMax={sliderCanMax}
-            sliderMax={Number(order.item_amount)}
+            sliderMax={Number(offer.item_amount)}
             sliderValue={sellPointAmount}
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
@@ -161,10 +163,10 @@ export default function BidDetail({
         </div>
 
         {/* right card */}
-        <DetailCard offer={order} />
+        <DetailCard offer={offer} />
       </div>
 
-      <OrderTabs order={order} />
+      <OfferTabs offer={offer} />
     </>
   );
 }

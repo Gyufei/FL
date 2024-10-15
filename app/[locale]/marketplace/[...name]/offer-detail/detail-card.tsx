@@ -1,7 +1,7 @@
 import NP from "number-precision";
 import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
-import { WithTip } from "../create-offer/with-tip";
+import { WithTip } from "../../../../../components/share/with-tip";
 import { truncateAddr } from "@/lib/utils/web3";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
@@ -9,15 +9,17 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
+import { useEntryById } from "@/lib/hooks/api/use-entry";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
   const { handleGoScan } = useGoScan();
 
-  const { amount, orderTokenInfo, orderPointInfo, makerDetail } =
-    useOfferFormat({
-      offer,
-    });
+  const { amount, offerTokenInfo: orderTokenInfo, offerPointInfo: orderPointInfo } = useOfferFormat({
+    offer,
+  });
+
+  const { data: entryInfo } = useEntryById(offer.entry.id);
 
   const totalColl = useMemo(() => {
     if (Number(offer.collateral_ratio) <= 100) {
@@ -29,11 +31,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
     return amount;
   }, [amount, offer.collateral_ratio]);
 
-  const orderType = offer.entry.direction;
-
-  const originOffer = useMemo(() => {
-    return (offer as any).origin_offer_detail;
-  }, [offer]);
+  const offerType = offer.entry.direction;
 
   const tgeTime = useMemo(() => {
     const tge = Number(offer?.marketplace?.tge) || null;
@@ -44,16 +42,19 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
     return (tge + period) * 1000;
   }, [offer]);
 
+  const originId = entryInfo?.root_entry_id || offer.entry.id;
+  const originMaker = entryInfo?.original_creator || offer.offer_maker;
+
   return (
     <div className="flex-1 px-6">
       <div className="leading-6 text-black">{T("cap-OfferDetail")}</div>
       <DetailRow>
         <DetailLabel
           tipText={
-            orderType === "ask" ? T("tip-SellerAmount") : T("tip-BuyerAmount")
+            offerType === "sell" ? T("tip-SellerAmount") : T("tip-BuyerAmount")
           }
         >
-          {orderType === "ask" ? T("lb-SellerAmount") : T("lb-BuyerAmount")}
+          {offerType === "sell" ? T("lb-SellerAmount") : T("lb-BuyerAmount")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -71,9 +72,9 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
 
       <DetailRow>
         <DetailLabel
-          tipText={orderType === "ask" ? T("tip-Seller") : T("tip-Buyer")}
+          tipText={offerType === "sell" ? T("tip-Seller") : T("tip-Buyer")}
         >
-          {orderType === "ask" ? T("lb-Seller") : T("lb-Buyer")}
+          {offerType === "sell" ? T("lb-Seller") : T("lb-Buyer")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -96,18 +97,18 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
       <DetailRow>
         <DetailLabel
           tipText={
-            orderType === "ask"
+            offerType === "sell"
               ? T("tip-BonusRateForEachTX")
               : T("tip-BonusForMaker")
           }
         >
-          {orderType === "ask"
+          {offerType === "sell"
             ? T("lb-BonusRateForEachTX")
             : T("lb-BonusForMaker")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
-            {NP.divide(makerDetail?.each_trade_tax || 0, 100)}%
+            {NP.divide(offer?.trade_tax_pct || 0, 100)}%
           </div>
         </div>
       </DetailRow>
@@ -126,12 +127,14 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
       <DetailRow>
         <DetailLabel
           tipText={
-            orderType === "ask"
+            offerType === "sell"
               ? T("tip-TotalCollateral")
               : T("tip-TotalDeposit")
           }
         >
-          {orderType === "ask" ? T("lb-TotalCollateral") : T("lb-TotalDeposit")}
+          {offerType === "sell"
+            ? T("lb-TotalCollateral")
+            : T("lb-TotalDeposit")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
@@ -162,7 +165,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </div>
       </DetailRow>
 
-      {orderType === "ask" && (
+      {offerType === "sell" && (
         <>
           <DetailRow>
             <DetailLabel tipText={T("tip-InitialOfferMaker")}>
@@ -170,16 +173,16 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
             </DetailLabel>
             <div className="flex items-center space-x-1">
               <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-                #{originOffer?.offer_id}
+                {originId ? `#${originId}` : ""}
               </div>
               <div className="text-sm leading-5 text-black">
-                {truncateAddr(originOffer?.offer_id || "", {
+                {truncateAddr(originMaker || "", {
                   nPrefix: 4,
                   nSuffix: 4,
                 })}
               </div>
               <Image
-                onClick={() => handleGoScan(originOffer?.offer_maker)}
+                onClick={() => handleGoScan(String(originMaker))}
                 src="/icons/right-45.svg"
                 width={16}
                 height={16}

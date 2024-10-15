@@ -1,10 +1,9 @@
-import NP from "number-precision";
 import { ISortDir, ISortField } from "@/components/share/sort-select";
 import { IOffer } from "@/lib/types/offer";
 import { sortBy } from "lodash";
 import { useMemo, useState } from "react";
 
-export function useSortOffer(orders: Array<any>) {
+export function useSortOffer(offers: Array<any>) {
   const [sortField, setSortField] = useState<ISortField>("Created");
   const [sortDir, setSortDir] = useState<ISortDir>("Descending");
 
@@ -16,32 +15,30 @@ export function useSortOffer(orders: Array<any>) {
     setSortDir(dir);
   }
 
-  const sortOrders = useMemo(() => {
-    if (!sortField) return orders;
+  const sortOffers = useMemo(() => {
+    if (!sortField) return offers;
 
-    let sortArr = orders;
+    let sortArr = offers;
     if (sortField === "Collateral") {
       const collateralFunc = (order: IOffer) => {
         return order.item_amount;
       };
-      sortArr = sortBy(orders, [collateralFunc]);
+      sortArr = sortBy(offers, [collateralFunc]);
     }
 
     if (sortField === "Price") {
       const priceFunc = (order: IOffer) => {
-        const amount = order.item_amount;
-        const pointPerPrice = NP.divide(amount, order.item_amount);
-        return pointPerPrice;
+        return order.price;
       };
-      sortArr = sortBy(orders, [priceFunc]);
+      sortArr = sortBy(offers, [priceFunc]);
     }
 
     if (sortField === "Created") {
-      const createdFunc = (order: IOffer) => {
-        return new Date(order.create_at).getTime();
+      const createdFunc = (off: IOffer) => {
+        return new Date(off.create_at).getTime();
       };
 
-      sortArr = sortBy(orders, [createdFunc]);
+      sortArr = sortBy(offers, [createdFunc]);
     }
 
     if (sortDir === "Descending") {
@@ -49,13 +46,13 @@ export function useSortOffer(orders: Array<any>) {
     } else {
       return sortArr;
     }
-  }, [orders, sortField, sortDir]);
+  }, [offers, sortField, sortDir]);
 
   return {
     sortField,
     sortDir,
     handleSortFieldChange,
     handleSortDirChange,
-    sortOrders,
+    sortOffers,
   };
 }

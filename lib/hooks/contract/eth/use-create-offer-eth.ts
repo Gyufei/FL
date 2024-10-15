@@ -1,5 +1,5 @@
 import { PreMarketABI } from "@/lib/abi/eth/PreMarkets";
-import { ISettleMode } from "@/lib/types/maker-detail";
+import { ISettleMode } from "@/lib/types/offer";
 import {
   useEvmConfig,
   useWriteContract,

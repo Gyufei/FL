@@ -1,47 +1,40 @@
 import { SmallSwitch } from "@/components/share/small-switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMemo, useState } from "react";
-import { TakerOrder, TakerOrders } from "./taker-orders";
+import { TakerOrders } from "./taker-orders";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import useOfferStocks from "@/lib/hooks/offer/use-offer-holdings";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useTakerOrderOfOffers } from "@/lib/hooks/api/use-taker-orders-of-offer";
 
-export default function OrderTabs({ order }: { order: IOffer }) {
+export default function OfferTabs({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
   const [currentTab, setCurrentTab] = useState("orders");
 
   const { address } = useChainWallet();
 
-  const { offerLogo, forLogo, orderEqTokenInfo, orderTokenInfo } =
-    useOfferFormat({
-      offer: order,
-    });
+  const {
+    offerLogo,
+    offerEqTokenInfo,
+    offerTokenInfo,
+  } = useOfferFormat({
+    offer: offer,
+  });
+
+  const { data: takerOrders } = useTakerOrderOfOffers({
+    offerId: offer.offer_id,
+  });
 
   const [onlyMe, setOnlyMe] = useState(false);
 
-  const { data: holdings } = useOfferStocks({ offer: order });
-
-  const orders = useMemo(() => {
-    if (!holdings) return [];
-    const allStocks = onlyMe
-      ? holdings.filter((s: any) => s.authority === address)
-      : holdings;
-    return allStocks.map((s: any) => {
-      return {
-        create_at: s.create_at,
-        deposits: s.amount,
-        from: "",
-        points: s.item_amount,
-        sub_no: s.stock_id,
-        to: "",
-        total_points: s?.pre_offer_detail?.item_amount || 0,
-        tx_hash: s.tx_hash,
-        order_id: s.stock_id,
-      };
-    }) as Array<TakerOrder>;
-  }, [holdings, onlyMe, address]);
+  const showOrders = useMemo(() => {
+    if (!takerOrders) return [];
+    const allOrd = onlyMe
+      ? takerOrders.filter((s) => s.taker === address)
+      : takerOrders;
+    return allOrd;
+  }, [takerOrders, onlyMe, address]);
 
   return (
     <div className="mt-4 max-h-[415px] rounded-[20px] bg-[#fafafa] p-4 pb-6">
@@ -80,13 +73,13 @@ export default function OrderTabs({ order }: { order: IOffer }) {
           </div>
         </TabsList>
         <TabsContent value="orders" className="h-fit">
-          {orderTokenInfo && (
+          {offerTokenInfo && (
             <TakerOrders
-              orders={orders || []}
+              orders={showOrders || []}
+              offer={offer}
               offerLogo={offerLogo}
-              forLogo={forLogo}
-              orderTokenInfo={orderTokenInfo}
-              orderEqTokenInfo={orderEqTokenInfo}
+              orderTokenInfo={offerTokenInfo}
+              offerEqTokenInfo={offerEqTokenInfo}
             />
           )}
         </TabsContent>

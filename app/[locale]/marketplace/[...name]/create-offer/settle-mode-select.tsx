@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import Image from "next/image";
-import { ISettleMode } from "@/lib/types/maker-detail";
+import { ISettleMode } from "@/lib/types/offer";
 import { capitalize } from "lodash";
 import { useTranslations } from "next-intl";
 
@@ -74,7 +74,7 @@ export function SettleModeSelect({
               >
                 <div
                   data-checked={value === t}
-                  className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
+                  className="ml-[5px] text-xs leading-[18px] data-[checked=false]:text-gray data-[checked=true]:text-black"
                 >
                   {ct(capitalize(t))}
                 </div>

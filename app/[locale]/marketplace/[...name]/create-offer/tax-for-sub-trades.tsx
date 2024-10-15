@@ -1,5 +1,5 @@
 import { NumericalInput } from "@/components/share/numerical-input";
-import { WithTip } from "./with-tip";
+import { WithTip } from "../../../../../components/share/with-tip";
 import { useTranslations } from "next-intl";
 
 export default function TaxForSubTrades({

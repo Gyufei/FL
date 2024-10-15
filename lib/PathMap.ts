@@ -36,11 +36,13 @@ export function WithWss(path: string) {
 export const Paths = {
   // signIn: "/user/sign_in",
   markets: "/markets",
-  offer: "/offers",
+  offers: "/offers",
+  entry: "/entry",
+  offer: "/offer",
+
   holding: "/market_place/stock",
   myOffer: "/market_place/my_offer",
   myStock: "/market_place/my_stock",
-  makerDetail: "/market_place/maker_detail",
   takerOrders: "/market_place/taker_orders",
   marketTrades: "/market_place/maker_trades_history",
   salesVolumeHistory: "/market_place/sales_volume_history",

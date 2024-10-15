@@ -10,11 +10,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { formatNum } from "@/lib/utils/number";
 import { format } from "date-fns";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useRouter } from "@/app/navigation";
+import { IMarketplace } from "@/lib/types/marketplace";
+import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
 
 export default function PointMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
@@ -25,7 +26,7 @@ export default function PointMarket({ className }: { className?: string }) {
 
   const { checkIsDuringTge } = useTge();
 
-  const { currentChainInfo } = useCurrentChain();
+  const { getChainInfo } = useChainInfo();
 
   const theme = useTheme({
     Table: `
@@ -106,7 +107,8 @@ export default function PointMarket({ className }: { className?: string }) {
   const COLUMNS = [
     {
       label: t("th-Asset"),
-      renderCell: (item: any) => {
+      renderCell: (item: IMarketplace) => {
+        const chainInfo = getChainInfo(item.chain);
         return isLoadingFlag ? (
           <div className="flex items-center">
             <Skeleton className="h-[32px] w-[32px] rounded-full" />
@@ -122,7 +124,7 @@ export default function PointMarket({ className }: { className?: string }) {
           >
             <TokenPairImg
               src1={item?.projectLogo}
-              src2={currentChainInfo.logo}
+              src2={chainInfo.logo}
               width1={32}
               height1={32}
               width2={14}
@@ -140,7 +142,7 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-LastPrice"),
-      renderCell: (item: any) => {
+      renderCell: (item: IMarketplace) => {
         const lastPrice = item.last_price || 0;
         const lastPrice24hAgo = item.last_price_24h_ago || 0;
         const lastPricePercent =
@@ -151,7 +153,7 @@ export default function PointMarket({ className }: { className?: string }) {
           <Skeleton className="h-[16px] w-[150px]" />
         ) : (
           <div className="flex flex-col items-end">
-            <PriceText num={item.last_price} />
+            <PriceText num={Number(item.last_price)} />
             <PercentText num={lastPricePercent * 100} />
           </div>
         );
@@ -159,28 +161,30 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-Vol24h"),
-      renderCell: (item: any) =>
+      renderCell: (item: IMarketplace) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
           </div>
         ) : (
           <div className="flex flex-col items-end">
-            <PriceText num={item.vol_24h} />
-            <PercentText num={item.change_rate_24h} />
+            <PriceText num={Number(item.vol_24h)} />
+            <PercentText num={Number(item.change_rate_24h)} />
           </div>
         ),
     },
     {
       label: t("th-TotalVol"),
-      renderCell: (item: any) => {
+      renderCell: (item: IMarketplace) => {
+        const total = Number(item.total_vol);
+        const h24Change = Number(item.vol_24h);
+
         const totalPercent =
-          Number(item.total_vol) === 0
+          total === 0
             ? 0
-            : NP.divide(
-                item.vol_24h || 0,
-                (item.total_vol || 0) - (item.vol_24h || 0),
-              );
+            : total === h24Change
+            ? 1
+            : NP.divide(h24Change || 0, total - h24Change);
 
         return isLoadingFlag ? (
           <div className="flex justify-end">
@@ -188,7 +192,7 @@ export default function PointMarket({ className }: { className?: string }) {
           </div>
         ) : (
           <div className="flex flex-col items-end">
-            <PriceText num={item.total_vol} />
+            <PriceText num={Number(item.total_vol)} />
             <PercentText num={totalPercent * 100} />
           </div>
         );
@@ -196,7 +200,7 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-SetterStarts"),
-      renderCell: (item: any) =>
+      renderCell: (item: IMarketplace) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
@@ -208,10 +212,10 @@ export default function PointMarket({ className }: { className?: string }) {
             ) : (
               <>
                 <div className="text-sm leading-5 text-black">
-                  {format(item.tge * 1000, "dd/MM/yyyy")}
+                  {format(Number(item.tge) * 1000, "dd/MM/yyyy")}
                 </div>
                 <div className="text-[10px] leading-4 text-gray">
-                  {format(item.tge * 1000, "HH:mm a")}
+                  {format(Number(item.tge) * 1000, "HH:mm a")}
                 </div>
               </>
             )}
@@ -220,7 +224,7 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-SetterEnds"),
-      renderCell: (item: any) =>
+      renderCell: (item: IMarketplace) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
@@ -250,7 +254,7 @@ export default function PointMarket({ className }: { className?: string }) {
     },
     {
       label: t("th-Countdown"),
-      renderCell: (item: any) =>
+      renderCell: (item: IMarketplace) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />

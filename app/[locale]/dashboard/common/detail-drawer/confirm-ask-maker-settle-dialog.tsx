@@ -22,10 +22,15 @@ export default function ConfirmAskMakerSettleDialog({
   // const ct = useTranslations("Common");
   const orderRole = "Maker";
 
-  const { amount, tokenTotalPrice, orderPointInfo, afterTGEPeriod, isNativeToken } =
-    useOfferFormat({
-      offer: offer,
-    });
+  const {
+    amount,
+    tokenTotalPrice,
+    offerPointInfo: orderPointInfo,
+    afterTGEPeriod,
+    isNativeToken,
+  } = useOfferFormat({
+    offer: offer,
+  });
 
   // const [sliderMax] = useState(100);
   // const [sliderValue, setSliderValue] = useState(100);
@@ -51,7 +56,7 @@ export default function ConfirmAskMakerSettleDialog({
           <div className="flex justify-between">
             <div className="text-sm leading-5 text-gray">Ask Offer No.</div>
             <div className="text-sm leading-5 text-black">
-              #{(offer as any)?.stock_id || (offer as any)?.offer_id}
+              #{(offer as any)?.stock_id || (offer as any)?.entry?.id}
             </div>
           </div>
           <div className="mt-[30px] flex justify-between">

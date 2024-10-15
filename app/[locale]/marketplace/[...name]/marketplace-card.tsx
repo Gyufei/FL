@@ -145,7 +145,7 @@ function OverviewIcons({
   };
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex h-5 items-center space-x-1">
       {/* <HoverIcon
         onClick={handleCopy}
         src="/icons/copy-gray.svg"

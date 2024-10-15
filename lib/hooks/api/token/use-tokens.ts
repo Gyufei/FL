@@ -7,7 +7,7 @@ export function useTokens() {
   const { tokenEndPoint } = useEndPoint();
 
   async function tFetcher() {
-    const tokens = await fetcher(tokenEndPoint);
+    const tokens = await fetcher(tokenEndPoint, undefined, true);
 
     const newTokens = tokens.map((t: Record<string, any>) => {
       const newT = {

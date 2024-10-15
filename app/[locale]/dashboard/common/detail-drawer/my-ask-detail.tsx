@@ -3,9 +3,9 @@ import { useTranslations } from "next-intl";
 
 import { formatNum } from "@/lib/utils/number";
 import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
-import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
+import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-tabs";
 import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
-import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-tip";
+import { WithTip } from "@/components/share/with-tip";
 import { SwapItemPanel } from "./swap-item-panel";
 import MyDetailCard from "./my-detail-card";
 import { IOffer } from "@/lib/types/offer";
@@ -18,10 +18,10 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 
 export default function MyAskDetail({
-  order: order,
+  offer,
   onSuccess,
 }: {
-  order: IOffer;
+  offer: IOffer;
   onSuccess: () => void;
 }) {
   const ot = useTranslations("drawer-OfferDetail");
@@ -30,8 +30,8 @@ export default function MyAskDetail({
     progress,
     pointPerPrice,
     amount,
-    orderTokenInfo,
-    orderPointInfo,
+    offerTokenInfo: orderTokenInfo,
+    offerPointInfo: orderPointInfo,
     isCanSettle,
     isSettled,
     afterTGE,
@@ -42,7 +42,7 @@ export default function MyAskDetail({
     isClosed,
     isCanAbort,
   } = useOfferFormat({
-    offer: order,
+    offer,
   });
 
   const { currentChainInfo } = useCurrentChain();
@@ -54,10 +54,10 @@ export default function MyAskDetail({
     write: closeAction,
     isSuccess: isCloseSuccess,
   } = useCloseOffer({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
-    holdingStr: order.stock_account,
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -66,10 +66,10 @@ export default function MyAskDetail({
     write: abortAction,
     isSuccess: isAbortSuccess,
   } = useAbortAskOffer({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
-    holdingStr: order.stock_account,
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -78,10 +78,10 @@ export default function MyAskDetail({
     write: relistAction,
     isSuccess: isRelistSuccess,
   } = useRelist({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
-    holdingStr: order.stock_account,
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -116,10 +116,10 @@ export default function MyAskDetail({
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={order.marketplace.projectLogo}
+            img1={offer.marketplace.projectLogo}
             img2={currentChainInfo.logo}
-            name={order.marketplace.market_name}
-            no={order.offer_id}
+            name={offer.marketplace.market_name}
+            no={offer.offer_id}
             progress={progress}
           />
 
@@ -127,7 +127,7 @@ export default function MyAskDetail({
             className="mt-5"
             topText={<>{ot("txt-YouHaveToSell")}</>}
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
-            value={String(order.item_amount)}
+            value={String(offer.item_amount)}
             tokenLogo={orderPointInfo.logoURI}
             onValueChange={() => {}}
             isCanInput={false}
@@ -140,7 +140,7 @@ export default function MyAskDetail({
             isCanInput={false}
             bottomText={
               <>
-                1 {order.marketplace.item_name} = ${pointPerPrice}
+                1 {offer.marketplace.item_name} = ${pointPerPrice}
               </>
             }
             topText={
@@ -148,7 +148,7 @@ export default function MyAskDetail({
                 {ot("txt-YouGet")}
                 <WithTip align="start">
                   {ot("tip-YouGet", {
-                    pointName: order.marketplace.item_name,
+                    pointName: offer.marketplace.item_name,
                   })}
                 </WithTip>
               </div>
@@ -237,11 +237,11 @@ export default function MyAskDetail({
         </div>
 
         {/* right card */}
-        <MyDetailCard offer={order} />
+        <MyDetailCard offer={offer} />
       </div>
-      <OrderTabs order={order} />
+      <OfferTabs offer={offer} />
       <ConfirmAskMakerSettleDialog
-        offer={order}
+        offer={offer}
         open={settleConfirmShow}
         onOpenChange={setSettleConfirmShow}
         onSuccess={onSuccess}

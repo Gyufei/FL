@@ -5,7 +5,7 @@ import DrawerTitle from "@/components/share/drawer-title";
 
 import { InputPanel } from "../../../marketplace/[...name]/create-offer/input-panel";
 import { IToken } from "@/lib/types/token";
-import { WithTip } from "../../../marketplace/[...name]/create-offer/with-tip";
+import { WithTip } from "../../../../../components/share/with-tip";
 import ArrowBetween from "../../../marketplace/[...name]/create-offer/arrow-between";
 import { StableTokenSelectDisplay } from "../../../marketplace/[...name]/create-offer/stable-token-display";
 import { PointTokenSelectDisplay } from "../../../marketplace/[...name]/create-offer/point-token-display";

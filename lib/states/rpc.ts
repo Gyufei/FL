@@ -4,9 +4,9 @@ import { ChainConfigs } from "../const/chain-config";
 export const GlobalRpcsAtom = atomWithStorage<Record<any, any>>(
   "globalRpcsV2",
   {
-    eth: ChainConfigs.eth.rpcs.TadleRPC1,
-    bnb: ChainConfigs.bnb.rpcs.TadleRPC1,
-    solana: ChainConfigs.solana.rpcs.TadleRPC1,
+    eth: ChainConfigs.eth.rpcs.TadleDefaultRPC,
+    bnb: ChainConfigs.bnb.rpcs.TadleDefaultRPC,
+    solana: ChainConfigs.solana.rpcs.TadleDefaultRPC,
   },
 );
 

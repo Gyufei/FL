@@ -238,7 +238,7 @@ export function OrderTable({
         </Pagination>
       )}
 
-      <DetailDrawer orders={offers || []} onSuccess={refreshOrders} />
+      <DetailDrawer offers={offers || []} onSuccess={refreshOrders} />
     </>
   );
 }
@@ -255,7 +255,7 @@ function OrderItem({ order }: { order: IOffer }) {
         alt="avatar"
         className="rounded-full"
       />
-      <div className="absolute right-0 bottom-0 flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white bg-white">
+      <div className="absolute bottom-0 right-0 flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white bg-white">
         <Image
           src={currentChainInfo.logo}
           width={14}
@@ -269,13 +269,13 @@ function OrderItem({ order }: { order: IOffer }) {
 }
 
 function OrderEqToken({ order }: { order: IOffer }) {
-  const { orderEqTokenInfo } = useOfferFormat({ offer: order });
+  const { offerEqTokenInfo } = useOfferFormat({ offer: order });
 
   return (
     <div className="flex items-center space-x-1">
-      <span>{orderEqTokenInfo.symbol}</span>
+      <span>{offerEqTokenInfo.symbol}</span>
       <Image
-        src={orderEqTokenInfo.logoURI}
+        src={offerEqTokenInfo.logoURI}
         width={16}
         height={16}
         alt="token"
@@ -355,11 +355,7 @@ function OrderHash({ offer }: { offer: IOffer }) {
 function DetailBtn({ onClick }: { onClick: () => void }) {
   const ct = useTranslations("Common");
   return (
-    <WithWalletConnectBtn
-      className="flex w-fit"
-      onClick={onClick}
-      
-    >
+    <WithWalletConnectBtn className="flex w-fit" onClick={onClick}>
       <div className="flex h-7 w-full cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black">
         {ct("Detail")}
       </div>

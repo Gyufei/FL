@@ -7,17 +7,17 @@ import {
 } from "@/components/share/offer-type-select";
 import { SortSelect } from "@/components/share/sort-select";
 import SearchInput from "./search-input";
-import { OrderCard, OrderCardSkeleton } from "./order-card";
+import { OfferCard, OrderCardSkeleton } from "./offer-card";
 import HoverIcon from "@/components/share/hover-icon";
 import { IOffer } from "@/lib/types/offer";
 import { useSortOffer } from "@/lib/hooks/offer/use-sort-offer";
 import { range } from "lodash";
 
-export default function OrderList({
-  orders,
+export default function OfferList({
+  offers,
   isLoading,
 }: {
-  orders: Array<IOffer>;
+  offers: Array<IOffer>;
   isLoading: boolean;
 }) {
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
@@ -28,11 +28,11 @@ export default function OrderList({
     sortDir,
     handleSortFieldChange,
     handleSortDirChange,
-    sortOrders,
-  } = useSortOffer(orders || []);
+    sortOffers,
+  } = useSortOffer(offers || []);
 
   const filterOrders = useMemo(() => {
-    const typeOrders = (sortOrders || [])?.filter((o: IOffer) =>
+    const typeOrders = (sortOffers || [])?.filter((o: IOffer) =>
       orderTypes.includes(o.entry.direction as IOfferType),
     );
 
@@ -41,11 +41,11 @@ export default function OrderList({
     }
 
     return typeOrders?.filter((o: IOffer) => {
-      const isIdMatch = String(o.offer_id) === String(searchText);
+      const isIdMatch = String(o.entry.id) === String(searchText);
 
       return isIdMatch;
     });
-  }, [sortOrders, orderTypes, searchText]);
+  }, [sortOffers, orderTypes, searchText]);
 
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
@@ -108,8 +108,8 @@ export default function OrderList({
       <div className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto xl:grid-cols-2 2xl:grid-cols-3">
         {isLoading
           ? range(6).map((i) => <OrderCardSkeleton key={i} />)
-          : (filterOrders || []).map((order) => (
-              <OrderCard order={order} key={order.offer_id} />
+          : (filterOrders || []).map((offer) => (
+              <OfferCard offer={offer} key={offer.offer_id} />
             ))}
       </div>
     </div>

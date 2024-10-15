@@ -15,7 +15,12 @@ export function useEndPoint() {
     [isEth, isSolana, isBnb],
   );
 
-  const apiEndPoint = useMemo(() => getEndpoint("", "", ""), [getEndpoint]);
+  const apiEndPoint = useMemo(() => {
+    if (isEth) return WithHost("");
+    if (isSolana) return WithHost("");
+    if (isBnb) return WithHost("");
+    return "";
+  }, [isEth, isSolana, isBnb]);
 
   const projectInfoEndPoint = useMemo(
     () =>

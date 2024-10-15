@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { truncateAddr } from "@/lib/utils/web3";
 import { Link } from "@/app/navigation";
 
-export default function OrderFillDialog({
+export default function OfferFillDialog({
   open,
   onOpenChange,
   res,

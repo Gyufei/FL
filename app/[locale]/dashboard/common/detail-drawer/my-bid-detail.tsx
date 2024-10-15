@@ -6,7 +6,7 @@ import { formatNum } from "@/lib/utils/number";
 
 import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
 import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
-import { WithTip } from "@/app/[locale]/marketplace/[...name]/create-offer/with-tip";
+import { WithTip } from "@/components/share/with-tip";
 
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
@@ -15,16 +15,16 @@ import { useRelist } from "@/lib/hooks/contract/use-relist";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import OrderTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/order-tabs";
+import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-tabs";
 
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";
 
 export default function MyBidDetail({
-  order,
+  offer,
   onSuccess,
 }: {
-  order: IOffer;
+  offer: IOffer;
   onSuccess: () => void;
 }) {
   const ot = useTranslations("drawer-OfferDetail");
@@ -34,8 +34,8 @@ export default function MyBidDetail({
     progress,
     pointPerPrice,
     amount,
-    orderTokenInfo,
-    orderPointInfo,
+    offerTokenInfo: orderTokenInfo,
+    offerPointInfo: orderPointInfo,
     isSettled,
     isCanceled,
     isClosed,
@@ -44,7 +44,7 @@ export default function MyBidDetail({
     isFilled,
     isNativeToken,
   } = useOfferFormat({
-    offer: order,
+    offer: offer,
   });
 
   const { currentChainInfo } = useCurrentChain();
@@ -54,10 +54,10 @@ export default function MyBidDetail({
     write: closeAction,
     isSuccess: isCloseSuccess,
   } = useCloseOffer({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
-    holdingStr: order.stock_account,
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -66,10 +66,10 @@ export default function MyBidDetail({
     write: relistAction,
     isSuccess: isRelistSuccess,
   } = useRelist({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
-    holdingStr: order.stock_account,
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -78,9 +78,9 @@ export default function MyBidDetail({
     write: bidCloseAction,
     isSuccess: isBidCloseSuccess,
   } = useCloseBidOffer({
-    marketplaceStr: order.market_place_account,
-    makerStr: order.offer_maker,
-    offerStr: order.offer_id,
+    marketplaceStr: offer.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
     isNativeToken,
   });
 
@@ -111,10 +111,10 @@ export default function MyBidDetail({
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
-            img1={order.marketplace.projectLogo}
+            img1={offer.marketplace.projectLogo}
             img2={currentChainInfo.logo}
-            name={order.marketplace.market_name}
-            no={order.offer_id}
+            name={offer.marketplace.market_name}
+            no={offer.offer_id}
             progress={progress}
           />
 
@@ -123,7 +123,7 @@ export default function MyBidDetail({
             topText={<>{ot("txt-YouPay")}</>}
             bottomText={
               <>
-                1 {order.marketplace.item_name} = ${pointPerPrice}
+                1 {offer.marketplace.item_name} = ${pointPerPrice}
               </>
             }
             value={String(amount)}
@@ -143,12 +143,12 @@ export default function MyBidDetail({
                 {ot("txt-YouGet")}
                 <WithTip>
                   {ot("tip-YouGet", {
-                    pointName: order.marketplace.item_name,
+                    pointName: offer.marketplace.item_name,
                   })}
                 </WithTip>
               </div>
             }
-            value={String(order.item_amount)}
+            value={String(offer.item_amount)}
             tokenLogo={orderPointInfo.logoURI}
           />
 
@@ -218,9 +218,9 @@ export default function MyBidDetail({
         </div>
 
         {/* right card */}
-        <MyDetailCard offer={order} />
+        <MyDetailCard offer={offer} />
       </div>
-      <OrderTabs order={order} />
+      <OfferTabs offer={offer} />
     </>
   );
 }

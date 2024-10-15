@@ -3,8 +3,8 @@ import { isProduction } from "../PathMap";
 
 export interface IChainConfig {
   name: string;
-  network: string | number;
   alias: string;
+  network: string | number;
   logo: string;
   rpcs: Record<string, string>;
   zeroAddr: string;
@@ -18,7 +18,7 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     alias: "solana",
     logo: "/icons/solana.svg",
     rpcs: {
-      TadleRPC1: isProduction
+      TadleDefaultRPC: isProduction
         ? process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA ||
           "https://rpc.ankr.com/solana"
         : "https://rpc.ankr.com/solana_devnet",
@@ -49,7 +49,7 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 1 : 1337,
     rpcs: {
-      TadleRPC1: isProduction
+      TadleDefaultRPC: isProduction
         ? process.env.NEXT_PUBLIC_DEFAULT_RPC_ETH || "https://rpc.ankr.com/eth"
         : "https://devnet-rpc.aggregation.top/",
     },
@@ -77,7 +77,7 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 56 : 97,
     rpcs: {
-      TadleRPC1: isProduction
+      TadleDefaultRPC: isProduction
         ? process.env.NEXT_PUBLIC_DEFAULT_RPC_BSC || "https://rpc.ankr.com/bnb"
         : "https://rpc.ankr.com/bsc_testnet_chapel",
     },

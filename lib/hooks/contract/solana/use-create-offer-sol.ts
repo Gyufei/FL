@@ -4,7 +4,7 @@ import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
 import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { ISettleMode } from "@/lib/types/maker-detail";
+import { ISettleMode } from "@/lib/types/offer";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 
 export function useCreateOfferSol({

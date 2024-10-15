@@ -1,6 +1,8 @@
 import { IOfferType } from "@/components/share/offer-type-select";
 import { IMarketplace } from "./marketplace";
 
+export type ISettleMode = "protected" | "turbo";
+
 export interface IOffer {
   offer_id: string;
   create_at: string;
@@ -27,16 +29,12 @@ export interface IOffer {
   settled_item_token_amount: number;
   settled_item_amount: number;
   taken_item_amount: number;
-  origin_settle_mode: string;
+  origin_settle_mode: ISettleMode;
   trade_tax_accum: string;
   trade_tax_pct: string;
   entry: IEntry;
 
   marketplace: IMarketplace;
-
-  pre_offer_display: string;
-  pre_offer_detail: IOffer;
-  origin_offer_detail: IOffer;
 }
 
 export interface IEntry {

@@ -1,29 +1,46 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { useOfferResFormat } from "../offer/use-offer-res-format";
 import { IOffer } from "@/lib/types/offer";
-import { getMarketOffer } from "@/lib/helper/market-offer-cache";
+import { Paths } from "@/lib/PathMap";
+import fetcher from "@/lib/fetcher";
+import { useMarketplaces } from "./use-marketplaces";
 
-export function useMarketOffers({ marketSymbol }: { marketSymbol: string }) {
+export function useMarketOffers({
+  marketSymbol,
+  marketChain,
+}: {
+  marketSymbol: string;
+  marketChain: string;
+}) {
   const { apiEndPoint } = useEndPoint();
-  const { offerResFieldFormat, isLoading } = useOfferResFormat();
+  const { data: marketplaceData, isLoading: isMarketLoading } =
+    useMarketplaces();
 
   const marketOffersFetcher = async () => {
-    if (!marketSymbol || isLoading) return [];
+    if (!marketSymbol || isMarketLoading) return [];
 
-    const offerRes = await getMarketOffer(apiEndPoint, marketSymbol);
+    const offerRes = await fetcher(
+      `${apiEndPoint}${Paths.offers}?market_symbol=${marketSymbol}&chain=${marketChain}`,
+    );
 
     const parsedRes = await Promise.all(
-      offerRes.map((o: Record<string, any>) =>
-        offerResFieldFormat(o, offerRes),
-      ),
+      offerRes.map((o: Record<string, any>) => {
+        const marketplace = marketplaceData?.find(
+          (m) => m.market_symbol === o.entry.market_symbol,
+        );
+
+        return {
+          ...o,
+          marketplace,
+        };
+      }),
     );
 
     return parsedRes as Array<IOffer>;
   };
 
   const res = useSWR(
-    `market-offer:${apiEndPoint}-${marketSymbol}-${isLoading}`,
+    `market-offer:${apiEndPoint}-${marketSymbol}-${isMarketLoading}`,
     marketOffersFetcher,
   );
 

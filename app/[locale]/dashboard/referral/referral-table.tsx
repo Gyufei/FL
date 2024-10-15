@@ -31,7 +31,6 @@ import { IReferralItem } from "@/lib/hooks/api/use-referral-data";
 import ReferralDrawer from "./referral-drawer";
 import {
   useReferralDefault,
-  // useReferralDelete,
   useReferralNoteChange,
 } from "@/lib/hooks/api/use-referral";
 import { useRemoveReferral } from "@/lib/hooks/contract/use-remove-referral";
@@ -190,32 +189,6 @@ export function ReferralTable({
         setDrawerOpen={setDrawerOpen}
         onSuccess={() => refresh()}
       />
-
-      {/* {pagination.state.getTotalPages(data.nodes) > 1 && (
-        <Pagination
-          totalPages={pagination.state.getTotalPages(data.nodes)}
-          edgePageCount={3}
-          middlePagesSiblingCount={1}
-          currentPage={pagination.state.page}
-          setCurrentPage={handlePageChange}
-        >
-          <Pagination.PrevButton />
-
-          <nav className="mx-2 flex items-center justify-center">
-            <ul className="flex items-center gap-2">
-              <Pagination.PageButton
-                activeClassName=""
-                inactiveClassName=""
-                className=""
-              />
-            </ul>
-          </nav>
-
-          <Pagination.NextButton />
-        </Pagination>
-      )} */}
-
-      {/* <DetailDrawer orders={offers || []} onSuccess={refreshOrders} /> */}
     </>
   );
 }
@@ -358,7 +331,7 @@ function ReferralNote({
             value={inputValue}
             onChange={(e: any) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
-            className="h-6 rounded-none border-x-0 border-t-0 border-b border-lightgray bg-[#fafafa] pr-[50px]"
+            className="h-6 rounded-none border-x-0 border-b border-t-0 border-lightgray bg-[#fafafa] pr-[50px]"
           />
           <Image
             onClick={handleInputConfirm}

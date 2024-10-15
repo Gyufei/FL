@@ -17,7 +17,7 @@ export default function MyHoldings() {
     sortDir,
     handleSortFieldChange,
     handleSortDirChange,
-    sortOrders,
+    sortOffers,
   } = useSortOffer((holdings as any[]) || []);
 
   const offers = useMemo(() => {
@@ -45,11 +45,11 @@ export default function MyHoldings() {
         />
       </div>
 
-      <DetailDrawer orders={offers || []} onSuccess={refreshOrders} />
+      <DetailDrawer offers={offers || []} onSuccess={refreshOrders} />
 
-      {sortOrders.length ? (
+      {sortOffers.length ? (
         <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {(sortOrders || []).map((order) => (
+          {(sortOffers || []).map((order) => (
             <HoldingCard
               key={order.stock_id}
               holding={order}

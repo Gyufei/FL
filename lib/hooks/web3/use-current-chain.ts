@@ -10,7 +10,8 @@ import {
 } from "@/lib/states/network";
 import { useSwitchChain } from "wagmi";
 
-import { ChainConfigs, IChainConfig } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-config";
+import { useChainInfo } from "./use-chain-info";
 
 export function useCurrentChain() {
   const [network, setNetwork] = useAtom(NetworkAtom);
@@ -20,22 +21,11 @@ export function useCurrentChain() {
   const isEvm = isEth || isBnb;
 
   const { switchChainAsync } = useSwitchChain();
+  const { getChainAlias, getChainInfo } = useChainInfo();
 
   const currentChainInfo = useMemo(() => {
-    if (isEth) {
-      return ChainConfigs.eth;
-    } else if (isBnb) {
-      return ChainConfigs.bnb;
-    } else if (isSolana) {
-      return ChainConfigs.solana;
-    }
-
-    return {
-      name: "",
-      alias: "",
-      logo: "/icons/empty.svg",
-    } as IChainConfig;
-  }, [isEth, isSolana, isBnb]);
+    return getChainInfo(getChainAlias(network));
+  }, [getChainInfo, getChainAlias, network]);
 
   async function switchToEth() {
     if (isEth) return;
@@ -64,6 +54,7 @@ export function useCurrentChain() {
     isBnb,
     isEvm,
     currentChainInfo,
+    getChainInfo,
     switchToEth,
     switchToSolana,
     switchToBsc,

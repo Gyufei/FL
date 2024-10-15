@@ -6,7 +6,7 @@ import { sortBy } from "lodash";
 
 import LeaderBoard from "@/app/[locale]/marketplace/[...name]/leader-board/leader-board";
 import AdBanner from "./ad-banner";
-import OrderList from "@/app/[locale]/marketplace/[...name]/order-list/order-list";
+import OfferList from "@/app/[locale]/marketplace/[...name]/offer-list/offer-list";
 import MarketplaceCard from "./marketplace-card";
 import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
@@ -27,27 +27,28 @@ export default function MarketplaceContent({
   const mt = useTranslations("pn-Marketplace");
 
   const {
-    data: orders,
-    mutate: refreshOrders,
-    isLoading: isOrdersLoading,
+    data: offers,
+    mutate: refreshOffers,
+    isLoading: isOffersLoading,
   } = useMarketOffers({
     marketSymbol: marketplace?.market_symbol || "",
+    marketChain: marketplace.chain,
   });
 
-  const canBuyOrders = useMemo(() => {
-    const showOrder = (orders || [])?.filter((ord: IOffer) =>
+  const canBuyOffers = useMemo(() => {
+    const showOffer = (offers || [])?.filter((ord: IOffer) =>
       ["virgin", "ongoing", "filled"].includes(ord.status),
     );
-    const sortO = sortBy(showOrder, "status");
+    const sortO = sortBy(showOffer, "status");
 
     return sortO;
-  }, [orders]);
+  }, [offers]);
 
-  const { anchor: orderId } = useAnchor();
+  const { anchor: offerId } = useAnchor();
 
-  const anchorOrder = useMemo(() => {
-    return orders?.find((o) => o.offer_id === orderId);
-  }, [orders, orderId]);
+  const anchorOffer = useMemo(() => {
+    return offers?.find((o) => String(o.entry.id) === offerId);
+  }, [offers, offerId]);
 
   const { checkIsAfterTge } = useTge();
 
@@ -59,7 +60,7 @@ export default function MarketplaceContent({
     );
   }, [marketplace, checkIsAfterTge]);
 
-  if (marketplace && orders && orderId && !anchorOrder) {
+  if (marketplace && offers && offerId && !anchorOffer) {
     return (
       <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
         <Image src="/img/404.png" width={480} height={360} alt="404" />
@@ -78,7 +79,7 @@ export default function MarketplaceContent({
               {marketplace && (
                 <CreateOfferBtn
                   marketplace={marketplace}
-                  onSuccess={refreshOrders}
+                  onSuccess={refreshOffers}
                 />
               )}
             </div>
@@ -109,13 +110,13 @@ export default function MarketplaceContent({
               </div>
             ) : (
               <>
-                <OrderList
-                  orders={canBuyOrders || []}
-                  isLoading={isOrdersLoading}
+                <OfferList
+                  offers={canBuyOffers || []}
+                  isLoading={isOffersLoading}
                 />
                 <OfferDetailDrawer
-                  orders={orders || []}
-                  onSuccess={refreshOrders}
+                  offers={offers || []}
+                  onSuccess={refreshOffers}
                 />
               </>
             )}

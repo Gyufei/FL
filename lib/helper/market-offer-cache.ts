@@ -11,7 +11,7 @@ export async function getMarketOffer(apiPath: string, marketSymbol: string) {
   }
 
   const res = await fetcher(
-    `${apiPath}${Paths.offer}?market_symbol=${marketSymbol}`,
+    `${apiPath}${Paths.offers}?market_symbol=${marketSymbol}`,
   );
 
   MarketOffersMap.set(marketSymbol, res);

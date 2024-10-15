@@ -4,41 +4,38 @@ import { useMemo } from "react";
 import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
-import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
-import { useTokensInfo } from "@/lib/hooks/api/token/use-token-info";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useIsNativeToken } from "../api/token/use-is-native-token";
+import { useTokens } from "../api/token/use-tokens";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
-  const { data: makerDetail, isLoading: isLoadingMakerDetail } = useMakerDetail(
-    {
-      makerId: offer.offer_maker,
-    },
-  );
+  const { data: tokens } = useTokens();
 
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
-  const [orderTokenInfo] = useTokensInfo([makerDetail?.token_mint || null]);
+  const offerTokenInfo = useMemo(() => {
+    return tokens?.find((t) => t.symbol === offer.payment_token);
+  }, [offer, tokens]);
 
-  const { isNativeToken } = useIsNativeToken(orderTokenInfo || null);
+  const { isNativeToken } = useIsNativeToken(offerTokenInfo || null);
 
-  const { data: tokenPrice } = useTokenPrice(orderTokenInfo?.address || "");
+  const { data: tokenPrice } = useTokenPrice(offerTokenInfo?.address || "");
 
-  const orderPointInfo: IPoint = {
+  const offerPointInfo: IPoint = {
     symbol: offer.marketplace.item_name,
     logoURI: offer.marketplace.pointLogo,
     marketplaceId: offer.marketplace.market_place_id,
     marketName: offer.marketplace.market_name,
   };
 
-  const orderEqTokenInfo = {
+  const offerEqTokenInfo = {
     symbol: "TBA",
     logoURI: offer.marketplace.pointLogo,
     decimals: 9,
   } as IToken;
 
-  const tokenLogo = orderTokenInfo?.logoURI || "/icons/empty.svg";
-  const pointLogo = orderPointInfo?.logoURI || "/icons/empty.svg";
+  const tokenLogo = offerTokenInfo?.logoURI || "/icons/empty.svg";
+  const pointLogo = offerPointInfo?.logoURI || "/icons/empty.svg";
 
   const amount = NP.times(offer.item_amount, offer.price);
 
@@ -48,9 +45,9 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const offerType = offer.entry.direction;
   const offerValue = offerType === "sell" ? offer.item_amount : amount;
-  const forValue = offerType === "buy" ? amount : offer.item_amount;
+  const forValue = offerType === "sell" ? amount : offer.item_amount;
   const offerLogo = offerType === "sell" ? pointLogo : tokenLogo;
-  const forLogo = offerType === "buy" ? tokenLogo : pointLogo;
+  const forLogo = offerType === "sell" ? tokenLogo : pointLogo;
 
   const tokenTotalPrice = NP.times(amount, tokenPrice);
   const pointPerPrice = NP.divide(tokenTotalPrice, offer.item_amount);
@@ -96,12 +93,11 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const isCanSettle = useMemo(() => {
     if (!afterTGE) return false;
-    if (isLoadingMakerDetail) return false;
 
-    const offerSettleType = makerDetail?.offer_settle_type;
+    const offerSettleType = offer?.origin_settle_mode;
     const isTurbo = offerSettleType === "turbo";
 
-    if (isTurbo && offer.pre_offer_display) {
+    if (isTurbo && !offer.entry.is_root) {
       return false;
     }
 
@@ -109,14 +105,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
       !["canceled", "settled"].includes(offer.status) ||
       (offer.status === "canceled" && Number(offer.taken_item_amount) > 0)
     );
-  }, [
-    offer.status,
-    afterTGE,
-    offer.taken_item_amount,
-    makerDetail,
-    isLoadingMakerDetail,
-    offer.pre_offer_display,
-  ]);
+  }, [offer, afterTGE]);
 
   const isSettled = useMemo(() => {
     return ["settled", "finished"].includes(offer.status);
@@ -129,12 +118,11 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   }, [offer.status]);
 
   const isCanAbort = useMemo(() => {
-    if (!makerDetail) return false;
     if (offer.entry.direction === "buy") return false;
 
     if (["unknown", "settled"].includes(offer.status)) return false;
 
-    const offerSettleType = makerDetail?.offer_settle_type;
+    const offerSettleType = offer.origin_settle_mode;
     const isProtected = offerSettleType === "protected";
     const isTurbo = offerSettleType === "turbo";
 
@@ -143,11 +131,11 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     }
 
     if (isTurbo) {
-      return !!offer.pre_offer_display;
+      return !offer.entry.is_root;
     }
 
     return false;
-  }, [offer, makerDetail]);
+  }, [offer]);
 
   return {
     orderDuration,
@@ -161,15 +149,14 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     forValue,
     offerLogo,
     forLogo,
-    makerDetail,
 
     tokenPrice,
     isNativeToken,
     tokenTotalPrice,
     pointPerPrice,
-    orderPointInfo,
-    orderTokenInfo,
-    orderEqTokenInfo,
+    offerPointInfo,
+    offerTokenInfo,
+    offerEqTokenInfo,
 
     isCanSettle,
     isSettled,

@@ -3,51 +3,46 @@ import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 import AskDetail from "../offer-detail/ask-detail";
 import BidDetail from "../offer-detail/bid-detail";
-import OrderFillDialog from "../offer-detail/order-fill-dialog";
+import OfferFillDialog from "./offer-fill-dialog";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IOffer } from "@/lib/types/offer";
 import { upperFirst } from "lodash";
-import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function OfferDetailDrawer({
-  orders,
+  offers,
   onSuccess,
 }: {
-  orders: Array<IOffer>;
+  offers: Array<IOffer>;
   onSuccess: () => void;
 }) {
   const ct = useTranslations("Common");
   const ot = useTranslations("drawer-OfferDetail");
   const { connected } = useChainWallet();
-  const { anchor: orderId, setAnchorValue } = useAnchor();
+  const { anchor: offerId, setAnchorValue } = useAnchor();
 
-  const order = useMemo(() => {
-    return orders?.find((o) => o.offer_id === orderId);
-  }, [orders, orderId]);
+  const offer = useMemo(() => {
+    return offers?.find((o) => String(o.entry.id) === offerId);
+  }, [offers, offerId]);
 
-  const { data: makerDetail } = useMakerDetail({
-    makerId: order?.offer_maker,
-  });
-
-  const settleMode = upperFirst(makerDetail?.offer_settle_type);
+  const settleMode = upperFirst(offer?.origin_settle_mode);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [orderFillDialog, setOrderFillDialog] = useState(false);
   const [resultOrder, setResultOrder] = useState<any | null>(null);
 
-  const isAsk = order?.entry.direction === "sell";
+  const isAsk = offer?.entry.direction === "sell";
 
   useEffect(() => {
-    if (order && connected) {
+    if (offer && connected) {
       setDrawerOpen(true);
     }
 
-    if (!orderId) {
+    if (!offerId) {
       setDrawerOpen(false);
     }
-  }, [order, orderId]);
+  }, [offer, offerId]);
 
   function handleSuccess(ord: Record<string, any>) {
     setDrawerOpen(false);
@@ -61,7 +56,7 @@ export default function OfferDetailDrawer({
     setAnchorValue("");
   }
 
-  if (!order) {
+  if (!offer) {
     return null;
   }
 
@@ -81,13 +76,13 @@ export default function OfferDetailDrawer({
           tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
         />
         {isAsk ? (
-          <AskDetail onSuccess={(ord) => handleSuccess(ord)} offer={order} />
+          <AskDetail onSuccess={(ord) => handleSuccess(ord)} offer={offer} />
         ) : (
-          <BidDetail onSuccess={(ord) => handleSuccess(ord)} order={order} />
+          <BidDetail onSuccess={(ord) => handleSuccess(ord)} offer={offer} />
         )}
       </Drawer>
       {resultOrder && (
-        <OrderFillDialog
+        <OfferFillDialog
           open={orderFillDialog}
           onOpenChange={(val) => setOrderFillDialog(val)}
           res={resultOrder}

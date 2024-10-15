@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
-import OrderTabs from "./order-tabs";
+import OfferTabs from "./offer-tabs";
 import { useCreateHolding } from "@/lib/hooks/contract/use-create-holding";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
@@ -41,16 +41,15 @@ export default function AskDetail({
     forLogo,
     pointPerPrice,
     isFilled,
-    orderTokenInfo,
-    makerDetail,
+    offerTokenInfo: orderTokenInfo,
     isNativeToken,
   } = useOfferFormat({
     offer,
   });
 
   const tradeFee = useMemo(() => {
-    return NP.divide(makerDetail?.each_trade_tax || 0, 10000);
-  }, [makerDetail]);
+    return NP.divide(offer?.trade_tax_pct || 0, 10000);
+  }, [offer]);
 
   const {
     data: txHash,
@@ -58,12 +57,15 @@ export default function AskDetail({
     isSuccess,
     write: writeAction,
   } = useCreateHolding({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    // originOfferStr: makerDetail?.origin_offer || "",
+    // originOfferAuthStr: offer.origin_offer_detail?.offer_maker,
+    marketplaceStr: "",
+    originOfferStr: "",
+    originOfferAuthStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    originOfferStr: makerDetail?.origin_offer || "",
     preOfferAuthStr: offer.offer_maker,
-    originOfferAuthStr: offer.origin_offer_detail?.offer_maker,
     referrerStr: referrer || "",
     isNativeToken,
   });
@@ -102,7 +104,7 @@ export default function AskDetail({
       return;
     }
 
-    if (isDepositLoading || !receivePointAmount || !makerDetail) return;
+    if (isDepositLoading || !receivePointAmount) return;
     await writeAction({
       pointAmount: receivePointAmount,
     });
@@ -128,7 +130,7 @@ export default function AskDetail({
             img1={offer.marketplace.projectLogo}
             img2={currentChainInfo.logo}
             name={offer.marketplace.market_name}
-            no={offer.offer_id}
+            no={String(offer.entry.id)}
             progress={progress}
           />
 
@@ -200,7 +202,7 @@ export default function AskDetail({
         <DetailCard offer={offer} />
       </div>
 
-      <OrderTabs order={offer} />
+      <OfferTabs offer={offer} />
     </>
   );
 }

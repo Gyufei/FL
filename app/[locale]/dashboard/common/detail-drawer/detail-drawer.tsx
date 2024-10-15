@@ -7,14 +7,13 @@ import MyBidDetail from "./my-bid-detail";
 import { useEffect, useMemo, useState } from "react";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { upperFirst } from "lodash";
-import { useMakerDetail } from "@/lib/hooks/api/use-maker-detail";
 import { useTranslations } from "next-intl";
 
 export default function DetailDrawer({
-  orders,
+  offers,
   onSuccess,
 }: {
-  orders: Array<IOffer>;
+  offers: Array<IOffer>;
   onSuccess: () => void;
 }) {
   const ct = useTranslations("Common");
@@ -24,19 +23,15 @@ export default function DetailDrawer({
 
   const { anchor: orderId, setAnchorValue } = useAnchor();
 
-  const order = useMemo(() => {
-    return orders?.find((o) => o.offer_id === orderId);
-  }, [orders, orderId]);
+  const offer = useMemo(() => {
+    return offers?.find((o) => String(o.entry.id) === orderId);
+  }, [offers, orderId]);
 
-  const { data: makerDetail } = useMakerDetail({
-    makerId: order?.offer_maker,
-  });
-
-  const settleMode = upperFirst(makerDetail?.offer_settle_type);
+  const settleMode = upperFirst(offer?.origin_settle_mode);
 
   const isAsk = useMemo(() => {
-    return order?.entry.direction === "sell";
-  }, [order]);
+    return offer?.entry.direction === "sell";
+  }, [offer]);
 
   function handleDrawerClose() {
     setDrawerOpen(false);
@@ -44,21 +39,21 @@ export default function DetailDrawer({
   }
 
   useEffect(() => {
-    if (order) {
+    if (offer) {
       setDrawerOpen(true);
     }
 
     if (!orderId) {
       setDrawerOpen(false);
     }
-  }, [order, orderId]);
+  }, [offer, orderId]);
 
   function handleSuccess() {
     setDrawerOpen(false);
     onSuccess();
   }
 
-  if (!order) return null;
+  if (!offer) return null;
 
   return (
     <Drawer
@@ -75,11 +70,11 @@ export default function DetailDrawer({
         tag={ct(settleMode)}
         tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
       />
-      {order &&
+      {offer &&
         (isAsk ? (
-          <MyAskDetail order={order} onSuccess={handleSuccess} />
+          <MyAskDetail offer={offer} onSuccess={handleSuccess} />
         ) : (
-          <MyBidDetail order={order} onSuccess={handleSuccess} />
+          <MyBidDetail offer={offer} onSuccess={handleSuccess} />
         ))}
     </Drawer>
   );

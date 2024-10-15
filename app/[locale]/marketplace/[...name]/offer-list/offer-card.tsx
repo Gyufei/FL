@@ -15,13 +15,13 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useMemo } from "react";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
+import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
 
-export function OrderCard({ order }: { order: IOffer }) {
+export function OfferCard({ offer }: { offer: IOffer }) {
   const t = useTranslations("cd-Order");
   const { setAnchorValue } = useAnchor();
   const {
@@ -31,23 +31,22 @@ export function OrderCard({ order }: { order: IOffer }) {
     offerLogo,
     forLogo,
     pointPerPrice,
-    // orderDuration,
     tokenTotalPrice,
   } = useOfferFormat({
-    offer: order,
+    offer: offer,
   });
 
-  const { currentChainInfo } = useCurrentChain();
+  const { getChainInfo } = useChainInfo();
 
-  const orderType = order.entry.direction;
+  const orderType = offer.entry.direction;
 
   const showBuy = useMemo(() => {
-    return ["virgin", "ongoing"].includes(order.status);
-  }, [order]);
+    return ["virgin", "ongoing"].includes(offer.status);
+  }, [offer]);
 
   const done = useMemo(() => {
-    return ["filled", "settled"].includes(order.status);
-  }, [order]);
+    return ["filled", "settled"].includes(offer.status);
+  }, [offer]);
 
   function handleShowOrderOffer(oId: string) {
     setAnchorValue(oId);
@@ -58,18 +57,18 @@ export function OrderCard({ order }: { order: IOffer }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <TokenPairImg
-            src1={order.marketplace.projectLogo}
-            src2={currentChainInfo.logo}
+            src1={offer.marketplace.projectLogo}
+            src2={getChainInfo(offer.marketplace.chain).logo}
             width1={48}
             height1={48}
           />
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {order.marketplace.market_name}
+              {offer.marketplace.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{order.offer_id}
+              #{offer.entry.id}
             </div>
           </div>
         </div>
@@ -104,9 +103,9 @@ export function OrderCard({ order }: { order: IOffer }) {
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            {orderType === "ask" ? (
+            {orderType === "sell" ? (
               <>
-                ${formatNum(pointPerPrice, 6)} / {order.marketplace.item_name}
+                ${formatNum(pointPerPrice, 6)} / {offer.marketplace.item_name}
               </>
             ) : (
               <>${formatNum(tokenTotalPrice)}</>
@@ -136,11 +135,11 @@ export function OrderCard({ order }: { order: IOffer }) {
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            {orderType === "ask" ? (
+            {orderType === "sell" ? (
               <>${formatNum(tokenTotalPrice)}</>
             ) : (
               <>
-                ${formatNum(pointPerPrice, 6)} / {order.marketplace.item_name}
+                ${formatNum(pointPerPrice, 6)} / {offer.marketplace.item_name}
               </>
             )}
           </div>
@@ -152,7 +151,7 @@ export function OrderCard({ order }: { order: IOffer }) {
           {/* {orderDuration} */}
         </div>
         <div className="flex items-center">
-          {order.note && (
+          {offer.note && (
             <div
               data-right={showBuy}
               className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full data-[right=true]:mr-3"
@@ -169,7 +168,7 @@ export function OrderCard({ order }: { order: IOffer }) {
                     />
                   </TooltipTrigger>
                   <TooltipContent className="w-[200px]">
-                    <p className="text-xs leading-[18px]">{order.note}</p>
+                    <p className="text-xs leading-[18px]">{offer.note}</p>
                     <TooltipArrow asChild>
                       <CTooltipArrow />
                     </TooltipArrow>
@@ -180,16 +179,16 @@ export function OrderCard({ order }: { order: IOffer }) {
           )}
           {showBuy && (
             <WithWalletConnectBtn
-              onClick={() => handleShowOrderOffer(order.offer_id)}
+              onClick={() => handleShowOrderOffer(String(offer.entry.id))}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
-                {orderType === "ask" ? t("btn-Buy") : t("btn-Sell")}
+                {orderType === "sell" ? t("btn-Buy") : t("btn-Sell")}
               </button>
             </WithWalletConnectBtn>
           )}
           {done && (
             <WithWalletConnectBtn
-              onClick={() => handleShowOrderOffer(order.offer_id)}
+              onClick={() => handleShowOrderOffer(String(offer.entry.id))}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 {t("btn-Detail")}

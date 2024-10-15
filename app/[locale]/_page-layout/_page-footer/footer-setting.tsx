@@ -136,9 +136,9 @@ export default function FooterSetting() {
           <NetItem
             name="Tadle RPC 1"
             label="Mainnet"
-            rpc={chainRpcs?.TadleRPC1}
-            checked={checkedRpc === chainRpcs.TadleRPC1}
-            onCheckedChange={() => handleCheck(chainRpcs.TadleRPC1)}
+            rpc={chainRpcs?.TadleDefaultRPC}
+            checked={checkedRpc === chainRpcs.TadleDefaultRPC}
+            onCheckedChange={() => handleCheck(chainRpcs.TadleDefaultRPC)}
           />
         </div>
 

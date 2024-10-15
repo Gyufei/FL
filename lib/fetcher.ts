@@ -7,6 +7,7 @@ import { WithHost } from "./PathMap";
 export default async function fetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
+  notEncrypt?: boolean,
 ) {
   try {
     const access_key = "aK15X6c9";
@@ -15,7 +16,7 @@ export default async function fetcher(
 
     const newFetch = withSecure(fetch, access_key, private_key, seedApiUrl);
 
-    const res = await newFetch(input, init);
+    const res = await (notEncrypt ? fetch : newFetch)(input, init);
 
     if (!res.ok) {
       const error = new Error(

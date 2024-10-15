@@ -11,29 +11,20 @@ import { Pagination } from "@/components/ui/pagination/pagination";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { formatNum } from "@/lib/utils/number";
 import { useTranslations } from "next-intl";
-
-export interface TakerOrder {
-  create_at: string;
-  deposits: string;
-  from: string;
-  points: string;
-  sub_no: string;
-  to: string;
-  total_points: string;
-  tx_hash: string;
-  order_id: string;
-}
+import { ITakerOrder } from "@/lib/hooks/api/use-taker-orders-of-offer";
+import { IOffer } from "@/lib/types/offer";
 
 export function TakerOrders({
   orders,
+  offer,
   offerLogo,
-  orderEqTokenInfo,
+  offerEqTokenInfo,
   orderTokenInfo,
 }: {
-  orders: Array<TakerOrder>;
+  orders: Array<ITakerOrder>;
+  offer: IOffer;
   offerLogo: string;
-  forLogo: string;
-  orderEqTokenInfo: IToken;
+  offerEqTokenInfo: IToken;
   orderTokenInfo: IToken;
 }) {
   const T = useTranslations("drawer-OfferDetail");
@@ -102,11 +93,13 @@ export function TakerOrders({
     { label: T("th-SubNo"), renderCell: (o: any) => `#${o.sub_no}` },
     {
       label: T("th-FillAmount"),
-      renderCell: (o: any) => <PointsCell order={o} offerLogo={offerLogo} />,
+      renderCell: (o: any) => (
+        <PointsCell order={o} offer={offer} offerLogo={offerLogo} />
+      ),
     },
     {
       label: T("th-Deposits"),
-      renderCell: (o: TakerOrder) => (
+      renderCell: (o: ITakerOrder) => (
         <AmountCell order={o} tokenInfo={orderTokenInfo} />
       ),
     },
@@ -114,9 +107,9 @@ export function TakerOrders({
       label: T("th-EqToken"),
       renderCell: () => (
         <div className="flex items-center justify-end space-x-1">
-          <span>{orderEqTokenInfo.symbol}</span>
+          <span>{offerEqTokenInfo.symbol}</span>
           <Image
-            src={orderEqTokenInfo.logoURI}
+            src={offerEqTokenInfo.logoURI}
             width={16}
             height={16}
             alt="token"
@@ -127,7 +120,7 @@ export function TakerOrders({
     },
     {
       label: T("th-TxHash"),
-      renderCell: (o: TakerOrder) => (
+      renderCell: (o: ITakerOrder) => (
         <div className="flex items-center justify-end">
           {truncateAddr(o.tx_hash || "")}
           <Image
@@ -143,7 +136,7 @@ export function TakerOrders({
     },
     {
       label: T("th-Time"),
-      renderCell: (o: TakerOrder) => (
+      renderCell: (o: ITakerOrder) => (
         <div className="flex items-center justify-end">{`${formatTimestamp(
           Number(o.create_at) * 1000,
         )}`}</div>
@@ -188,13 +181,15 @@ export function TakerOrders({
 
 function PointsCell({
   order,
+  offer,
   offerLogo,
 }: {
-  order: TakerOrder;
+  order: ITakerOrder;
+  offer: IOffer;
   offerLogo: string;
 }) {
-  const points = order.points;
-  const totalPoints = order.total_points;
+  const points = order.item_amount;
+  const totalPoints = offer.item_amount;
   const percent = formatNum(NP.divide(points, totalPoints) * 100);
 
   return (
@@ -217,12 +212,12 @@ function AmountCell({
   order,
   tokenInfo,
 }: {
-  order: TakerOrder;
+  order: ITakerOrder;
   tokenInfo: IToken;
 }) {
   const amount = useMemo(() => {
-    return NP.divide(order.deposits, 10 ** tokenInfo.decimals);
-  }, [order.deposits, tokenInfo]);
+    return NP.divide(order.notional_value, 10 ** tokenInfo.decimals);
+  }, [order.notional_value, tokenInfo]);
 
   return (
     <div className="flex items-center justify-end space-x-1">

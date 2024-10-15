@@ -3,38 +3,43 @@ import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
-import { useOfferResFormat } from "../offer/use-offer-res-format";
+import { useMarketplaces } from "./use-marketplaces";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { getMarketOffers } from "@/lib/helper/market-offer-cache";
 
 export function useMyOffers() {
   const { address } = useChainWallet();
   const { apiEndPoint } = useEndPoint();
 
-  const { offerResFieldFormat, isLoading } = useOfferResFormat();
+  const { data: marketplaceData, isLoading: isMarketLoading } =
+    useMarketplaces();
 
   const marketOrdersFetcher = async () => {
-    if (!address || isLoading) return [];
+    if (!address || isMarketLoading) return [];
 
-    const orderRes = await fetcher(
+    const offerRes = await fetcher(
       `${apiEndPoint}${Paths.myOffer}?authority=${address}`,
     );
 
-    const marketOffers = await getMarketOffers(
-      apiEndPoint,
-      orderRes.map((o: Record<string, any>) => o.market_place_account),
-    );
-
     const parsedRes = await Promise.all(
-      orderRes.map((o: Record<string, any>) =>
-        offerResFieldFormat(o, marketOffers[o.market_place_account]),
-      ),
+      offerRes.map((o: Record<string, any>) => {
+        const marketplace = marketplaceData?.find(
+          (m) => m.market_symbol === o.entry.market_symbol,
+        );
+
+        return {
+          ...o,
+          marketplace,
+        };
+      }),
     );
 
     return parsedRes as Array<IOffer>;
   };
 
-  const res = useSWR(`my_offer:${address}${isLoading}`, marketOrdersFetcher);
+  const res = useSWR(
+    `my_offer:${address}${isMarketLoading}`,
+    marketOrdersFetcher,
+  );
 
   return {
     ...res,

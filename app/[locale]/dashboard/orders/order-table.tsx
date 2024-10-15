@@ -15,7 +15,8 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useMemo } from "react";
-import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
+import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
+import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
@@ -41,14 +42,28 @@ export function OrderTable({
   const T = useTranslations("page-MyOrders");
 
   const { setAnchorValue } = useAnchor();
-  const { data: offers, mutate: refreshOrders } = useMyOffers();
+  const { data: offers } = useMarketOffers({
+    marketSymbol: "",
+    marketChain: "bnb",
+  });
+  const { data: orders, mutate: refreshMyOrders } = useMyOrders();
+  console.log("🚀 ~ offers:", offers, orders);
 
   function openDetail(oId: any) {
     setAnchorValue(oId);
   }
 
   const data = useMemo(() => {
-    const orderData = (offers || [])
+    const orderAssemblyData = (orders || []).map((order) => {
+      const matchingOffer = offers?.find(
+        (offer) => offer.offer_id === order.offer_id,
+      );
+      return {
+        ...order,
+        offer: matchingOffer || null, // 将对应的offer放入order对象中
+      };
+    });
+    const orderData = (orderAssemblyData || [])
       .map((o) => {
         return {
           ...o,
@@ -71,7 +86,7 @@ export function OrderTable({
     return {
       nodes: sortData,
     };
-  }, [offers, role, status, types]);
+  }, [offers, orders, role, status, types]);
 
   const theme = useTheme({
     Table: `
@@ -238,7 +253,7 @@ export function OrderTable({
         </Pagination>
       )}
 
-      <DetailDrawer offers={offers || []} onSuccess={refreshOrders} />
+      <DetailDrawer offers={offers || []} onSuccess={refreshMyOrders} />
     </>
   );
 }

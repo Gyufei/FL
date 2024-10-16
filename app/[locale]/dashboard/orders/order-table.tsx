@@ -15,9 +15,10 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useMemo } from "react";
-import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
+import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
+import { IOrder } from "@/lib/types/order";
 import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
@@ -41,29 +42,32 @@ export function OrderTable({
   const T = useTranslations("page-MyOrders");
 
   const { setAnchorValue } = useAnchor();
-  const { data: offers, mutate: refreshOrders } = useMyOffers();
+
+  const { data: orders, mutate: refreshMyOrders } = useMyOrders();
+  console.log("🚀 ~ orders:", orders);
 
   function openDetail(oId: any) {
     setAnchorValue(oId);
   }
 
   const data = useMemo(() => {
-    const orderData = (offers || [])
+    const orderData = (orders || [])
       .map((o) => {
         return {
           ...o,
-          id: o.offer_id,
+          id: o.order_id,
         };
       })
       .filter((o) => {
         const oRole = "Maker";
-        const oStatus = o.status;
-        const oType = o.entry.direction;
+        // const oStatus = o.offer?.status;
+        const oType = o.offer.entry.direction;
 
         const isRole = role === "All" || role === oRole;
-        const isStatus = status === "All" || status.toLowerCase() === oStatus;
 
-        return isRole && isStatus && types.includes(oType as IOfferType);
+        // const isStatus = status === "All" || status.toLowerCase() === oStatus;
+
+        return isRole && types.includes(oType as IOfferType);
       });
 
     const sortData = sortBy(orderData, "create_at").reverse();
@@ -71,7 +75,7 @@ export function OrderTable({
     return {
       nodes: sortData,
     };
-  }, [offers, role, status, types]);
+  }, [orders, role, status, types]);
 
   const theme = useTheme({
     Table: `
@@ -178,10 +182,10 @@ export function OrderTable({
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div>
                       <div className="text-sm leading-5 text-black">
-                        {ord.marketplace?.market_name}
+                        {ord.offer.marketplace?.market_name}
                       </div>
                       <div className="text-[10px] leading-4 text-gray">
-                        #{ord.offer_id}
+                        #{ord.entry.id}
                       </div>
                     </div>
                   </Cell>
@@ -204,7 +208,7 @@ export function OrderTable({
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <DetailBtn
-                      onClick={() => openDetail(ord.offer_id)}
+                      onClick={() => openDetail(ord.order_id)}
                     ></DetailBtn>
                   </Cell>
                 </Row>
@@ -238,7 +242,7 @@ export function OrderTable({
         </Pagination>
       )}
 
-      <DetailDrawer offers={offers || []} onSuccess={refreshOrders} />
+      <DetailDrawer offers={orders || []} onSuccess={refreshMyOrders} />
     </>
   );
 }
@@ -268,8 +272,8 @@ function OrderItem({ order }: { order: IOffer }) {
   );
 }
 
-function OrderEqToken({ order }: { order: IOffer }) {
-  const { offerEqTokenInfo } = useOfferFormat({ offer: order });
+function OrderEqToken({ order }: { order: IOrder }) {
+  const { offerEqTokenInfo } = useOfferFormat({ offer: order.offer });
 
   return (
     <div className="flex items-center space-x-1">
@@ -285,9 +289,9 @@ function OrderEqToken({ order }: { order: IOffer }) {
   );
 }
 
-function OrderFromTo({ order }: { order: IOffer }) {
+function OrderFromTo({ order }: { order: IOrder }) {
   const { offerValue, forValue, offerLogo, forLogo } = useOfferFormat({
-    offer: order,
+    offer: order.offer,
   });
 
   return (

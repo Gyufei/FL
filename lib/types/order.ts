@@ -13,7 +13,7 @@ export interface IOrder {
   notional_value: string;
   tx_hash: string;
   entry: IEntry;
-  offer?: IOffer;
+  offer: IOffer;
 }
 
 export interface IEntry {

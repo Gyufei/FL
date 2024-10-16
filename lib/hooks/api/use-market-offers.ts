@@ -17,7 +17,7 @@ export function useMarketOffers({
     useMarketplaces();
 
   const marketOffersFetcher = async () => {
-    if (!marketSymbol || isMarketLoading) return [];
+    if (isMarketLoading) return [];
 
     const offerRes = await fetcher(
       `${apiEndPoint}${Paths.offers}?market_symbol=${marketSymbol}&chain=${marketChain}`,

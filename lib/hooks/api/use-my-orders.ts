@@ -1,39 +1,38 @@
-import { useState } from "react";
-import { IOffer } from "@/lib/types/offer";
-import { IOrder } from "@/lib/types/order";
+// import { IOffer } from "@/lib/types/offer";
+// import { IOrder } from "@/lib/types/order";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { getMarketOffer } from "@/lib/helper/market-offer-cache";
+import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 
 export function useMyOrders() {
   const { address } = useChainWallet();
+  // const address = "0x1cf00f501b1ebea5e58c68ad1317c9fbb01704f7";
+  const chain = "sepolia";
   const { apiEndPoint } = useEndPoint();
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: offers, isLoading } = useMarketOffers({
+    marketSymbol: "",
+    marketChain: chain,
+  });
 
   const myOrdersFetcher = async () => {
-    if (!address) return [];
-    setIsLoading(true);
+    if (!address || isLoading) return [];
     const orderRes = await fetcher(
-      `${apiEndPoint}${
-        Paths.orders
-      }?market_symbol=${""}&wallet=${address}&chain=${"bnb"}`,
+      `${apiEndPoint}${Paths.orders}?wallet=${address}&chain=${chain}`,
     );
 
-    const marketOffer = await getMarketOffer(apiEndPoint, "", "bnb");
-    const parsedRes = (orderRes || []).map((order: IOrder) => {
-      const matchingOffer = marketOffer?.find(
-        (offer: IOffer) => offer.entry.id === order.entry.id,
+    const parsedRes = (orderRes || []).map((order: any) => {
+      const matchingOffer = offers?.find(
+        (offer: any) => offer.entry.id === order.entry.id,
       );
       return {
         ...order,
         offer: matchingOffer || null,
       };
     });
-    setIsLoading(false);
-    return parsedRes as Array<IOffer>;
+    return parsedRes as Array<any>;
   };
 
   const res = useSWR(`my_order:${address}${isLoading}`, myOrdersFetcher);

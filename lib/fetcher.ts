@@ -4,18 +4,18 @@
 import { withSecure } from "acclism-manifest";
 import { WithHost } from "./PathMap";
 
+const access_key = "aK15X6c9";
+const seedApiUrl = WithHost("/seed/apply");
+const private_key = "FCBOE6NDBSSARLY1";
+
+const newFetch = withSecure(fetch, access_key, private_key, seedApiUrl);
+
 export default async function fetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
   notEncrypt?: boolean,
 ) {
   try {
-    const access_key = "aK15X6c9";
-    const seedApiUrl = WithHost("/seed/apply");
-    const private_key = "1234";
-
-    const newFetch = withSecure(fetch, access_key, private_key, seedApiUrl);
-
     const res = await (notEncrypt ? fetch : newFetch)(input, init);
 
     if (!res.ok) {

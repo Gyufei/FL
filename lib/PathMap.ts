@@ -4,7 +4,7 @@ export const isProduction = process.env.NODE_ENV === "production" && !isPreview;
 
 export function WithHost(path: string) {
   const prodHost = `https://api.tadle.com`;
-  const devHost = `https://apis.tadle.com`;
+  const devHost = `https://preview-apis.tadle.com`;
   const host = isProduction ? prodHost : devHost;
   return `${host}${path}`;
 }

@@ -35,7 +35,7 @@ export default function BidDetail({
     forLogo,
     pointPerPrice,
     isFilled,
-    offerTokenInfo: orderTokenInfo,
+    offerTokenInfo,
     isNativeToken,
   } = useOfferFormat({
     offer: offer,
@@ -44,7 +44,7 @@ export default function BidDetail({
   const { currentChainInfo } = useCurrentChain();
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(orderTokenInfo?.address || "");
+    useApprove(offerTokenInfo?.address || "");
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -105,7 +105,7 @@ export default function BidDetail({
         no: "",
         pay: receiveTokenAmount,
         tx: txHash,
-        token: orderTokenInfo,
+        token: offerTokenInfo,
       });
     }
   }, [isSuccess]);

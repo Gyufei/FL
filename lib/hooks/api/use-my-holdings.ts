@@ -4,13 +4,16 @@ import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { IHolding } from "@/lib/types/holding";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useMarketplaces } from "./use-marketplaces";
+import { useMarketOffers } from "./use-market-offers";
 
 export function useMyHoldings(chain?: string) {
   const { address } = useChainWallet();
   const { apiEndPoint } = useEndPoint();
 
-  const { data: marketplaceData, isLoading } = useMarketplaces();
+  const { data: offers, isLoading } = useMarketOffers({
+    marketSymbol: "",
+    marketChain: chain || "",
+  });
 
   // const tempAddress = 'D7jbXQgpQVr4J4xWtzDPKAgqLrrRWZ2NKrBmiGwyAceN';
   const holdingFetch = async () => {
@@ -21,13 +24,13 @@ export function useMyHoldings(chain?: string) {
     );
 
     const holdings = holdingRes.map((h: any) => {
-      const marketplace = marketplaceData?.find(
-        (m) => m.market_symbol === h.market_symbol,
+      const matchingOffer = offers?.find(
+        (offer: any) => offer.entry.id === h.entries[0].id,
       );
 
       return {
         ...h,
-        marketplace,
+        offer: matchingOffer,
       };
     });
 

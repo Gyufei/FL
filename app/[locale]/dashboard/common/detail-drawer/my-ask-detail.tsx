@@ -14,8 +14,8 @@ import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
+import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
 
 export default function MyAskDetail({
   offer,
@@ -45,7 +45,7 @@ export default function MyAskDetail({
     offer,
   });
 
-  const { currentChainInfo } = useCurrentChain();
+  const { getChainInfo } = useChainInfo();
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
@@ -54,10 +54,12 @@ export default function MyAskDetail({
     write: closeAction,
     isSuccess: isCloseSuccess,
   } = useCloseOffer({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    // holdingStr: offer.stock_account,
+    marketplaceStr: "",
+    holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -66,10 +68,12 @@ export default function MyAskDetail({
     write: abortAction,
     isSuccess: isAbortSuccess,
   } = useAbortAskOffer({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    // holdingStr: offer.stock_account,
+    marketplaceStr: "",
+    holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -78,10 +82,12 @@ export default function MyAskDetail({
     write: relistAction,
     isSuccess: isRelistSuccess,
   } = useRelist({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    // holdingStr: offer.stock_account,
+    marketplaceStr: "",
+    holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -117,9 +123,9 @@ export default function MyAskDetail({
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={currentChainInfo.logo}
+            img2={getChainInfo(offer.marketplace.chain).logo}
             name={offer.marketplace.market_name}
-            no={offer.offer_id}
+            no={String(offer.entry.id)}
             progress={progress}
           />
 

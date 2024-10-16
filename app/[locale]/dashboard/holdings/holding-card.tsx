@@ -3,14 +3,12 @@ import Image from "next/image";
 import ListAskHoldingBtn from "./list-btn/list-ask-holding-btn";
 import SettleDrawerBtn from "./settle-btn/settle-drawer-btn";
 import { TokenPairImg } from "@/components/share/token-pair-img";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
-import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IHolding } from "@/lib/types/holding";
-import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
-import useOfferHoldings from "@/lib/hooks/offer/use-offer-holdings";
 import DelistBtn from "./delist-btn";
 import { useTranslations } from "next-intl";
 import AbortHoldingBtn from "./abort-holding-btn";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
+import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
 
 export default function HoldingCard({
   openHoldingDrawer,
@@ -33,19 +31,17 @@ export default function HoldingCard({
     forLogo,
     isCanSettle,
     isCanAbort,
-  } = useHoldingFormat({
-    holding,
+  } = useOfferFormat({
+    offer: holding.offer,
   });
 
-  const { setAnchorValue } = useAnchor();
+  const isAskStock = holding.offer.entry.direction === "sell";
 
-  const isAskStock = holding.stock_type === "ask";
+  const { data: subOrders } = {
+    data: [],
+  };
 
-  const { data: subOrders } = useOfferHoldings({
-    offer: holding.pre_offer_detail,
-  });
-
-  const { currentChainInfo } = useCurrentChain();
+  const { getChainInfo } = useChainInfo();
 
   const isCanList =
     !afterTGE && !afterTGEPeriod && !isAskStock && !holding.offer;
@@ -64,8 +60,8 @@ export default function HoldingCard({
           onClick={handleOpenDetail}
         >
           <TokenPairImg
-            src1={holding.marketplace?.projectLogo}
-            src2={currentChainInfo.logo}
+            src1={holding.offer.marketplace?.projectLogo}
+            src2={getChainInfo(holding.offer.marketplace.chain).logo}
             width1={48}
             height1={48}
             width2={8.8}
@@ -74,17 +70,17 @@ export default function HoldingCard({
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {holding.marketplace?.market_name}
+              {holding.offer.marketplace?.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-              #{holding.stock_id}
+              #{holding.entries[0].id}
             </div>
           </div>
         </div>
 
         <div
-          data-type={holding.stock_type}
-          className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:text-green data-[type=bid]:text-red"
+          data-type={holding.offer.entry.direction}
+          className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:bg-[#FFEFEF] data-[type=buy]:text-red data-[type=sell]:text-green"
         >
           {!isAskStock ? ct("tag-Bid") : ct("tag-Ask")}
         </div>
@@ -106,7 +102,8 @@ export default function HoldingCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} / {holding.marketplace.item_name}
+            ${formatNum(pointPerPrice, 6)} /{" "}
+            {holding.offer.marketplace.item_name}
           </div>
         </div>
         <Image

@@ -10,39 +10,40 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useEntryById } from "@/lib/hooks/api/use-entry";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");
 
   const { address } = useChainWallet();
 
-  const { offerTokenInfo: orderTokenInfo, offerPointInfo: orderPointInfo, duringTGE, makerDetail } =
-    useOfferFormat({
-      offer: offer,
-    });
+  const {
+    offerTokenInfo: orderTokenInfo,
+    offerPointInfo: orderPointInfo,
+    duringTGE,
+  } = useOfferFormat({
+    offer: offer,
+  });
+
+  const { data: entryInfo } = useEntryById(offer.entry.id);
 
   const isAsk = offer.entry.direction === "sell";
 
-  const originOffer = useMemo(() => {
-    return (offer as any).origin_offer_detail;
-  }, [offer]);
-
   const { handleGoScan } = useGoScan();
 
-  const originMaker = useMemo(() => {
-    return offer.origin_offer_detail?.offer_maker || offer.offer_maker;
-  }, [offer]);
+  const originId = entryInfo?.root_entry_id || offer.entry.id;
+  const originMaker = entryInfo?.original_creator || offer.offer_maker;
 
   const isYouAreOriginMaker = address === originMaker;
 
   const taxIncome = useMemo(() => {
-    const ti = offer?.trade_tax_accum || makerDetail?.trade_tax;
+    const ti = offer?.trade_tax_accum;
 
     const tax = Number(ti || 0);
     const fmtTax = NP.divide(tax, 10 ** (orderTokenInfo?.decimals || 0));
 
     return fmtTax;
-  }, [makerDetail, offer, orderTokenInfo]);
+  }, [offer, orderTokenInfo]);
 
   const [seconds, setSeconds] = useState(0);
 
@@ -101,7 +102,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">
-            {Number(makerDetail?.each_trade_tax || 0) / 100}%
+            {Number(offer?.trade_tax_pct || 0) / 100}%
           </div>
         </div>
       </DetailRow>
@@ -121,18 +122,16 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         <DetailLabel tipText="">{ot("lb-Previous")} Maker / Taker</DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOffer?.offer_id || offer?.offer_id}
+            {offer.entry.id ? `#${offer.entry.id}` : ""}
           </div>
           <div className="text-sm leading-5 text-black">
-            {truncateAddr(originOffer?.offer_maker || offer.offer_maker || "", {
+            {truncateAddr(offer.offer_maker || "", {
               nPrefix: 4,
               nSuffix: 4,
             })}
           </div>
           <Image
-            onClick={() =>
-              handleGoScan(originOffer?.offer_maker || offer.offer_maker || "")
-            }
+            onClick={() => handleGoScan(offer.offer_maker || "")}
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -165,7 +164,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{originOffer?.offer_id}
+            {originId ? `#${originId}` : ""}
           </div>
           <div className="text-sm leading-5 text-red">
             {isYouAreOriginMaker

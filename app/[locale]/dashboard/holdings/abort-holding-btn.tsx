@@ -1,6 +1,6 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAbortBidHolding } from "@/lib/hooks/contract/use-abort-bid-holding";
-import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IHolding } from "@/lib/types/holding";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
@@ -14,17 +14,19 @@ export default function AbortHoldingBtn({
 }) {
   const mst = useTranslations("page-MyStocks");
 
-  const { isNativeToken } = useHoldingFormat({ holding });
+  const { isNativeToken } = useOfferFormat({ offer: holding.offer });
 
   const {
     isLoading,
     write: writeAction,
     isSuccess,
   } = useAbortBidHolding({
-    marketplaceStr: holding.marketplace.market_place_id,
-    makerStr: holding.offer_maker,
-    offerStr: holding.offer_id,
-    holdingStr: holding.stock_account,
+    // marketplaceStr: holding.marketplace.market_place_id,
+    // holdingStr: holding.stock_account,
+    marketplaceStr: "",
+    holdingStr: "",
+    makerStr: holding.offer.offer_maker,
+    offerStr: holding.offer.offer_id,
     isNativeToken: isNativeToken,
   });
 
@@ -40,7 +42,7 @@ export default function AbortHoldingBtn({
   }, [isSuccess]);
 
   return (
-    <WithWalletConnectBtn onClick={() => handleConfirm()} >
+    <WithWalletConnectBtn onClick={() => handleConfirm()}>
       <button
         disabled={isLoading}
         className="data-[disabled=true]:bg-gra flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black"

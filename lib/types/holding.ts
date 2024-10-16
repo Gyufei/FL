@@ -1,4 +1,4 @@
-import { IMarketplace } from "./marketplace";
+import { IOffer } from "./offer";
 
 export interface IHolding {
   holding_id: string;
@@ -7,7 +7,7 @@ export interface IHolding {
   status: string;
   create_at: number;
 
-  marketplace: IMarketplace;
+  offer: IOffer;
 }
 
 interface IHoldingEntry {

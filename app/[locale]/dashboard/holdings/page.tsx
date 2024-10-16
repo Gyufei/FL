@@ -47,7 +47,7 @@ export default function MyHoldings() {
       <DetailDrawer
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
-        offer={selectedHolding}
+        offer={selectedHolding?.offer}
         onSuccess={refreshHoldings}
       />
 

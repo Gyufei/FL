@@ -10,11 +10,11 @@ import { useCreateHolding } from "@/lib/hooks/contract/use-create-holding";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
+import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
 
 export default function AskDetail({
   offer,
@@ -32,7 +32,7 @@ export default function AskDetail({
   const referrer = referrerData?.data;
 
   const { platformFee } = useGlobalConfig();
-  const { currentChainInfo } = useCurrentChain();
+  const { getChainInfo } = useChainInfo();
   const {
     tokenPrice,
     progress,
@@ -128,7 +128,7 @@ export default function AskDetail({
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={currentChainInfo.logo}
+            img2={getChainInfo(offer.marketplace.chain).logo}
             name={offer.marketplace.market_name}
             no={String(offer.entry.id)}
             progress={progress}

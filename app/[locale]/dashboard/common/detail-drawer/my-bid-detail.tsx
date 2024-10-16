@@ -12,13 +12,13 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-tabs";
 
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";
+import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
 
 export default function MyBidDetail({
   offer,
@@ -47,17 +47,19 @@ export default function MyBidDetail({
     offer: offer,
   });
 
-  const { currentChainInfo } = useCurrentChain();
+  const { getChainInfo } = useChainInfo();
 
   const {
     isLoading: isClosing,
     write: closeAction,
     isSuccess: isCloseSuccess,
   } = useCloseOffer({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    // holdingStr: offer.stock_account,
+    marketplaceStr: "",
+    holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -66,10 +68,12 @@ export default function MyBidDetail({
     write: relistAction,
     isSuccess: isRelistSuccess,
   } = useRelist({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    // holdingStr: offer.stock_account,
+    marketplaceStr: "",
+    holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    holdingStr: offer.stock_account,
     isNativeToken,
   });
 
@@ -78,7 +82,8 @@ export default function MyBidDetail({
     write: bidCloseAction,
     isSuccess: isBidCloseSuccess,
   } = useCloseBidOffer({
-    marketplaceStr: offer.market_place_account,
+    // marketplaceStr: offer.market_place_account,
+    marketplaceStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
     isNativeToken,
@@ -112,7 +117,7 @@ export default function MyBidDetail({
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={currentChainInfo.logo}
+            img2={getChainInfo(offer.marketplace.chain).logo}
             name={offer.marketplace.market_name}
             no={offer.offer_id}
             progress={progress}

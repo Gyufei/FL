@@ -34,7 +34,6 @@ export function WithWss(path: string) {
 }
 
 export const Paths = {
-  // signIn: "/user/sign_in",
   markets: "/markets",
   offers: "/offers",
   entry: "/entry",
@@ -42,24 +41,17 @@ export const Paths = {
   orders: "/orders",
   holding: "/holding",
 
-  myOffer: "/market_place/my_offer",
-  myStock: "/market_place/my_stock",
-  takerOrders: "/market_place/taker_orders",
-  marketTrades: "/market_place/maker_trades_history",
-  salesVolumeHistory: "/market_place/sales_volume_history",
-  makerSettleAccount: "/market_place/direct_settle_account",
-
-  taxIncome: "/user/tax_income",
-  accountOverview: "/user/overview",
   makerOrders: "/user/maker_orders",
+  taxIncome: "/user/tax_income",
+  tradingVol: "/user/trade_vol",
+  accountOverview: "/user/overview",
+
   userBalance: "/user/token_balance",
   userXpPoints: "/user/xp_points",
-  tradingVol: "/user/trade_vol",
   userState: "/user/state",
   userName: "/user/user_name",
 
   tokenPrice: "/token/info",
-
   addTransaction: "/transaction/add",
 
   referral: {

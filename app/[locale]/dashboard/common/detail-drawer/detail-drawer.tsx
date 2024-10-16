@@ -14,7 +14,7 @@ export default function DetailDrawer({
   drawerOpen,
   setDrawerOpen,
 }: {
-  offer: IOffer;
+  offer: IOffer | undefined;
   onSuccess: () => void;
   drawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;

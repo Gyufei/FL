@@ -3,14 +3,15 @@ import { useMyHoldings } from "@/lib/hooks/api/use-my-holdings";
 import { SortSelect } from "@/components/share/sort-select";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import HoldingCard from "./holding-card";
-import { useSortOffer } from "@/lib/hooks/offer/use-sort-offer";
-import { useMemo } from "react";
-import { uniqBy } from "lodash";
+import { useSortHolding } from "@/lib/hooks/holding/use-sort-holding";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 export default function MyHoldings() {
   const T = useTranslations("page-MyStocks");
-  const { data: holdings, mutate: refreshOrders } = useMyHoldings();
+  const { data: holdings, mutate: refreshHoldings } = useMyHoldings();
+
+  const [selectHId, setSelectHId] = useState("");
 
   const {
     sortField,
@@ -18,18 +19,16 @@ export default function MyHoldings() {
     handleSortFieldChange,
     handleSortDirChange,
     sortOffers,
-  } = useSortOffer((holdings as any[]) || []);
+  } = useSortHolding(holdings || []);
 
-  const offers = useMemo(() => {
-    const offs = [];
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-    for (const s of holdings || []) {
-      if (s.pre_offer_detail) offs.push(s.pre_offer_detail);
-      if (s.offer_detail) offs.push(s.offer_detail);
-    }
+  function handleOpenHoldingDrawer(hId: string) {
+    setSelectHId(hId);
+    setDrawerOpen(true);
+  }
 
-    return uniqBy(offs, "offer_id");
-  }, [holdings]);
+  const selectedHolding = holdings?.find((h) => h.holding_id === selectHId);
 
   return (
     <div className="ml-5 flex flex-1 flex-col">
@@ -45,15 +44,21 @@ export default function MyHoldings() {
         />
       </div>
 
-      <DetailDrawer offers={offers || []} onSuccess={refreshOrders} />
+      <DetailDrawer
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        offer={selectedHolding}
+        onSuccess={refreshHoldings}
+      />
 
       {sortOffers.length ? (
         <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {(sortOffers || []).map((order) => (
+          {(sortOffers || []).map((holding) => (
             <HoldingCard
-              key={order.stock_id}
-              holding={order}
-              onSuccess={refreshOrders}
+              openHoldingDrawer={(hId: string) => handleOpenHoldingDrawer(hId)}
+              key={holding.holding_id}
+              holding={holding}
+              onSuccess={refreshHoldings}
             />
           ))}
         </div>

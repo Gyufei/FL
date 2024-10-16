@@ -14,7 +14,7 @@ import { NumericalInput } from "@/components/share/numerical-input";
 import { useReferralRateChange } from "@/lib/hooks/api/use-referral";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 
-export default function DetailDrawer({
+export function ReferralDrawer({
   referral,
   onSuccess,
   drawerOpen,
@@ -110,7 +110,7 @@ export default function DetailDrawer({
       direction="right"
       size={500}
       className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
-      customIdSuffix="detail-drawer"
+      customIdSuffix="referral-drawer"
     >
       <DrawerTitle
         title={rt("th-CommissionRates")}
@@ -142,7 +142,7 @@ export default function DetailDrawer({
 
               <NumericalInput
                 data-error={rateError}
-                className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
+                className="h-[50px] w-full rounded-xl border border-[#d8d8d8] px-4 py-[14px] focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
                 placeholder={`${referralBaseRate}%`}
                 value={rate || ""}
                 onUserInput={handleRateInput}
@@ -157,7 +157,7 @@ export default function DetailDrawer({
               <NumericalInput
                 disabled={extraRate === 0}
                 data-error={rateError}
-                className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
+                className="h-[50px] w-full rounded-xl border border-[#d8d8d8] px-4 py-[14px] focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
                 placeholder="1%"
                 value={friendRate || ""}
                 onUserInput={handleFRateInput}
@@ -194,11 +194,7 @@ export default function DetailDrawer({
           </div>
         </div>
 
-        <WithWalletConnectBtn
-          className="w-full"
-          onClick={handleSaveRate}
-          
-        >
+        <WithWalletConnectBtn className="w-full" onClick={handleSaveRate}>
           <button
             // disabled={isCreateLoading}
             className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"

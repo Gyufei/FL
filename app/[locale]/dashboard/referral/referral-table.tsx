@@ -28,7 +28,7 @@ import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
 import { Input } from "@/components/ui/input";
 import { formatNum } from "@/lib/utils/number";
 import { IReferralItem } from "@/lib/hooks/api/use-referral-data";
-import ReferralDrawer from "./referral-drawer";
+import { ReferralDrawer } from "./referral-drawer";
 import {
   useReferralDefault,
   useReferralNoteChange,

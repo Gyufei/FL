@@ -32,12 +32,12 @@ export interface IOffer {
   origin_settle_mode: ISettleMode;
   trade_tax_accum: string;
   trade_tax_pct: string;
-  entry: IEntry;
+  entry: IOfferEntry;
 
   marketplace: IMarketplace;
 }
 
-export interface IEntry {
+export interface IOfferEntry {
   id: number;
   is_root: boolean;
   market_symbol: string;

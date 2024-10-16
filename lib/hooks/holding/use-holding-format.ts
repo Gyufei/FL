@@ -16,7 +16,6 @@ export function useHoldingFormat({ holding }: { holding: IHolding }) {
     offerPointInfo: orderPointInfo,
     offerTokenInfo: orderTokenInfo,
     offerEqTokenInfo,
-    makerDetail,
     isNativeToken,
   } = useOfferFormat({
     offer: holding as unknown as IOffer,

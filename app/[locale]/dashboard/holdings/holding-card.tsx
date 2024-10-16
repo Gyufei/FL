@@ -13,9 +13,11 @@ import { useTranslations } from "next-intl";
 import AbortHoldingBtn from "./abort-holding-btn";
 
 export default function HoldingCard({
+  openHoldingDrawer,
   holding,
   onSuccess,
 }: {
+  openHoldingDrawer: (_h: string) => void;
   holding: IHolding;
   onSuccess: () => void;
 }) {
@@ -51,9 +53,7 @@ export default function HoldingCard({
   const isListed = !afterTGE && !isAskStock && holding.offer;
 
   function handleOpenDetail() {
-    setAnchorValue(
-      holding.offer_detail?.offer_id || holding.pre_offer_detail?.offer_id,
-    );
+    openHoldingDrawer(holding.holding_id);
   }
 
   return (
@@ -84,7 +84,7 @@ export default function HoldingCard({
 
         <div
           data-type={holding.stock_type}
-          className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:text-red data-[type=ask]:text-green"
+          className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:bg-[#FFEFEF] data-[type=ask]:text-green data-[type=bid]:text-red"
         >
           {!isAskStock ? ct("tag-Bid") : ct("tag-Ask")}
         </div>

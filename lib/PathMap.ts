@@ -39,8 +39,8 @@ export const Paths = {
   offers: "/offers",
   entry: "/entry",
   offer: "/offer",
+  holding: "/holding",
 
-  holding: "/market_place/stock",
   myOffer: "/market_place/my_offer",
   myStock: "/market_place/my_stock",
   takerOrders: "/market_place/taker_orders",

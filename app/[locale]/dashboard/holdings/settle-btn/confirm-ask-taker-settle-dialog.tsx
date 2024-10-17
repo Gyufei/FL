@@ -4,9 +4,8 @@ import { formatNum } from "@/lib/utils/number";
 import { useState } from "react";
 import ConfirmAskTakerSettleBtn from "./confirm-ask-taker-settle-btn";
 import { IHolding } from "@/lib/types/holding";
-import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
 import { useTranslations } from "next-intl";
-// import { Slider } from "@/components/ui/slider";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export default function ConfirmAskTakerSettleDialog({
   open,
@@ -25,16 +24,16 @@ export default function ConfirmAskTakerSettleDialog({
   const {
     amount,
     tokenTotalPrice,
-    orderPointInfo,
+    offerPointInfo,
     afterTGEPeriod,
     isNativeToken,
-  } = useHoldingFormat({ holding });
+  } = useOfferFormat({ offer: holding.offer });
 
   // const [sliderMax] = useState(100);
   // const [sliderValue, setSliderValue] = useState(100);
   const [sliderValue] = useState(100);
 
-  const pointAmount = !afterTGEPeriod ? holding.points : 0;
+  const pointAmount = !afterTGEPeriod ? holding.offer.item_amount : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   function handleSuccess() {
@@ -91,39 +90,22 @@ export default function ConfirmAskTakerSettleDialog({
                 {formatNum(settleAmount)}
               </div>
               <Image
-                src={orderPointInfo.logoURI}
+                src={offerPointInfo.logoURI}
                 width={28}
                 height={28}
                 alt="stable token"
                 className="h-7 w-7 rounded-full"
               />
             </div>
-            {/* <div className="mt-3 flex">
-              <Slider
-                value={[sliderValue]}
-                onValueChange={(val: any[]) => setSliderValue(val[0])}
-                max={sliderMax}
-                step={1}
-              />
-              <div className="ml-4 mr-3 flex h-5 items-center rounded-full border border-[#eee] px-[10px] text-[10px] leading-4 text-black">
-                {sliderValue}%
-              </div>
-              <div
-                onClick={() => setSliderValue(sliderMax)}
-                className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
-              >
-                Max
-              </div>
-            </div> */}
           </div>
 
           <ConfirmAskTakerSettleBtn
             isNativeToken={isNativeToken}
-            marketplaceStr={holding.marketplace.market_place_id}
-            holdingStr={holding.stock_account}
-            makerStr={holding.offer_maker}
-            preOfferStr={holding.pre_offer_account}
-            preOfferAuthorityStr={holding.pre_offer_detail?.offer_maker}
+            marketplaceStr={holding.offer.marketplace.market_place_id}
+            holdingStr={holding.holding_id}
+            makerStr={holding.offer.offer_maker}
+            preOfferStr={holding.offer.offer_id}
+            preOfferAuthorityStr={""}
             settleAmount={settleAmount}
             onSuccess={handleSuccess}
           />

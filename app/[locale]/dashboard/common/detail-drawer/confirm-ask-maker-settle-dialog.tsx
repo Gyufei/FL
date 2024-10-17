@@ -5,8 +5,6 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOffer } from "@/lib/types/offer";
 import { useState } from "react";
-// import { useTranslations } from "next-intl";
-// import { Slider } from "@/components/ui/slider";
 
 export default function ConfirmAskMakerSettleDialog({
   open,
@@ -93,23 +91,6 @@ export default function ConfirmAskMakerSettleDialog({
                 className="h-7 w-7 rounded-full"
               />
             </div>
-            {/* <div className="mt-3 flex">
-              <Slider
-                value={[sliderValue]}
-                onValueChange={(val: any[]) => setSliderValue(val[0])}
-                max={sliderMax}
-                step={1}
-              />
-              <div className="ml-4 mr-3 flex h-5 items-center rounded-full border border-[#eee] px-[10px] text-[10px] leading-4 text-black">
-                {sliderValue}%
-              </div>
-              <div
-                onClick={() => setSliderValue(sliderMax)}
-                className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
-              >
-                {ct('Max')}
-              </div>
-            </div> */}
           </div>
 
           <ConfirmAskMakerSettleBtn

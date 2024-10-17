@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NP from "number-precision";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
+import { useTranslations } from "next-intl";
 
 import { InputPanel } from "../../../marketplace/[...name]/create-offer/input-panel";
 import { IToken } from "@/lib/types/token";
@@ -17,10 +18,10 @@ import ListInfo from "./list-info";
 import { formatNum } from "@/lib/utils/number";
 import { SettleModeSelect } from "@/app/[locale]/marketplace/[...name]/create-offer/settle-mode-select";
 import { IHolding } from "@/lib/types/holding";
-import { useHoldingFormat } from "@/lib/hooks/holding/use-holding-format";
 import { useList } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import { useTranslations } from "next-intl";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
+import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 
 export default function ListAskHoldingBtn({
   holding,
@@ -33,24 +34,21 @@ export default function ListAskHoldingBtn({
   const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const {
-    orderPointInfo,
-    orderTokenInfo,
-    tokenPrice,
-    makerDetail,
-    isNativeToken,
-  } = useHoldingFormat({
-    holding: holding,
-  });
+  const { offerPointInfo, offerTokenInfo, tokenPrice, isNativeToken } =
+    useOfferFormat({
+      offer: holding.offer,
+    });
 
-  const [sellPointAmount] = useState(holding.points);
+  const { data: entryInfo } = useEntryById(holding.offer.entry.id);
+
+  const [sellPointAmount] = useState(String(holding.offer.item_amount));
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [collateralRate, setCollateralRate] = useState(
-    String(Number(holding?.pre_offer_detail?.collateral_ratio) / 100),
+    String(Number(holding?.offer?.collateral_ratio) / 100),
   );
-  const taxForSub = String(Number(makerDetail?.each_trade_tax) / 100);
-  const settleMode = makerDetail?.offer_settle_type || "protected";
+  const taxForSub = String(Number(holding.offer?.trade_tax_pct) / 100);
+  const settleMode = holding?.offer.origin_settle_mode || "protected";
 
   const [note, setNote] = useState("");
 
@@ -62,23 +60,25 @@ export default function ListAskHoldingBtn({
     write: writeAction,
     isSuccess,
   } = useList({
-    marketplaceStr: holding.marketplace.market_place_id,
-    makerStr: holding.offer_maker,
-    holdingStr: holding.stock_account,
-    preOfferStr: holding.pre_offer_account,
-    originOfferStr: makerDetail?.origin_offer || "",
+    // preOfferStr: holding.pre_offer_account,
+    // originOfferStr: makerDetail?.origin_offer || "",
+    preOfferStr: "",
+    originOfferStr: "",
+    marketplaceStr: holding.offer.marketplace.market_place_id,
+    makerStr: holding.offer.offer_maker,
+    holdingStr: holding.holding_id,
     isNativeToken,
   });
 
   function handleDeposit() {
-    if (!sellPointAmount || !receiveTokenAmount || !makerDetail) {
+    if (!sellPointAmount || !receiveTokenAmount) {
       return;
     }
 
     writeAction({
       receiveTokenAmount: NP.times(
         Number(receiveTokenAmount),
-        10 ** (orderTokenInfo?.decimals || 0),
+        10 ** (offerTokenInfo?.decimals || 0),
       ).toFixed(),
       collateralRate: Number(collateralRate || 100) * 100,
     });
@@ -93,10 +93,7 @@ export default function ListAskHoldingBtn({
 
   return (
     <div>
-      <WithWalletConnectBtn
-        onClick={() => setDrawerOpen(true)}
-        
-      >
+      <WithWalletConnectBtn onClick={() => setDrawerOpen(true)}>
         <ListBtn />
       </WithWalletConnectBtn>
       <Drawer
@@ -113,17 +110,9 @@ export default function ListAskHoldingBtn({
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <ListInfo
-              id={holding.stock_id}
-              inherit={
-                holding?.pre_offer_detail?.offer_maker ||
-                holding?.offer_detail?.offer_maker ||
-                ""
-              }
-              origin={
-                holding?.pre_offer_detail?.offer_id ||
-                holding?.offer_detail?.offer_id ||
-                ""
-              }
+              id={holding.holding_id}
+              inherit={String(holding?.offer?.entry.id) || ""}
+              origin={String(entryInfo?.root_entry_id) || ""}
             />
 
             <InputPanel
@@ -132,14 +121,15 @@ export default function ListAskHoldingBtn({
               topText={<>{cot("txt-YouWillSell")}</>}
               bottomText={
                 <>
-                  1 {holding.marketplace.item_name} = ${formatNum(pointPrice)}
+                  1 {holding.offer.marketplace.item_name} = $
+                  {formatNum(pointPrice)}
                 </>
               }
               isCanInput={false}
               tokenSelect={
                 <PointTokenSelectDisplay
-                  points={[orderPointInfo]}
-                  point={orderPointInfo}
+                  points={[offerPointInfo]}
+                  point={offerPointInfo}
                   setPoint={() => {}}
                 />
               }
@@ -155,7 +145,7 @@ export default function ListAskHoldingBtn({
                   {cot("txt-YouDLikeToReceive")}
                   <WithTip align="start">
                     {cot("tip-YouDLikeToReceive", {
-                      pointName: holding.marketplace.item_name,
+                      pointName: holding.offer.marketplace.item_name,
                     })}
                   </WithTip>
                 </div>
@@ -167,7 +157,7 @@ export default function ListAskHoldingBtn({
               }
               tokenSelect={
                 <StableTokenSelectDisplay
-                  token={orderTokenInfo as IToken}
+                  token={offerTokenInfo as IToken}
                   setToken={() => {}}
                 />
               }
@@ -194,7 +184,7 @@ export default function ListAskHoldingBtn({
             <OrderNoteAndFee value={note} onValueChange={setNote} type="sell" />
           </div>
 
-          <WithWalletConnectBtn onClick={handleDeposit} >
+          <WithWalletConnectBtn onClick={handleDeposit}>
             <button
               disabled={isDepositLoading}
               className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"

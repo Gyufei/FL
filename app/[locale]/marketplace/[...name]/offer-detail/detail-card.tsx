@@ -9,7 +9,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
-import { useEntryById } from "@/lib/hooks/api/use-entry";
+import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");

@@ -10,7 +10,7 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useEntryById } from "@/lib/hooks/api/use-entry";
+import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");

@@ -39,7 +39,7 @@ export const Paths = {
   entry: "/entry",
   offer: "/offer",
   orders: "/orders",
-  holding: "/holding",
+  holding: "/holdings",
 
   makerOrders: "/user/maker_orders",
   taxIncome: "/user/tax_income",

@@ -24,7 +24,6 @@ import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 
 export function SellContent({
   marketplace,
@@ -57,7 +56,6 @@ export function SellContent({
     decimals: isProduction ? 6 : 9,
   } as IToken);
 
-  const { isNativeToken } = useIsNativeToken(receiveToken);
   const { data: tokenPrice } = useTokenPrice(receiveToken?.address || "");
   const { checkMinPrice } = useCreateOfferMinPrice();
 
@@ -107,9 +105,10 @@ export function SellContent({
     isLoading: isCreateLoading,
     write: writeAction,
     isSuccess,
-  } = useCreateOffer();
+  } = useCreateOffer(marketplace.market_symbol, marketplace.chain);
 
   async function handleCreate() {
+    console.log("123");
     const isPriceValid = checkMinPrice(
       pointPrice,
       Number(marketplace.minimum_price),
@@ -120,17 +119,13 @@ export function SellContent({
     }
 
     writeAction({
-      pointAmount: Number(sellPointAmount),
-      tokenAmount: NP.times(
-        receiveTokenAmount,
-        10 ** receiveToken.decimals,
-      ).toFixed(),
-      collateralTokenAddr: receiveToken.address,
-      collateralRate: Number(collateralRate || 100) * 100,
-      taxForSub: Number(taxForSub || 3) * 100,
-      settleMode: settleMode,
-      note: note,
-      isNativeToken,
+      direction: "sell",
+      price: pointPrice,
+      total_item_amount: sellPointAmount,
+      payment_token: receiveToken.symbol,
+      collateral_ratio: Number(collateralRate || 100) * 100,
+      settle_mode: settleMode,
+      trade_tax_pct: Number(taxForSub || 3) * 100,
     });
   }
 

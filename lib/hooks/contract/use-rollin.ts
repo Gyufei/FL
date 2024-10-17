@@ -1,9 +1,12 @@
-import { useRollinEth } from "./eth/use-rollin-eth";
-import { useChainTx } from "./help/use-chain-tx";
-import { useRollinSol } from "./solana/use-rollin-sol";
-
 export function useRollin() {
-  const chainActionRes = useChainTx(useRollinEth, useRollinSol, undefined);
-
-  return chainActionRes;
+  return {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    data: null,
+    error: null,
+    write: async () => {
+      return null;
+    },
+  };
 }

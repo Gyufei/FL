@@ -1,31 +1,12 @@
-import { useAbortBidHoldingEth } from "./eth/use-abort-bid-holding-eth";
-import { useChainTx } from "./help/use-chain-tx";
-import { useAbortBidHoldingSol } from "./solana/use-abort-bid-holding-sol";
-
-export function useAbortBidHolding({
-  marketplaceStr,
-  makerStr,
-  offerStr,
-  holdingStr,
-  isNativeToken,
-}: {
-  marketplaceStr: string;
-  makerStr: string;
-  offerStr: string;
-  holdingStr: string;
-  isNativeToken: boolean;
-}) {
-  const chainActionRes = useChainTx(
-    useAbortBidHoldingEth,
-    useAbortBidHoldingSol,
-    {
-      marketplaceStr,
-      makerStr,
-      offerStr,
-      holdingStr,
-      isNativeToken,
+export function useAbortBidHolding() {
+  return {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    data: null,
+    error: null,
+    write: async () => {
+      return null;
     },
-  );
-
-  return chainActionRes;
+  };
 }

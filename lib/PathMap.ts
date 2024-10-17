@@ -44,14 +44,12 @@ export const Paths = {
   userTokenBalance: "/account/token_balances",
   userItemBalance: "/account/item_balances",
   accountStats: "/account/stats",
-
+  
   makerOrders: "/user/maker_orders",
   taxIncome: "/user/tax_income",
   tradingVol: "/user/trade_vol",
 
-  userState: "/user/state",
   userName: "/user/user_name",
-
   tokenPrice: "/token/info",
   addTransaction: "/transaction/add",
 

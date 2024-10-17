@@ -23,7 +23,6 @@ import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 
 export function BuyContent({
   marketplace,
@@ -59,7 +58,6 @@ export function BuyContent({
     }
   }, [points, marketplace]);
 
-  const { isNativeToken } = useIsNativeToken(payToken);
   const { data: tokenPrice } = useTokenPrice(payToken?.address || "");
   const { checkMinPrice } = useCreateOfferMinPrice();
 
@@ -94,10 +92,7 @@ export function BuyContent({
     isLoading: isCreateLoading,
     write: writeAction,
     isSuccess,
-  } = useCreateOffer({
-    marketplaceStr: receivePoint?.marketplaceId || "",
-    offerType: "bid",
-  });
+  } = useCreateOffer(marketplace.market_symbol, marketplace.chain);
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     useApprove(payToken?.address);
@@ -127,17 +122,13 @@ export function BuyContent({
     }
 
     writeAction({
-      tokenAmount: NP.times(
-        Number(payTokenAmount),
-        10 ** payToken.decimals,
-      ).toFixed(),
-      pointAmount: Number(receivePointAmount),
-      collateralTokenAddr: payToken.address,
-      collateralRate: Number(collateralRate || 100) * 100,
-      taxForSub: Number(taxForSub || 3) * 100,
-      settleMode: settleMode,
-      note: note,
-      isNativeToken,
+      direction: "buy",
+      price: pointPrice,
+      total_item_amount: receivePointAmount,
+      payment_token: payToken.symbol,
+      collateral_ratio: Number(collateralRate || 100) * 100,
+      settle_mode: settleMode,
+      trade_tax_pct: Number(taxForSub || 3) * 100,
     });
   }
 
@@ -201,11 +192,7 @@ export function BuyContent({
         <OrderNoteAndFee value={note} onValueChange={setNote} type={"buy"} />
       </div>
 
-      <WithWalletConnectBtn
-        className="w-full"
-        onClick={handleConfirmBtnClick}
-        
-      >
+      <WithWalletConnectBtn className="w-full" onClick={handleConfirmBtnClick}>
         <button
           disabled={isCreateLoading || isApproving}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"

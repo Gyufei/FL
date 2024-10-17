@@ -1,16 +1,26 @@
 import useSWR from "swr";
-import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
 import useSWRMutation from "swr/mutation";
+import { useEndPoint } from "./use-endpoint";
+import { Paths } from "@/lib/PathMap";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
-export function useAccountOverview() {
+interface IAccountInfo {
+  uid: number;
+  user_name: string;
+  maker_orders: number;
+  taker_orders: number;
+  settled_value: string;
+  tax_income: string;
+  trade_vol: string;
+}
+
+export function useAccountStats() {
   const { apiEndPoint } = useEndPoint();
   const { address: wallet } = useChainWallet();
 
-  const res = useSWR(
-    wallet ? `${apiEndPoint}${Paths.accountOverview}?wallet=${wallet}` : null,
+  const res = useSWR<IAccountInfo>(
+    wallet ? `${apiEndPoint}${Paths.accountStats}/${wallet}` : null,
     fetcher,
   );
 

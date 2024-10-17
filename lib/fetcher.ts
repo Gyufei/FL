@@ -6,9 +6,9 @@ import { WithHost } from "./PathMap";
 
 const access_key = "aK15X6c9";
 const seedApiUrl = WithHost("/seed/apply");
-const private_key = "FCBOE6NDBSSARLY1";
+const ga_code = "";
 
-const newFetch = withSecure(fetch, access_key, private_key, seedApiUrl);
+const newFetch = withSecure(fetch, access_key, ga_code, seedApiUrl);
 
 export default async function fetcher(
   input: URL | RequestInfo,

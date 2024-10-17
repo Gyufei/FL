@@ -3,7 +3,7 @@ import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
 import { Input } from "@/components/ui/input";
 import {
-  useAccountOverview,
+  useAccountStats,
   useUserNameChange,
 } from "@/lib/hooks/api/use-account-overview";
 import { DateRange } from "react-day-picker";
@@ -23,8 +23,7 @@ export default function OverviewInfo() {
     to: undefined,
   });
 
-  const { data: accountInfo, mutate: refetchAccountInfo } =
-    useAccountOverview();
+  const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats();
 
   const { trigger: updateUserNameAction, data: updateRes } =
     useUserNameChange();
@@ -51,7 +50,7 @@ export default function OverviewInfo() {
     }
 
     updateUserNameAction({
-      uuid: accountInfo.uid,
+      uuid: String(accountInfo.uid),
       user_name: nameInputValue,
     });
 
@@ -138,20 +137,20 @@ export default function OverviewInfo() {
               <LabelText>{T("lb-TradeVol")}</LabelText>
               <div className="leading-6 text-black">
                 <NoDataDisplay noData={!accountInfo}>
-                  ${formatNum(accountInfo?.trade_vol)}
+                  ${formatNum(Number(accountInfo?.trade_vol))}
                 </NoDataDisplay>
               </div>
             </div>
             <div className="flex flex-col items-end">
               <LabelText>{T("lb-Profit")}</LabelText>
               <div
-                data-loss={accountInfo ? accountInfo?.profit < 0 : "null"}
-                className="leading-6 data-[loss=true]:text-red data-[loss=null]:text-black data-[loss=false]:text-green"
+                // data-loss={accountInfo ? accountInfo?.profit < 0 : "null"}
+                className="leading-6 data-[loss=false]:text-green data-[loss=null]:text-black data-[loss=true]:text-red"
               >
                 <NoDataDisplay noData={!accountInfo}>
                   <>
-                    {accountInfo?.profit < 0 ? "-" : "+"}$
-                    {formatNum(Math.abs(accountInfo?.profit || 0))}
+                    {/* {accountInfo?.profit < 0 ? "-" : "+"}$
+                    {formatNum(Math.abs(accountInfo?.profit || 0))} */}
                   </>
                 </NoDataDisplay>
               </div>
@@ -163,7 +162,7 @@ export default function OverviewInfo() {
               <LabelText>{T("lb-MakerOrders")}</LabelText>
               <div className="leading-6 text-black">
                 <NoDataDisplay noData={!accountInfo}>
-                  {formatNum(accountInfo?.maker_order)}
+                  {formatNum(Number(accountInfo?.maker_orders))}
                 </NoDataDisplay>
               </div>
             </div>
@@ -171,7 +170,7 @@ export default function OverviewInfo() {
               <LabelText>{T("lb-TakerOrders")}</LabelText>
               <div className="leading-6 text-black">
                 <NoDataDisplay noData={!accountInfo}>
-                  {formatNum(accountInfo?.taker_order)}
+                  {formatNum(Number(accountInfo?.taker_orders))}
                 </NoDataDisplay>
               </div>
             </div>
@@ -182,20 +181,22 @@ export default function OverviewInfo() {
               <LabelText>{T("lb-SettledValue")}</LabelText>
               <div className="leading-6 text-black">
                 <NoDataDisplay noData={!accountInfo}>
-                  ${formatNum(accountInfo?.settled_value)}
+                  ${formatNum(Number(accountInfo?.settled_value))}
                 </NoDataDisplay>
               </div>
             </div>
             <div className="flex flex-col items-end">
               <LabelText>{T("lb-BonusIncome")}</LabelText>
               <div
-                data-loss={accountInfo ? accountInfo?.tax_income < 0 : "null"}
-                className="leading-6 data-[loss=true]:text-red data-[loss=null]:text-black data-[loss=false]:text-green"
+                data-loss={
+                  accountInfo ? Number(accountInfo?.tax_income) < 0 : "null"
+                }
+                className="leading-6 data-[loss=false]:text-green data-[loss=null]:text-black data-[loss=true]:text-red"
               >
                 <NoDataDisplay noData={!accountInfo}>
                   <>
-                    {accountInfo?.tax_income < 0 ? "-" : "+"}$
-                    {formatNum(Math.abs(accountInfo?.tax_income || 0))}
+                    {Number(accountInfo?.tax_income) < 0 ? "-" : "+"}$
+                    {formatNum(Math.abs(Number(accountInfo?.tax_income) || 0))}
                   </>
                 </NoDataDisplay>
               </div>

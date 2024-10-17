@@ -9,7 +9,7 @@ export function useUserXp() {
   const { address: wallet } = useChainWallet();
 
   const res = useSWR<any>(
-    wallet ? `${apiEndPoint}${Paths.userXpPoints}?wallet=${wallet}` : null,
+    wallet ? `${apiEndPoint}${Paths.userXP}/${wallet}` : null,
     fetcher,
   );
 

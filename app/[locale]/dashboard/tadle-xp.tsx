@@ -9,7 +9,7 @@ export function TadleXp() {
 
   const { data } = useUserXp();
 
-  const xp = data?.amount || 0;
+  const xp = data?.xp || 0;
   const maxValue = 100;
 
   const [updateAt, setUpdateAt] = useState(new Date().getTime());

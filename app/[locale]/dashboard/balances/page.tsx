@@ -11,7 +11,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
-import { IBalance, useUserBalance } from "@/lib/hooks/api/use-user-balance";
 import { IToken } from "@/lib/types/token";
 import {
   IBalanceType,
@@ -25,6 +24,14 @@ import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
+import {
+  ITokenBalance,
+  useUserTokenBalance,
+} from "@/lib/hooks/api/use-user-token-balance";
+import {
+  IItemBalance,
+  useUserItemBalance,
+} from "@/lib/hooks/api/use-user-item-balance";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -64,8 +71,11 @@ export default function MyBalances() {
 
   const { data: tokens } = useTokens();
 
-  const { data: balanceData, mutate: refetchBalanceData } =
-    useUserBalance(wallet);
+  const { data: tokenBlcData, mutate: refetchTokenBlcData } =
+    useUserTokenBalance(wallet);
+
+  const { data: itemBlcData, mutate: refetchItemBlcData } =
+    useUserItemBalance(wallet);
 
   const { data: marketplaceData } = useMarketplaces();
 
@@ -76,29 +86,39 @@ export default function MyBalances() {
   } = useWithdrawCollateralToken();
 
   const {
-    isLoading: isWdPointLoading,
-    write: wdPointAction,
-    isSuccess: isWdPointSuccess,
+    isLoading: isWdItemLoading,
+    write: wdItemAction,
+    isSuccess: isWdItemSuccess,
   } = useWithdrawProjectToken();
 
   const { checkIsNativeToken } = useIsNativeToken();
 
   useEffect(() => {
-    if (isWdTokenSuccess || isWdPointSuccess) {
-      refetchBalanceData();
+    if (isWdTokenSuccess) {
+      refetchTokenBlcData();
     }
-  }, [isWdTokenSuccess, isWdPointSuccess, refetchBalanceData]);
+  }, [isWdTokenSuccess, refetchTokenBlcData]);
+
+  useEffect(() => {
+    if (isWdItemSuccess) {
+      refetchItemBlcData();
+    }
+  }, [isWdItemSuccess, refetchItemBlcData]);
 
   const getTokenDataFormat = useCallback(
-    (bData: IBalance | undefined, key: string) => {
+    (bData: Array<ITokenBalance> | undefined, key: string) => {
       if (!bData || !tokens) return [];
 
-      const tBalances = bData.token_balance_list;
-      const itemData = tBalances?.map((t) => {
+      const itemData = bData?.map((t) => {
         const tokenInfo =
-          tokens.find((token) => token.address === t.token_address) ||
-          TokenListMap[t.token_address];
-        const amount = NP.divide((t as any)[key], 10 ** tokenInfo.decimals);
+          tokens.find((token) => token.address === t.token_addr) ||
+          TokenListMap[t.token_addr];
+
+        const amount = NP.divide(
+          (t.ledgers as any)[key],
+          10 ** tokenInfo.decimals,
+        );
+
         return {
           amount: Number(amount),
           tokenInfo,
@@ -111,63 +131,63 @@ export default function MyBalances() {
   );
 
   const getPointDataFormat = useCallback(
-    (bData: IBalance | undefined) => {
+    (bData: IItemBalance | undefined) => {
       if (!bData) return [];
 
-      const tBalances = bData.point_token_balance_list;
+      const market = marketplaceData?.find(
+        (m) => m.market_place_id === bData.market_symbol,
+      );
 
-      const taxIncomes = tBalances?.map((t) => {
-        const market = marketplaceData?.find(
-          (m) => m.market_place_id === t.market_place_account,
-        );
+      const tokenInfo = {
+        symbol: market?.item_name,
+        logoURI: market?.pointLogo,
+        marketplaceId: market?.market_place_id,
+      } as unknown as IToken;
 
-        const tokenInfo = {
-          symbol: market?.item_name,
-          logoURI: market?.pointLogo,
-          marketplaceId: t.market_place_account,
-        } as unknown as IToken;
-        const amount = NP.divide(t.amount, isProduction ? 10 ** 6 : 10 ** 9);
+      const amount = NP.divide(
+        bData.total_amount,
+        isProduction ? 10 ** 6 : 10 ** 9,
+      );
 
-        return {
-          amount: Number(amount),
-          tokenInfo,
-        };
-      });
+      const taxIncome = {
+        amount: Number(amount),
+        tokenInfo,
+      };
 
-      return taxIncomes;
+      return [taxIncome];
     },
     [marketplaceData],
   );
 
   const taxIncomeData = useMemo(() => {
-    const data = getTokenDataFormat(balanceData, "tax_income");
+    const data = getTokenDataFormat(tokenBlcData, "tax_income");
     return data;
-  }, [balanceData, getTokenDataFormat]);
+  }, [tokenBlcData, getTokenDataFormat]);
 
   const realizedAssetsData = useMemo(() => {
-    const data = getPointDataFormat(balanceData);
+    const data = getPointDataFormat(itemBlcData);
     return data;
-  }, [getPointDataFormat, balanceData]);
+  }, [getPointDataFormat, tokenBlcData]);
 
   const referralData = useMemo(() => {
-    const data = getTokenDataFormat(balanceData, "referral_bonus");
+    const data = getTokenDataFormat(tokenBlcData, "referral_bonus");
     return data;
-  }, [balanceData, getTokenDataFormat]);
+  }, [tokenBlcData, getTokenDataFormat]);
 
   const salesRevenueData = useMemo(() => {
-    const data = getTokenDataFormat(balanceData, "sales_revenue");
+    const data = getTokenDataFormat(tokenBlcData, "sales_revenue");
     return data;
-  }, [balanceData, getTokenDataFormat]);
+  }, [tokenBlcData, getTokenDataFormat]);
 
   const remainingCashData = useMemo(() => {
-    const data = getTokenDataFormat(balanceData, "remaining_cash");
+    const data = getTokenDataFormat(tokenBlcData, "remaining_cash");
     return data;
-  }, [balanceData, getTokenDataFormat]);
+  }, [tokenBlcData, getTokenDataFormat]);
 
   const makerRefundData = useMemo(() => {
-    const data = getTokenDataFormat(balanceData, "maker_refund");
+    const data = getTokenDataFormat(tokenBlcData, "maker_refund");
     return data;
-  }, [balanceData, getTokenDataFormat]);
+  }, [tokenBlcData, getTokenDataFormat]);
 
   const dataArray: Array<IPanelProps> = useMemo(() => {
     const items = [];
@@ -276,8 +296,8 @@ export default function MyBalances() {
   }
 
   function handleWithdrawPoint(tokenInfo: IToken | null) {
-    if (isWdPointLoading) return;
-    wdPointAction({
+    if (isWdItemLoading) return;
+    wdItemAction({
       marketplaceStr: (tokenInfo as any).marketplaceId,
       tokenAddress: tokenInfo?.address,
     });
@@ -418,7 +438,7 @@ function TokenGetCard({
             {formatNum(amount)}
           </div>
         </div>
-        <WithWalletConnectBtn onClick={onClick} >
+        <WithWalletConnectBtn onClick={onClick}>
           <div
             data-active={amount > 0}
             className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow data-[active=false]:pointer-events-none data-[active=false]:opacity-70"

@@ -40,14 +40,15 @@ export const Paths = {
   offer: "/offer",
   orders: "/orders",
   holding: "/holdings",
+  userXP: "/account/xp",
+  userTokenBalance: "/account/token_balances",
+  userItemBalance: "/account/item_balances",
+  accountStats: "/account/stats",
 
   makerOrders: "/user/maker_orders",
   taxIncome: "/user/tax_income",
   tradingVol: "/user/trade_vol",
-  accountOverview: "/user/overview",
 
-  userBalance: "/user/token_balance",
-  userXpPoints: "/user/xp_points",
   userState: "/user/state",
   userName: "/user/user_name",
 

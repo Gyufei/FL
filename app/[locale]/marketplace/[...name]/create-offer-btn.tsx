@@ -58,13 +58,13 @@ export default function CreateOfferBtn({
         >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger
-              className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:border-[#eee] data-[state=inactive]:text-[#99a0af] data-[state=active]:text-red"
+              className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:border-[#eee] data-[state=active]:text-red data-[state=inactive]:text-[#99a0af]"
               value="sell"
             >
               {T("cap-Sell")} / {T("cap-Ask")}
             </TabsTrigger>
             <TabsTrigger
-              className="rounded-none data-[state=inactive]:border-b data-[state=active]:border-b-2 data-[state=active]:border-green data-[state=inactive]:border-[#eee] data-[state=inactive]:text-[#99a0af] data-[state=active]:text-green"
+              className="rounded-none data-[state=active]:border-b-2 data-[state=inactive]:border-b data-[state=active]:border-green data-[state=inactive]:border-[#eee] data-[state=active]:text-green data-[state=inactive]:text-[#99a0af]"
               value="buy"
             >
               {T("cap-Buy")} / {T("cap-Bid")}

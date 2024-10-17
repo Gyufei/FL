@@ -107,10 +107,7 @@ export function SellContent({
     isLoading: isCreateLoading,
     write: writeAction,
     isSuccess,
-  } = useCreateOffer({
-    offerType: "ask",
-    marketplaceStr: marketplace.market_place_id,
-  });
+  } = useCreateOffer();
 
   async function handleCreate() {
     const isPriceValid = checkMinPrice(
@@ -182,7 +179,7 @@ export function SellContent({
                     height={30}
                     width={30}
                     alt="info"
-                    className="absolute -right-[18px] -bottom-[14px] !text-[#E0FF62]"
+                    className="absolute -bottom-[14px] -right-[18px] !text-[#E0FF62]"
                   />
                 </div>
               </WithTip>
@@ -213,11 +210,7 @@ export function SellContent({
         <OrderNoteAndFee value={note} onValueChange={setNote} type={"sell"} />
       </div>
 
-      <WithWalletConnectBtn
-        className="w-full"
-        onClick={handleConfirmBtnClick}
-        
-      >
+      <WithWalletConnectBtn className="w-full" onClick={handleConfirmBtnClick}>
         <button
           disabled={isCreateLoading || isApproving}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"

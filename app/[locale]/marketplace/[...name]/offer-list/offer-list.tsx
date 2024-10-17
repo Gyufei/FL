@@ -10,7 +10,7 @@ import SearchInput from "./search-input";
 import { OfferCard, OrderCardSkeleton } from "./offer-card";
 import HoverIcon from "@/components/share/hover-icon";
 import { IOffer } from "@/lib/types/offer";
-import { useSortHolding } from "@/lib/hooks/offer/use-sort-offer";
+import { useSortOffer } from "@/lib/hooks/offer/use-sort-offer";
 import { range } from "lodash";
 
 export default function OfferList({
@@ -29,7 +29,7 @@ export default function OfferList({
     handleSortFieldChange,
     handleSortDirChange,
     sortOffers,
-  } = useSortHolding(offers || []);
+  } = useSortOffer(offers || []);
 
   const filterOrders = useMemo(() => {
     const typeOrders = (sortOffers || [])?.filter((o: IOffer) =>

@@ -10,14 +10,14 @@ import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 
 export function useMyOrders() {
-  // const { address } = useChainWallet();
-  // const { isEth, isBnb } = useCurrentChain();
-  // const chain = isEth ? "ethereum" : isBnb ? "binance" : "solana";
-  const address = "0x1cf00f501b1ebea5e58c68ad1317c9fbb01704f7";
-  const chain = "sepolia";
+  const { address } = useChainWallet();
+  const { isEth, isBnb } = useCurrentChain();
+  const chain = isEth ? "ethereum" : isBnb ? "binance" : "solana";
+  // const address = "0x1cf00f501b1ebea5e58c68ad1317c9fbb01704f7";
+  // const chain = "sepolia";
   const { apiEndPoint } = useEndPoint();
   const { data: offers, isLoading } = useMarketOffers({
-    marketSymbol: "",
+    marketSymbol: null,
     marketChain: chain,
   });
 

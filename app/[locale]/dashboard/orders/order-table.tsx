@@ -14,7 +14,7 @@ import { useTheme } from "@table-library/react-table-library/theme";
 
 import { truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
@@ -23,7 +23,6 @@ import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
-import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
@@ -41,14 +40,12 @@ export function OrderTable({
 }) {
   const T = useTranslations("page-MyOrders");
 
-  const { setAnchorValue } = useAnchor();
-
   const { data: orders, mutate: refreshMyOrders } = useMyOrders();
   console.log("🚀 ~ orders:", orders);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectOrderId, setSelectOrderId] = useState("");
 
-  function openDetail(oId: any) {
-    setAnchorValue(oId);
-  }
+  const selectedOrder = orders?.find((o) => o.order_id === selectOrderId);
 
   const data = useMemo(() => {
     const orderData = (orders || [])
@@ -61,7 +58,7 @@ export function OrderTable({
       .filter((o) => {
         const oRole = "Maker";
         // const oStatus = o.offer?.status;
-        const oType = o.offer.entry.direction;
+        const oType = o.offer?.entry?.direction;
 
         const isRole = role === "All" || role === oRole;
 
@@ -131,6 +128,10 @@ export function OrderTable({
         {T("txt-YourOrderAppearHere")}
       </div>
     );
+  }
+  function handleOpenOrderDrawer(OId: string) {
+    setSelectOrderId(OId);
+    setDrawerOpen(true);
   }
 
   return (
@@ -208,7 +209,7 @@ export function OrderTable({
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <DetailBtn
-                      onClick={() => openDetail(ord.order_id)}
+                      onClick={() => handleOpenOrderDrawer(ord.order_id)}
                     ></DetailBtn>
                   </Cell>
                 </Row>
@@ -242,7 +243,12 @@ export function OrderTable({
         </Pagination>
       )}
 
-      <DetailDrawer offers={orders || []} onSuccess={refreshMyOrders} />
+      <DetailDrawer
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        offer={selectedOrder?.offer}
+        onSuccess={refreshMyOrders}
+      />
     </>
   );
 }

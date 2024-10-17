@@ -9,7 +9,7 @@ export function useMarketOffers({
   marketSymbol,
   marketChain,
 }: {
-  marketSymbol: string;
+  marketSymbol: string | null;
   marketChain: string;
 }) {
   const { apiEndPoint } = useEndPoint();
@@ -18,9 +18,16 @@ export function useMarketOffers({
 
   const marketOffersFetcher = async () => {
     if (isMarketLoading) return [];
+    const fetchParams = Object.entries({
+      market_symbol: marketSymbol,
+      chain: marketChain,
+    })
+      .filter(([_, v]) => v !== null)
+      .map(([k, v]) => `${k}=${v}`)
+      .join("&");
 
     const offerRes = await fetcher(
-      `${apiEndPoint}${Paths.offers}?market_symbol=${marketSymbol}&chain=${marketChain}`,
+      `${apiEndPoint}${Paths.offers}?${fetchParams}`,
     );
 
     const parsedRes = await Promise.all(

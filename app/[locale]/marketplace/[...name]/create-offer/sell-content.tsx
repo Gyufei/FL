@@ -108,7 +108,6 @@ export function SellContent({
   } = useCreateOffer(marketplace.market_symbol, marketplace.chain);
 
   async function handleCreate() {
-    console.log("123");
     const isPriceValid = checkMinPrice(
       pointPrice,
       Number(marketplace.minimum_price),
@@ -120,12 +119,12 @@ export function SellContent({
 
     writeAction({
       direction: "sell",
-      price: pointPrice,
+      price: String(pointPrice),
       total_item_amount: sellPointAmount,
       payment_token: receiveToken.symbol,
-      collateral_ratio: Number(collateralRate || 100) * 100,
+      collateral_ratio: String(Number(collateralRate || 100) * 100),
       settle_mode: settleMode,
-      trade_tax_pct: Number(taxForSub || 3) * 100,
+      trade_tax_pct: String(Number(taxForSub || 3) * 100),
     });
   }
 

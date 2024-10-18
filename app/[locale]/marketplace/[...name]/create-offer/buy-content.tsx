@@ -123,7 +123,7 @@ export function BuyContent({
 
     writeAction({
       direction: "buy",
-      price: pointPrice,
+      price: String(pointPrice),
       total_item_amount: receivePointAmount,
       payment_token: payToken.symbol,
       collateral_ratio: Number(collateralRate || 100) * 100,

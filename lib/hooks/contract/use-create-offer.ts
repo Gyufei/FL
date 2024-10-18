@@ -4,11 +4,14 @@ import { useEndPoint } from "../api/use-endpoint";
 import fetcher from "@/lib/fetcher";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import useTxStatus from "./help/use-tx-status";
+import { useChainWallet } from "../web3/use-chain-wallet";
 
 export function useCreateOffer(marketSymbol: string, chain: string) {
   const { recordTransaction } = useTransactionRecord();
   const { apiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
+
+  const { address } = useChainWallet();
 
   const txAction = async (args: {
     direction: "buy" | "sell";
@@ -26,7 +29,10 @@ export function useCreateOffer(marketSymbol: string, chain: string) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(args),
+        body: JSON.stringify({
+          ...args,
+          creator: address,
+        }),
       },
     );
 

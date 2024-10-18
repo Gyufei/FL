@@ -21,7 +21,7 @@ export function useMyOrders(chain?: string) {
   const myOrdersFetcher = async () => {
     if (!address || isLoading) return [];
     const orderRes = await fetcher(
-      `${apiEndPoint}${Paths.orders}?wallet=${address}&chain=${chain}`,
+      `${apiEndPoint}${Paths.orders}?wallet=${address}&chain=${chain || ""}`,
     );
 
     const parsedRes = (orderRes || []).map((order: any) => {

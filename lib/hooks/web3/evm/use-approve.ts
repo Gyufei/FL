@@ -8,20 +8,24 @@ import {
   useWriteContract,
 } from "wagmi";
 
-import { useCurrentChain } from "../use-current-chain";
 import { useTokens } from "../../api/token/use-tokens";
 import { USDTAbi } from "@/lib/abi/eth/USDT";
-import { useEvmConfig } from "../use-evm-config";
 import { useTranslations } from "next-intl";
+import { ChainType } from "@/lib/types/chain";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
-export function useApprove(tokenAddr: string, allowAmount: number = 0) {
+export function useApprove(
+  chain: ChainType,
+  tokenAddr: string,
+  allowAmount: number = 0,
+) {
   const config = useConfig();
-  const { evmConfig } = useEvmConfig();
-  const spender = evmConfig.contracts.tokenManager;
+  const chainConf = ChainConfigs[chain];
+  const isEvm = chainConf.isEvm;
+  const spender = chainConf.contracts.tokenManager;
 
   const CT = useTranslations("Common");
 
-  const { isEvm } = useCurrentChain();
   const { address } = useAccount();
   const { data: tokens } = useTokens();
 

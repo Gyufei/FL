@@ -12,11 +12,11 @@ export interface IOrder {
   price: string;
   notional_value: string;
   tx_hash: string;
-  entry: IEntry;
+  entry: IOrderEntry;
   offer: IOffer;
 }
 
-export interface IEntry {
+export interface IOrderEntry {
   id: number;
   root_entry_id: number;
   is_root: boolean;

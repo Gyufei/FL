@@ -9,7 +9,6 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr,
   settleAmount,
   onSuccess,
-  isNativeToken,
 }: {
   isHoldingsLoading: boolean;
   marketplaceStr: string;
@@ -17,7 +16,6 @@ export default function ConfirmAskMakerSettleBtn({
   makerStr: string;
   settleAmount: number;
   onSuccess: () => void;
-  isNativeToken: boolean;
 }) {
   const {
     isLoading,
@@ -27,7 +25,7 @@ export default function ConfirmAskMakerSettleBtn({
     marketplaceStr,
     offerStr: orderStr,
     makerStr,
-    isNativeToken,
+    // isNativeToken,
   });
 
   function handleConfirm() {

@@ -34,7 +34,7 @@ export default function ListAskHoldingBtn({
   const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { offerPointInfo, offerTokenInfo, tokenPrice, isNativeToken } =
+  const { offerPointInfo, offerTokenInfo, tokenPrice } =
     useOfferFormat({
       offer: holding.offer,
     });
@@ -67,7 +67,7 @@ export default function ListAskHoldingBtn({
     marketplaceStr: holding.offer.marketplace.market_place_id,
     makerStr: holding.offer.offer_maker,
     holdingStr: holding.holding_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   function handleDeposit() {

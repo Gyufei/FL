@@ -19,7 +19,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export function OfferCard({ offer }: { offer: IOffer }) {
   const t = useTranslations("cd-Order");
@@ -35,8 +35,6 @@ export function OfferCard({ offer }: { offer: IOffer }) {
   } = useOfferFormat({
     offer: offer,
   });
-
-  const { getChainInfo } = useChainInfo();
 
   const orderType = offer.entry.direction;
 
@@ -58,7 +56,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
         <div className="flex items-center space-x-3">
           <TokenPairImg
             src1={offer.marketplace.projectLogo}
-            src2={getChainInfo(offer.marketplace.chain).logo}
+            src2={ChainConfigs[offer.marketplace.chain].logo}
             width1={48}
             height1={48}
           />

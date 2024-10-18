@@ -1,10 +1,5 @@
-import {
-  encodeAbiParameters,
-  encodePacked,
-  getAddress,
-  keccak256,
-  parseAbiParameters,
-} from "viem";
+import { isProduction } from "../PathMap";
+import { ChainType } from "../types/chain";
 
 export function truncateAddr(
   address: string,
@@ -14,7 +9,6 @@ export function truncateAddr(
   },
 ): string {
   if (!address) return address;
-
   const { nPrefix, nSuffix } = params;
 
   const shorter = `${address.slice(0, nPrefix)}...${address.slice(
@@ -24,12 +18,36 @@ export function truncateAddr(
   return shorter;
 }
 
-export function generateEthAddress(_id: string, seed: string) {
-  const idBytes = encodeAbiParameters(parseAbiParameters("uint256"), [
-    BigInt(_id),
-  ]);
-  const hash = keccak256(encodePacked(["string", "bytes"], [seed, idBytes]));
-  const address = getAddress("0x" + hash.slice(-40));
+export function isEvmChain(chain: ChainType) {
+  return [ChainType.ETH, ChainType.BNB].includes(chain);
+}
 
-  return address;
+export function handleGoScan(
+  chain: ChainType,
+  addr: string,
+  type: "account" | "tx" = "account",
+) {
+  if (!addr) return;
+
+  let goType: any = type;
+  if (type === "account") {
+    goType = "address";
+  }
+
+  if (chain === ChainType.ETH) {
+    window.open(`https://etherscan.io/${goType}/${addr}`, "_blank");
+  }
+
+  if (chain === ChainType.BNB) {
+    window.open(`https://bscscan.com/${goType}/${addr}`, "_blank");
+  }
+
+  if (chain === ChainType.SOLANA) {
+    window.open(
+      `https://solscan.io/${type}/${addr}${
+        isProduction ? "" : "?cluster=devnet"
+      }`,
+      "_blank",
+    );
+  }
 }

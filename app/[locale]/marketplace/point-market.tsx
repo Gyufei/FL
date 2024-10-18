@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useRouter } from "@/app/navigation";
 import { IMarketplace } from "@/lib/types/marketplace";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function PointMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
@@ -25,8 +25,6 @@ export default function PointMarket({ className }: { className?: string }) {
   const { data, isLoading: isLoadingFlag } = useMarketplaces();
 
   const { checkIsDuringTge } = useTge();
-
-  const { getChainInfo } = useChainInfo();
 
   const theme = useTheme({
     Table: `
@@ -108,7 +106,7 @@ export default function PointMarket({ className }: { className?: string }) {
     {
       label: t("th-Asset"),
       renderCell: (item: IMarketplace) => {
-        const chainInfo = getChainInfo(item.chain);
+        const chainInfo = ChainConfigs[item.chain];
         return isLoadingFlag ? (
           <div className="flex items-center">
             <Skeleton className="h-[32px] w-[32px] rounded-full" />

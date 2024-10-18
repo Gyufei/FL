@@ -41,7 +41,7 @@ export function NetworkSelect() {
               width={24}
               height={24}
               src={currentChainInfo.logo}
-              alt={currentChainInfo.alias}
+              alt={currentChainInfo.name}
               className="z-10 mr-0 rounded-full bg-black sm:mr-2 sm:bg-white"
             ></Image>
             <span className="hidden text-base leading-6 text-black sm:inline-block">
@@ -131,7 +131,7 @@ export function MbNetworkSelect() {
               width={24}
               height={24}
               src={currentChainInfo.logo}
-              alt={currentChainInfo.alias}
+              alt={currentChainInfo.name}
               className="z-10 mr-0 rounded-full bg-black sm:mr-2 sm:bg-white"
             ></Image>
             <span className="hidden text-base leading-6 text-black sm:inline-block">

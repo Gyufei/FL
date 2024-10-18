@@ -14,7 +14,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function AskDetail({
   offer,
@@ -32,7 +32,6 @@ export default function AskDetail({
   const referrer = referrerData?.data;
 
   const { platformFee } = useGlobalConfig();
-  const { getChainInfo } = useChainInfo();
   const {
     tokenPrice,
     progress,
@@ -42,7 +41,6 @@ export default function AskDetail({
     pointPerPrice,
     isFilled,
     offerTokenInfo: orderTokenInfo,
-    isNativeToken,
   } = useOfferFormat({
     offer,
   });
@@ -67,11 +65,11 @@ export default function AskDetail({
     offerStr: offer.offer_id,
     preOfferAuthStr: offer.offer_maker,
     referrerStr: referrer || "",
-    isNativeToken,
+    // isNativeToken,
   });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(orderTokenInfo?.address || "");
+    useApprove(offer.marketplace.chain, orderTokenInfo?.address || "");
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
@@ -128,7 +126,7 @@ export default function AskDetail({
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={getChainInfo(offer.marketplace.chain).logo}
+            img2={ChainConfigs[offer.marketplace.chain].logo}
             name={offer.marketplace.market_name}
             no={String(offer.entry.id)}
             progress={progress}

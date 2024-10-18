@@ -13,24 +13,19 @@ export function useMarketPoints() {
     }
 
     const pts: Array<IPoint> = marketRes.data
-    .filter((m) => m.status !== "offline")
-    .filter(
-      m => !checkIsAfterTge(m.tge, Number(m.settlement_period))
-    )
-    .map((market) => (
-      {
+      .filter((m) => m.status !== "offline")
+      .filter((m) => !checkIsAfterTge(m.tge, Number(m.settlement_period)))
+      .map((market) => ({
         logoURI: market.pointLogo,
         symbol: market.item_name,
-        marketplaceId: market.market_place_id,
-        marketName: market.market_name
-      }
-    ))
+        marketplace: market,
+      }));
 
     return pts;
-  }, [marketRes.data])
-  
+  }, [marketRes.data]);
+
   return {
     ...marketRes,
-    data: points
-  }
+    data: points,
+  };
 }

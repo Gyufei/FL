@@ -1,7 +1,5 @@
-import NP from "number-precision";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { IPoint, IToken } from "@/lib/types/token";
+import { useEffect } from "react";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
@@ -12,18 +10,14 @@ import { WithTip } from "../../../../../components/share/with-tip";
 import CollateralRateInput from "./collateral-rate-input";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
-import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { IMarketplace } from "@/lib/types/marketplace";
-import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
-import { SettleModeSelect, SettleModes } from "./settle-mode-select";
+import { SettleModeSelect } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
-import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
-import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
-import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { formatNum } from "@/lib/utils/number";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
+import { usePointOfCreate } from "./use-point-of-create";
+import { useOptionOfCreate } from "./use-option-of-create";
 
 export function SellContent({
   marketplace,
@@ -33,117 +27,68 @@ export function SellContent({
   onSuccess: () => void;
 }) {
   const T = useTranslations("drawer-CreateOffer");
-  const { data: points } = useMarketPoints();
-  const { data: stableTokens } = useStableToken();
 
-  const [sellPointAmount, setSellPointAmount] = useState("");
-  const [sellPoint, setSellPoint] = useState<IPoint | null>(null);
+  const {
+    token: receiveToken,
+    setToken: setReceiveToken,
+    point: sellPoint,
+    setPoint: setSellPoint,
+    tokenAmount: receiveTokenAmount,
+    setTokenAmount: setReceiveAmount,
+    pointAmount: sellPointAmount,
+    setPointAmount: setSellPointAmount,
+    tokenAmountValue: sellPrice,
+    currentMarket,
+    points,
+    pointPrice,
 
-  useEffect(() => {
-    if (points) {
-      setSellPoint(
-        points.find(
-          (point) => point.marketplaceId === marketplace.market_place_id,
-        ) || null,
-      );
-    }
-  }, [points, marketplace]);
+    isCreating,
+    handleCreate,
+    isCreateSuccess,
+  } = usePointOfCreate(marketplace, "sell");
 
-  const [receiveTokenAmount, setReceiveAmount] = useState("");
-  const [receiveToken, setReceiveToken] = useState<IToken>({
-    symbol: "",
-    logoURI: "/icons/empty.svg",
-    decimals: isProduction ? 6 : 9,
-  } as IToken);
-
-  const { data: tokenPrice } = useTokenPrice(receiveToken?.address || "");
-  const { checkMinPrice } = useCreateOfferMinPrice();
-
-  useEffect(() => {
-    if (stableTokens) {
-      setReceiveToken(stableTokens[0]);
-    }
-  }, [stableTokens]);
+  const {
+    collateralRate,
+    setCollateralRate,
+    taxForSub,
+    setTaxForSub,
+    settleMode,
+    setSettleMode,
+    note,
+    setNote,
+  } = useOptionOfCreate();
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(receiveToken?.address);
+    useApprove(currentMarket?.chain || "", receiveToken?.address);
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
       await approveAction();
     } else {
-      handleCreate();
+      handleCreate({
+        collateralRate: String(Number(collateralRate || 100) * 100),
+        settleMode,
+        taxForSub: String(Number(taxForSub || 3) * 100),
+      });
     }
-  }
-
-  const [collateralRate, setCollateralRate] = useState("");
-  const [taxForSub, setTaxForSub] = useState("");
-  const [settleMode, setSettleMode] = useState(SettleModes[0]);
-
-  const [note, setNote] = useState("");
-
-  const sellPrice = useMemo(() => {
-    if (!receiveTokenAmount) {
-      return 0;
-    }
-    return NP.times(receiveTokenAmount, tokenPrice);
-  }, [receiveTokenAmount, tokenPrice]);
-
-  const pointPrice = useMemo(() => {
-    if (!sellPointAmount) {
-      return 0;
-    }
-
-    return NP.divide(sellPrice, sellPointAmount);
-  }, [sellPrice, sellPointAmount]);
-
-  function handleSellPayChange(v: string) {
-    setSellPointAmount(v);
-  }
-
-  const {
-    isLoading: isCreateLoading,
-    write: writeAction,
-    isSuccess,
-  } = useCreateOffer(marketplace.market_symbol, marketplace.chain);
-
-  async function handleCreate() {
-    const isPriceValid = checkMinPrice(
-      pointPrice,
-      Number(marketplace.minimum_price),
-    );
-
-    if (!sellPointAmount || !receiveTokenAmount || !isPriceValid) {
-      return;
-    }
-
-    writeAction({
-      direction: "sell",
-      price: String(pointPrice),
-      total_item_amount: sellPointAmount,
-      payment_token: receiveToken.symbol,
-      collateral_ratio: String(Number(collateralRate || 100) * 100),
-      settle_mode: settleMode,
-      trade_tax_pct: String(Number(taxForSub || 3) * 100),
-    });
   }
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isCreateSuccess) {
       onSuccess();
     }
-  }, [isSuccess, onSuccess]);
+  }, [isCreateSuccess, onSuccess]);
 
   return (
     <div className="mt-6 flex flex-1 flex-col justify-between">
       <div className="flex flex-1 flex-col">
         <InputPanel
           value={sellPointAmount}
-          onValueChange={handleSellPayChange}
+          onValueChange={setSellPointAmount}
           topText={<>{T("txt-YouWillSell")}</>}
           bottomText={
             <>
-              1 {marketplace.item_name} = ${formatNum(pointPrice)}
+              1 {currentMarket.item_name} = ${formatNum(pointPrice)}
             </>
           }
           tokenSelect={
@@ -166,7 +111,7 @@ export function SellContent({
               <WithTip align="start">
                 <div className="relative">
                   {T("tip-YouDLikeToReceive", {
-                    pointName: marketplace.item_name,
+                    pointName: currentMarket.item_name,
                   })}
                   <Image
                     src="/icons/info-tip.svg"
@@ -186,6 +131,7 @@ export function SellContent({
           }
           tokenSelect={
             <StableTokenSelectDisplay
+              chain={currentMarket.chain}
               token={receiveToken}
               setToken={setReceiveToken}
             />
@@ -206,7 +152,7 @@ export function SellContent({
 
       <WithWalletConnectBtn className="w-full" onClick={handleConfirmBtnClick}>
         <button
-          disabled={isCreateLoading || isApproving}
+          disabled={isCreating || isApproving}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
         >
           {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}

@@ -1,18 +1,19 @@
 import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainType } from "@/lib/types/chain";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useMemo } from "react";
 import { useWriteContract } from "wagmi";
 
-export function useChainSendTx(chain: string) {
+export function useChainSendTx(chain: ChainType) {
   const { writeContractAsync } = useWriteContract();
   const { sendTransaction } = useWallet();
 
   const sendTx: any = useMemo(() => {
-    if (chain === ChainConfigs.eth.alias || chain === ChainConfigs.bnb.alias) {
+    if (chain === ChainType.ETH || chain === ChainType.BNB) {
       return writeContractAsync;
     }
 
-    if (chain === ChainConfigs.solana.alias) {
+    if (chain === ChainType.SOLANA) {
       return sendTransaction;
     }
 

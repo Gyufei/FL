@@ -1,24 +1,24 @@
 import { useMemo } from "react";
 import { useTokens } from "./use-tokens";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
+import { ChainType } from "@/lib/types/chain";
 
-export function useStableToken() {
-  const { isEth, isBnb, isSolana } = useCurrentChain();
+export function useStableToken(chain?: string) {
   const { data: tokens, isLoading } = useTokens();
 
   const stableTokens = useMemo(() => {
-    const stableTokenList = isEth
-      ? ["USDT", "USDC", "ETH"]
-      : isBnb
-      ? ["USDT", "USDC", "BNB"]
-      : isSolana
-      ? ["USDC", "SOL"]
-      : [];
+    const stableTokenList =
+      chain === ChainType.ETH
+        ? ["USDT", "USDC", "ETH"]
+        : chain === ChainType.BNB
+        ? ["USDT", "USDC", "BNB"]
+        : chain === ChainType.SOLANA
+        ? ["USDC", "SOL"]
+        : [];
 
     if (!tokens) return [];
 
     return tokens.filter((t) => stableTokenList.includes(t.symbol));
-  }, [tokens, isEth, isBnb, isSolana]);
+  }, [tokens, chain]);
 
   return {
     data: stableTokens,

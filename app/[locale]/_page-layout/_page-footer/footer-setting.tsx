@@ -14,22 +14,17 @@ import { isProduction } from "@/lib/PathMap";
 import { getDomainName } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
+import { ChainType } from "@/lib/types/chain";
 
 export default function FooterSetting() {
   const ct = useTranslations("pop-Setting");
 
-  const {
-    chainRpcs,
-    currentGlobalRpc,
-    currentCustomRpc,
-    setGlobalRpcAction,
-    setCustomRpcAction,
-    testRpcLatency,
-  } = useRpc();
+  const { globalRpcs, customRpcs, setCustomRpcAction, testRpcLatency } =
+    useRpc();
 
   const [popOpen, setPopOpen] = useState(false);
 
-  const [checkedRpc, setCheckedRpc] = useState<string | null>(null);
+  const [checkedChain, setCheckedChain] = useState<ChainType>(ChainType.ETH);
 
   const [inputRpc, setInputRpc] = useState("");
   const [inputRpcActive, setInputRpcActive] = useState(false);
@@ -38,25 +33,19 @@ export default function FooterSetting() {
   const [inputRpcLatency, setInputRpcLatency] = useState(0);
 
   useEffect(() => {
-    if (currentCustomRpc) {
-      setInputRpc(currentCustomRpc);
+    if (customRpcs[checkedChain]) {
+      setInputRpc(customRpcs[checkedChain]);
       setInputRpcActive(true);
-      setCheckedRpc(null);
       setShowInput(false);
-    } else {
-      setCheckedRpc(currentGlobalRpc);
     }
-  }, [currentCustomRpc, currentGlobalRpc]);
+  }, [customRpcs, checkedChain]);
 
-  function handleCheck(rpc: string) {
-    if (checkedRpc === rpc) {
+  function handleCheck(chain: ChainType) {
+    if (checkedChain === chain) {
       return;
     }
 
-    setCheckedRpc(rpc);
-    setGlobalRpcAction(rpc);
-    setCustomRpcAction(null);
-    setInputRpc("");
+    setCheckedChain(chain);
     setInputRpcActive(false);
     setInputRpcError(false);
     setShowInput(true);
@@ -68,10 +57,9 @@ export default function FooterSetting() {
     }
 
     try {
-      const latency = await testRpcLatency(inputRpc);
+      const latency = await testRpcLatency(checkedChain, inputRpc);
 
-      setCustomRpcAction(inputRpc);
-      setCheckedRpc(null);
+      setCustomRpcAction(checkedChain, inputRpc);
       setInputRpcActive(true);
 
       return latency;
@@ -86,7 +74,7 @@ export default function FooterSetting() {
     }
 
     async function getRpcMs() {
-      const latency = await testRpcLatency(inputRpc);
+      const latency = await testRpcLatency(checkedChain, inputRpc);
       setInputRpcLatency(latency);
     }
 
@@ -134,11 +122,28 @@ export default function FooterSetting() {
             {ct("cap-Networks")}
           </div>
           <NetItem
-            name="Tadle RPC 1"
+            name="Eth RPC"
             label="Mainnet"
-            rpc={chainRpcs?.TadleDefaultRPC}
-            checked={checkedRpc === chainRpcs.TadleDefaultRPC}
-            onCheckedChange={() => handleCheck(chainRpcs.TadleDefaultRPC)}
+            chain={ChainType.ETH}
+            rpc={globalRpcs[ChainType.ETH]}
+            checked={checkedChain === ChainType.ETH}
+            onCheckedChange={() => handleCheck(ChainType.ETH)}
+          />
+          <NetItem
+            name="Bnb RPC"
+            label="Mainnet"
+            chain={ChainType.BNB}
+            rpc={globalRpcs[ChainType.BNB]}
+            checked={checkedChain === ChainType.BNB}
+            onCheckedChange={() => handleCheck(ChainType.BNB)}
+          />
+          <NetItem
+            name="Solana RPC"
+            label="Mainnet"
+            chain={ChainType.SOLANA}
+            rpc={globalRpcs[ChainType.SOLANA]}
+            checked={checkedChain === ChainType.SOLANA}
+            onCheckedChange={() => handleCheck(ChainType.SOLANA)}
           />
         </div>
 
@@ -208,14 +213,16 @@ function NetItem({
   rpc,
   checked,
   onCheckedChange,
+  chain,
 }: {
   name: string;
   label: string;
   rpc: string;
   checked: boolean;
   onCheckedChange: (_v: boolean) => void;
+  chain: ChainType;
 }) {
-  const { data: ms } = useRpcLatency(rpc);
+  const { data: ms } = useRpcLatency(chain, rpc);
 
   return (
     <div

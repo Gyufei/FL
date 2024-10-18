@@ -5,8 +5,9 @@ import fetcher from "@/lib/fetcher";
 import { useTransactionRecord } from "../api/use-transactionRecord";
 import useTxStatus from "./help/use-tx-status";
 import { useChainWallet } from "../web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
 
-export function useCreateOffer(marketSymbol: string, chain: string) {
+export function useCreateOffer(marketSymbol: string, chain: ChainType) {
   const { recordTransaction } = useTransactionRecord();
   const { apiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);

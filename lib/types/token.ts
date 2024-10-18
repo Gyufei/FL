@@ -1,3 +1,5 @@
+import { IMarketplace } from "./marketplace";
+
 export interface IToken {
   address: string;
   name: string;
@@ -12,6 +14,5 @@ export interface IToken {
 export interface IPoint {
   symbol: string;
   logoURI: string;
-  marketplaceId: string;
-  marketName: string;
+  marketplace: IMarketplace;
 }

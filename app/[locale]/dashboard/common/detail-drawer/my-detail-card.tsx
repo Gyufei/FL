@@ -1,12 +1,11 @@
 import NP from "number-precision";
 import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
-import { truncateAddr } from "@/lib/utils/web3";
+import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { WithTip } from "@/components/share/with-tip";
 import { formatTimeObj, formatTimestamp } from "@/lib/utils/time";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
@@ -28,8 +27,6 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const { data: entryInfo } = useEntryById(offer.entry.id);
 
   const isAsk = offer.entry.direction === "sell";
-
-  const { handleGoScan } = useGoScan();
 
   const originId = entryInfo?.root_entry_id || offer.entry.id;
   const originMaker = entryInfo?.original_creator || offer.offer_maker;
@@ -131,7 +128,9 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
             })}
           </div>
           <Image
-            onClick={() => handleGoScan(offer.offer_maker || "")}
+            onClick={() =>
+              handleGoScan(offer.marketplace.chain, offer.offer_maker || "")
+            }
             src="/icons/right-45.svg"
             width={16}
             height={16}
@@ -175,7 +174,9 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
                 })}
           </div>
           <Image
-            onClick={() => handleGoScan(originMaker || "")}
+            onClick={() =>
+              handleGoScan(offer.marketplace.chain, originMaker || "")
+            }
             src="/icons/right-45.svg"
             width={16}
             height={16}

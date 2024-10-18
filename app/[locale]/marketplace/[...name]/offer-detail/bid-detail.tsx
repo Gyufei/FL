@@ -13,7 +13,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function BidDetail({
   offer,
@@ -36,15 +36,12 @@ export default function BidDetail({
     pointPerPrice,
     isFilled,
     offerTokenInfo,
-    isNativeToken,
   } = useOfferFormat({
     offer: offer,
   });
 
-  const { getChainInfo } = useChainInfo();
-
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(offerTokenInfo?.address || "");
+    useApprove(offer.marketplace.chain, offerTokenInfo?.address || "");
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -80,7 +77,7 @@ export default function BidDetail({
     offerStr: offer.offer_id,
     preOfferAuthStr: offer.offer_maker,
     referrerStr: referrer || "",
-    isNativeToken,
+    // isNativeToken,
   });
 
   function handleSliderChange(v: number) {
@@ -117,7 +114,7 @@ export default function BidDetail({
         <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={getChainInfo(offer.marketplace.chain).logo}
+            img2={ChainConfigs[offer.marketplace.chain].logo}
             name={offer.marketplace.market_name}
             no={String(offer.entry.id)}
             progress={progress}

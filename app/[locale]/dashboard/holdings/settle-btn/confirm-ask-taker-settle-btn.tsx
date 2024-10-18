@@ -10,7 +10,6 @@ export default function ConfirmAskTakerSettleBtn({
   settleAmount,
   preOfferAuthorityStr,
   onSuccess,
-  isNativeToken,
 }: {
   marketplaceStr: string;
   holdingStr: string;
@@ -19,7 +18,6 @@ export default function ConfirmAskTakerSettleBtn({
   preOfferAuthorityStr: string;
   settleAmount: number;
   onSuccess: () => void;
-  isNativeToken: boolean;
 }) {
   const {
     isLoading,
@@ -31,7 +29,7 @@ export default function ConfirmAskTakerSettleBtn({
     holdingStr,
     preOfferAuthorityStr,
     makerStr,
-    isNativeToken,
+    // isNativeToken,
   });
 
   function handleConfirm() {

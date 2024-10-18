@@ -5,7 +5,6 @@ import { IPoint, IToken } from "../../types/token";
 import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
-import { useIsNativeToken } from "../api/token/use-is-native-token";
 import { useTokens } from "../api/token/use-tokens";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
@@ -16,8 +15,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const offerTokenInfo = useMemo(() => {
     return tokens?.find((t) => t.symbol === offer.payment_token);
   }, [offer, tokens]);
-
-  const { isNativeToken } = useIsNativeToken(offerTokenInfo || null);
 
   const { data: tokenPrice } = useTokenPrice(offerTokenInfo?.address || "");
 
@@ -151,7 +148,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     forLogo,
 
     tokenPrice,
-    isNativeToken,
     tokenTotalPrice,
     pointPerPrice,
     offerPointInfo,

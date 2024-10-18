@@ -6,9 +6,8 @@ import Drawer from "react-modern-drawer";
 
 import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
-import { truncateAddr } from "@/lib/utils/web3";
+import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { useTranslations } from "next-intl";
 
 export default function MessageBtn() {
@@ -51,7 +50,7 @@ export default function MessageBtn() {
         {!!msgEvents.length && (
           <Badge
             variant="destructive"
-            className="min-w-4 absolute -right-1 -top-1 h-4 px-1"
+            className="absolute -right-1 -top-1 h-4 min-w-4 px-1"
           >
             {showLen}
           </Badge>
@@ -78,8 +77,6 @@ export default function MessageBtn() {
 }
 
 function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
-  const { handleGoScan } = useGoScan();
-
   return (
     <div className="flex space-x-3">
       <div className="relative mt-3 h-fit">
@@ -90,7 +87,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
           alt="avatar"
           className="rounded-full"
         />
-        <div className="absolute right-0 bottom-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
+        <div className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
           <Image
             src={msgDetail.token.logoURI}
             width={8.8}
@@ -122,7 +119,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
           just
           <span
             data-type={msgDetail.type}
-            className="mx-1 inline-block data-[type=sell]:text-red data-[type=buy]:text-green"
+            className="mx-1 inline-block data-[type=buy]:text-green data-[type=sell]:text-red"
           >
             {msgDetail.type === "sell" ? "selling" : "bought"}
           </span>
@@ -140,7 +137,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
             <div>3 hours ago ·</div>
             <div
               className="flex cursor-pointer items-center"
-              onClick={() => handleGoScan(msgDetail.txHash)}
+              onClick={() => handleGoScan(msgDetail.chain, msgDetail.txHash)}
             >
               Solscan
               <Image

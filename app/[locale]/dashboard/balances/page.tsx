@@ -12,10 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
 import { IToken } from "@/lib/types/token";
-import {
-  IBalanceType,
-  useWithdrawCollateralToken,
-} from "@/lib/hooks/contract/use-with-draw-collateral-token";
+import { useWithdrawCollateralToken } from "@/lib/hooks/contract/use-with-draw-collateral-token";
 import { useWithdrawProjectToken } from "@/lib/hooks/contract/use-with-draw-project-token";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
@@ -23,7 +20,6 @@ import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useIsNativeToken } from "@/lib/hooks/api/token/use-is-native-token";
 import {
   ITokenBalance,
   useUserTokenBalance,
@@ -90,8 +86,6 @@ export default function MyBalances() {
     write: wdItemAction,
     isSuccess: isWdItemSuccess,
   } = useWithdrawProjectToken();
-
-  const { checkIsNativeToken } = useIsNativeToken();
 
   useEffect(() => {
     if (isWdTokenSuccess) {
@@ -286,16 +280,15 @@ export default function MyBalances() {
     setOpenPanel(panelIndex);
   }
 
-  function handleWithdrawToken(mode: IBalanceType, tokenInfo: IToken | null) {
+  function handleWithdrawToken(mode: string, tokenInfo: IToken | null) {
     if (isWdTokenLoading) return;
     wdTokenAction({
       tokenAddress: tokenInfo?.address,
-      isNativeToken: checkIsNativeToken(tokenInfo),
       mode,
     });
   }
 
-  function handleWithdrawPoint(tokenInfo: IToken | null) {
+  function handleWithdrawItem(tokenInfo: IToken | null) {
     if (isWdItemLoading) return;
     wdItemAction({
       marketplaceStr: (tokenInfo as any).marketplaceId,
@@ -342,7 +335,7 @@ export default function MyBalances() {
                                 item.withdrawerName!,
                                 i.tokenInfo || null,
                               )
-                            : handleWithdrawPoint(i.tokenInfo || null)
+                            : handleWithdrawItem(i.tokenInfo || null)
                         }
                       />
                     ))}

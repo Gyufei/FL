@@ -14,8 +14,6 @@ export default function AbortHoldingBtn({
 }) {
   const mst = useTranslations("page-MyStocks");
 
-  const { isNativeToken } = useOfferFormat({ offer: holding.offer });
-
   const {
     isLoading,
     write: writeAction,
@@ -27,7 +25,7 @@ export default function AbortHoldingBtn({
     holdingStr: "",
     makerStr: holding.offer.offer_maker,
     offerStr: holding.offer.offer_id,
-    isNativeToken: isNativeToken,
+    // isNativeToken: isNativeToken,
   });
 
   function handleConfirm() {

@@ -18,7 +18,7 @@ import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-t
 
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function MyBidDetail({
   offer,
@@ -42,12 +42,9 @@ export default function MyBidDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
-    isNativeToken,
   } = useOfferFormat({
     offer: offer,
   });
-
-  const { getChainInfo } = useChainInfo();
 
   const {
     isLoading: isClosing,
@@ -60,7 +57,7 @@ export default function MyBidDetail({
     holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   const {
@@ -74,7 +71,7 @@ export default function MyBidDetail({
     holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   const {
@@ -86,7 +83,7 @@ export default function MyBidDetail({
     marketplaceStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   function handleClose() {
@@ -117,7 +114,7 @@ export default function MyBidDetail({
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={getChainInfo(offer.marketplace.chain).logo}
+            img2={ChainConfigs[offer.marketplace.chain].logo}
             name={offer.marketplace.market_name}
             no={offer.offer_id}
             progress={progress}

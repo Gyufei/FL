@@ -7,15 +7,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
+import { ChainType } from "@/lib/types/chain";
 
 export function StableTokenSelectDisplay({
   token,
   setToken,
+  chain,
 }: {
+  chain: ChainType;
   token: IToken;
   setToken: (_t: IToken) => void;
 }) {
-  const { data: tokens } = useStableToken();
+  const { data: tokens } = useStableToken(chain);
   const [popOpen, setPopOpen] = useState(false);
 
   const handleSelectToken = (t: IToken) => {

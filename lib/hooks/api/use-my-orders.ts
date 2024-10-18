@@ -5,20 +5,17 @@ import fetcher from "@/lib/fetcher";
 import { Paths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
+import { IOrder } from "@/lib/types/order";
 
-export function useMyOrders() {
+export function useMyOrders(chain?: string) {
   const { address } = useChainWallet();
-  const { isEth, isBnb } = useCurrentChain();
-  const chain = isEth ? "ethereum" : isBnb ? "binance" : "solana";
-  // const address = "0x1cf00f501b1ebea5e58c68ad1317c9fbb01704f7";
-  // const chain = "sepolia";
+
   const { apiEndPoint } = useEndPoint();
   const { data: offers, isLoading } = useMarketOffers({
     marketSymbol: null,
-    marketChain: chain,
+    marketChain: chain || "",
   });
 
   const myOrdersFetcher = async () => {
@@ -36,7 +33,7 @@ export function useMyOrders() {
         offer: matchingOffer || null,
       };
     });
-    return parsedRes as Array<any>;
+    return parsedRes as Array<IOrder>;
   };
 
   const res = useSWR(`my_order:${address}${isLoading}`, myOrdersFetcher);

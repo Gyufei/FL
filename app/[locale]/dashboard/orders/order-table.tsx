@@ -12,22 +12,20 @@ import {
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { useTheme } from "@table-library/react-table-library/theme";
 
-import { truncateAddr } from "@/lib/utils/web3";
+import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useMemo, useState } from "react";
 import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { IOffer } from "@/lib/types/offer";
 import { IOrder } from "@/lib/types/order";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
-import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export function OrderTable({
   role,
@@ -41,10 +39,10 @@ export function OrderTable({
   const T = useTranslations("page-MyOrders");
 
   const { data: orders, mutate: refreshMyOrders } = useMyOrders();
-  console.log("🚀 ~ orders:", orders);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectOrderId, setSelectOrderId] = useState("");
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const [selectOrderId, setSelectOrderId] = useState("");
   const selectedOrder = orders?.find((o) => o.order_id === selectOrderId);
 
   const data = useMemo(() => {
@@ -56,15 +54,12 @@ export function OrderTable({
         };
       })
       .filter((o) => {
-        const oRole = "Maker";
-        // const oStatus = o.offer?.status;
         const oType = o.offer?.entry?.direction;
+        const isRole = role === "All" || role === o.role;
+        const isStatus =
+          status === "All" || status.toLowerCase() === o.offer.status;
 
-        const isRole = role === "All" || role === oRole;
-
-        // const isStatus = status === "All" || status.toLowerCase() === oStatus;
-
-        return isRole && types.includes(oType as IOfferType);
+        return isRole && types.includes(oType as IOfferType) && isStatus;
       });
 
     const sortData = sortBy(orderData, "create_at").reverse();
@@ -191,7 +186,7 @@ export function OrderTable({
                     </div>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderRole offer={ord} />
+                    <OrderRole order={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <OrderEqToken order={ord} />
@@ -200,7 +195,7 @@ export function OrderTable({
                     <OrderFromTo order={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderHash offer={ord} />
+                    <OrderHash order={ord} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <span className="text-sm leading-5 text-black">
@@ -253,13 +248,11 @@ export function OrderTable({
   );
 }
 
-function OrderItem({ order }: { order: IOffer }) {
-  const { currentChainInfo } = useCurrentChain();
-
+function OrderItem({ order }: { order: IOrder }) {
   return (
     <div className="relative h-fit w-fit">
       <Image
-        src={order.marketplace?.projectLogo}
+        src={order.offer.marketplace?.projectLogo}
         width={32}
         height={32}
         alt="avatar"
@@ -267,7 +260,7 @@ function OrderItem({ order }: { order: IOffer }) {
       />
       <div className="absolute bottom-0 right-0 flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white bg-white">
         <Image
-          src={currentChainInfo.logo}
+          src={ChainConfigs[order.offer.marketplace.chain].logo}
           width={14}
           height={14}
           alt="avatar"
@@ -326,9 +319,8 @@ function OrderFromTo({ order }: { order: IOrder }) {
   );
 }
 
-function OrderRole({ offer }: { offer: IOffer }) {
-  offer;
-  const orderRole = "Maker";
+function OrderRole({ order }: { order: IOrder }) {
+  const orderRole = order.role;
 
   return (
     <div
@@ -340,10 +332,8 @@ function OrderRole({ offer }: { offer: IOffer }) {
   );
 }
 
-function OrderHash({ offer }: { offer: IOffer }) {
-  const { handleGoScan } = useGoScan();
-
-  const hash = offer.tx_hash;
+function OrderHash({ order }: { order: IOrder }) {
+  const hash = order.tx_hash;
 
   return (
     <div className="flex items-center">
@@ -351,7 +341,9 @@ function OrderHash({ offer }: { offer: IOffer }) {
         {truncateAddr(hash || "")}
       </span>
       <Image
-        onClick={() => handleGoScan(hash || "", "tx")}
+        onClick={() =>
+          handleGoScan(order.offer.marketplace.chain, hash || "", "tx")
+        }
         src="/icons/right-45.svg"
         width={16}
         height={16}

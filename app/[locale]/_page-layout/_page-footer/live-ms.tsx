@@ -1,10 +1,13 @@
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
 import { useRpcLatency } from "@/lib/hooks/web3/use-rpc-latency";
+import { ChainType } from "@/lib/types/chain";
 import { useMemo } from "react";
 
 export function LiveMs() {
-  const { rpc } = useRpc();
-  const { data: ms } = useRpcLatency(rpc!);
+  const { globalRpcs, customRpcs } = useRpc();
+
+  const rpc = globalRpcs[ChainType.ETH] || customRpcs[ChainType.ETH];
+  const { data: ms } = useRpcLatency(ChainType.ETH, rpc!);
 
   const msColor = useMemo(() => {
     if (!ms) return "#3DD866";

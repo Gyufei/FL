@@ -25,7 +25,6 @@ export default function ConfirmAskMakerSettleDialog({
     tokenTotalPrice,
     offerPointInfo: orderPointInfo,
     afterTGEPeriod,
-    isNativeToken,
   } = useOfferFormat({
     offer: offer,
   });
@@ -94,7 +93,6 @@ export default function ConfirmAskMakerSettleDialog({
           </div>
 
           <ConfirmAskMakerSettleBtn
-            isNativeToken={isNativeToken}
             isHoldingsLoading={false}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_id}

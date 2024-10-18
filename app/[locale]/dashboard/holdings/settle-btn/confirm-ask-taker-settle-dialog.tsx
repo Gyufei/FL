@@ -26,7 +26,6 @@ export default function ConfirmAskTakerSettleDialog({
     tokenTotalPrice,
     offerPointInfo,
     afterTGEPeriod,
-    isNativeToken,
   } = useOfferFormat({ offer: holding.offer });
 
   // const [sliderMax] = useState(100);
@@ -100,7 +99,6 @@ export default function ConfirmAskTakerSettleDialog({
           </div>
 
           <ConfirmAskTakerSettleBtn
-            isNativeToken={isNativeToken}
             marketplaceStr={holding.offer.marketplace.market_place_id}
             holdingStr={holding.holding_id}
             makerStr={holding.offer.offer_maker}

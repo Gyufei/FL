@@ -15,7 +15,7 @@ import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function MyAskDetail({
   offer,
@@ -37,15 +37,12 @@ export default function MyAskDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
-    isNativeToken,
     isCanceled,
     isClosed,
     isCanAbort,
   } = useOfferFormat({
     offer,
   });
-
-  const { getChainInfo } = useChainInfo();
 
   const [settleConfirmShow, setSettleConfirmShow] = useState(false);
 
@@ -60,7 +57,7 @@ export default function MyAskDetail({
     holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   const {
@@ -74,7 +71,7 @@ export default function MyAskDetail({
     holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   const {
@@ -88,7 +85,7 @@ export default function MyAskDetail({
     holdingStr: "",
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,
-    isNativeToken,
+    // isNativeToken,
   });
 
   function handleClose() {
@@ -123,7 +120,7 @@ export default function MyAskDetail({
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
-            img2={getChainInfo(offer.marketplace.chain).logo}
+            img2={ChainConfigs[offer.marketplace.chain].logo}
             name={offer.marketplace.market_name}
             no={String(offer.entry.id)}
             progress={progress}

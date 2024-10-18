@@ -1,3 +1,5 @@
+import { ChainType } from "./chain";
+
 export interface IMarketplace {
   id: number;
   last_price: string;
@@ -25,5 +27,5 @@ export interface IMarketplace {
 
   projectLogo: string;
   pointLogo: string;
-  chain: string;
+  chain: ChainType;
 }

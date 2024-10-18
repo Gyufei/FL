@@ -1,3 +1,5 @@
+import { ChainType } from "./types/chain";
+
 export const isPreview = process.env.NEXT_PUBLIC_IS_PREVIEW === "1";
 export const isProduction = process.env.NODE_ENV === "production" && !isPreview;
 // export const isProduction = true;
@@ -16,12 +18,12 @@ export function WithCDN(path: string) {
   return `${cdn}${path}`;
 }
 
-export function WithProjectImgCDN(path: string, chain: string) {
+export function WithProjectImgCDN(path: string, chain: ChainType) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
   return WithCDN(`/${chain}/images/project/${goPath}`);
 }
 
-export function WithPointImgCDN(path: string, chain: string) {
+export function WithPointImgCDN(path: string, chain: ChainType) {
   const goPath = path.endsWith(".png") ? path : `${path}.png`;
   return WithCDN(`/${chain}/images/point/${goPath}`);
 }
@@ -44,7 +46,7 @@ export const Paths = {
   userTokenBalance: "/account/token_balances",
   userItemBalance: "/account/item_balances",
   accountStats: "/account/stats",
-  
+
   makerOrders: "/user/maker_orders",
   taxIncome: "/user/tax_income",
   tradingVol: "/user/trade_vol",

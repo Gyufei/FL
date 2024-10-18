@@ -1,9 +1,9 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { isProduction } from "../PathMap";
+import { ChainType } from "../types/chain";
 
 export interface IChainConfig {
   name: string;
-  alias: string;
   network: string | number;
   logo: string;
   rpcs: Record<string, string>;
@@ -13,9 +13,8 @@ export interface IChainConfig {
 }
 
 export const ChainConfigs: Record<string, IChainConfig> = {
-  solana: {
+  [ChainType.SOLANA]: {
     name: "Solana",
-    alias: "solana",
     logo: "/icons/solana.svg",
     rpcs: {
       TadleDefaultRPC: isProduction
@@ -42,9 +41,8 @@ export const ChainConfigs: Record<string, IChainConfig> = {
         },
     isEvm: false,
   },
-  eth: {
+  [ChainType.ETH]: {
     name: "Ethereum",
-    alias: "eth",
     logo: "/icons/eth.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 1 : 1337,
@@ -70,9 +68,8 @@ export const ChainConfigs: Record<string, IChainConfig> = {
         },
     isEvm: true,
   },
-  bnb: {
+  [ChainType.BNB]: {
     name: "BNB Chain",
-    alias: "bnb",
     logo: "/icons/bnb.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 56 : 97,

@@ -2,9 +2,8 @@ import NP from "number-precision";
 import Image from "next/image";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { usePagination } from "@table-library/react-table-library/pagination";
-import { truncateAddr } from "@/lib/utils/web3";
+import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { IToken } from "@/lib/types/token";
-import { useGoScan } from "@/lib/hooks/web3/use-go-scan";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";
@@ -28,7 +27,6 @@ export function TakerOrders({
   orderTokenInfo: IToken;
 }) {
   const T = useTranslations("drawer-OfferDetail");
-  const { handleGoScan } = useGoScan();
 
   const data = useMemo(() => {
     const orderData = orders.map((o, index) => {
@@ -124,7 +122,9 @@ export function TakerOrders({
         <div className="flex items-center justify-end">
           {truncateAddr(o.tx_hash || "")}
           <Image
-            onClick={() => handleGoScan(o.tx_hash || "", "tx")}
+            onClick={() =>
+              handleGoScan(offer.marketplace.chain, o.tx_hash || "", "tx")
+            }
             src="/icons/right-45.svg"
             width={16}
             height={16}

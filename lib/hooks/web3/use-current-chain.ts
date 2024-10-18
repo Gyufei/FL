@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useAtom, useAtomValue } from "jotai";
 
 import {
@@ -11,7 +11,7 @@ import {
 import { useSwitchChain } from "wagmi";
 
 import { ChainConfigs } from "@/lib/const/chain-config";
-import { useChainInfo } from "./use-chain-info";
+import { ChainType } from "@/lib/types/chain";
 
 export function useCurrentChain() {
   const [network, setNetwork] = useAtom(NetworkAtom);
@@ -21,11 +21,23 @@ export function useCurrentChain() {
   const isEvm = isEth || isBnb;
 
   const { switchChainAsync } = useSwitchChain();
-  const { getChainAlias, getChainInfo } = useChainInfo();
+
+  const getChainAlias = useCallback((c: ENetworks) => {
+    switch (c) {
+      case ENetworks.Solana:
+        return ChainType.SOLANA;
+      case ENetworks.Eth:
+        return ChainType.ETH;
+      case ENetworks.Bnb:
+        return ChainType.BNB;
+      default:
+        return "";
+    }
+  }, []);
 
   const currentChainInfo = useMemo(() => {
-    return getChainInfo(getChainAlias(network));
-  }, [getChainInfo, getChainAlias, network]);
+    return ChainConfigs[getChainAlias(network)];
+  }, [getChainAlias, network]);
 
   async function switchToEth() {
     if (isEth) return;
@@ -37,7 +49,7 @@ export function useCurrentChain() {
   async function switchToBsc() {
     if (isBnb) return;
 
-    setNetwork(ENetworks.Bsc);
+    setNetwork(ENetworks.Bnb);
     await switchChainAsync({ chainId: ChainConfigs.bnb.network as number });
   }
 
@@ -54,7 +66,6 @@ export function useCurrentChain() {
     isBnb,
     isEvm,
     currentChainInfo,
-    getChainInfo,
     switchToEth,
     switchToSolana,
     switchToBsc,

@@ -8,7 +8,7 @@ import DelistBtn from "./delist-btn";
 import { useTranslations } from "next-intl";
 import AbortHoldingBtn from "./abort-holding-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useChainInfo } from "@/lib/hooks/web3/use-chain-info";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function HoldingCard({
   openHoldingDrawer,
@@ -41,8 +41,6 @@ export default function HoldingCard({
     data: [],
   };
 
-  const { getChainInfo } = useChainInfo();
-
   const isCanList =
     !afterTGE && !afterTGEPeriod && !isAskStock && !holding.offer;
 
@@ -61,7 +59,7 @@ export default function HoldingCard({
         >
           <TokenPairImg
             src1={holding.offer.marketplace?.projectLogo}
-            src2={getChainInfo(holding.offer.marketplace.chain).logo}
+            src2={ChainConfigs[holding.offer.marketplace.chain].logo}
             width1={48}
             height1={48}
             width2={8.8}

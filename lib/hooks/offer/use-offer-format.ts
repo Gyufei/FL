@@ -21,8 +21,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const offerPointInfo: IPoint = {
     symbol: offer.marketplace.item_name,
     logoURI: offer.marketplace.pointLogo,
-    marketplaceId: offer.marketplace.market_place_id,
-    marketName: offer.marketplace.market_name,
+    marketplace: offer.marketplace,
   };
 
   const offerEqTokenInfo = {

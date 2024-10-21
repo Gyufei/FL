@@ -16,11 +16,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
   const { address } = useChainWallet();
 
-  const {
-    offerTokenInfo: orderTokenInfo,
-    offerPointInfo: orderPointInfo,
-    duringTGE,
-  } = useOfferFormat({
+  const { offerTokenInfo, offerPointInfo, duringTGE } = useOfferFormat({
     offer: offer,
   });
 
@@ -37,10 +33,10 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     const ti = offer?.trade_tax_accum;
 
     const tax = Number(ti || 0);
-    const fmtTax = NP.divide(tax, 10 ** (orderTokenInfo?.decimals || 0));
+    const fmtTax = NP.divide(tax, 10 ** (offerTokenInfo?.decimals || 0));
 
     return fmtTax;
-  }, [offer, orderTokenInfo]);
+  }, [offer, offerTokenInfo]);
 
   const [seconds, setSeconds] = useState(0);
 
@@ -80,7 +76,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
             {formatNum(offer.item_amount, 2, true)} pts
           </div>
           <Image
-            src={orderPointInfo.logoURI}
+            src={offerPointInfo.logoURI}
             width={16}
             height={16}
             alt="stable token"

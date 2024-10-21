@@ -1,4 +1,3 @@
-import { ChainConfigs } from "@/lib/const/chain-config";
 import { ChainType } from "@/lib/types/chain";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useMemo } from "react";

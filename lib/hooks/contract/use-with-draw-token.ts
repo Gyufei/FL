@@ -1,4 +1,4 @@
-export function useWithdrawProjectToken() {
+export function useWithdrawToken() {
   return {
     isLoading: false,
     isSuccess: false,

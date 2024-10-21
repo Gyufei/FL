@@ -30,8 +30,8 @@ export default function MyAskDetail({
     progress,
     pointPerPrice,
     amount,
-    offerTokenInfo: orderTokenInfo,
-    offerPointInfo: orderPointInfo,
+    offerTokenInfo,
+    offerPointInfo,
     isCanSettle,
     isSettled,
     afterTGE,
@@ -50,57 +50,41 @@ export default function MyAskDetail({
     isLoading: isClosing,
     write: closeAction,
     isSuccess: isCloseSuccess,
-  } = useCloseOffer({
-    // marketplaceStr: offer.market_place_account,
-    // holdingStr: offer.stock_account,
-    marketplaceStr: "",
-    holdingStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    // isNativeToken,
-  });
+  } = useCloseOffer(offer.marketplace.chain);
 
   const {
     isLoading: isAborting,
     write: abortAction,
     isSuccess: isAbortSuccess,
-  } = useAbortAskOffer({
-    // marketplaceStr: offer.market_place_account,
-    // holdingStr: offer.stock_account,
-    marketplaceStr: "",
-    holdingStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    // isNativeToken,
-  });
+  } = useAbortAskOffer(offer.marketplace.chain);
 
   const {
     isLoading: isRelisting,
     write: relistAction,
     isSuccess: isRelistSuccess,
-  } = useRelist({
-    // marketplaceStr: offer.market_place_account,
-    // holdingStr: offer.stock_account,
-    marketplaceStr: "",
-    holdingStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    // isNativeToken,
-  });
+  } = useRelist(offer.marketplace.chain);
 
   function handleClose() {
     if (isClosing) return;
-    closeAction?.(undefined);
+    closeAction?.({
+      offerId: offer.offer_id,
+    });
   }
 
   function handleAbort() {
     if (isAborting) return;
-    abortAction?.(undefined);
+    abortAction?.({
+      offerId: offer.offer_id,
+    });
   }
 
   function handleRelist() {
     if (isRelisting) return;
-    relistAction?.(undefined);
+    relistAction?.({
+      price: offer.price,
+      totalItemAmount: offer.item_amount,
+      entryIds: [offer.entry.id],
+    });
   }
 
   function handleSettle() {
@@ -131,7 +115,7 @@ export default function MyAskDetail({
             topText={<>{ot("txt-YouHaveToSell")}</>}
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
             value={String(offer.item_amount)}
-            tokenLogo={orderPointInfo.logoURI}
+            tokenLogo={offerPointInfo.logoURI}
             onValueChange={() => {}}
             isCanInput={false}
           />
@@ -157,7 +141,7 @@ export default function MyAskDetail({
               </div>
             }
             value={String(amount)}
-            tokenLogo={orderTokenInfo?.logoURI || "/icons/empty.png"}
+            tokenLogo={offerTokenInfo?.logoURI || "/icons/empty.png"}
           />
 
           <div className="flex items-center justify-between gap-2">

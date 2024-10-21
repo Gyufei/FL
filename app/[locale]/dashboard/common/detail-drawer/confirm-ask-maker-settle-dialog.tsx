@@ -20,14 +20,10 @@ export default function ConfirmAskMakerSettleDialog({
   // const ct = useTranslations("Common");
   const orderRole = "Maker";
 
-  const {
-    amount,
-    tokenTotalPrice,
-    offerPointInfo: orderPointInfo,
-    afterTGEPeriod,
-  } = useOfferFormat({
-    offer: offer,
-  });
+  const { amount, tokenTotalPrice, offerPointInfo, afterTGEPeriod } =
+    useOfferFormat({
+      offer: offer,
+    });
 
   // const [sliderMax] = useState(100);
   // const [sliderValue, setSliderValue] = useState(100);
@@ -83,7 +79,7 @@ export default function ConfirmAskMakerSettleDialog({
                 {formatNum(settleAmount)}
               </div>
               <Image
-                src={orderPointInfo.logoURI}
+                src={offerPointInfo.logoURI}
                 width={28}
                 height={28}
                 alt="stable token"

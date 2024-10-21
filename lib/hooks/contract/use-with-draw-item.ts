@@ -1,4 +1,4 @@
-export function useWithdrawCollateralToken() {
+export function useWithdrawItem() {
   return {
     isLoading: false,
     isSuccess: false,

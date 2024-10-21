@@ -13,11 +13,7 @@ import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
 
-  const {
-    amount,
-    offerTokenInfo: orderTokenInfo,
-    offerPointInfo: orderPointInfo,
-  } = useOfferFormat({
+  const { amount, offerTokenInfo, offerPointInfo } = useOfferFormat({
     offer,
   });
 
@@ -63,7 +59,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
             {formatNum(offer.item_amount)} Vol
           </div>
           <Image
-            src={orderPointInfo.logoURI}
+            src={offerPointInfo.logoURI}
             width={16}
             height={16}
             alt="stable token"
@@ -145,7 +141,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
             {formatNum(totalColl)}
           </div>
           <Image
-            src={orderTokenInfo?.logoURI || "/icons/empty.png"}
+            src={offerTokenInfo?.logoURI || "/icons/empty.png"}
             width={16}
             height={16}
             alt="stable token"
@@ -207,7 +203,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
                 $
                 {NP.divide(
                   offer?.trade_tax_accum || 0,
-                  Math.pow(10, orderTokenInfo?.decimals || 0),
+                  Math.pow(10, offerTokenInfo?.decimals || 0),
                 )}
               </div>
             </div>

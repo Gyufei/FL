@@ -5,21 +5,23 @@ import { useChainSendTx } from "./help/use-chain-send-tx";
 import fetcher from "@/lib/fetcher";
 import useTxStatus from "./help/use-tx-status";
 
-export function useAbortAskOffer(chain: ChainType) {
+export function useCreateTakerOrder(chain: ChainType) {
   const { recordTransaction } = useTransactionRecord();
   const { apiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
-  const txAction = async (args: { offerId: string }) => {
-    const { offerId } = args;
+  const txAction = async (args: { offerId: string; itemAmount: string }) => {
+    const { offerId, itemAmount } = args;
     const res = await fetcher(
-      `${apiEndPoint}/offer/${offerId}/abort?chain=${chain}`,
+      `${apiEndPoint}/offer/${offerId}/take?chain=${chain}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: null,
+        body: JSON.stringify({
+          item_amount: itemAmount,
+        }),
       },
     );
 

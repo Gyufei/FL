@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
 import { IToken } from "@/lib/types/token";
-import { useWithdrawCollateralToken } from "@/lib/hooks/contract/use-with-draw-collateral-token";
-import { useWithdrawProjectToken } from "@/lib/hooks/contract/use-with-draw-project-token";
+import { useWithdrawToken } from "@/lib/hooks/contract/use-with-draw-token";
+import { useWithdrawItem } from "@/lib/hooks/contract/use-with-draw-item";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { isProduction } from "@/lib/PathMap";
@@ -79,13 +79,13 @@ export default function MyBalances() {
     isLoading: isWdTokenLoading,
     write: wdTokenAction,
     isSuccess: isWdTokenSuccess,
-  } = useWithdrawCollateralToken();
+  } = useWithdrawToken();
 
   const {
     isLoading: isWdItemLoading,
     write: wdItemAction,
     isSuccess: isWdItemSuccess,
-  } = useWithdrawProjectToken();
+  } = useWithdrawItem();
 
   useEffect(() => {
     if (isWdTokenSuccess) {

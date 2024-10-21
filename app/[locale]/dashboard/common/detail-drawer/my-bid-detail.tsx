@@ -34,8 +34,8 @@ export default function MyBidDetail({
     progress,
     pointPerPrice,
     amount,
-    offerTokenInfo: orderTokenInfo,
-    offerPointInfo: orderPointInfo,
+    offerTokenInfo,
+    offerPointInfo,
     isSettled,
     isCanceled,
     isClosed,
@@ -50,29 +50,13 @@ export default function MyBidDetail({
     isLoading: isClosing,
     write: closeAction,
     isSuccess: isCloseSuccess,
-  } = useCloseOffer({
-    // marketplaceStr: offer.market_place_account,
-    // holdingStr: offer.stock_account,
-    marketplaceStr: "",
-    holdingStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    // isNativeToken,
-  });
+  } = useCloseOffer(offer.marketplace.chain);
 
   const {
     isLoading: isRelisting,
     write: relistAction,
     isSuccess: isRelistSuccess,
-  } = useRelist({
-    // marketplaceStr: offer.market_place_account,
-    // holdingStr: offer.stock_account,
-    marketplaceStr: "",
-    holdingStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    // isNativeToken,
-  });
+  } = useRelist(offer.marketplace.chain);
 
   const {
     isLoading: isBidClosing,
@@ -129,7 +113,7 @@ export default function MyBidDetail({
               </>
             }
             value={String(amount)}
-            tokenLogo={orderTokenInfo?.logoURI || "/icons/empty.png"}
+            tokenLogo={offerTokenInfo?.logoURI || "/icons/empty.png"}
             onValueChange={() => {}}
             isCanInput={false}
           />
@@ -151,7 +135,7 @@ export default function MyBidDetail({
               </div>
             }
             value={String(offer.item_amount)}
-            tokenLogo={orderPointInfo.logoURI}
+            tokenLogo={offerPointInfo.logoURI}
           />
 
           {isSettled || afterTGEPeriod ? (

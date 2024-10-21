@@ -35,10 +35,10 @@ export function PointTokenSelectDisplay({
       searchText
         ? (points || []).filter(
             (pt) =>
-              pt.marketName
+              pt.marketplace.market_name
                 .toLocaleUpperCase()
                 .includes(searchText.toLocaleUpperCase()) ||
-              pt.symbol
+              pt.marketplace.market_symbol
                 .toLocaleUpperCase()
                 .includes(searchText.toLocaleUpperCase()),
           )
@@ -89,7 +89,7 @@ export function PointTokenSelectDisplay({
             width={20}
             height={20}
             alt="search"
-            className="absolute top-[10px] left-[7px]"
+            className="absolute left-[7px] top-[10px]"
           />
           <Input
             placeholder={t("Search")}

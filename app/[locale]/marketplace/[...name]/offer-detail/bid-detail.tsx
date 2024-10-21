@@ -6,7 +6,7 @@ import SliderCard from "./slider-card";
 import ReceiveCard from "./receive-card";
 import DetailCard from "./detail-card";
 import OfferTabs from "./offer-tabs";
-import { useCreateHolding } from "@/lib/hooks/contract/use-create-holding";
+import { useCreateTakerOrder } from "@/lib/hooks/contract/use-create-taker-order";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
@@ -66,7 +66,7 @@ export default function BidDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateHolding({
+  } = useCreateTakerOrder({
     // originOfferStr: makerDetail?.origin_offer || "",
     // marketplaceStr: order.market_place_account,
     // originOfferAuthStr: order.origin_offer_detail?.offer_maker,

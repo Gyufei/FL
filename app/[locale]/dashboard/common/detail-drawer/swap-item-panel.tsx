@@ -31,7 +31,7 @@ export function SwapItemPanel({
         <div className="text-xs leading-[18px] text-gray">{topText}</div>
         {isCanInput ? (
           <NumericalInput
-            className="mt-2 mr-1 h-9 text-2xl"
+            className="mr-1 mt-2 h-9 text-2xl"
             placeholder="Enter Amount"
             value={value}
             onUserInput={onValueChange}
@@ -42,7 +42,13 @@ export function SwapItemPanel({
         <div className="text-xs leading-[18px] text-gray">{bottomText}</div>
       </div>
       <div className="flex items-center">
-        <Image src={tokenLogo} width={28} height={28} alt="token" className="rounded-full" />
+        <Image
+          src={tokenLogo}
+          width={28}
+          height={28}
+          alt="token"
+          className="rounded-full"
+        />
       </div>
     </div>
   );

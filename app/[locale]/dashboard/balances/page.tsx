@@ -12,9 +12,6 @@ import {
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
 import { IToken } from "@/lib/types/token";
-import { useWithdrawToken } from "@/lib/hooks/contract/use-with-draw-token";
-import { useWithdrawItem } from "@/lib/hooks/contract/use-with-draw-item";
-import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
@@ -28,6 +25,7 @@ import {
   IItemBalance,
   useUserItemBalance,
 } from "@/lib/hooks/api/use-user-item-balance";
+import { TokenGetCard } from "./token-get-card";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -50,8 +48,8 @@ const TokenListMap: Record<string, IToken> = {
 interface IPanelProps {
   title: string;
   panelName: string;
-  withdrawerName: IBalanceType | null;
-  isPoint: boolean;
+  withdrawerName: string | null;
+  isItem: boolean;
   data: {
     amount: number;
     tokenInfo: IToken;
@@ -74,30 +72,6 @@ export default function MyBalances() {
     useUserItemBalance(wallet);
 
   const { data: marketplaceData } = useMarketplaces();
-
-  const {
-    isLoading: isWdTokenLoading,
-    write: wdTokenAction,
-    isSuccess: isWdTokenSuccess,
-  } = useWithdrawToken();
-
-  const {
-    isLoading: isWdItemLoading,
-    write: wdItemAction,
-    isSuccess: isWdItemSuccess,
-  } = useWithdrawItem();
-
-  useEffect(() => {
-    if (isWdTokenSuccess) {
-      refetchTokenBlcData();
-    }
-  }, [isWdTokenSuccess, refetchTokenBlcData]);
-
-  useEffect(() => {
-    if (isWdItemSuccess) {
-      refetchItemBlcData();
-    }
-  }, [isWdItemSuccess, refetchItemBlcData]);
 
   const getTokenDataFormat = useCallback(
     (bData: Array<ITokenBalance> | undefined, key: string) => {
@@ -161,7 +135,7 @@ export default function MyBalances() {
   const realizedAssetsData = useMemo(() => {
     const data = getPointDataFormat(itemBlcData);
     return data;
-  }, [getPointDataFormat, tokenBlcData]);
+  }, [getPointDataFormat, itemBlcData]);
 
   const referralData = useMemo(() => {
     const data = getTokenDataFormat(tokenBlcData, "referral_bonus");
@@ -192,7 +166,7 @@ export default function MyBalances() {
         title: mbt("cap-TaxIncome"),
         panelName: "taxIncomeData",
         withdrawerName: "taxIncome",
-        isPoint: false,
+        isItem: false,
         data: taxIncomeData,
         total,
       } as IPanelProps);
@@ -204,7 +178,7 @@ export default function MyBalances() {
         title: mbt("cap-RealizedAssets"),
         panelName: "realizedAssetsData",
         withdrawerName: null,
-        isPoint: true,
+        isItem: true,
         data: realizedAssetsData,
         total,
       } as IPanelProps);
@@ -216,7 +190,7 @@ export default function MyBalances() {
         title: mbt("cap-ReferralBonus"),
         panelName: "referralData",
         withdrawerName: "referralBonus",
-        isPoint: false,
+        isItem: false,
         data: referralData,
         total,
       } as IPanelProps);
@@ -228,7 +202,7 @@ export default function MyBalances() {
         title: mbt("cap-SalesRevenue"),
         panelName: "salesRevenueData",
         withdrawerName: "salesRevenue",
-        isPoint: false,
+        isItem: false,
         data: salesRevenueData,
         total,
       } as IPanelProps);
@@ -240,7 +214,7 @@ export default function MyBalances() {
         title: mbt("cap-RemainingCash"),
         panelName: "remainingCashData",
         withdrawerName: "remainingCash",
-        isPoint: false,
+        isItem: false,
         data: remainingCashData,
         total,
       } as IPanelProps);
@@ -252,7 +226,7 @@ export default function MyBalances() {
         title: mbt("cap-MakerRefund"),
         panelName: "makerRefundData",
         withdrawerName: "makerRefund",
-        isPoint: false,
+        isItem: false,
         data: makerRefundData,
         total,
       } as IPanelProps);
@@ -278,22 +252,6 @@ export default function MyBalances() {
   function handleOpenPanel(panelIndex: string) {
     if (!panelIndex) return;
     setOpenPanel(panelIndex);
-  }
-
-  function handleWithdrawToken(mode: string, tokenInfo: IToken | null) {
-    if (isWdTokenLoading) return;
-    wdTokenAction({
-      tokenAddress: tokenInfo?.address,
-      mode,
-    });
-  }
-
-  function handleWithdrawItem(tokenInfo: IToken | null) {
-    if (isWdItemLoading) return;
-    wdItemAction({
-      marketplaceStr: (tokenInfo as any).marketplaceId,
-      tokenAddress: tokenInfo?.address,
-    });
   }
 
   return (
@@ -326,16 +284,15 @@ export default function MyBalances() {
                     {item.data.map((i, index) => (
                       <TokenGetCard
                         key={index}
-                        name={i.tokenInfo?.symbol || ""}
-                        logo={i.tokenInfo?.logoURI || ""}
+                        tokenInfo={i.tokenInfo}
                         amount={i.amount}
-                        onClick={() =>
-                          !item.isPoint
-                            ? handleWithdrawToken(
-                                item.withdrawerName!,
-                                i.tokenInfo || null,
-                              )
-                            : handleWithdrawItem(i.tokenInfo || null)
+                        withdrawerName={
+                          item.isItem ? null : item.withdrawerName
+                        }
+                        onSuccess={() =>
+                          item.isItem
+                            ? refetchItemBlcData()
+                            : refetchTokenBlcData()
                         }
                       />
                     ))}
@@ -386,59 +343,6 @@ function AcHeader({
         ) : (
           <Image src="/icons/ac-plus.svg" width={24} height={24} alt="open" />
         )}
-      </div>
-    </div>
-  );
-}
-
-function TokenGetCard({
-  name,
-  logo,
-  amount,
-  onClick,
-}: {
-  name: string;
-  logo: string;
-  amount: number;
-  onClick: () => void;
-}) {
-  const mbt = useTranslations("page-MyBalance");
-
-  return (
-    <div className="flex w-[220px] flex-col items-stretch justify-between rounded-xl bg-white px-4 py-3">
-      <div className="flex flex-col">
-        <div className="text-sm leading-5 text-lightgray">
-          {mbt("lb-Token")}
-        </div>
-        <div className="flex items-center gap-x-1">
-          <Image
-            src={logo}
-            width={16}
-            height={16}
-            className="rounded-full"
-            alt="token logo"
-          />
-          <div className="text-base leading-6 text-black">{name}</div>
-        </div>
-      </div>
-
-      <div className="mt-[10px] flex items-end justify-between">
-        <div className="flex flex-col">
-          <div className="text-sm leading-5 text-lightgray">
-            {mbt("lb-Amount")}
-          </div>
-          <div className="text-base leading-6 text-black">
-            {formatNum(amount)}
-          </div>
-        </div>
-        <WithWalletConnectBtn onClick={onClick}>
-          <div
-            data-active={amount > 0}
-            className="flex h-7 w-14 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d6] hover:border-0 hover:bg-yellow data-[active=false]:pointer-events-none data-[active=false]:opacity-70"
-          >
-            {mbt("btn-Get")}
-          </div>
-        </WithWalletConnectBtn>
       </div>
     </div>
   );

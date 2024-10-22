@@ -51,7 +51,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [duringTGE, offer]);
 
   const tgeTime = useMemo(() => {
     const tge = Number(offer?.marketplace?.tge) || null;

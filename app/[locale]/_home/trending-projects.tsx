@@ -79,14 +79,6 @@ function ItemCard({
             <div className="h-[18px] text-xs leading-[18px] text-gray"></div>
           </div>
         </div>
-
-        {/* <Image
-          src="/icons/star.svg"
-          width={20}
-          height={20}
-          alt="star"
-          className="mt-[3px]"
-        /> */}
       </div>
 
       <div className="mt-3 flex-col space-y-2">

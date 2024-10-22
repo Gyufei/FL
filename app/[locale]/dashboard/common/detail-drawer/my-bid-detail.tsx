@@ -58,26 +58,9 @@ export default function MyBidDetail({
     isSuccess: isRelistSuccess,
   } = useRelist(offer.marketplace.chain);
 
-  const {
-    isLoading: isBidClosing,
-    write: bidCloseAction,
-    isSuccess: isBidCloseSuccess,
-  } = useCloseBidOffer({
-    // marketplaceStr: offer.market_place_account,
-    marketplaceStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    // isNativeToken,
-  });
-
   function handleClose() {
     if (isClosing) return;
     closeAction?.(undefined);
-  }
-
-  function handleBidClose() {
-    if (isBidClosing) return;
-    bidCloseAction?.(undefined);
   }
 
   function handleRelist() {
@@ -86,10 +69,10 @@ export default function MyBidDetail({
   }
 
   useEffect(() => {
-    if (isBidCloseSuccess || isCloseSuccess || isRelistSuccess) {
+    if (isCloseSuccess || isRelistSuccess) {
       onSuccess();
     }
-  }, [isBidCloseSuccess, isCloseSuccess, isRelistSuccess, onSuccess]);
+  }, [isCloseSuccess, isRelistSuccess, onSuccess]);
 
   return (
     <>
@@ -168,7 +151,7 @@ export default function MyBidDetail({
                   ) : (
                     <>
                       {afterTGE ? (
-                        <WithWalletConnectBtn onClick={handleBidClose}>
+                        <WithWalletConnectBtn onClick={handleClose}>
                           <button
                             disabled={isBidClosing}
                             className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"

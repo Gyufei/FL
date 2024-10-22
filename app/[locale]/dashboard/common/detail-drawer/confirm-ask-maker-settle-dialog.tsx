@@ -4,7 +4,6 @@ import { formatNum } from "@/lib/utils/number";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import ConfirmAskMakerSettleBtn from "./confirm-ask-maker-settle-btn";
 import { IOffer } from "@/lib/types/offer";
-import { useState } from "react";
 
 export default function ConfirmAskMakerSettleDialog({
   open,
@@ -17,7 +16,6 @@ export default function ConfirmAskMakerSettleDialog({
   offer: IOffer;
   onSuccess: () => void;
 }) {
-  // const ct = useTranslations("Common");
   const orderRole = "Maker";
 
   const { amount, tokenTotalPrice, offerPointInfo, afterTGEPeriod } =
@@ -25,12 +23,8 @@ export default function ConfirmAskMakerSettleDialog({
       offer: offer,
     });
 
-  // const [sliderMax] = useState(100);
-  // const [sliderValue, setSliderValue] = useState(100);
-  const [sliderValue] = useState(100);
-
   const pointAmount = !afterTGEPeriod ? offer.taken_item_amount : 0;
-  const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
+  const settleAmount = Math.floor(Number(pointAmount));
 
   function handleSuccess() {
     onSuccess();

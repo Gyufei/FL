@@ -12,7 +12,7 @@ export function useMarketInfo() {
 
   const res = useSWRImmutable<Record<string, ProjectLinks>>(
     projectInfoEndPoint,
-    fetcher,
+    (url: string) => fetcher(url, undefined, true),
   );
 
   return res;

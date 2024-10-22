@@ -1,6 +1,6 @@
 import HomeBanner from "./home-banner";
 import MakeMoney from "./make-money";
-import MarketPlace from "./trending-projects";
+import TrendingProject from "./trending-projects";
 import Faqs from "./faqs";
 import OutPerforms from "./outperforms";
 import GetStart from "./get-start";
@@ -13,7 +13,7 @@ export default function Home() {
       <MakeMoney />
       <OutPerforms />
       <GetStart />
-      <MarketPlace />
+      <TrendingProject />
       <Faqs />
       <ContactUs />
     </div>

@@ -17,23 +17,22 @@ export default function ConfirmAskMakerSettleBtn({
   settleAmount: number;
   onSuccess: () => void;
 }) {
-  const {
-    isLoading,
-    write: writeAction,
-    isSuccess,
-  } = useSettleAskMaker({
+  console.log({
     marketplaceStr,
     offerStr: orderStr,
     makerStr,
+    settleAmount,
     // isNativeToken,
   });
+  const { isLoading, write: writeAction, isSuccess } = useSettleAskMaker();
 
   function handleConfirm() {
     if (isHoldingsLoading) return;
 
-    writeAction({
-      settleAmount,
-    });
+    writeAction();
+    //   {
+    //   settleAmount,
+    // }
   }
 
   useEffect(() => {

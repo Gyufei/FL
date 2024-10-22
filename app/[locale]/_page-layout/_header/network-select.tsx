@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import {
@@ -8,14 +8,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-
-import { isProduction } from "@/lib/PathMap";
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
 import { ChainConfigs } from "@/lib/const/chain-config";
 
@@ -32,6 +24,15 @@ export function NetworkSelect() {
     currentChainInfo,
   } = useCurrentChain();
 
+  const [chainInfo, setChainInfo] = useState({
+    logo: "/icons/empty.svg",
+    name: "",
+  });
+
+  useEffect(() => {
+    setChainInfo(currentChainInfo);
+  }, [currentChainInfo]);
+
   return (
     <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
       <PopoverTrigger asChild>
@@ -40,12 +41,12 @@ export function NetworkSelect() {
             <Image
               width={24}
               height={24}
-              src={currentChainInfo.logo}
-              alt={currentChainInfo.name}
+              src={chainInfo.logo}
+              alt="chain name"
               className="z-10 mr-0 rounded-full bg-black sm:mr-2 sm:bg-white"
             ></Image>
             <span className="hidden text-base leading-6 text-black sm:inline-block">
-              {currentChainInfo.name}
+              {chainInfo.name}
             </span>
           </div>
           <div
@@ -113,86 +114,5 @@ export function NetworkSelect() {
         </div>
       </PopoverContent>
     </Popover>
-  );
-}
-
-export function MbNetworkSelect() {
-  const [popOpen, setPopOpen] = useState(false);
-
-  const { switchToSolana, switchToEth, switchToBsc, currentChainInfo } =
-    useCurrentChain();
-
-  return (
-    <Drawer open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
-      <DrawerTrigger asChild>
-        <div className="relative flex h-10  w-10 cursor-pointer items-center justify-between rounded-full border border-[#D3D4D6] bg-black px-2 sm:hidden sm:h-12 sm:w-40 sm:bg-transparent">
-          <div className="relative flex items-center justify-center">
-            <Image
-              width={24}
-              height={24}
-              src={currentChainInfo.logo}
-              alt={currentChainInfo.name}
-              className="z-10 mr-0 rounded-full bg-black sm:mr-2 sm:bg-white"
-            ></Image>
-            <span className="hidden text-base leading-6 text-black sm:inline-block">
-              {currentChainInfo.name}
-            </span>
-          </div>
-          <div className="absolute -right-6 block items-center justify-center sm:hidden">
-            <Image
-              width={20}
-              height={20}
-              src="/icons/dot-menu.svg"
-              alt="down"
-            ></Image>
-          </div>
-        </div>
-      </DrawerTrigger>
-      <DrawerContent className="p-2 pt-4">
-        <DrawerTitle className="text-center">Network switching</DrawerTitle>
-        <div
-          onClick={() => switchToSolana()}
-          data-state={isProduction ? "active" : "inactive"}
-          className="flex cursor-pointer items-center space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-[#FAFAFA]"
-        >
-          <Image
-            width={24}
-            height={24}
-            src="/icons/solana.svg"
-            alt="chain logo"
-            className="z-10 bg-white"
-          />
-          <div className="flex-1 text-xs">{ChainConfigs.solana.name}</div>
-        </div>
-        <div
-          onClick={() => switchToEth()}
-          data-state={"inactive"}
-          className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
-        >
-          <Image
-            width={24}
-            height={24}
-            src="/icons/evms.svg"
-            alt="evms"
-            className="z-10 bg-white"
-          ></Image>
-          <div className="flex-1 text-xs">{ChainConfigs.eth.name}</div>
-        </div>
-        <div
-          onClick={() => switchToBsc()}
-          data-state={"inactive"}
-          className="flex cursor-pointer items-center justify-start space-x-3 rounded-xl px-4 py-3 text-black data-[state=active]:bg-black data-[state=active]:text-yellow"
-        >
-          <Image
-            width={24}
-            height={24}
-            src="/icons/evms.svg"
-            alt="evms"
-            className="z-10 bg-white"
-          ></Image>
-          <div className="flex-1 text-xs">{ChainConfigs.bnb.name}</div>
-        </div>
-      </DrawerContent>
-    </Drawer>
   );
 }

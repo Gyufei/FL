@@ -71,7 +71,7 @@ export function OfferTypeSelect({
       <PopoverTrigger asChild>
         <div
           data-open={popOpen}
-          className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-none data-[open=true]:bg-yellow"
+          className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-yellow data-[open=true]:bg-yellow"
         >
           <Image
             src={types[0] === "sell" ? "/icons/buys.svg" : "/icons/sells.svg"}

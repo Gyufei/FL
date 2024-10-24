@@ -18,7 +18,10 @@ export default function Marketplace({ params }: { params: { name: string } }) {
 
   useEffect(() => {
     if (msgEvents.length > 0) {
-      mutate();
+      const currentMsg = msgEvents[msgEvents.length - 1];
+      if (currentMsg.market_id === marketplace?.market_place_account) {
+        mutate();
+      }
     }
   }, [msgEvents]);
 

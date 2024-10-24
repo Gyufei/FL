@@ -43,7 +43,9 @@ export function TradesTable({
         timestamp: item.trade_at * 1000,
       };
     });
-    const msgAll = msgEvents.filter((msg) => !!msg);
+    const msgAll = msgEvents.filter(
+      (msg) => !!msg && msg.market_id === marketplace?.market_place_account,
+    );
 
     const allMsg = sortBy(msgAll || [], "trade_at")
       .reverse()

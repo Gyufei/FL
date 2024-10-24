@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { IOffer } from "@/lib/types/offer";
-import { DataApiPaths } from "@/lib/PathMap";
+import { DataApiPaths, isProduction } from "@/lib/PathMap";
 import { dataApiFetcher } from "@/lib/fetcher";
 import { useMarketplaces } from "./use-marketplaces";
 
@@ -20,7 +20,7 @@ export function useMarketOffers({
     if (isMarketLoading) return [];
     const fetchParams = Object.entries({
       market_symbol: marketSymbol,
-      chain: marketChain,
+      chain: !isProduction && marketChain === "eth" ? "sepolia" : marketChain,
     })
       .filter(([_, v]) => v !== null)
       .map(([k, v]) => `${k}=${v}`)

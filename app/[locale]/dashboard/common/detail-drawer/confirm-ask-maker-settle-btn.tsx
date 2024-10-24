@@ -1,38 +1,45 @@
 import { useSettleAskMaker } from "@/lib/hooks/contract/use-settle-ask-maker";
 import ConfirmSettleBtn from "../settle/confirm-settle-btn";
 import { useEffect } from "react";
+import { ChainType } from "@/lib/types/chain";
 
 export default function ConfirmAskMakerSettleBtn({
   isHoldingsLoading,
   marketplaceStr,
   orderStr,
   makerStr,
+  chain,
+  isNativeToken,
   settleAmount,
   onSuccess,
 }: {
+  chain: ChainType;
   isHoldingsLoading: boolean;
   marketplaceStr: string;
   orderStr: string;
   makerStr: string;
   settleAmount: number;
+  isNativeToken: boolean;
   onSuccess: () => void;
 }) {
-  console.log({
+  const {
+    isLoading,
+    write: writeAction,
+    isSuccess,
+  } = useSettleAskMaker({
+    chain,
     marketplaceStr,
-    offerStr: orderStr,
     makerStr,
-    settleAmount,
-    // isNativeToken,
+    offerStr: orderStr,
+    isNativeToken,
   });
-  const { isLoading, write: writeAction, isSuccess } = useSettleAskMaker();
 
   function handleConfirm() {
     if (isHoldingsLoading) return;
 
-    writeAction();
-    //   {
-    //   settleAmount,
-    // }
+    writeAction({
+      settleAmount,
+    });
   }
 
   useEffect(() => {

@@ -1,12 +1,19 @@
-import { useEvmConfig } from "../../web3/use-evm-config";
 import { useWriteContract } from "wagmi";
 import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
+import { ChainType } from "@/lib/types/chain";
+import { ChainConfigs } from "@/lib/const/chain-config";
 
-export function useSettleAskMakerEth({ offerStr }: { offerStr: string }) {
-  const { evmConfig } = useEvmConfig();
+export function useSettleAskMakerEth({
+  chain,
+  offerStr,
+}: {
+  chain: ChainType;
+  offerStr: string;
+}) {
+  const evmConfig = ChainConfigs[chain];
   const { getGasParams } = useGasEth();
 
   const { recordTransaction } = useTransactionRecord();

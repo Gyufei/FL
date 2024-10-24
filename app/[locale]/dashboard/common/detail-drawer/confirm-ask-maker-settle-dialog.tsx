@@ -18,10 +18,15 @@ export default function ConfirmAskMakerSettleDialog({
 }) {
   const orderRole = "Maker";
 
-  const { amount, tokenTotalPrice, offerPointInfo, afterTGEPeriod } =
-    useOfferFormat({
-      offer: offer,
-    });
+  const {
+    amount,
+    tokenTotalPrice,
+    offerPointInfo,
+    afterTGEPeriod,
+    isNativeToken,
+  } = useOfferFormat({
+    offer: offer,
+  });
 
   const pointAmount = !afterTGEPeriod ? offer.taken_item_amount : 0;
   const settleAmount = Math.floor(Number(pointAmount));
@@ -83,12 +88,14 @@ export default function ConfirmAskMakerSettleDialog({
           </div>
 
           <ConfirmAskMakerSettleBtn
+            chain={offer.marketplace.chain}
             isHoldingsLoading={false}
             marketplaceStr={offer.marketplace.market_place_id}
             orderStr={offer.offer_id}
             makerStr={offer.offer_maker}
             settleAmount={settleAmount}
             onSuccess={handleSuccess}
+            isNativeToken={isNativeToken}
           />
         </div>
       </DialogContent>

@@ -1,8 +1,10 @@
+import { ChainType } from "@/lib/types/chain";
 import { useSettleAskTakerEth } from "./eth/use-settle-ask-taker-eth";
 import { useChainTx } from "./help/use-chain-tx";
 import { useSettleAskTakerSol } from "./solana/use-settle-ask-taker-sol";
 
 export function useSettleAskTaker({
+  chain,
   marketplaceStr,
   makerStr,
   holdingStr,
@@ -10,6 +12,7 @@ export function useSettleAskTaker({
   preOfferAuthorityStr,
   isNativeToken,
 }: {
+  chain: ChainType;
   marketplaceStr: string;
   makerStr: string;
   holdingStr: string;
@@ -18,6 +21,7 @@ export function useSettleAskTaker({
   isNativeToken: boolean;
 }) {
   const actionRes = useChainTx(useSettleAskTakerEth, useSettleAskTakerSol, {
+    chain,
     marketplaceStr,
     makerStr,
     holdingStr,

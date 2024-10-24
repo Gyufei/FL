@@ -24,6 +24,7 @@ export interface IMarketplace {
   token_per_item: string;
   is_fungible: boolean;
   require_collateral: boolean;
+  market_place_account: string;
 
   projectLogo: string;
   pointLogo: string;

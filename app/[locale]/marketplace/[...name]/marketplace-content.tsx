@@ -77,14 +77,6 @@ export default function MarketplaceContent({
               className="basic-[180px] h-[180px] shrink-0 grow-0"
               marketplace={marketplace}
             />
-            <div className="h-fit">
-              {marketplace && (
-                <CreateOfferBtn
-                  marketplace={marketplace}
-                  onSuccess={refreshOffers}
-                />
-              )}
-            </div>
             <LeaderBoard className="shrink grow" />
             <AdBanner className="shrink grow-0" />
           </div>

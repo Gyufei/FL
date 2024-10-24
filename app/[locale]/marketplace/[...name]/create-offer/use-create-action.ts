@@ -14,7 +14,7 @@ export function useCreateAction(
   direction: "buy" | "sell",
 ) {
   const { data: points } = useMarketPoints();
-  const { data: stableTokens } = useStableToken();
+  const { data: stableTokens } = useStableToken(marketplace.chain);
   const { checkMinPrice } = useCreateOfferMinPrice();
 
   const [token, setToken] = useState<IToken>({
@@ -46,7 +46,7 @@ export function useCreateAction(
   }, [points, marketplace]);
 
   useEffect(() => {
-    if (stableTokens) {
+    if (stableTokens && stableTokens.length > 0) {
       setToken(stableTokens[0]);
     }
   }, [stableTokens]);

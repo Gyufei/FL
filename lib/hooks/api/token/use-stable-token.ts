@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTokens } from "./use-tokens";
 import { ChainType } from "@/lib/types/chain";
 
-export function useStableToken(chain?: string) {
+export function useStableToken(chain: ChainType) {
   const { data: tokens, isLoading } = useTokens();
 
   const stableTokens = useMemo(() => {

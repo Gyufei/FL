@@ -1,13 +1,13 @@
 import useSWRImmutable from "swr/immutable";
 import type { IToken } from "../../../types/token";
-import { dataApiFetcher } from "@/lib/fetcher";
+import { apiFetcher } from "@/lib/fetcher";
 import { useEndPoint } from "../use-endpoint";
 
 export function useTokens() {
   const { tokenEndPoint } = useEndPoint();
 
   async function tFetcher() {
-    const tokens = await dataApiFetcher(tokenEndPoint, undefined, true);
+    const tokens = await apiFetcher(tokenEndPoint);
 
     const newTokens = tokens.map((t: Record<string, any>) => {
       const newT = {

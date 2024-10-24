@@ -3,7 +3,7 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { formatTimeDuration } from "@/lib/utils/time";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { formatNum } from "@/lib/utils/number";
 import { ITradeType } from "./trade-type-select";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";

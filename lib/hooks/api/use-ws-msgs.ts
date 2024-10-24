@@ -18,7 +18,6 @@ export function useWsMsgs(chain: ChainType) {
     }
 
     function onMsgEvent(value: any) {
-      console.log("🚀 ~ onMsgEvent ~ value:", value);
       setMsgEvents((previous: any[]) => [
         ...previous,
         {

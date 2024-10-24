@@ -45,14 +45,19 @@ export function TradesTable({
     });
     const msgAll = msgEvents.filter((msg) => !!msg);
 
-    const allMsg = msgAll.concat(history || []).map((item: any) => {
-      const token = tokens?.find((token) => token.address === item.token_mint);
+    const allMsg = sortBy(msgAll || [], "trade_at")
+      .reverse()
+      .concat(history || [])
+      .map((item: any) => {
+        const token = tokens?.find(
+          (token) => token.address === item.token_mint,
+        );
 
-      return {
-        ...item,
-        token: token || item.token,
-      };
-    });
+        return {
+          ...item,
+          token: token || item.token,
+        };
+      });
 
     return allMsg;
   }, [msgEvents, historyData, tokens]);
@@ -214,20 +219,5 @@ export function TradesTable({
 }
 
 function TimeDisplay({ time }: { time: number }) {
-  const [duration, setDuration] = useState("");
-
-  useEffect(() => {
-    if (time > 3600) {
-      setDuration(formatTimeDuration(time));
-      return;
-    }
-
-    const interval = setInterval(() => {
-      setDuration(formatTimeDuration(time));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [time]);
-
-  return <div>{duration}</div>;
+  return <div>{formatTimeDuration(time)}</div>;
 }

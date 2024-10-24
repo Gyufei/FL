@@ -101,7 +101,7 @@ export default function ConfirmAskTakerSettleDialog({
 
           <ConfirmAskTakerSettleBtn
             chain={holding.offer.marketplace.chain}
-            marketplaceStr={holding.offer.marketplace.market_place_id}
+            marketplaceStr={holding.offer.marketplace.market_place_account}
             holdingStr={holding.holding_id}
             makerStr={holding.offer.offer_maker}
             preOfferStr={holding.offer.offer_id}

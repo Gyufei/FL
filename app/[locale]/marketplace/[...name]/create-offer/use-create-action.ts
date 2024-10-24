@@ -39,7 +39,7 @@ export function useCreateAction(
       setPoint(
         points.find(
           (point) =>
-            point.marketplace.market_place_id === marketplace.market_place_id,
+            point.marketplace.market_place_account === marketplace.market_place_account,
         ) || null,
       );
     }

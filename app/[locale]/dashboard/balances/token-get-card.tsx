@@ -45,7 +45,7 @@ export function TokenGetCard({
   function handleWithdrawItem() {
     if (isWdItemLoading) return;
     wdItemAction({
-      marketplaceStr: (tokenInfo as any).market.market_place_id,
+      marketplaceStr: (tokenInfo as any).market.market_place_account,
       tokenAddress: tokenInfo?.address,
     });
   }

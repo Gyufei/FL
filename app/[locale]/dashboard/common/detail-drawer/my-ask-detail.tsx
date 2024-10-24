@@ -67,7 +67,7 @@ export default function MyAskDetail({
     isSuccess: isRelistSuccess,
   } = useRelist({
     chain: offer.marketplace.chain,
-    marketplaceStr: offer.marketplace.market_place_id,
+    marketplaceStr: offer.marketplace.market_place_account,
     holdingStr: holdingId,
     makerStr: offer.offer_maker,
     offerStr: offer.offer_id,

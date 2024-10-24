@@ -90,7 +90,7 @@ export default function ConfirmAskMakerSettleDialog({
           <ConfirmAskMakerSettleBtn
             chain={offer.marketplace.chain}
             isHoldingsLoading={false}
-            marketplaceStr={offer.marketplace.market_place_id}
+            marketplaceStr={offer.marketplace.market_place_account}
             orderStr={offer.offer_id}
             makerStr={offer.offer_maker}
             settleAmount={settleAmount}

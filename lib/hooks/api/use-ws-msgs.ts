@@ -3,10 +3,21 @@ import { useSocket } from "./use-socket";
 import { useEffect, useState } from "react";
 import { ChainType } from "@/lib/types/chain";
 
+export interface IMsg {
+  amount: string;
+  buyer: string;
+  item_id: string;
+  market_id: string;
+  token_amount: string;
+  token_mint: string;
+  trade_at: number;
+  value: string;
+}
+
 export function useWsMsgs(chain: ChainType) {
   const { socket } = useSocket(chain);
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [msgEvents, setMsgEvents] = useState<any[]>([]);
+  const [msgEvents, setMsgEvents] = useState<Array<IMsg>>([]);
 
   useEffect(() => {
     function onConnect() {

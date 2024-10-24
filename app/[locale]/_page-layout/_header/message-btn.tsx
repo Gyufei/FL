@@ -7,30 +7,16 @@ import Drawer from "react-modern-drawer";
 import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
-import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { IMsg, useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
+import { useTokens } from "@/lib/hooks/api/token/use-tokens";
+import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { formatNum } from "@/lib/utils/number";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
   const { msgEvents } = useWsMsgs(ChainType.ETH);
-  const msgDetail = {
-    avatar: "/img/token-placeholder.png",
-    name: "Points",
-    no: 123456,
-    user: "DkVN7RKTNjSSER5oyurf3vddQU2ZneSCYwXvpErvTCFA",
-    type: "sell",
-    num: 1,
-    txHash: "",
-    value: 644,
-    token: {
-      logoURI: "/icons/solana.svg",
-    },
-    stableToken: {
-      name: "USDC",
-    },
-  };
-  const pathname = usePathname();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -38,6 +24,8 @@ export default function MessageBtn() {
     if (msgEvents.length < 99) return msgEvents.length;
     return "99+";
   }, [msgEvents]);
+
+  const pathname = usePathname();
 
   if (pathname === "/") return null;
 
@@ -69,7 +57,7 @@ export default function MessageBtn() {
             onClose={() => setDrawerOpen(false)}
           />
           {(msgEvents || []).map((i, idx) => (
-            <MsgRow key={idx} msgDetail={msgDetail} />
+            <MsgRow key={idx} msgDetail={i} />
           ))}
         </Drawer>
       </div>
@@ -77,12 +65,28 @@ export default function MessageBtn() {
   );
 }
 
-function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
+function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
+  const { data: tokens } = useTokens(ChainType.ETH);
+  const { data: markets } = useMarketplaces();
+
+  console.log(markets, msgDetail.market_id);
+  const marketplace = markets?.find(
+    (marketplace) => marketplace.market_place_account === msgDetail.market_id,
+  );
+
+  const token = useMemo(() => {
+    if (!tokens) return null;
+    return tokens.find((i) => i.address === msgDetail.token_mint);
+  }, [tokens, msgDetail.token_mint]);
+
+  const direction =
+    Number(Number(msgDetail.value).toFixed()) % 2 === 0 ? "sell" : "buy";
+
   return (
     <div className="flex space-x-3">
       <div className="relative mt-3 h-fit">
         <Image
-          src={msgDetail.avatar}
+          src={marketplace?.projectLogo || "/icons/empty.svg"}
           width={48}
           height={48}
           alt="avatar"
@@ -90,7 +94,7 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
         />
         <div className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
           <Image
-            src={msgDetail.token.logoURI}
+            src={token?.logoURI || "/icons/empty.svg"}
             width={8.8}
             height={7.2}
             alt="avatar"
@@ -106,30 +110,32 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
         }}
       >
         <div className="flex items-start space-x-1">
-          <div className="mr-1 leading-6 text-black">{msgDetail.name}</div>
+          <div className="mr-1 leading-6 text-black">
+            {marketplace?.market_symbol}
+          </div>
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-            #{msgDetail.no}
+            #{msgDetail.item_id}
           </div>
         </div>
 
         <div className="flex items-center text-sm leading-5 text-gray">
           User
           <span className="mx-1 inline-block text-black">
-            {truncateAddr(msgDetail.user)}
+            {truncateAddr(msgDetail.buyer)}
           </span>
           just
           <span
-            data-type={msgDetail.type}
+            data-type={direction}
             className="mx-1 inline-block data-[type=buy]:text-green data-[type=sell]:text-red"
           >
-            {msgDetail.type === "sell" ? "selling" : "bought"}
+            {direction === "sell" ? "selling" : "bought"}
           </span>
           <span className="mr-1 inline-block text-black">
-            {msgDetail.num} {msgDetail.name}
+            {formatNum(msgDetail.amount)} {marketplace?.item_name}
           </span>
           for
           <span className="mx-1 inline-block text-black">
-            {msgDetail.value} {msgDetail.stableToken.name}
+            {formatNum(msgDetail.token_amount)} {token?.symbol}
           </span>
         </div>
 
@@ -138,7 +144,12 @@ function MsgRow({ msgDetail }: { msgDetail: Record<string, any> }) {
             <div>3 hours ago ·</div>
             <div
               className="flex cursor-pointer items-center"
-              onClick={() => handleGoScan(msgDetail.chain, msgDetail.txHash)}
+              onClick={() => {
+                // handleGoScan(
+                //   marketplace?.chain || ChainType.ETH,
+                //   msgDetail?.txHash,
+                // )
+              }}
             >
               Solscan
               <Image

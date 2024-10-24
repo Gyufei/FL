@@ -104,7 +104,7 @@ export default function MyBalances() {
       if (!bData) return [];
 
       const market = marketplaceData?.find(
-        (m) => m.market_place_id === bData.market_symbol,
+        (m) => m.market_symbol === bData.market_symbol,
       );
 
       const tokenInfo = {

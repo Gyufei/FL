@@ -16,7 +16,7 @@ export interface IMarketplace {
   tge: string;
   settlement_period: string;
   status: string;
-  market_place_id: string;
+  market_place_account: string;
   market_symbol: string;
   market_catagory: string;
   item_name: string;

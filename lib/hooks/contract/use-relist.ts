@@ -18,7 +18,7 @@ export function useRelist({
   holdingStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(useRelistEth, useRelistSol, {
+  const chainActionRes = useChainTx(chain, useRelistEth, useRelistSol, {
     chain,
     marketplaceStr,
     makerStr,

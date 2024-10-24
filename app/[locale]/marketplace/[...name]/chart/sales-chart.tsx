@@ -38,7 +38,7 @@ export default function SalesChart({
 
   const marketplaceId = marketplace?.market_place_account;
 
-  const { data: salesData } = useSalesVolume(marketplaceId);
+  const { data: salesData } = useSalesVolume(marketplace.chain, marketplaceId);
 
   const now = new Date().getTime();
   const oneHourDuration = 3600 * 1000;

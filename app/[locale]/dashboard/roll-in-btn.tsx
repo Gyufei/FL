@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useSetAtom } from "jotai";
+import { ChainType } from "@/lib/types/chain";
 
 export default function RollInBtn() {
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
@@ -18,7 +19,7 @@ export default function RollInBtn() {
     isSuccess,
     write: rollinAction,
     getRollingData,
-  } = useRollin();
+  } = useRollin(ChainType.SOLANA);
 
   const [isSign, setIsSign] = useState(false);
 
@@ -57,7 +58,7 @@ export default function RollInBtn() {
   }, [isSuccess]);
 
   return (
-    <WithWalletConnectBtn  onClick={handleSign}>
+    <WithWalletConnectBtn onClick={handleSign}>
       <div className="flex h-7 w-[74px] cursor-pointer items-center justify-center rounded-[52px] border border-[#d3d4d6] text-sm leading-5 text-[#d3d4d6] hover:border-[#FFA95B] hover:text-[#FFA95B]">
         {T("btn-Rollin")}
       </div>

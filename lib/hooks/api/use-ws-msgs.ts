@@ -1,27 +1,12 @@
 import { isProduction } from "@/lib/PathMap";
 import { useSocket } from "./use-socket";
 import { useEffect, useState } from "react";
+import { ChainType } from "@/lib/types/chain";
 
-export function useWsMsgs() {
-  const { socket } = useSocket();
+export function useWsMsgs(chain: ChainType) {
+  const { socket } = useSocket(chain);
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [msgEvents, setMsgEvents] = useState<any[]>([]);
-
-  // 模拟1分钟发一次
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setMsgEvents((previous: any[]) => [
-  //       ...previous,
-  //       {
-  //         timestamp: Date.now(),
-  //       },
-  //     ]);
-  //   }, 60000);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
 
   useEffect(() => {
     function onConnect() {

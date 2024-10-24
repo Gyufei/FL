@@ -20,6 +20,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useTranslations } from "next-intl";
 import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
+import { ChainType } from "@/lib/types/chain";
 
 export default function MarketplaceCard({
   marketplace,
@@ -33,7 +34,9 @@ export default function MarketplaceCard({
   const [isStar, setIsStar] = useState(false);
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
-  const { data: marketInfos } = useMarketInfo();
+  const { data: marketInfos } = useMarketInfo(
+    marketplace?.chain || ChainType.ETH,
+  );
 
   const projectInfo = useMemo(() => {
     if (!marketplace || !marketInfos) return;

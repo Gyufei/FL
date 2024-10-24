@@ -4,14 +4,17 @@ import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { ChainType } from "@/lib/types/chain";
 
 export function useRelistSol({
+  chain,
   marketplaceStr,
   makerStr,
   offerStr,
   holdingStr,
   isNativeToken,
 }: {
+  chain: ChainType;
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
@@ -20,7 +23,7 @@ export function useRelistSol({
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
   const { getAccounts } = useAccountsSol(program.programId);
 
   const writeAction = async () => {

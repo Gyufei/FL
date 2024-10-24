@@ -20,15 +20,20 @@ export function useSettleAskTaker({
   preOfferAuthorityStr: string;
   isNativeToken: boolean;
 }) {
-  const actionRes = useChainTx(useSettleAskTakerEth, useSettleAskTakerSol, {
+  const actionRes = useChainTx(
     chain,
-    marketplaceStr,
-    makerStr,
-    holdingStr,
-    preOfferStr,
-    preOfferAuthorityStr,
-    isNativeToken,
-  });
+    useSettleAskTakerEth,
+    useSettleAskTakerSol,
+    {
+      chain,
+      marketplaceStr,
+      makerStr,
+      holdingStr,
+      preOfferStr,
+      preOfferAuthorityStr,
+      isNativeToken,
+    },
+  );
 
   return actionRes;
 }

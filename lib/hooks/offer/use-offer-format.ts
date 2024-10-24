@@ -9,7 +9,7 @@ import { useTokens } from "../api/token/use-tokens";
 import { checkIsNativeToken } from "@/lib/utils/web3";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
-  const { data: tokens } = useTokens();
+  const { data: tokens } = useTokens(offer.marketplace.chain);
 
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 

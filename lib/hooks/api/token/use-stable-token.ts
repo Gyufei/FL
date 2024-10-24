@@ -3,7 +3,7 @@ import { useTokens } from "./use-tokens";
 import { ChainType } from "@/lib/types/chain";
 
 export function useStableToken(chain: ChainType) {
-  const { data: tokens, isLoading } = useTokens();
+  const { data: tokens, isLoading } = useTokens(chain);
 
   const stableTokens = useMemo(() => {
     const stableTokenList =

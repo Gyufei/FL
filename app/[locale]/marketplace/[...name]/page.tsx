@@ -4,12 +4,17 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import MarketplaceContent from "./marketplace-content";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useEffect } from "react";
+import { ChainType } from "@/lib/types/chain";
 
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
-
   const { data: markets, mutate } = useMarketplaces();
-  const { msgEvents } = useWsMsgs();
+
+  const marketplace = markets?.find(
+    (marketplace) => marketplace.market_symbol === marketplaceName,
+  );
+
+  const { msgEvents } = useWsMsgs(marketplace?.chain || ChainType.ETH);
 
   useEffect(() => {
     console.log("msgEvents", msgEvents);
@@ -17,10 +22,6 @@ export default function Marketplace({ params }: { params: { name: string } }) {
       mutate();
     }
   }, [msgEvents]);
-
-  const marketplace = markets?.find(
-    (marketplace) => marketplace.market_symbol === marketplaceName,
-  );
 
   if (!markets || !marketplaceName) return null;
 

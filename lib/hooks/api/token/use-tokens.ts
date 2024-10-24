@@ -2,12 +2,15 @@ import useSWRImmutable from "swr/immutable";
 import type { IToken } from "../../../types/token";
 import { apiFetcher } from "@/lib/fetcher";
 import { useEndPoint } from "../use-endpoint";
+import { ChainType } from "@/lib/types/chain";
 
-export function useTokens() {
-  const { tokenEndPoint } = useEndPoint();
+export function useTokens(chain: ChainType) {
+  const { cdnEndPoint } = useEndPoint();
 
   async function tFetcher() {
-    const tokens = await apiFetcher(tokenEndPoint);
+    const tokens = await apiFetcher(
+      `${cdnEndPoint}/${chain}/tokenlist/${chain}.json`,
+    );
 
     const newTokens = tokens.map((t: Record<string, any>) => {
       const newT = {
@@ -35,7 +38,7 @@ export function useTokens() {
 
   const { data, isLoading, error } = useSWRImmutable<{
     tokens: Array<IToken>;
-  }>(tokenEndPoint, tFetcher);
+  }>(chain ? cdnEndPoint : null, tFetcher);
 
   return {
     data: data?.tokens,

@@ -5,13 +5,16 @@ import { BN } from "bn.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { ChainType } from "@/lib/types/chain";
 
 export function useSettleAskMakerSol({
+  chain,
   marketplaceStr,
   makerStr,
   offerStr,
   isNativeToken,
 }: {
+  chain: ChainType;
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
@@ -19,7 +22,7 @@ export function useSettleAskMakerSol({
 }) {
   const { program } = useTadleProgram();
   const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
   const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
     program.programId,
   );

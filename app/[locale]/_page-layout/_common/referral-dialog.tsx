@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "@/app/navigation";
 import { useReferralView } from "@/lib/hooks/api/use-referral";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { ChainType } from "@/lib/types/chain";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ReferralDialog() {
@@ -64,7 +65,10 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data: codeData } = useReferralCodeData({ code: referralCode });
+  const { data: codeData } = useReferralCodeData({
+    chain: ChainType.ETH,
+    code: referralCode,
+  });
 
   const referrerStr = useMemo(() => {
     if (!codeData) return "";
@@ -85,6 +89,7 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
     isSuccess,
     write: writeAction,
   } = useUpdateReferral({
+    chain: ChainType.ETH,
     referrerStr,
     referralCode,
   });

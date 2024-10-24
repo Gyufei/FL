@@ -4,6 +4,7 @@ import useSWRMutation from "swr/mutation";
 import { useEndPoint } from "./use-endpoint";
 import { ApiPaths, DataApiPaths } from "@/lib/PathMap";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
 
 interface IAccountInfo {
   uid: number;
@@ -27,7 +28,7 @@ export function useAccountStats() {
   return res;
 }
 
-export function useUserNameChange() {
+export function useUserNameChange(chain: ChainType) {
   const { apiEndPoint } = useEndPoint();
 
   const postApi = async (
@@ -43,12 +44,15 @@ export function useUserNameChange() {
   ) => {
     if (!arg.uuid || !arg.user_name) return null;
 
-    const res = await apiFetcher(`${apiEndPoint}${ApiPaths.userName}`, {
-      method: "POST",
-      body: JSON.stringify({
-        ...arg,
-      }),
-    });
+    const res = await apiFetcher(
+      `${apiEndPoint}/${chain}${ApiPaths.userName}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ...arg,
+        }),
+      },
+    );
 
     return res;
   };

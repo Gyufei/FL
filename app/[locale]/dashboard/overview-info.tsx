@@ -14,6 +14,7 @@ import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
 import { useTranslations } from "next-intl";
 import ReferralLink from "./referral-link";
 import RollInBtn from "./roll-in-btn";
+import { ChainType } from "@/lib/types/chain";
 
 export default function OverviewInfo() {
   const T = useTranslations("cd-AccountOverview");
@@ -25,8 +26,9 @@ export default function OverviewInfo() {
 
   const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats();
 
-  const { trigger: updateUserNameAction, data: updateRes } =
-    useUserNameChange();
+  const { trigger: updateUserNameAction, data: updateRes } = useUserNameChange(
+    ChainType.ETH,
+  );
 
   const [nameInputValue, setNameInputValue] = useState("");
   const [showNameInput, setShowNameInput] = useState(false);

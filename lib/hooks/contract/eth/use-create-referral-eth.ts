@@ -5,12 +5,13 @@ import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainType } from "@/lib/types/chain";
 
-export function useCreateReferralEth() {
+export function useCreateReferralEth({ chain }: { chain: ChainType }) {
   const evmConfig = ChainConfigs["eth"];
   const { getGasParams } = useGasEth();
 
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async (args?: {

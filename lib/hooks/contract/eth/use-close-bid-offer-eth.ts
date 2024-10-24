@@ -23,7 +23,7 @@ export function useCloseBidOfferEth({
 
   const { address } = useChainWallet();
 
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async () => {

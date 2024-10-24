@@ -13,6 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import { NumericalInput } from "@/components/share/numerical-input";
 import { useReferralRateChange } from "@/lib/hooks/api/use-referral";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
+import { ChainType } from "@/lib/types/chain";
 
 export function ReferralDrawer({
   referral,
@@ -27,7 +28,7 @@ export function ReferralDrawer({
 }) {
   const rt = useTranslations("page-Referral");
 
-  const { data: extraRateData } = useReferralExtraRate();
+  const { data: extraRateData } = useReferralExtraRate(ChainType.ETH);
   const extraRate = useMemo(
     () => (extraRateData?.data || 0) / 10 ** 4,
     [extraRateData],

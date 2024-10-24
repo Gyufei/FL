@@ -17,6 +17,7 @@ export function useSettleAskMaker({
   isNativeToken: boolean;
 }) {
   const chainActionRes = useChainTx(
+    chain,
     useSettleAskMakerEth,
     useSettleAskMakerSol,
     {

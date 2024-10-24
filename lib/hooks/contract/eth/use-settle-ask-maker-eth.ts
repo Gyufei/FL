@@ -16,7 +16,7 @@ export function useSettleAskMakerEth({
   const evmConfig = ChainConfigs[chain];
   const { getGasParams } = useGasEth();
 
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async ({ settleAmount }: { settleAmount: number }) => {

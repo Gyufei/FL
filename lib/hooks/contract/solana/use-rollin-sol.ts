@@ -4,13 +4,14 @@ import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { ChainType } from "@/lib/types/chain";
 
-export function useRollinSol() {
+export function useRollinSol({ chain }: { chain: ChainType }) {
   const { program } = useTadleProgram();
   const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
 
   const getRollingData = async () => {
     const { authority } = await getAccounts();

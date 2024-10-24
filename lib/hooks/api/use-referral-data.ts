@@ -4,6 +4,7 @@ import { AccessTokenAtom } from "@/lib/states/user";
 import useSWR from "swr";
 import { ApiPaths } from "@/lib/PathMap";
 import { apiFetcher } from "@/lib/fetcher";
+import { ChainType } from "@/lib/types/chain";
 
 export interface IReferralItem {
   id: string;
@@ -21,7 +22,7 @@ export interface IReferralItem {
   unique_views: string;
 }
 
-export function useReferralData() {
+export function useReferralData(chain: ChainType) {
   const { apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
@@ -29,7 +30,7 @@ export function useReferralData() {
     if (!token) return null;
 
     const res = await apiFetcher(
-      `${apiEndPoint}${ApiPaths.referral.data}?access_token=${token}`,
+      `${apiEndPoint}/${chain}${ApiPaths.referral.data}?access_token=${token}`,
     );
 
     const parsedRes = res.map((item: any) => {
@@ -50,13 +51,13 @@ export function useReferralData() {
   return res;
 }
 
-export function useReferralReferer() {
+export function useReferralReferer(chain: ChainType) {
   const { apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const res = useSWR<string | any | null>(
     token
-      ? `${apiEndPoint}${ApiPaths.referral.referer}?access_token=${token}`
+      ? `${apiEndPoint}/${chain}${ApiPaths.referral.referer}?access_token=${token}`
       : null,
     apiFetcher,
   );
@@ -71,7 +72,13 @@ export function useReferralReferer() {
   return res;
 }
 
-export function useReferralCodeData({ code }: { code: string }) {
+export function useReferralCodeData({
+  chain,
+  code,
+}: {
+  chain: ChainType;
+  code: string;
+}) {
   const { apiEndPoint } = useEndPoint();
 
   const res = useSWR<{
@@ -80,7 +87,7 @@ export function useReferralCodeData({ code }: { code: string }) {
     referral_rate: string;
   } | null>(
     code
-      ? `${apiEndPoint}${ApiPaths.referral.codeData}?referral_code=${code}`
+      ? `${apiEndPoint}/${chain}${ApiPaths.referral.codeData}?referral_code=${code}`
       : null,
     apiFetcher,
   );
@@ -88,13 +95,13 @@ export function useReferralCodeData({ code }: { code: string }) {
   return res;
 }
 
-export function useReferralExtraRate() {
+export function useReferralExtraRate(chain: ChainType) {
   const { apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const res = useSWR(
     token
-      ? `${apiEndPoint}${ApiPaths.referral.extraRate}?access_token=${token}`
+      ? `${apiEndPoint}/${chain}${ApiPaths.referral.extraRate}?access_token=${token}`
       : null,
     apiFetcher,
   );

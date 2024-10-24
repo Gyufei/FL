@@ -6,17 +6,20 @@ import { ReferralTable } from "./referral-table";
 import { useReferralData } from "@/lib/hooks/api/use-referral-data";
 import { useEffect } from "react";
 import { useCreateReferral } from "@/lib/hooks/contract/use-create-referral";
+import { ChainType } from "@/lib/types/chain";
 
 export default function Referral() {
   const rt = useTranslations("page-Referral");
 
-  const { data: referralData, mutate: refetch } = useReferralData();
+  const { data: referralData, mutate: refetch } = useReferralData(
+    ChainType.ETH,
+  );
 
   const {
     write: createAction,
     isLoading: createLoading,
     isSuccess,
-  } = useCreateReferral();
+  } = useCreateReferral(ChainType.ETH);
 
   useEffect(() => {
     if (isSuccess) {
@@ -44,7 +47,7 @@ export default function Referral() {
 
       <div className="relative mt-5 flex flex-1 flex-col justify-start border-t border-[#eee]">
         <ReferralInfo referralData={referralData || []} />
-        <div className="mt-5 mb-2 flex items-center space-x-2">
+        <div className="mb-2 mt-5 flex items-center space-x-2">
           <div className="text-base leading-6 text-black">
             {rt("cap-ReferralLink")}
           </div>

@@ -123,7 +123,7 @@ export function PointTokenSelectDisplay({
                 }}
                 className="mt-[2px] w-[150px] overflow-hidden text-ellipsis whitespace-nowrap text-[12px] leading-[18px] text-gray"
               >
-                {t.marketName}
+                {t.marketplace.market_name}
               </div>
             </div>
           </div>

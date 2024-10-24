@@ -9,10 +9,11 @@ import DrawerTitle from "@/components/share/drawer-title";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useTranslations } from "next-intl";
+import { ChainType } from "@/lib/types/chain";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
-  const { msgEvents } = useWsMsgs();
+  const { msgEvents } = useWsMsgs(ChainType.ETH);
   const msgDetail = {
     avatar: "/img/token-placeholder.png",
     name: "Points",

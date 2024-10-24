@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { useCurrentChain } from "../../web3/use-current-chain";
+import { ChainType } from "@/lib/types/chain";
+import { isEvmChain } from "@/lib/utils/web3";
 
 interface BaseHookResult {
   isLoading: boolean;
@@ -12,11 +13,13 @@ interface BaseHookResult {
 }
 
 export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
+  chian: ChainType,
   hookEth: (args: T) => K,
   hookSolana: (args: T) => K,
   args: T,
 ): BaseHookResult {
-  const { isEvm, isSolana } = useCurrentChain();
+  const isEvm = isEvmChain(chian);
+  const isSolana = chian === ChainType.SOLANA;
 
   const actionResEvm = hookEth(args);
   const actionResSol = hookSolana(args);

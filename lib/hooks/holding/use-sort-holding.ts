@@ -20,15 +20,18 @@ export function useSortHolding(holdings: Array<IHolding>) {
 
     let sortArr = holdings;
     if (sortField === "Collateral") {
-      const collateralFunc = (order: IHolding) => {
-        return order.item_amount;
+      const collateralFunc = (hd: IHolding) => {
+        const amount = hd.entries.reduce((acc, entry) => {
+          return acc + entry.item_amount;
+        }, 0);
+        return amount;
       };
       sortArr = sortBy<any>(holdings, [collateralFunc]);
     }
 
     if (sortField === "Price") {
-      const priceFunc = (order: IHolding) => {
-        return order.price;
+      const priceFunc = (hd: IHolding) => {
+        return hd.offer.price;
       };
       sortArr = sortBy<any>(holdings, [priceFunc]);
     }

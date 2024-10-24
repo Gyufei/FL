@@ -3,7 +3,7 @@ import { useEndPoint } from "./use-endpoint";
 import { apiFetcher } from "@/lib/fetcher";
 import { ChainType } from "@/lib/types/chain";
 
-export function useTransactionRecord() {
+export function useTransactionRecord(chain: ChainType) {
   const { apiEndPoint } = useEndPoint();
 
   async function recordTransaction({
@@ -18,7 +18,7 @@ export function useTransactionRecord() {
       transaction_note: note,
     };
 
-    await apiFetcher(`${apiEndPoint}${ApiPaths.addTransaction}`, {
+    await apiFetcher(`${apiEndPoint}/${chain}${ApiPaths.addTransaction}`, {
       method: "post",
       body: JSON.stringify(addParams),
     });

@@ -18,7 +18,7 @@ export function useRelistEth({
   const evmConfig = ChainConfigs[chain];
   const { getGasParams } = useGasEth();
 
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
   const { writeContractAsync } = useWriteContract();
 
   const txAction = async () => {

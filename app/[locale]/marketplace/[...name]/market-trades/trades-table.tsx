@@ -13,6 +13,7 @@ import { range, sortBy } from "lodash";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
+import { ChainType } from "@/lib/types/chain";
 
 export function TradesTable({
   type,
@@ -25,13 +26,14 @@ export function TradesTable({
 }) {
   const t = useTranslations("tb-MarketTrades");
   const { data: historyData, isLoading: isHistoryLoading } = useMarketTrades(
-    marketplace?.market_place_account,
+    marketplace?.chain || ChainType.ETH,
+    marketplace?.market_place_account || "",
   );
 
-  const { data: tokens } = useTokens();
+  const { data: tokens } = useTokens(marketplace?.chain || ChainType.ETH);
   const isLoadingFlag = !marketplace || isLoading || isHistoryLoading;
 
-  const { msgEvents } = useWsMsgs();
+  const { msgEvents } = useWsMsgs(marketplace?.chain || ChainType.ETH);
 
   const tradeMsgs = useMemo<any[]>(() => {
     const sortHistory = sortBy(historyData || [], "trade_at").reverse();

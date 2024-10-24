@@ -4,11 +4,14 @@ import { PublicKey } from "@solana/web3.js";
 import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { ChainType } from "@/lib/types/chain";
 
 export function useUpdateReferralSol({
+  chain,
   referrerStr,
   referralCode,
 }: {
+  chain: ChainType;
   referrerStr: string;
   referralCode: string;
 }) {
@@ -16,7 +19,7 @@ export function useUpdateReferralSol({
   const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
 
   const writeAction = async () => {
     const { authority, systemProgram, systemConfig } = await getAccounts();

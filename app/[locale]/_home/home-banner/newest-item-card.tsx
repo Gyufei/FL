@@ -5,12 +5,13 @@ import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { formatNum } from "@/lib/utils/number";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { ChainType } from "@/lib/types/chain";
 
 export default function NewestItemCard() {
   const t = useTranslations("Home");
   const [prevMsg, setPrevMsg] = useState<any>(null);
   const [nowMsg, setNowMsg] = useState<any>(null);
-  const { msgEvents } = useWsMsgs();
+  const { msgEvents } = useWsMsgs(ChainType.ETH);
 
   useEffect(() => {
     const msgAll = msgEvents.filter((msg) => !!msg);

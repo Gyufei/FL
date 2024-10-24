@@ -1,18 +1,19 @@
 import useSWRImmutable from "swr/immutable";
-import { dataApiFetcher } from "@/lib/fetcher";
+import { apiFetcher } from "@/lib/fetcher";
 import { useEndPoint } from "./use-endpoint";
+import { ChainType } from "@/lib/types/chain";
 
 interface ProjectLinks {
   twitter: string;
   discord: string;
 }
 
-export function useMarketInfo() {
-  const { projectInfoEndPoint } = useEndPoint();
+export function useMarketInfo(chain: ChainType) {
+  const { cdnEndPoint } = useEndPoint();
 
   const res = useSWRImmutable<Record<string, ProjectLinks>>(
-    projectInfoEndPoint,
-    (url: string) => dataApiFetcher(url, undefined, true),
+    chain ? `${cdnEndPoint}/${chain}/project-info.json` : null,
+    apiFetcher,
   );
 
   return res;

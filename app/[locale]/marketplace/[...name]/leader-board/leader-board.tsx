@@ -33,9 +33,11 @@ export default function LeaderBoard({
     timeRange,
   );
   const { data: makerOrdersData, isLoading: makerOrdersLoading } =
-    useMakerOrders(timeRange);
-  const { data: tradingVolData, isLoading: tradingVolLoading } =
-    useTradingVol(timeRange);
+    useMakerOrders(chain, timeRange);
+  const { data: tradingVolData, isLoading: tradingVolLoading } = useTradingVol(
+    chain,
+    timeRange,
+  );
 
   const isLoadingFlag =
     taxIncomeLoading || makerOrdersLoading || tradingVolLoading;

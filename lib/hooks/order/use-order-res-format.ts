@@ -1,6 +1,13 @@
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
+import { ChainType } from "@/lib/types/chain";
 
-export function useOfferResFormat({ marketSymbol, marketChain }) {
+export function useOrderResFormat({
+  marketSymbol,
+  marketChain,
+}: {
+  marketSymbol: string;
+  marketChain: ChainType;
+}) {
   const { data: offers, isLoading } = useMarketOffers({
     marketSymbol,
     marketChain,

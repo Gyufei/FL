@@ -26,6 +26,7 @@ import {
   useUserItemBalance,
 } from "@/lib/hooks/api/use-user-item-balance";
 import { TokenGetCard } from "./token-get-card";
+import { ChainType } from "@/lib/types/chain";
 
 const TokenListMap: Record<string, IToken> = {
   BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
@@ -63,7 +64,7 @@ export default function MyBalances() {
 
   const { address: wallet } = useChainWallet();
 
-  const { data: tokens } = useTokens();
+  const { data: tokens } = useTokens(ChainType.ETH);
 
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);
@@ -109,7 +110,7 @@ export default function MyBalances() {
       const tokenInfo = {
         symbol: market?.item_name,
         logoURI: market?.pointLogo,
-        marketplaceId: market?.market_place_id,
+        market: market,
       } as unknown as IToken;
 
       const amount = NP.divide(

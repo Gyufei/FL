@@ -6,13 +6,14 @@ import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
 import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
 import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 import { generateRandomCode } from "@/lib/utils/common";
+import { ChainType } from "@/lib/types/chain";
 
-export function useCreateReferralSol() {
+export function useCreateReferralSol({ chain }: { chain: ChainType }) {
   const { program } = useTadleProgram();
   const { getAccounts } = useAccountsSol(program.programId);
 
   const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord();
+  const { recordTransaction } = useTransactionRecord(chain);
 
   const writeAction = async (args?: {
     firstAmount?: number;

@@ -72,7 +72,6 @@
   },
   "devDependencies": {
     "@sentry/nextjs": "^7.119.2",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@types/bn.js": "^5.1.6",
     "@types/dom-to-image": "^2.6.7",
     "@types/lodash": "^4.17.10",

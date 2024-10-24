@@ -16,13 +16,18 @@ export function useCloseBidOffer({
   offerStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(useCloseBidOfferEth, useCloseBidOfferSol, {
+  const chainActionRes = useChainTx(
     chain,
-    marketplaceStr,
-    makerStr,
-    offerStr,
-    isNativeToken,
-  });
+    useCloseBidOfferEth,
+    useCloseBidOfferSol,
+    {
+      chain,
+      marketplaceStr,
+      makerStr,
+      offerStr,
+      isNativeToken,
+    },
+  );
 
   return chainActionRes;
 }

@@ -27,7 +27,7 @@ export function useApprove(
   const CT = useTranslations("Common");
 
   const { address } = useAccount();
-  const { data: tokens } = useTokens();
+  const { data: tokens } = useTokens(chain);
 
   const [allowance, setAllowance] = useState<number | null>(null);
   const [isAllowanceLoading, setIsAllowanceLoading] = useState(false);

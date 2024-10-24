@@ -4,8 +4,8 @@ import Image from "next/image";
 
 import { formatNum } from "@/lib/utils/number";
 import { useTranslations } from "next-intl";
-import { useWithdrawToken } from "@/lib/hooks/contract/use-with-draw-token";
-import { useWithdrawItem } from "@/lib/hooks/contract/use-with-draw-item";
+import { useWithdrawToken } from "@/lib/hooks/contract/use-withdraw-token";
+import { useWithdrawItem } from "@/lib/hooks/contract/use-withdraw-item";
 import { IToken } from "@/lib/types/token";
 import { useEffect } from "react";
 
@@ -26,30 +26,28 @@ export function TokenGetCard({
     isLoading: isWdTokenLoading,
     write: wdTokenAction,
     isSuccess: isWdTokenSuccess,
-  } = useWithdrawToken();
+  } = useWithdrawToken((tokenInfo as any)?.market.chain);
 
   const {
     isLoading: isWdItemLoading,
     write: wdItemAction,
     isSuccess: isWdItemSuccess,
-  } = useWithdrawItem();
+  } = useWithdrawItem((tokenInfo as any)?.market.chain);
 
   function handleWithdrawToken() {
     if (isWdTokenLoading) return;
-    wdTokenAction();
-    //   {
-    //   tokenAddress: tokenInfo?.address,
-    //   withdrawerName,
-    // }
+    wdTokenAction({
+      token_symbol: tokenInfo?.symbol,
+      token_balance_type: withdrawerName,
+    });
   }
 
   function handleWithdrawItem() {
     if (isWdItemLoading) return;
-    wdItemAction();
-    //   {
-    //   marketplaceStr: (tokenInfo as any).marketplaceId,
-    //   tokenAddress: tokenInfo?.address,
-    // }
+    wdItemAction({
+      marketplaceStr: (tokenInfo as any).market.market_place_id,
+      tokenAddress: tokenInfo?.address,
+    });
   }
 
   useEffect(() => {

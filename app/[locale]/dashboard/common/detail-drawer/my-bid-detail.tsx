@@ -9,7 +9,6 @@ import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arro
 import { WithTip } from "@/components/share/with-tip";
 
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 
@@ -19,11 +18,14 @@ import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-t
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";
 import { ChainConfigs } from "@/lib/const/chain-config";
+import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 
 export default function MyBidDetail({
+  holdingId,
   offer,
   onSuccess,
 }: {
+  holdingId: string;
   offer: IOffer;
   onSuccess: () => void;
 }) {
@@ -42,6 +44,7 @@ export default function MyBidDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
+    isNativeToken,
   } = useOfferFormat({
     offer: offer,
   });
@@ -53,10 +56,34 @@ export default function MyBidDetail({
   } = useCloseOffer(offer.marketplace.chain);
 
   const {
+    isLoading: isBidClosing,
+    write: bidCloseAction,
+    isSuccess: isBidCloseSuccess,
+  } = useCloseBidOffer({
+    chain: offer.marketplace.chain,
+    marketplaceStr: offer.marketplace.market_place_id,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    isNativeToken,
+  });
+
+  const {
     isLoading: isRelisting,
     write: relistAction,
     isSuccess: isRelistSuccess,
-  } = useRelist(offer.marketplace.chain);
+  } = useRelist({
+    chain: offer.marketplace.chain,
+    marketplaceStr: offer.marketplace.market_place_id,
+    holdingStr: holdingId,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    isNativeToken,
+  });
+
+  function handleBidClose() {
+    if (isBidClosing) return;
+    bidCloseAction?.(undefined);
+  }
 
   function handleClose() {
     if (isClosing) return;
@@ -69,10 +96,10 @@ export default function MyBidDetail({
   }
 
   useEffect(() => {
-    if (isCloseSuccess || isRelistSuccess) {
+    if (isCloseSuccess || isRelistSuccess || isBidCloseSuccess) {
       onSuccess();
     }
-  }, [isCloseSuccess, isRelistSuccess, onSuccess]);
+  }, [isCloseSuccess, isRelistSuccess, isBidCloseSuccess, onSuccess]);
 
   return (
     <>
@@ -151,7 +178,7 @@ export default function MyBidDetail({
                   ) : (
                     <>
                       {afterTGE ? (
-                        <WithWalletConnectBtn onClick={handleClose}>
+                        <WithWalletConnectBtn onClick={handleBidClose}>
                           <button
                             disabled={isBidClosing}
                             className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"

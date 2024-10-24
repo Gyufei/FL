@@ -4,7 +4,14 @@ export const isPreview = process.env.NEXT_PUBLIC_IS_PREVIEW === "1";
 export const isProduction = process.env.NODE_ENV === "production" && !isPreview;
 // export const isProduction = true;
 
-export function WithHost(path: string) {
+export function WithApiHost(path: string) {
+  const prodHost = `https://api.tadle.com`;
+  const devHost = `https://preview-api.tadle.com`;
+  const host = isProduction ? prodHost : devHost;
+  return `${host}${path}`;
+}
+
+export function WithDataApiHost(path: string) {
   const prodHost = `https://api.tadle.com`;
   const devHost = `https://preview-apis.tadle.com`;
   const host = isProduction ? prodHost : devHost;
@@ -35,7 +42,7 @@ export function WithWss(path: string) {
   return wss;
 }
 
-export const Paths = {
+export const DataApiPaths = {
   markets: "/markets",
   offers: "/offers",
   entry: "/entry",
@@ -46,14 +53,17 @@ export const Paths = {
   userTokenBalance: "/account/token_balances",
   userItemBalance: "/account/item_balances",
   accountStats: "/account/stats",
+};
 
+export const ApiPaths = {
   makerOrders: "/user/maker_orders",
   taxIncome: "/user/tax_income",
   tradingVol: "/user/trade_vol",
-
   userName: "/user/user_name",
   tokenPrice: "/token/info",
   addTransaction: "/transaction/add",
+  marketTrades: "/market_place/maker_trades_history",
+  salesVolumeHistory: "/market_place/sales_volume_history",
 
   referral: {
     referer: "/referral/referer",

@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
+import { DataApiPaths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
 
 export interface ITokenBalance {
@@ -18,10 +18,10 @@ export interface ITokenBalance {
 }
 
 export function useUserTokenBalance(wallet: string) {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
   const res = useSWR<Array<ITokenBalance>>(
-    wallet ? `${apiEndPoint}${Paths.userTokenBalance}/${wallet}` : null,
+    wallet ? `${apiEndPoint}${DataApiPaths.userTokenBalance}/${wallet}` : null,
     fetcher,
   );
 

@@ -1,12 +1,12 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
+import { DataApiPaths } from "@/lib/PathMap";
 import { IEntry } from "@/lib/types/entry";
 
 export function useEntryById(entryId: number) {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
-  const res = useSWR<IEntry>(`${apiEndPoint}${Paths.entry}/${entryId}`);
+  const res = useSWR<IEntry>(`${apiEndPoint}${DataApiPaths.entry}/${entryId}`);
 
   return res;
 }

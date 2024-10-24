@@ -15,7 +15,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { formatNum } from "@/lib/utils/number";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { usePointOfCreate } from "./use-point-of-create";
+import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
 
 export function BuyContent({
@@ -44,7 +44,7 @@ export function BuyContent({
     isCreating,
     handleCreate,
     isCreateSuccess,
-  } = usePointOfCreate(marketplace, "buy");
+  } = useCreateAction(marketplace, "buy");
 
   const {
     collateralRate,

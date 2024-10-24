@@ -9,7 +9,7 @@ import { ChainType } from "@/lib/types/chain";
 
 export function useCreateOffer(marketSymbol: string, chain: ChainType) {
   const { recordTransaction } = useTransactionRecord();
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
   const { address } = useChainWallet();

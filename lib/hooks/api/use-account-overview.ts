@@ -2,7 +2,7 @@ import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import useSWRMutation from "swr/mutation";
 import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
+import { ApiPaths, DataApiPaths } from "@/lib/PathMap";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 interface IAccountInfo {
@@ -16,11 +16,11 @@ interface IAccountInfo {
 }
 
 export function useAccountStats() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const { address: wallet } = useChainWallet();
 
   const res = useSWR<IAccountInfo>(
-    wallet ? `${apiEndPoint}${Paths.accountStats}/${wallet}` : null,
+    wallet ? `${apiEndPoint}${DataApiPaths.accountStats}/${wallet}` : null,
     fetcher,
   );
 
@@ -43,7 +43,7 @@ export function useUserNameChange() {
   ) => {
     if (!arg.uuid || !arg.user_name) return null;
 
-    const res = await fetcher(`${apiEndPoint}${Paths.userName}`, {
+    const res = await fetcher(`${apiEndPoint}${ApiPaths.userName}`, {
       method: "POST",
       body: JSON.stringify({
         ...arg,

@@ -6,6 +6,7 @@ import { formatTimeDuration } from "../../utils/time";
 import useTge from "../marketplace/useTge";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useTokens } from "../api/token/use-tokens";
+import { checkIsNativeToken } from "@/lib/utils/web3";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: tokens } = useTokens();
@@ -50,6 +51,11 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
   const orderDuration = formatTimeDuration(
     Math.floor(NP.minus(Date.now() / 1000, offer.create_at)),
+  );
+
+  const isNativeToken = checkIsNativeToken(
+    offer.marketplace.chain,
+    offerTokenInfo || null,
   );
 
   const isFilled = offer.taken_item_amount === offer.item_amount;
@@ -145,6 +151,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     forValue,
     offerLogo,
     forLogo,
+    isNativeToken,
 
     tokenPrice,
     tokenTotalPrice,

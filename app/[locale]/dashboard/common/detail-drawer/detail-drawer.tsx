@@ -9,11 +9,13 @@ import { upperFirst } from "lodash";
 import { useTranslations } from "next-intl";
 
 export default function DetailDrawer({
+  holdingId,
   offer,
   onSuccess,
   drawerOpen,
   setDrawerOpen,
 }: {
+  holdingId: string;
   offer: IOffer | undefined;
   onSuccess: () => void;
   drawerOpen: boolean;
@@ -56,9 +58,17 @@ export default function DetailDrawer({
       />
       {offer &&
         (isAsk ? (
-          <MyAskDetail offer={offer} onSuccess={handleSuccess} />
+          <MyAskDetail
+            holdingId={holdingId}
+            offer={offer}
+            onSuccess={handleSuccess}
+          />
         ) : (
-          <MyBidDetail offer={offer} onSuccess={handleSuccess} />
+          <MyBidDetail
+            holdingId={holdingId}
+            offer={offer}
+            onSuccess={handleSuccess}
+          />
         ))}
     </Drawer>
   );

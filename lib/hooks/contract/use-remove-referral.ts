@@ -1,12 +1,12 @@
+import { useRemoveReferralEth } from "./eth/use-remove-referral-eth";
+import { useChainTx } from "./help/use-chain-tx";
+import { useRemoveReferralSol } from "./solana/use-remove-referral-sol";
+
 export function useRemoveReferral() {
-  return {
-    isLoading: false,
-    isSuccess: false,
-    isError: false,
-    data: null,
-    error: null,
-    write: async () => {
-      return null;
-    },
-  };
+  const chainActionRes = useChainTx(
+    useRemoveReferralEth,
+    useRemoveReferralSol,
+    undefined,
+  );
+  return chainActionRes;
 }

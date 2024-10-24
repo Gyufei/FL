@@ -239,6 +239,7 @@ export function OrderTable({
       )}
 
       <DetailDrawer
+        holdingId={selectOrderId}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
         offer={selectedOrder?.offer}

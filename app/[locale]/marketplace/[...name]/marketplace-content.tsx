@@ -11,6 +11,8 @@ import MarketplaceCard from "./marketplace-card";
 import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
 import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
+import MarketTrades from "@/app/[locale]/marketplace/[...name]/market-trades/market-trades";
+import MarketCharts from "./chart/market-charts";
 
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
@@ -120,6 +122,20 @@ export default function MarketplaceContent({
                 />
               </>
             )}
+          </div>
+          <div className="flex w-[368px] flex-col px-6">
+            <MarketTrades marketplace={marketplace} />
+
+            <div className="h-[80px] py-4">
+              {marketplace && (
+                <CreateOfferBtn
+                  marketplace={marketplace}
+                  onSuccess={refreshOffers}
+                />
+              )}
+            </div>
+
+            {marketplace && <MarketCharts marketplace={marketplace} />}
           </div>
         </div>
         <PageFooter />

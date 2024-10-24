@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
+import { DataApiPaths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
 
 export interface IItemBalance {
@@ -16,10 +16,10 @@ interface IItemEntry {
 }
 
 export function useUserItemBalance(wallet: string) {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
   const res = useSWR<IItemBalance>(
-    wallet ? `${apiEndPoint}${Paths.userItemBalance}/${wallet}` : null,
+    wallet ? `${apiEndPoint}${DataApiPaths.userItemBalance}/${wallet}` : null,
     fetcher,
   );
 

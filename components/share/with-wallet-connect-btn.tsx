@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils/common";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useSwitchInEvm } from "@/lib/hooks/web3/evm/use-switch-in-evm";
 import { usePrivyWallet } from "@/lib/hooks/web3/use-privy-wallet";
 
 export default function WithWalletConnectBtn({
@@ -13,7 +12,6 @@ export default function WithWalletConnectBtn({
   className?: string;
 }) {
   const { connected } = useChainWallet();
-  const { checkAndSwitchInEvm } = useSwitchInEvm();
 
   const { toConnectWallet } = usePrivyWallet();
 
@@ -21,7 +19,6 @@ export default function WithWalletConnectBtn({
     if (!connected) {
       toConnectWallet();
     } else {
-      checkAndSwitchInEvm();
       onClick();
     }
   }

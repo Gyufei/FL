@@ -7,7 +7,7 @@ import useTxStatus from "./help/use-tx-status";
 
 export function useCloseOffer(chain: ChainType) {
   const { recordTransaction } = useTransactionRecord();
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
   const txAction = async (args: { offerId: string }) => {

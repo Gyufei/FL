@@ -2,10 +2,10 @@
 "use client";
 
 import { withSecure } from "acclism-manifest";
-import { WithHost } from "./PathMap";
+import { WithDataApiHost } from "./PathMap";
 
 const access_key = "aK15X6c9";
-const seedApiUrl = WithHost("/seed/apply");
+const seedApiUrl = WithDataApiHost("/seed/apply");
 const ga_code = "129203";
 
 const newFetch = withSecure(fetch, access_key, seedApiUrl, ga_code);

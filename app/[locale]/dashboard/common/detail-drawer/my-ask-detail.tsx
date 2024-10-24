@@ -18,9 +18,11 @@ import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 import { ChainConfigs } from "@/lib/const/chain-config";
 
 export default function MyAskDetail({
+  holdingId,
   offer,
   onSuccess,
 }: {
+  holdingId: string;
   offer: IOffer;
   onSuccess: () => void;
 }) {
@@ -40,6 +42,7 @@ export default function MyAskDetail({
     isCanceled,
     isClosed,
     isCanAbort,
+    isNativeToken,
   } = useOfferFormat({
     offer,
   });
@@ -62,7 +65,14 @@ export default function MyAskDetail({
     isLoading: isRelisting,
     write: relistAction,
     isSuccess: isRelistSuccess,
-  } = useRelist(offer.marketplace.chain);
+  } = useRelist({
+    chain: offer.marketplace.chain,
+    marketplaceStr: offer.marketplace.market_place_id,
+    holdingStr: holdingId,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    isNativeToken,
+  });
 
   function handleClose() {
     if (isClosing) return;

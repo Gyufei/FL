@@ -45,6 +45,7 @@ export default function MyHoldings() {
       </div>
 
       <DetailDrawer
+        holdingId={selectHId}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
         offer={selectedHolding?.offer}

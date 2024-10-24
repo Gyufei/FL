@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { WithCDN, WithHost, WithWss } from "@/lib/PathMap";
+import { WithCDN, WithDataApiHost, WithApiHost, WithWss } from "@/lib/PathMap";
 import { useCurrentChain } from "../web3/use-current-chain";
 
 export function useEndPoint() {
@@ -7,20 +7,21 @@ export function useEndPoint() {
 
   const getEndpoint = useCallback(
     (ethPath: string, solanaPath: string, bnbPath: string, isCDN = false) => {
-      if (isEth) return (isCDN ? WithCDN : WithHost)(ethPath);
-      if (isSolana) return (isCDN ? WithCDN : WithHost)(solanaPath);
-      if (isBnb) return (isCDN ? WithCDN : WithHost)(bnbPath);
+      if (isEth) return (isCDN ? WithCDN : WithDataApiHost)(ethPath);
+      if (isSolana) return (isCDN ? WithCDN : WithDataApiHost)(solanaPath);
+      if (isBnb) return (isCDN ? WithCDN : WithDataApiHost)(bnbPath);
       return "";
     },
     [isEth, isSolana, isBnb],
   );
 
+  const dataApiEndPoint = useMemo(() => {
+    return WithDataApiHost("");
+  }, []);
+
   const apiEndPoint = useMemo(() => {
-    if (isEth) return WithHost("");
-    if (isSolana) return WithHost("");
-    if (isBnb) return WithHost("");
-    return "";
-  }, [isEth, isSolana, isBnb]);
+    return WithApiHost("");
+  }, []);
 
   const projectInfoEndPoint = useMemo(
     () =>
@@ -53,6 +54,7 @@ export function useEndPoint() {
   }, [isEth, isSolana, isBnb]);
 
   return {
+    dataApiEndPoint,
     apiEndPoint,
     projectInfoEndPoint,
     tokenEndPoint,

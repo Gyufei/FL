@@ -11,7 +11,6 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
-import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { ChainConfigs } from "@/lib/const/chain-config";
 
@@ -23,9 +22,6 @@ export default function BidDetail({
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const T = useTranslations("drawer-OfferDetail");
-
-  const { data: referrerData } = useReferralReferer();
-  const referrer = referrerData?.data;
 
   const {
     tokenPrice,
@@ -66,19 +62,7 @@ export default function BidDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateTakerOrder({
-    // originOfferStr: makerDetail?.origin_offer || "",
-    // marketplaceStr: order.market_place_account,
-    // originOfferAuthStr: order.origin_offer_detail?.offer_maker,
-    originOfferStr: "",
-    marketplaceStr: "",
-    originOfferAuthStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    preOfferAuthStr: offer.offer_maker,
-    referrerStr: referrer || "",
-    // isNativeToken,
-  });
+  } = useCreateTakerOrder(offer.marketplace.chain);
 
   function handleSliderChange(v: number) {
     setSellPointAmount(v);

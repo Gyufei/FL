@@ -1,5 +1,6 @@
 import { isProduction } from "../PathMap";
-import { ChainType } from "../types/chain";
+import { IToken } from "@/lib/types/token";
+import { ChainType } from "@/lib/types/chain";
 
 export function truncateAddr(
   address: string,
@@ -21,6 +22,24 @@ export function truncateAddr(
 export function isEvmChain(chain: ChainType) {
   return [ChainType.ETH, ChainType.BNB].includes(chain);
 }
+
+export const checkIsNativeToken = (chain: ChainType, token: IToken | null) => {
+  if (!token) return false;
+
+  if (chain === ChainType.ETH) {
+    return token.symbol === "ETH";
+  }
+
+  if (chain === ChainType.BNB) {
+    return token.symbol === "BNB";
+  }
+
+  if (chain === ChainType.SOLANA) {
+    return token.symbol === "SOL";
+  }
+
+  return false;
+};
 
 export function handleGoScan(
   chain: ChainType,

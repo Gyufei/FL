@@ -1,16 +1,16 @@
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
-import { Paths, WithPointImgCDN, WithProjectImgCDN } from "@/lib/PathMap";
+import { DataApiPaths, WithPointImgCDN, WithProjectImgCDN } from "@/lib/PathMap";
 
 import { useEndPoint } from "./use-endpoint";
 import { IMarketplace } from "@/lib/types/marketplace";
 
 export function useMarketplaces(chain?: string) {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
   const AllChainMarketplacesFetcher = async () => {
     const query = chain ? `?chain=${chain}` : "";
-    const mars = await fetcher(`${apiEndPoint}${Paths.markets}${query}`);
+    const mars = await fetcher(`${apiEndPoint}${DataApiPaths.markets}${query}`);
 
     const markets = mars.map((m: any) => {
       // TODO: add chain

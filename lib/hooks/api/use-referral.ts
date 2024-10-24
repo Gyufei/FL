@@ -1,6 +1,6 @@
 import fetcher from "@/lib/fetcher";
 import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
+import { DataApiPaths } from "@/lib/PathMap";
 import { useAtomValue } from "jotai";
 import { AccessTokenAtom } from "@/lib/states/user";
 import useSWRMutation from "swr/mutation";
@@ -29,7 +29,7 @@ import useSWRMutation from "swr/mutation";
 // }
 
 export function useReferralRateChange() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const postApi = async (
@@ -47,7 +47,7 @@ export function useReferralRateChange() {
     if (!token || !arg.referral_code) return null;
 
     const res = await fetcher(
-      `${apiEndPoint}${Paths.referral.updateCommission}`,
+      `${apiEndPoint}${DataApiPaths.referral.updateCommission}`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -66,7 +66,7 @@ export function useReferralRateChange() {
 }
 
 export function useReferralNoteChange() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const postApi = async (
@@ -82,7 +82,7 @@ export function useReferralNoteChange() {
   ) => {
     if (!token || !arg.referral_code) return null;
 
-    const res = await fetcher(`${apiEndPoint}${Paths.referral.updateNote}`, {
+    const res = await fetcher(`${apiEndPoint}${DataApiPaths.referral.updateNote}`, {
       method: "POST",
       body: JSON.stringify({
         access_token: token,
@@ -99,7 +99,7 @@ export function useReferralNoteChange() {
 }
 
 export function useReferralDefault() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const postApi = async (
@@ -114,7 +114,7 @@ export function useReferralDefault() {
   ) => {
     if (!token || !arg.referral_code) return null;
 
-    const res = await fetcher(`${apiEndPoint}${Paths.referral.default}`, {
+    const res = await fetcher(`${apiEndPoint}${DataApiPaths.referral.default}`, {
       method: "POST",
       body: JSON.stringify({
         access_token: token,
@@ -166,7 +166,7 @@ export function useReferralDefault() {
 // }
 
 export function useReferralView() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
   const postApi = async (
     _: string,
@@ -181,7 +181,7 @@ export function useReferralView() {
   ) => {
     if (!arg.authority || !arg.referral_code) return null;
 
-    const res = await fetcher(`${apiEndPoint}${Paths.referral.views}`, {
+    const res = await fetcher(`${apiEndPoint}${DataApiPaths.referral.views}`, {
       method: "POST",
       body: JSON.stringify({
         ...arg,

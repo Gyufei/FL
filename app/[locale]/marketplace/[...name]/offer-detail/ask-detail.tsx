@@ -12,7 +12,6 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
-import { useReferralReferer } from "@/lib/hooks/api/use-referral-data";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { ChainConfigs } from "@/lib/const/chain-config";
 
@@ -27,9 +26,6 @@ export default function AskDetail({
   const locale = useLocale();
   const isEn = locale === "en";
   const isZh = locale === "zh";
-
-  const { data: referrerData } = useReferralReferer();
-  const referrer = referrerData?.data;
 
   const { platformFee } = useGlobalConfig();
   const {
@@ -54,19 +50,7 @@ export default function AskDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateTakerOrder({
-    // marketplaceStr: offer.market_place_account,
-    // originOfferStr: makerDetail?.origin_offer || "",
-    // originOfferAuthStr: offer.origin_offer_detail?.offer_maker,
-    marketplaceStr: "",
-    originOfferStr: "",
-    originOfferAuthStr: "",
-    makerStr: offer.offer_maker,
-    offerStr: offer.offer_id,
-    preOfferAuthStr: offer.offer_maker,
-    referrerStr: referrer || "",
-    // isNativeToken,
-  });
+  } = useCreateTakerOrder(offer.marketplace.chain);
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     useApprove(offer.marketplace.chain, orderTokenInfo?.address || "");

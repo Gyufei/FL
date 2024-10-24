@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai";
 import { useEndPoint } from "./use-endpoint";
 import { AccessTokenAtom } from "@/lib/states/user";
 import useSWR from "swr";
-import { Paths } from "@/lib/PathMap";
+import { DataApiPaths } from "@/lib/PathMap";
 import fetcher from "@/lib/fetcher";
 
 export interface IReferralItem {
@@ -22,14 +22,14 @@ export interface IReferralItem {
 }
 
 export function useReferralData() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const referralDataFetcher = async () => {
     if (!token) return null;
 
     const res = await fetcher(
-      `${apiEndPoint}${Paths.referral.data}?access_token=${token}`,
+      `${apiEndPoint}${DataApiPaths.referral.data}?access_token=${token}`,
     )
 
     const parsedRes = res.map((item: any) => {
@@ -51,11 +51,11 @@ export function useReferralData() {
 }
 
 export function useReferralReferer() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const res = useSWR<string | any | null>(
-    token ? `${apiEndPoint}${Paths.referral.referer}?access_token=${token}` : null,
+    token ? `${apiEndPoint}${DataApiPaths.referral.referer}?access_token=${token}` : null,
     fetcher,
   );
 
@@ -70,14 +70,14 @@ export function useReferralReferer() {
 }
 
 export function useReferralCodeData({ code }: { code: string}) {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
   const res = useSWR<{
     authority: string;
     authority_rate: string;
     referral_rate: string
   } | null>(
-    code ? `${apiEndPoint}${Paths.referral.codeData}?referral_code=${code}` : null,
+    code ? `${apiEndPoint}${DataApiPaths.referral.codeData}?referral_code=${code}` : null,
     fetcher,
   );
 
@@ -85,11 +85,11 @@ export function useReferralCodeData({ code }: { code: string}) {
 }
 
 export function useReferralExtraRate() {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
   const token = useAtomValue(AccessTokenAtom);
 
   const res = useSWR(
-    token ? `${apiEndPoint}${Paths.referral.extraRate}?access_token=${token}` : null,
+    token ? `${apiEndPoint}${DataApiPaths.referral.extraRate}?access_token=${token}` : null,
     fetcher,
   );
 

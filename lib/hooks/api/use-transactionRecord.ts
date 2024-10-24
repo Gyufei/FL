@@ -1,4 +1,4 @@
-import { Paths } from "@/lib/PathMap";
+import { ApiPaths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import fetcher from "@/lib/fetcher";
 
@@ -18,10 +18,13 @@ export function useTransactionRecord() {
   }
 
   async function addTransaction(transactionParams: IAddParams) {
-    const addResult = await fetcher(`${apiEndPoint}${Paths.addTransaction}`, {
-      method: "post",
-      body: JSON.stringify(transactionParams),
-    });
+    const addResult = await fetcher(
+      `${apiEndPoint}${ApiPaths.addTransaction}`,
+      {
+        method: "post",
+        body: JSON.stringify(transactionParams),
+      },
+    );
 
     return addResult;
   }

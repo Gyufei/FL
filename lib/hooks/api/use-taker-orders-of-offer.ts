@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { Paths } from "@/lib/PathMap";
+import { DataApiPaths } from "@/lib/PathMap";
 
 export interface ITakerOrder {
   order_id: string;
@@ -13,10 +13,10 @@ export interface ITakerOrder {
 }
 
 export function useTakerOrderOfOffers({ offerId }: { offerId: string }) {
-  const { apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
 
   const res = useSWR<Array<ITakerOrder>>(
-    `${apiEndPoint}${Paths.offer}/${offerId}/taker_orders`,
+    `${apiEndPoint}${DataApiPaths.offer}/${offerId}/taker_orders`,
   );
 
   return res;

@@ -9,7 +9,7 @@ import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { ISettleMode } from "@/lib/types/offer";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
-export function usePointOfCreate(
+export function useCreateAction(
   marketplace: IMarketplace,
   direction: "buy" | "sell",
 ) {

@@ -36,7 +36,7 @@ export default function SalesChart({
 }) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
-  const marketplaceId = marketplace?.market_place_id;
+  const marketplaceId = marketplace?.market_place_account;
 
   const { data: salesData } = useSalesVolume(marketplaceId);
 

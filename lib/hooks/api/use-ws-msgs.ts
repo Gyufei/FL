@@ -7,6 +7,22 @@ export function useWsMsgs() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [msgEvents, setMsgEvents] = useState<any[]>([]);
 
+  // 模拟1分钟发一次
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setMsgEvents((previous: any[]) => [
+  //       ...previous,
+  //       {
+  //         timestamp: Date.now(),
+  //       },
+  //     ]);
+  //   }, 60000);
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
@@ -17,6 +33,7 @@ export function useWsMsgs() {
     }
 
     function onMsgEvent(value: any) {
+      console.log("🚀 ~ onMsgEvent ~ value:", value);
       setMsgEvents((previous: any[]) => [
         ...previous,
         {

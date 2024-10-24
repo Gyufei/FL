@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { DataApiPaths } from "@/lib/PathMap";
-import fetcher from "@/lib/fetcher";
+import { ApiPaths } from "@/lib/PathMap";
+import { apiFetcher } from "@/lib/fetcher";
 import { useMemo } from "react";
 
 interface ISalesVolume {
@@ -11,13 +11,13 @@ interface ISalesVolume {
 }
 
 export function useSalesVolume(marketplaceId: string) {
-  const { apiEndPoint: tadleApiEndPoint } = useEndPoint();
+  const { apiEndPoint } = useEndPoint();
 
   const res = useSWR(
     marketplaceId
-      ? `${tadleApiEndPoint}${DataApiPaths.salesVolumeHistory}?market_place_account=${marketplaceId}`
+      ? `${apiEndPoint}${ApiPaths.salesVolumeHistory}?market_place_account=${marketplaceId}`
       : null,
-    fetcher,
+    apiFetcher,
   );
 
   const data = useMemo<Array<ISalesVolume> | undefined>(() => {

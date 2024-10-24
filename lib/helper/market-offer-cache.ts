@@ -1,4 +1,4 @@
-import fetcher from "@/lib/fetcher";
+import { dataApiFetcher } from "@/lib/fetcher";
 import { DataApiPaths } from "@/lib/PathMap";
 
 const MarketOffersMap = new Map<string, Array<Record<string, any>>>();
@@ -14,7 +14,7 @@ export async function getMarketOffer(
     return marketOffers;
   }
 
-  const res = await fetcher(
+  const res = await dataApiFetcher(
     `${apiPath}${DataApiPaths.offers}?market_symbol=${marketSymbol}&chain=${marketChain}`,
   );
 

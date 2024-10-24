@@ -1,33 +1,10 @@
-import { ApiPaths } from "@/lib/PathMap";
+import { ApiPaths, DataApiPaths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
-import fetcher from "@/lib/fetcher";
-
-export interface IAddParams {
-  tx_hash: string;
-  transaction_note: string;
-}
+import { apiFetcher } from "@/lib/fetcher";
+import { ChainType } from "@/lib/types/chain";
 
 export function useTransactionRecord() {
   const { apiEndPoint } = useEndPoint();
-
-  function parsedAddParams({ txHash, note }: { txHash: string; note: string }) {
-    return {
-      tx_hash: txHash,
-      transaction_note: note,
-    } as IAddParams;
-  }
-
-  async function addTransaction(transactionParams: IAddParams) {
-    const addResult = await fetcher(
-      `${apiEndPoint}${ApiPaths.addTransaction}`,
-      {
-        method: "post",
-        body: JSON.stringify(transactionParams),
-      },
-    );
-
-    return addResult;
-  }
 
   async function recordTransaction({
     txHash,
@@ -36,17 +13,56 @@ export function useTransactionRecord() {
     txHash: string;
     note: string;
   }) {
-    const addParams = parsedAddParams({
-      txHash,
-      note,
-    });
+    const addParams = {
+      tx_hash: txHash,
+      transaction_note: note,
+    };
 
-    await addTransaction(addParams);
+    await apiFetcher(`${apiEndPoint}${ApiPaths.addTransaction}`, {
+      method: "post",
+      body: JSON.stringify(addParams),
+    });
 
     return true;
   }
 
   return {
     recordTransaction,
+  };
+}
+
+export function useDataApiTransactionRecord() {
+  const { dataApiEndPoint } = useEndPoint();
+
+  async function submitTransaction({
+    chain,
+    txHash,
+    txType,
+    txData,
+  }: {
+    chain: ChainType;
+    txHash: string;
+    txType: string;
+    txData: any;
+  }) {
+    const addParams = {
+      transaction_hash: txHash,
+      transaction_type: txType,
+      data: txData,
+    };
+
+    await apiFetcher(
+      `${dataApiEndPoint}${DataApiPaths.transactionSubmit}?chain=${chain}`,
+      {
+        method: "post",
+        body: JSON.stringify(addParams),
+      },
+    );
+
+    return true;
+  }
+
+  return {
+    submitTransaction,
   };
 }

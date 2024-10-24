@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import fetcher from "@/lib/fetcher";
+import { apiFetcher, dataApiFetcher } from "@/lib/fetcher";
 import useSWRMutation from "swr/mutation";
 import { useEndPoint } from "./use-endpoint";
 import { ApiPaths, DataApiPaths } from "@/lib/PathMap";
@@ -16,12 +16,12 @@ interface IAccountInfo {
 }
 
 export function useAccountStats() {
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint } = useEndPoint();
   const { address: wallet } = useChainWallet();
 
   const res = useSWR<IAccountInfo>(
-    wallet ? `${apiEndPoint}${DataApiPaths.accountStats}/${wallet}` : null,
-    fetcher,
+    wallet ? `${dataApiEndPoint}${DataApiPaths.accountStats}/${wallet}` : null,
+    dataApiFetcher,
   );
 
   return res;
@@ -43,7 +43,7 @@ export function useUserNameChange() {
   ) => {
     if (!arg.uuid || !arg.user_name) return null;
 
-    const res = await fetcher(`${apiEndPoint}${ApiPaths.userName}`, {
+    const res = await apiFetcher(`${apiEndPoint}${ApiPaths.userName}`, {
       method: "POST",
       body: JSON.stringify({
         ...arg,

@@ -1,7 +1,7 @@
 // import { IOffer } from "@/lib/types/offer";
 // import { IOrder } from "@/lib/types/order";
 import useSWR from "swr";
-import fetcher from "@/lib/fetcher";
+import { dataApiFetcher } from "@/lib/fetcher";
 import { DataApiPaths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
@@ -12,7 +12,7 @@ import { IOrder } from "@/lib/types/order";
 export function useMyOrders(chain?: string) {
   const { address } = useChainWallet();
 
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint } = useEndPoint();
   const { data: offers, isLoading } = useMarketOffers({
     marketSymbol: null,
     marketChain: chain || "",
@@ -20,8 +20,10 @@ export function useMyOrders(chain?: string) {
 
   const myOrdersFetcher = async () => {
     if (!address || isLoading) return [];
-    const orderRes = await fetcher(
-      `${apiEndPoint}${DataApiPaths.orders}?wallet=${address}&chain=${chain || ""}`,
+    const orderRes = await dataApiFetcher(
+      `${dataApiEndPoint}${DataApiPaths.orders}?wallet=${address}&chain=${
+        chain || ""
+      }`,
     );
 
     const parsedRes = (orderRes || []).map((order: any) => {

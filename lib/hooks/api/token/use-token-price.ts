@@ -1,5 +1,5 @@
 import { ApiPaths } from "@/lib/PathMap";
-import fetcher from "@/lib/fetcher";
+import { apiFetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 import { useEndPoint } from "../use-endpoint";
 import { useMemo } from "react";
@@ -7,7 +7,7 @@ import { useMemo } from "react";
 export function useTokenPrice(address: string) {
   const { apiEndPoint } = useEndPoint();
 
-  const res = useSWR<any>(`${apiEndPoint}${ApiPaths.tokenPrice}`, fetcher);
+  const res = useSWR<any>(`${apiEndPoint}${ApiPaths.tokenPrice}`, apiFetcher);
 
   const tokenPrice = useMemo(() => {
     if (!res) return "1";

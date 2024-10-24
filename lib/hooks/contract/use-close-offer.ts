@@ -1,19 +1,19 @@
 import { ChainType } from "@/lib/types/chain";
 import { useEndPoint } from "../api/use-endpoint";
-import { useTransactionRecord } from "../api/use-transactionRecord";
+import { useDataApiTransactionRecord } from "../api/use-transactionRecord";
 import { useChainSendTx } from "./help/use-chain-send-tx";
-import fetcher from "@/lib/fetcher";
+import { dataApiFetcher } from "@/lib/fetcher";
 import useTxStatus from "./help/use-tx-status";
 
 export function useCloseOffer(chain: ChainType) {
-  const { recordTransaction } = useTransactionRecord();
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { submitTransaction } = useDataApiTransactionRecord();
+  const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
   const txAction = async (args: { offerId: string }) => {
     const { offerId } = args;
-    const res = await fetcher(
-      `${apiEndPoint}/offer/${offerId}/cancel?chain=${chain}`,
+    const res = await dataApiFetcher(
+      `${dataApiEndPoint}/offer/${offerId}/cancel?chain=${chain}`,
       {
         method: "POST",
         headers: {
@@ -31,9 +31,11 @@ export function useCloseOffer(chain: ChainType) {
       ...callParams,
     });
 
-    await recordTransaction({
+    await submitTransaction({
+      chain,
       txHash,
-      note: "",
+      txType: "closeOffer",
+      txData: null,
     });
 
     return txHash;

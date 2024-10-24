@@ -1,5 +1,5 @@
 import useSWRImmutable from "swr/immutable";
-import fetcher from "@/lib/fetcher";
+import { dataApiFetcher } from "@/lib/fetcher";
 import { useEndPoint } from "./use-endpoint";
 
 interface ProjectLinks {
@@ -12,7 +12,7 @@ export function useMarketInfo() {
 
   const res = useSWRImmutable<Record<string, ProjectLinks>>(
     projectInfoEndPoint,
-    (url: string) => fetcher(url, undefined, true),
+    (url: string) => dataApiFetcher(url, undefined, true),
   );
 
   return res;

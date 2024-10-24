@@ -4,9 +4,11 @@ import { DataApiPaths } from "@/lib/PathMap";
 import { IEntry } from "@/lib/types/entry";
 
 export function useEntryById(entryId: number) {
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint } = useEndPoint();
 
-  const res = useSWR<IEntry>(`${apiEndPoint}${DataApiPaths.entry}/${entryId}`);
+  const res = useSWR<IEntry>(
+    `${dataApiEndPoint}${DataApiPaths.entry}/${entryId}`,
+  );
 
   return res;
 }

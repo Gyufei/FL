@@ -1,13 +1,13 @@
 import { ChainType } from "@/lib/types/chain";
 import { useEndPoint } from "../api/use-endpoint";
-import { useTransactionRecord } from "../api/use-transactionRecord";
+import { useDataApiTransactionRecord } from "../api/use-transactionRecord";
 import { useChainSendTx } from "./help/use-chain-send-tx";
-import fetcher from "@/lib/fetcher";
+import { dataApiFetcher } from "@/lib/fetcher";
 import useTxStatus from "./help/use-tx-status";
 
 export function useList(chain: ChainType) {
-  const { recordTransaction } = useTransactionRecord();
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { submitTransaction } = useDataApiTransactionRecord();
+  const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
   const txAction = async (args: {
@@ -16,16 +16,17 @@ export function useList(chain: ChainType) {
     entryIds: Array<string>;
   }) => {
     const { price, totalItemAmount, entryIds } = args;
-    const res = await fetcher(`${apiEndPoint}/holding/list`, {
+    const reqData = {
+      price,
+      total_item_amount: totalItemAmount,
+      entry_ids: entryIds,
+    };
+    const res = await dataApiFetcher(`${dataApiEndPoint}/holding/list`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        price,
-        total_item_amount: totalItemAmount,
-        entry_ids: entryIds,
-      }),
+      body: JSON.stringify(reqData),
     });
 
     const callParams = {
@@ -36,9 +37,11 @@ export function useList(chain: ChainType) {
       ...callParams,
     });
 
-    await recordTransaction({
+    await submitTransaction({
+      chain,
       txHash,
-      note: "",
+      txType: "list",
+      txData: reqData,
     });
 
     return txHash;

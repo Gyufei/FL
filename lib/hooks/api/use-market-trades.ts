@@ -1,14 +1,16 @@
 import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
-import { DataApiPaths } from "@/lib/PathMap";
-import fetcher from "@/lib/fetcher";
+import { ApiPaths } from "@/lib/PathMap";
+import { apiFetcher } from "@/lib/fetcher";
 
 export function useMarketTrades(marketplaceId?: string) {
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { apiEndPoint } = useEndPoint();
 
   const res = useSWR(
-    marketplaceId ? `${apiEndPoint}${DataApiPaths.marketTrades}?market_place_account=${marketplaceId}`: '',
-    fetcher,
+    marketplaceId
+      ? `${apiEndPoint}${ApiPaths.marketTrades}?market_place_account=${marketplaceId}`
+      : "",
+    apiFetcher,
   );
 
   return res;

@@ -1,15 +1,15 @@
 import { ISettleMode } from "@/lib/types/offer";
 import { useChainSendTx } from "./help/use-chain-send-tx";
 import { useEndPoint } from "../api/use-endpoint";
-import fetcher from "@/lib/fetcher";
-import { useTransactionRecord } from "../api/use-transactionRecord";
+import { dataApiFetcher } from "@/lib/fetcher";
+import { useDataApiTransactionRecord } from "../api/use-transactionRecord";
 import useTxStatus from "./help/use-tx-status";
 import { useChainWallet } from "../web3/use-chain-wallet";
 import { ChainType } from "@/lib/types/chain";
 
 export function useCreateOffer(marketSymbol: string, chain: ChainType) {
-  const { recordTransaction } = useTransactionRecord();
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { submitTransaction } = useDataApiTransactionRecord();
+  const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
   const { address } = useChainWallet();
@@ -23,17 +23,18 @@ export function useCreateOffer(marketSymbol: string, chain: ChainType) {
     settle_mode: ISettleMode;
     trade_tax_pct: number;
   }) => {
-    const res = await fetcher(
-      `${apiEndPoint}/market/${marketSymbol}/create_offer?chain=${chain}`,
+    const reqData = {
+      ...args,
+      creator: address,
+    };
+    const res = await dataApiFetcher(
+      `${dataApiEndPoint}/market/${marketSymbol}/create_offer?chain=${chain}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...args,
-          creator: address,
-        }),
+        body: JSON.stringify(reqData),
       },
     );
 
@@ -47,9 +48,11 @@ export function useCreateOffer(marketSymbol: string, chain: ChainType) {
       ...callParams,
     });
 
-    await recordTransaction({
+    await submitTransaction({
+      chain,
       txHash,
-      note: "",
+      txType: "createOffer",
+      txData: reqData,
     });
 
     return txHash;

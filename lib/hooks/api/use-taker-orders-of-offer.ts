@@ -13,10 +13,10 @@ export interface ITakerOrder {
 }
 
 export function useTakerOrderOfOffers({ offerId }: { offerId: string }) {
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint } = useEndPoint();
 
   const res = useSWR<Array<ITakerOrder>>(
-    `${apiEndPoint}${DataApiPaths.offer}/${offerId}/taker_orders`,
+    `${dataApiEndPoint}${DataApiPaths.offer}/${offerId}/taker_orders`,
   );
 
   return res;

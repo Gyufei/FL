@@ -53,6 +53,8 @@ export const DataApiPaths = {
   userTokenBalance: "/account/token_balances",
   userItemBalance: "/account/item_balances",
   accountStats: "/account/stats",
+  accountWithdraw: "/account/withdraw",
+  transactionSubmit: "/transaction/submit",
 };
 
 export const ApiPaths = {

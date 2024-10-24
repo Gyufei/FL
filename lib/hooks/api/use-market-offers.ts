@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { useEndPoint } from "./use-endpoint";
 import { IOffer } from "@/lib/types/offer";
 import { DataApiPaths } from "@/lib/PathMap";
-import fetcher from "@/lib/fetcher";
+import { dataApiFetcher } from "@/lib/fetcher";
 import { useMarketplaces } from "./use-marketplaces";
 
 export function useMarketOffers({
@@ -12,7 +12,7 @@ export function useMarketOffers({
   marketSymbol: string | null;
   marketChain: string;
 }) {
-  const { dataApiEndPoint: apiEndPoint } = useEndPoint();
+  const { dataApiEndPoint } = useEndPoint();
   const { data: marketplaceData, isLoading: isMarketLoading } =
     useMarketplaces();
 
@@ -26,8 +26,8 @@ export function useMarketOffers({
       .map(([k, v]) => `${k}=${v}`)
       .join("&");
 
-    const offerRes = await fetcher(
-      `${apiEndPoint}${DataApiPaths.offers}?${fetchParams}`,
+    const offerRes = await dataApiFetcher(
+      `${dataApiEndPoint}${DataApiPaths.offers}?${fetchParams}`,
     );
 
     const parsedRes = await Promise.all(
@@ -47,7 +47,7 @@ export function useMarketOffers({
   };
 
   const res = useSWR(
-    `market-offer:${apiEndPoint}-${marketSymbol}-${isMarketLoading}`,
+    `market-offer:${dataApiEndPoint}-${marketSymbol}-${isMarketLoading}`,
     marketOffersFetcher,
   );
 

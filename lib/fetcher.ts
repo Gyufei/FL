@@ -8,16 +8,40 @@ const access_key = "aK15X6c9";
 const seedApiUrl = WithDataApiHost("/seed/apply");
 const ga_code = "129203";
 
-const newFetch = withSecure(fetch, access_key, seedApiUrl, ga_code);
+const encryptFetch = withSecure(fetch, access_key, seedApiUrl, ga_code);
 
-export default async function fetcher(
+export async function apiFetcher(
   input: URL | RequestInfo,
   init?: RequestInit | undefined,
-  notEncrypt?: boolean,
 ) {
   try {
-    const res = await (notEncrypt ? fetch : newFetch)(input, init);
+    const result = await fetch(input, init);
+    const res = await parsedRes(result);
 
+    return res;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function dataApiFetcher(
+  input: URL | RequestInfo,
+  init?: RequestInit | undefined,
+) {
+  try {
+    const result = await encryptFetch(input, init);
+    const res = await parsedRes(result);
+
+    return res;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+async function parsedRes(res: any) {
+  try {
     if (!res.ok) {
       const error = new Error(
         "An error occurred while fetching the data.",

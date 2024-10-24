@@ -15,14 +15,23 @@ import { useTradingVol } from "@/lib/hooks/api/use-trading-vol";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
+import { ChainType } from "@/lib/types/chain";
 
-export default function LeaderBoard({ className }: { className?: string }) {
+export default function LeaderBoard({
+  chain,
+  className,
+}: {
+  chain: ChainType;
+  className?: string;
+}) {
   const t = useTranslations("tb-Leaderboard");
   const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("month");
 
-  const { data: taxIncomeData, isLoading: taxIncomeLoading } =
-    useTaxIncome(timeRange);
+  const { data: taxIncomeData, isLoading: taxIncomeLoading } = useTaxIncome(
+    chain,
+    timeRange,
+  );
   const { data: makerOrdersData, isLoading: makerOrdersLoading } =
     useMakerOrders(timeRange);
   const { data: tradingVolData, isLoading: tradingVolLoading } =

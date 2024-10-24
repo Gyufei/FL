@@ -17,7 +17,10 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     return tokens?.find((t) => t.symbol === offer.payment_token);
   }, [offer, tokens]);
 
-  const { data: tokenPrice } = useTokenPrice(offerTokenInfo?.address || "");
+  const { data: tokenPrice } = useTokenPrice(
+    offer.marketplace.chain,
+    offerTokenInfo?.address || "",
+  );
 
   const offerPointInfo: IPoint = {
     symbol: offer.marketplace.item_name,

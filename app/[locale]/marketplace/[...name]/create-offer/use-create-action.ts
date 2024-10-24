@@ -51,7 +51,7 @@ export function useCreateAction(
     }
   }, [stableTokens]);
 
-  const { data: tokenPrice } = useTokenPrice(token?.address || "");
+  const { data: tokenPrice } = useTokenPrice(marketplace.chain, token?.address || "");
 
   const tokenAmountValue = useMemo(() => {
     if (!tokenAmount) return 0;

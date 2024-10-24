@@ -17,7 +17,6 @@ export default function Marketplace({ params }: { params: { name: string } }) {
   const { msgEvents } = useWsMsgs(marketplace?.chain || ChainType.ETH);
 
   useEffect(() => {
-    console.log("msgEvents", msgEvents);
     if (msgEvents.length > 0) {
       mutate();
     }

@@ -16,6 +16,8 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
+import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { useEffect } from "react";
 
 export default function LeaderBoard({
   chain,
@@ -28,20 +30,33 @@ export default function LeaderBoard({
   const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
   const [timeRange, setTimeRange] = useState<IRangeType>("month");
 
-  const { data: taxIncomeData, isLoading: taxIncomeLoading } = useTaxIncome(
-    chain,
-    timeRange,
-  );
-  const { data: makerOrdersData, isLoading: makerOrdersLoading } =
-    useMakerOrders(chain, timeRange);
-  const { data: tradingVolData, isLoading: tradingVolLoading } = useTradingVol(
-    chain,
-    timeRange,
-  );
+  const {
+    data: taxIncomeData,
+    isLoading: taxIncomeLoading,
+    mutate: taxIncomeMutate,
+  } = useTaxIncome(chain, timeRange);
+  const {
+    data: makerOrdersData,
+    isLoading: makerOrdersLoading,
+    mutate: makerOrdersMutate,
+  } = useMakerOrders(chain, timeRange);
+  const {
+    data: tradingVolData,
+    isLoading: tradingVolLoading,
+    mutate: tradingVolMutate,
+  } = useTradingVol(chain, timeRange);
 
   const isLoadingFlag =
     taxIncomeLoading || makerOrdersLoading || tradingVolLoading;
 
+  const { msgEvents } = useWsMsgs(chain);
+  useEffect(() => {
+    if (msgEvents.length > 0) {
+      taxIncomeMutate();
+      makerOrdersMutate();
+      tradingVolMutate();
+    }
+  }, [msgEvents]);
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
   }

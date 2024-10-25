@@ -8,35 +8,45 @@ import {
 
 import { useEndPoint } from "./use-endpoint";
 import { IMarketplace } from "@/lib/types/marketplace";
+import { ChainType } from "@/lib/types/chain";
 
 export function useMarketplaces(chain?: string) {
   const { dataApiEndPoint } = useEndPoint();
 
-  const AllChainMarketplacesFetcher = async () => {
+  async function fetchChainMarket() {
     const query = chain ? `?chain=${chain}` : "";
     const mars = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.markets}${query}`,
     );
 
-    const markets = mars.map((m: any) => {
-      // TODO: add chain
-      const chain = m.chain || "eth";
+    return mars;
+  }
 
-      return {
-        ...m,
-        projectLogo: WithProjectImgCDN(m.market_symbol, chain),
-        pointLogo: WithPointImgCDN(m.market_symbol, chain),
-        chain,
-      };
-    });
+  async function allChainFetch() {
+    const chains = [ChainType.ETH, ChainType.BNB, ChainType.SOLANA];
 
-    return markets as Array<IMarketplace>;
-  };
+    const res = await Promise.all(
+      chains.map(async (chain: ChainType) => {
+        const mars = await fetchChainMarket();
+        const markets = mars.map((m: any) => {
+          return {
+            ...m,
+            projectLogo: WithProjectImgCDN(m.market_symbol, chain),
+            pointLogo: WithPointImgCDN(m.market_symbol, chain),
+            chain,
+          };
+        });
 
-  const res = useSWR(
-    `marketplaces-${chain || "all"}`,
-    AllChainMarketplacesFetcher,
-  );
+        return markets;
+      }),
+    );
+
+    const allMarket = res.flat();
+
+    return allMarket as Array<IMarketplace>;
+  }
+
+  const res = useSWR(`marketplaces-${chain || "all"}`, allChainFetch);
 
   return res;
 }

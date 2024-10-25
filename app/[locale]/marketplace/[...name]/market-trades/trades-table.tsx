@@ -3,7 +3,7 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { formatTimeDuration } from "@/lib/utils/time";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { formatNum } from "@/lib/utils/number";
 import { ITradeType } from "./trade-type-select";
 import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
@@ -43,7 +43,9 @@ export function TradesTable({
         timestamp: item.trade_at * 1000,
       };
     });
-    const msgAll = msgEvents.filter((msg) => !!msg);
+    const msgAll = msgEvents.filter(
+      (msg) => !!msg && msg.market_id === marketplace?.market_place_account,
+    );
 
     const allMsg = sortBy(msgAll || [], "trade_at")
       .reverse()

@@ -6,7 +6,7 @@ import Drawer from "react-modern-drawer";
 
 import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
-import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
+import { truncateAddr } from "@/lib/utils/web3";
 import { IMsg, useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";

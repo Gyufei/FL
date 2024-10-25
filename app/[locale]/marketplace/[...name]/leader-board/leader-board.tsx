@@ -20,9 +20,11 @@ import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
 import { useEffect } from "react";
 
 export default function LeaderBoard({
+  marketplaceId,
   chain,
   className,
 }: {
+  marketplaceId: string;
   chain: ChainType;
   className?: string;
 }) {
@@ -52,9 +54,12 @@ export default function LeaderBoard({
   const { msgEvents } = useWsMsgs(chain);
   useEffect(() => {
     if (msgEvents.length > 0) {
-      taxIncomeMutate();
-      makerOrdersMutate();
-      tradingVolMutate();
+      const currentMsg = msgEvents[msgEvents.length - 1];
+      if (currentMsg.market_id === marketplaceId) {
+        taxIncomeMutate();
+        makerOrdersMutate();
+        tradingVolMutate();
+      }
     }
   }, [msgEvents]);
   function handleTradeTypeChange(t: ILeaderType) {

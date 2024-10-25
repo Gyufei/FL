@@ -1,23 +1,23 @@
 import { ChainType } from "@/lib/types/chain";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useMemo } from "react";
-import { useWriteContract } from "wagmi";
+import { useSendTransaction } from "wagmi";
 
 export function useChainSendTx(chain: ChainType) {
-  const { writeContractAsync } = useWriteContract();
+  const { sendTransactionAsync } = useSendTransaction();
   const { sendTransaction } = useWallet();
 
   const sendTx: any = useMemo(() => {
     if (chain === ChainType.ETH || chain === ChainType.BNB) {
-      return writeContractAsync;
+      return sendTransactionAsync;
     }
 
     if (chain === ChainType.SOLANA) {
       return sendTransaction;
     }
 
-    return writeContractAsync;
-  }, [chain, sendTransaction, writeContractAsync]);
+    return sendTransactionAsync;
+  }, [chain, sendTransaction, sendTransactionAsync]);
 
   return {
     sendTx,

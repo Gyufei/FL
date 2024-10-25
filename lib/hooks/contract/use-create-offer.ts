@@ -38,10 +38,8 @@ export function useCreateOffer(marketSymbol: string, chain: ChainType) {
       },
     );
 
-    console.log("create offer api res:", res);
-
     const callParams = {
-      ...res,
+      ...res.tx_data,
     };
 
     const txHash = await sendTx({

@@ -3,7 +3,6 @@ import { isProduction } from "@/lib/PathMap";
 import { ChainType } from "@/lib/types/chain";
 import { useEndPoint } from "./use-endpoint";
 import useSWRSubscription from "swr/subscription";
-import { useEffect } from "react";
 
 export interface IMsg {
   amount: string;

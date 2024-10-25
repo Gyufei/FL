@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
-import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { useEffect } from "react";
 
 export default function LeaderBoard({
@@ -51,9 +51,9 @@ export default function LeaderBoard({
   const isLoadingFlag =
     taxIncomeLoading || makerOrdersLoading || tradingVolLoading;
 
-  const { msgEvents } = useWsMsgs(chain);
+  const { data: msgEvents } = useWsMsgSub(chain);
   useEffect(() => {
-    if (msgEvents.length > 0) {
+    if (msgEvents && msgEvents.length > 0) {
       const currentMsg = msgEvents[msgEvents.length - 1];
       if (currentMsg.market_id === marketplaceId) {
         taxIncomeMutate();

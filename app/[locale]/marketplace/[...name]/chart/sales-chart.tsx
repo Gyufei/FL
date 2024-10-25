@@ -5,7 +5,7 @@ import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsReact from "highcharts-react-official";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useSalesVolume } from "@/lib/hooks/api/use-sales-volume";
-import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { useEffect } from "react";
 
 if (typeof Highcharts === "object") {
@@ -44,16 +44,16 @@ export default function SalesChart({
     marketplace.chain,
     marketplaceId,
   );
-  const { msgEvents } = useWsMsgs(marketplace.chain);
+  const { data } = useWsMsgSub(marketplace.chain);
 
   useEffect(() => {
-    if (msgEvents.length > 0) {
-      const currentMsg = msgEvents[msgEvents.length - 1];
+    if (data && data.length > 0) {
+      const currentMsg = data[data.length - 1];
       if (currentMsg.market_id === marketplace?.market_place_account) {
         mutate();
       }
     }
-  }, [msgEvents]);
+  }, [data]);
 
   const now = new Date().getTime();
   const oneHourDuration = 3600 * 1000;

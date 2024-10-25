@@ -29,7 +29,7 @@ export default function TrendingProject() {
       <div className="mt-6 flex w-full flex-col items-start gap-x-5 gap-y-9 px-4 py-5 sm:grid sm:grid-cols-4 sm:flex-row sm:items-stretch sm:overflow-x-hidden">
         {(markets || []).map((marketplace) => (
           <ItemCard
-            key={marketplace.market_symbol}
+            key={marketplace.market_place_account}
             marketplace={marketplace}
             isLoadingFlag={isLoadingFlag}
           />

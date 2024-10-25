@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { formatNum } from "@/lib/utils/number";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -11,26 +11,34 @@ export default function NewestItemCard() {
   const t = useTranslations("Home");
   const [prevMsg, setPrevMsg] = useState<any>(null);
   const [nowMsg, setNowMsg] = useState<any>(null);
-  const { msgEvents } = useWsMsgs(ChainType.ETH);
+  const { data } = useWsMsgSub(ChainType.ETH);
 
   useEffect(() => {
-    const msgAll = msgEvents.filter((msg) => !!msg);
+    if (!data) return;
+
+    const msgAll = data.filter((msg) => !!msg);
     const len = msgAll.length;
-    if (msgEvents[len - 1]) {
-      if (prevMsg) {
-        setNowMsg(msgEvents[len - 1]);
-      } else {
-        setPrevMsg(msgEvents[len - 1]);
-      }
+
+    if (data.length === 1) {
+      setPrevMsg(data[0]);
+    }
+
+    if (data.length > 1) {
+      setPrevMsg(nowMsg);
+      setNowMsg(data[len - 1]);
 
       setTimeout(() => {
-        setPrevMsg(nowMsg);
-        setNowMsg(null);
+        setNowMsg((val: any) => {
+          setPrevMsg(val);
+          return null;
+        });
       }, 1000);
     }
-  }, [msgEvents]);
+  }, [data]);
 
-  if (!prevMsg) return null;
+  if (!prevMsg && !nowMsg) {
+    return null;
+  }
 
   return (
     <div className="relative mt-20">

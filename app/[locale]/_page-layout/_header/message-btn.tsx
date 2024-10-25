@@ -6,8 +6,8 @@ import Drawer from "react-modern-drawer";
 
 import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
-import { truncateAddr } from "@/lib/utils/web3";
-import { IMsg, useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
+import { IMsg, useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
@@ -16,14 +16,15 @@ import { formatNum } from "@/lib/utils/number";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
-  const { msgEvents } = useWsMsgs(ChainType.ETH);
+  const { data } = useWsMsgSub(ChainType.ETH);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const showLen = useMemo(() => {
-    if (msgEvents.length < 99) return msgEvents.length;
+    if (!data) return 0;
+    if (data.length < 99) return data.length;
     return "99+";
-  }, [msgEvents]);
+  }, [data]);
 
   const pathname = usePathname();
 
@@ -36,7 +37,7 @@ export default function MessageBtn() {
         className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6] hover:border-transparent hover:bg-yellow"
       >
         <Image src="/icons/bell.svg" width={24} height={24} alt="bell" />
-        {!!msgEvents.length && (
+        {(data || []).length > 0 && (
           <Badge
             variant="destructive"
             className="absolute -right-1 -top-1 h-4 min-w-4 px-1"
@@ -56,7 +57,7 @@ export default function MessageBtn() {
             title={t("cap-Notifications")}
             onClose={() => setDrawerOpen(false)}
           />
-          {(msgEvents || []).map((i, idx) => (
+          {(data || []).map((i, idx) => (
             <MsgRow key={idx} msgDetail={i} />
           ))}
         </Drawer>

@@ -1,7 +1,9 @@
+import { io } from "socket.io-client";
 import { isProduction } from "@/lib/PathMap";
-import { useSocket } from "./use-socket";
-import { useEffect, useState } from "react";
 import { ChainType } from "@/lib/types/chain";
+import { useEndPoint } from "./use-endpoint";
+import useSWRSubscription from "swr/subscription";
+import { useEffect } from "react";
 
 export interface IMsg {
   amount: string;
@@ -14,51 +16,50 @@ export interface IMsg {
   value: string;
 }
 
-export function useWsMsgs(chain: ChainType) {
-  const { socket } = useSocket(chain);
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [msgEvents, setMsgEvents] = useState<Array<IMsg>>([]);
+export function useWsMsgSub(chain: ChainType) {
+  const { wssEndPoint } = useEndPoint();
 
-  useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
+  const res = useSWRSubscription<Array<IMsg>>(
+    chain,
+    (_key: string, { next }: { next: any }) => {
+      const socket = io(`${wssEndPoint}/${chain}`);
 
-    function onDisconnect() {
-      setIsConnected(false);
-    }
-
-    function onMsgEvent(value: any) {
-      setMsgEvents((previous: any[]) => [
-        ...previous,
-        {
-          ...value,
-          timestamp: Date.now(),
-        },
-      ]);
-    }
-
-    function onError(error: Error) {
-      if (isProduction) {
-        console.warn("Socket.IO error:", error);
+      function onConnect() {
+        console.log("connected");
       }
-    }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("message", onMsgEvent);
-    socket.on("error", onError);
+      function onDisconnect() {
+        console.log("disconnected");
+      }
 
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("message", onMsgEvent);
-      socket.off("error", onError);
-    };
-  }, []);
+      function onMsgEvent(value: any) {
+        next(null, (prev: Array<IMsg>) =>
+          prev.concat({
+            ...value,
+            timestamp: Date.now(),
+          }),
+        );
+      }
 
-  return {
-    isConnected,
-    msgEvents,
-  };
+      function onError(error: Error) {
+        if (isProduction) {
+          console.warn("Socket.IO error:", error);
+        }
+      }
+
+      socket.on("connect", onConnect);
+      socket.on("disconnect", onDisconnect);
+      socket.on("message", onMsgEvent);
+      socket.on("error", (event) => next(event.error));
+
+      return () => {
+        socket.off("connect", onConnect);
+        socket.off("disconnect", onDisconnect);
+        socket.off("message", onMsgEvent);
+        socket.off("error", onError);
+      };
+    },
+  );
+
+  return res;
 }

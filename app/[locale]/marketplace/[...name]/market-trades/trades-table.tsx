@@ -6,7 +6,7 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { useMemo } from "react";
 import { formatNum } from "@/lib/utils/number";
 import { ITradeType } from "./trade-type-select";
-import { useWsMsgs } from "@/lib/hooks/api/use-ws-msgs";
+import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
 import { range, sortBy } from "lodash";
@@ -33,9 +33,11 @@ export function TradesTable({
   const { data: tokens } = useTokens(marketplace?.chain || ChainType.ETH);
   const isLoadingFlag = !marketplace || isLoading || isHistoryLoading;
 
-  const { msgEvents } = useWsMsgs(marketplace?.chain || ChainType.ETH);
+  const { data: msgEvents } = useWsMsgSub(marketplace?.chain || ChainType.ETH);
 
   const tradeMsgs = useMemo<any[]>(() => {
+    if (!msgEvents) return [];
+
     const sortHistory = sortBy(historyData || [], "trade_at").reverse();
     const history = sortHistory.map((item: any) => {
       return {

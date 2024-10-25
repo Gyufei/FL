@@ -36,8 +36,6 @@ export function TradesTable({
   const { data: msgEvents } = useWsMsgSub(marketplace?.chain || ChainType.ETH);
 
   const tradeMsgs = useMemo<any[]>(() => {
-    if (!msgEvents) return [];
-
     const sortHistory = sortBy(historyData || [], "trade_at").reverse();
     const history = sortHistory.map((item: any) => {
       return {
@@ -45,7 +43,8 @@ export function TradesTable({
         timestamp: item.trade_at * 1000,
       };
     });
-    const msgAll = msgEvents.filter(
+
+    const msgAll = (msgEvents || []).filter(
       (msg) => !!msg && msg.market_id === marketplace?.market_place_account,
     );
 

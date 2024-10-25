@@ -13,8 +13,8 @@ import { ChainType } from "@/lib/types/chain";
 export function useMarketplaces(chain?: string) {
   const { dataApiEndPoint } = useEndPoint();
 
-  async function fetchChainMarket() {
-    const query = chain ? `?chain=${chain}` : "";
+  async function fetchChainMarket(chainInner?: string) {
+    const query = chainInner ? `?chain=${chainInner}` : "";
     const mars = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.markets}${query}`,
     );
@@ -27,7 +27,7 @@ export function useMarketplaces(chain?: string) {
 
     const res = await Promise.all(
       chains.map(async (chain: ChainType) => {
-        const mars = await fetchChainMarket();
+        const mars = await fetchChainMarket(chain);
         const markets = mars.map((m: any) => {
           return {
             ...m,
@@ -41,7 +41,12 @@ export function useMarketplaces(chain?: string) {
       }),
     );
 
-    const allMarket = res.flat();
+    const allMarket = res
+      .flat()
+      .filter(
+        (m: any) =>
+          !(m.chain !== ChainType.SOLANA && m.market_symbol === "backpack"),
+      );
 
     return allMarket as Array<IMarketplace>;
   }

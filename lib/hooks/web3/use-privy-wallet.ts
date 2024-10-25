@@ -69,24 +69,24 @@ export function usePrivyWallet() {
     }
   }, [network, solanaWallets, syncSolWallet]);
 
-  const [hasShow, setHasShow] = useState(false);
+  // const [hasShow, setHasShow] = useState(false);
 
   useEffect(() => {
-    if (!ready || hasShow) return;
+    // if (!ready || hasShow) return;
 
     if (!authenticated) {
-      setHasShow(true);
-      toConnectWallet();
+      // setHasShow(true);
+      // toConnectWallet();
     } else {
       connectToLinkedSolWallet();
     }
   }, [ready, authenticated, toConnectWallet, connectToLinkedSolWallet]);
 
-  useEffect(() => {
-    if (ready && !authenticated) {
-      toConnectWallet();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (ready && !authenticated) {
+  //     toConnectWallet();
+  //   }
+  // }, []);
 
   return {
     toConnectWallet,

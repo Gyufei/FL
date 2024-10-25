@@ -12,7 +12,7 @@ export function WithApiHost(path: string) {
 }
 
 export function WithDataApiHost(path: string) {
-  const prodHost = `https://api.tadle.com`;
+  const prodHost = `https://apis.tadle.com`;
   const devHost = `https://preview-apis.tadle.com`;
   const host = isProduction ? prodHost : devHost;
   return `${host}${path}`;

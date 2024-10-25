@@ -1,5 +1,5 @@
 import { atomWithStorage } from "jotai/utils";
-import { ChainConfigs } from "../const/chain-config";
+import { ChainConfigs } from "../const/chain-configs";
 
 export const GlobalRpcsAtom = atomWithStorage<Record<any, any>>(
   "globalRpcsV2",

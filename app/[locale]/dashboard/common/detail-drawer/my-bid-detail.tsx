@@ -17,7 +17,7 @@ import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-t
 
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 
 export default function MyBidDetail({

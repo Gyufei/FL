@@ -10,7 +10,7 @@ import {
 } from "@/lib/states/network";
 import { useSwitchChain } from "wagmi";
 
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useCurrentChain() {

@@ -12,7 +12,7 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export default function BidDetail({
   offer,

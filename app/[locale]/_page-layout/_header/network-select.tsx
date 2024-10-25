@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/popover";
 
 import { useCurrentChain } from "@/lib/hooks/web3/use-current-chain";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export function NetworkSelect() {
   const [popOpen, setPopOpen] = useState(false);

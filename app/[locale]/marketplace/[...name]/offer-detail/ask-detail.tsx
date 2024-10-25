@@ -13,7 +13,7 @@ import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export default function AskDetail({
   offer,

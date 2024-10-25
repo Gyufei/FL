@@ -4,7 +4,7 @@ import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
 import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useCreateReferralEth({ chain }: { chain: ChainType }) {

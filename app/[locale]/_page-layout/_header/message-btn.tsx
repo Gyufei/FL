@@ -69,7 +69,6 @@ function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
   const { data: tokens } = useTokens(ChainType.ETH);
   const { data: markets } = useMarketplaces();
 
-  console.log(markets, msgDetail.market_id);
   const marketplace = markets?.find(
     (marketplace) => marketplace.market_place_account === msgDetail.market_id,
   );
@@ -145,10 +144,11 @@ function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
             <div
               className="flex cursor-pointer items-center"
               onClick={() => {
-                // handleGoScan(
-                //   marketplace?.chain || ChainType.ETH,
-                //   msgDetail?.txHash,
-                // )
+                handleGoScan(
+                  marketplace?.chain || ChainType.ETH,
+                  "",
+                  // msgDetail?.txHash,
+                );
               }}
             >
               Solscan

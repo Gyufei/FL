@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { useRouter } from "@/app/navigation";
 import { IMarketplace } from "@/lib/types/marketplace";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export default function PointMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");

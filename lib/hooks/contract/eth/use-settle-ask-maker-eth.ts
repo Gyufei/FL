@@ -4,7 +4,7 @@ import { useGasEth } from "../help/use-gas-eth";
 import useTxStatus from "../help/use-tx-status";
 import { useTransactionRecord } from "../../api/use-transactionRecord";
 import { ChainType } from "@/lib/types/chain";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export function useSettleAskMakerEth({
   chain,

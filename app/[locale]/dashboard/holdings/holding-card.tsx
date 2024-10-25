@@ -8,7 +8,7 @@ import DelistBtn from "./delist-btn";
 import { useTranslations } from "next-intl";
 import AbortHoldingBtn from "./abort-holding-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export default function HoldingCard({
   openHoldingDrawer,

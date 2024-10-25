@@ -15,7 +15,7 @@ import ConfirmAskMakerSettleDialog from "./confirm-ask-maker-settle-dialog";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export default function MyAskDetail({
   holdingId,

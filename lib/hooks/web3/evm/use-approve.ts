@@ -12,7 +12,7 @@ import { useTokens } from "../../api/token/use-tokens";
 import { USDTAbi } from "@/lib/abi/eth/USDT";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
-import { ChainConfigs } from "@/lib/const/chain-config";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export function useApprove(
   chain: ChainType,

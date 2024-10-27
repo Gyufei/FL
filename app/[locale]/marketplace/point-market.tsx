@@ -174,15 +174,15 @@ export default function PointMarket({ className }: { className?: string }) {
     {
       label: t("th-TotalVol"),
       renderCell: (item: IMarketplace) => {
-        const total = Number(item.total_vol);
-        const h24Change = Number(item.vol_24h);
+        // const total = Number(item.total_vol);
+        // const h24Change = Number(item.vol_24h);
 
-        const totalPercent =
-          total === 0
-            ? 0
-            : total === h24Change
-            ? 1
-            : NP.divide(h24Change || 0, total - h24Change);
+        // const totalPercent =
+        //   total === 0
+        //     ? 0
+        //     : total === h24Change
+        //     ? 1
+        //     : NP.divide(h24Change || 0, total - h24Change);
 
         return isLoadingFlag ? (
           <div className="flex justify-end">
@@ -191,7 +191,8 @@ export default function PointMarket({ className }: { className?: string }) {
         ) : (
           <div className="flex flex-col items-end">
             <PriceText num={Number(item.total_vol)} />
-            <PercentText num={totalPercent * 100} />
+            <div className="h-4 leading-4"></div>
+            {/* <PercentText num={totalPercent * 100} /> */}
           </div>
         );
       },

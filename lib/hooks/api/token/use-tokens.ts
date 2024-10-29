@@ -4,10 +4,15 @@ import { apiFetcher } from "@/lib/fetcher";
 import { useEndPoint } from "../use-endpoint";
 import { ChainType } from "@/lib/types/chain";
 
-export function useTokens(chain: ChainType) {
+export function useTokens(chain?: ChainType) {
   const { cdnEndPoint } = useEndPoint();
 
   async function tFetcher() {
+    if (!chain)
+      return {
+        tokens: [],
+      };
+
     const tokens = await apiFetcher(
       `${cdnEndPoint}/${chain}/tokenlist/${chain}.json`,
     );
@@ -26,6 +31,10 @@ export function useTokens(chain: ChainType) {
 
       if (newT.symbol === "WETH") {
         newT.symbol = "ETH";
+      }
+
+      if (newT.symbol === "WBNB") {
+        newT.symbol = "BNB";
       }
 
       return newT;

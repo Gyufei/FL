@@ -107,6 +107,7 @@ export default function PointMarket({ className }: { className?: string }) {
       label: t("th-Asset"),
       renderCell: (item: IMarketplace) => {
         const chainInfo = ChainConfigs[item.chain];
+
         return isLoadingFlag ? (
           <div className="flex items-center">
             <Skeleton className="h-[32px] w-[32px] rounded-full" />
@@ -122,7 +123,7 @@ export default function PointMarket({ className }: { className?: string }) {
           >
             <TokenPairImg
               src1={item?.projectLogo}
-              src2={chainInfo.logo}
+              src2={chainInfo?.logo}
               width1={32}
               height1={32}
               width2={14}

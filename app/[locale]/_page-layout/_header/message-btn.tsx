@@ -16,7 +16,7 @@ import { formatNum } from "@/lib/utils/number";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
-  const { data } = useWsMsgSub(ChainType.ETH);
+  const { data } = useWsMsgSub(ChainType.BNB);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -67,12 +67,13 @@ export default function MessageBtn() {
 }
 
 function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
-  const { data: tokens } = useTokens(ChainType.ETH);
   const { data: markets } = useMarketplaces();
 
   const marketplace = markets?.find(
     (marketplace) => marketplace.market_place_account === msgDetail.market_id,
   );
+
+  const { data: tokens } = useTokens(marketplace?.chain);
 
   const token = useMemo(() => {
     if (!tokens) return null;

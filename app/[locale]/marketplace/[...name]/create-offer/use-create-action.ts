@@ -39,7 +39,8 @@ export function useCreateAction(
       setPoint(
         points.find(
           (point) =>
-            point.marketplace.market_place_account === marketplace.market_place_account,
+            point.marketplace.market_place_account ===
+            marketplace.market_place_account,
         ) || null,
       );
     }
@@ -51,7 +52,10 @@ export function useCreateAction(
     }
   }, [stableTokens]);
 
-  const { data: tokenPrice } = useTokenPrice(marketplace.chain, token?.address || "");
+  const { data: tokenPrice } = useTokenPrice(
+    marketplace.chain,
+    token?.address || "",
+  );
 
   const tokenAmountValue = useMemo(() => {
     if (!tokenAmount) return 0;
@@ -93,7 +97,7 @@ export function useCreateAction(
 
     writeAction({
       direction: direction,
-      price: String(pointPrice),
+      price: String(tokenAmount),
       total_item_amount: pointAmount,
       payment_token: token.symbol,
       collateral_ratio: collateralRate,

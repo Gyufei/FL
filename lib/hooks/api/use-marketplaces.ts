@@ -8,45 +8,24 @@ import {
 
 import { useEndPoint } from "./use-endpoint";
 import { IMarketplace } from "@/lib/types/marketplace";
-import { ChainType } from "@/lib/types/chain";
 
 export function useMarketplaces(chain?: string) {
   const { dataApiEndPoint } = useEndPoint();
 
-  async function fetchChainMarket(chainInner?: string) {
-    const query = chainInner ? `?chain=${chainInner}` : "";
-    const mars = await dataApiFetcher(
-      `${dataApiEndPoint}${DataApiPaths.markets}${query}`,
-    );
-
-    return mars;
-  }
-
   async function allChainFetch() {
-    const chains = [ChainType.ETH, ChainType.BNB, ChainType.SOLANA];
-
-    const res = await Promise.all(
-      chains.map(async (chain: ChainType) => {
-        const mars = await fetchChainMarket(chain);
-        const markets = mars.map((m: any) => {
-          return {
-            ...m,
-            projectLogo: WithProjectImgCDN(m.market_symbol, chain),
-            pointLogo: WithPointImgCDN(m.market_symbol, chain),
-            chain,
-          };
-        });
-
-        return markets;
-      }),
+    const res = await dataApiFetcher(
+      `${dataApiEndPoint}${DataApiPaths.markets}`,
     );
 
-    const allMarket = res
-      .flat()
-      .filter(
-        (m: any) =>
-          !(m.chain !== ChainType.SOLANA && m.market_symbol === "backpack"),
-      );
+    const allMarket = res.flat().map((m: any) => {
+      const chain = m.chain_name;
+      return {
+        ...m,
+        projectLogo: WithProjectImgCDN(m.market_symbol, chain),
+        pointLogo: WithPointImgCDN(m.market_symbol, chain),
+        chain,
+      };
+    });
 
     return allMarket as Array<IMarketplace>;
   }

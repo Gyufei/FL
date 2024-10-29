@@ -76,7 +76,8 @@ export default function BidDetail({
 
     if (isDepositLoading || !sellPointAmount) return;
     await writeAction({
-      pointAmount: sellPointAmount,
+      offerId: offer.offer_id,
+      itemAmount: sellPointAmount,
     });
   }
 

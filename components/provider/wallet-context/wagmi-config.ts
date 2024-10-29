@@ -1,12 +1,12 @@
 import { cookieStorage, createStorage, http } from "wagmi";
-import { mainnet, bsc, bscTestnet } from "wagmi/chains";
+import { mainnet, bsc, bscTestnet, sepolia } from "wagmi/chains";
 import { testnet } from "./testnet";
 import { isProduction } from "@/lib/PathMap";
 import { createConfig } from "@privy-io/wagmi";
 
 export const supportedChains = isProduction
   ? ([mainnet, bsc] as const)
-  : ([mainnet, bsc, testnet, bscTestnet] as const);
+  : ([mainnet, bsc, sepolia, testnet, bscTestnet] as const);
 
 export function getEvmWagmiConfig({
   ethRpc,
@@ -22,6 +22,7 @@ export function getEvmWagmiConfig({
       }
     : {
         [bscTestnet.id]: http(bnbRpc),
+        [sepolia.id]: http(),
         [testnet.id]: http(),
       };
 

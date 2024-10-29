@@ -21,6 +21,8 @@ export function getEvmWagmiConfig({
         [bsc.id]: http(bnbRpc),
       }
     : {
+        [mainnet.id]: http(ethRpc),
+        [bsc.id]: http(bnbRpc),
         [bscTestnet.id]: http(bnbRpc),
         [sepolia.id]: http(),
         [testnet.id]: http(),

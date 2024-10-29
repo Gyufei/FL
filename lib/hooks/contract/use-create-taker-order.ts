@@ -4,8 +4,10 @@ import { useDataApiTransactionRecord } from "../api/use-transactionRecord";
 import { useChainSendTx } from "./help/use-chain-send-tx";
 import { dataApiFetcher } from "@/lib/fetcher";
 import useTxStatus from "./help/use-tx-status";
+import { useChainWallet } from "../web3/use-chain-wallet";
 
 export function useCreateTakerOrder(chain: ChainType) {
+  const { address } = useChainWallet();
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
@@ -28,9 +30,11 @@ export function useCreateTakerOrder(chain: ChainType) {
     );
 
     const callParams = {
-      ...res,
+      ...res.tx_data,
+      from: address,
     };
 
+    console.log("callParams", callParams);
     const txHash = await sendTx({
       ...callParams,
     });

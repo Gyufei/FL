@@ -30,7 +30,7 @@ export function useList(chain: ChainType) {
     });
 
     const callParams = {
-      ...res,
+      ...res.tx_data,
     };
 
     const txHash = await sendTx({

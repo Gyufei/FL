@@ -24,7 +24,7 @@ export function useAbortAskOffer(chain: ChainType) {
     );
 
     const callParams = {
-      ...res,
+      ...res.tx_data,
     };
 
     const txHash = await sendTx({

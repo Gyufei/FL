@@ -33,7 +33,7 @@ export function useWsMsgSub(chain: ChainType) {
 
       function onMsgEvent(value: any) {
         next(null, (prev: Array<IMsg>) =>
-          prev.concat({
+          (prev || []).concat({
             ...value,
             timestamp: Date.now(),
           }),

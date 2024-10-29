@@ -89,7 +89,7 @@ export default function AskDetail({
     if (isDepositLoading || !receivePointAmount) return;
     await writeAction({
       offerId: offer.offer_id,
-      itemAmount: receivePointAmount,
+      itemAmount: String(receivePointAmount),
     });
   }
 

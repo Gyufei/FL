@@ -75,7 +75,12 @@ export function useCreateAction(
     isLoading: isCreating,
     write: writeAction,
     isSuccess: isCreateSuccess,
-  } = useCreateOffer(currentMarket.market_symbol, currentMarket.chain);
+  } = useCreateOffer({
+    marketSymbol: currentMarket.market_symbol,
+    chain: currentMarket.chain,
+    marketplaceStr: currentMarket.market_place_account,
+    offerType: direction === "sell" ? "ask" : "bid",
+  });
 
   async function handleCreate({
     collateralRate,

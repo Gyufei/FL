@@ -32,6 +32,7 @@ export default function BidDetail({
     pointPerPrice,
     isFilled,
     offerTokenInfo,
+    isNativeToken,
   } = useOfferFormat({
     offer: offer,
   });
@@ -62,7 +63,22 @@ export default function BidDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateTakerOrder(offer.marketplace.chain);
+  } = useCreateTakerOrder({
+    chain: offer.marketplace.chain,
+    marketplaceStr: offer.marketplace.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    // TODO: add field in new api
+    // preOfferAuthStr: order.authority,
+    // originOfferStr: makerDetail?.origin_offer || "",
+    // originOfferAuthStr: order.origin_offer_detail?.authority,
+    // referrerStr: referrer || "",
+    preOfferAuthStr: "",
+    originOfferStr: "",
+    originOfferAuthStr: "",
+    referrerStr: "",
+    isNativeToken,
+  });
 
   function handleSliderChange(v: number) {
     setSellPointAmount(v);

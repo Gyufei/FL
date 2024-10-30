@@ -1,5 +1,6 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAbortOrderAsTaker } from "@/lib/hooks/contract/use-abort-order-as-taker";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IHolding } from "@/lib/types/holding";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
@@ -13,11 +14,22 @@ export default function AbortHoldingBtn({
 }) {
   const mst = useTranslations("page-MyStocks");
 
+  const { isNativeToken } = useOfferFormat({
+    offer: holding.offer,
+  });
+
   const {
     isLoading,
     write: abortOrderAsTakerAction,
     isSuccess,
-  } = useAbortOrderAsTaker(holding.offer.marketplace.chain);
+  } = useAbortOrderAsTaker({
+    chain: holding.offer.marketplace.chain,
+    marketplaceStr: holding.offer.marketplace.market_place_account,
+    makerStr: holding.offer.offer_maker,
+    offerStr: holding.offer.offer_id,
+    holdingStr: holding.holding_id,
+    isNativeToken: isNativeToken,
+  });
 
   function handleConfirm() {
     abortOrderAsTakerAction({

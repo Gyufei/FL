@@ -1,47 +1,36 @@
+import { useChainTx } from "./help/use-chain-tx";
+import { useAbortAskOfferEth } from "./eth/use-abort-ask-offer-eth";
+import { useAbortAskOfferSol } from "./solana/use-abort-ask-offer-sol";
 import { ChainType } from "@/lib/types/chain";
-import { useEndPoint } from "../api/use-endpoint";
-import { useDataApiTransactionRecord } from "../api/use-transactionRecord";
-import { useChainSendTx } from "./help/use-chain-send-tx";
-import { dataApiFetcher } from "@/lib/fetcher";
-import useTxStatus from "./help/use-tx-status";
 
-export function useAbortAskOffer(chain: ChainType) {
-  const { submitTransaction } = useDataApiTransactionRecord();
-  const { dataApiEndPoint } = useEndPoint();
-  const { sendTx } = useChainSendTx(chain);
-
-  const txAction = async (args: { offerId: string }) => {
-    const { offerId } = args;
-    const res = await dataApiFetcher(
-      `${dataApiEndPoint}/offer/${offerId}/abort?chain=${chain}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: null,
-      },
-    );
-
-    const callParams = {
-      ...res.tx_data,
-    };
-
-    const txHash = await sendTx({
-      ...callParams,
-    });
-
-    await submitTransaction({
+export function useAbortAskOffer({
+  chain,
+  marketplaceStr,
+  makerStr,
+  offerStr,
+  holdingStr,
+  isNativeToken,
+}: {
+  chain: ChainType;
+  marketplaceStr: string;
+  makerStr: string;
+  offerStr: string;
+  holdingStr: string;
+  isNativeToken: boolean;
+}) {
+  const chainActionRes = useChainTx(
+    chain,
+    useAbortAskOfferEth,
+    useAbortAskOfferSol,
+    {
       chain,
-      txHash,
-      txType: "abortOffer",
-      txData: null,
-    });
+      marketplaceStr,
+      makerStr,
+      offerStr,
+      holdingStr,
+      isNativeToken,
+    },
+  );
 
-    return txHash;
-  };
-
-  const wrapRes = useTxStatus(txAction);
-
-  return wrapRes;
+  return chainActionRes;
 }

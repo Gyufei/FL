@@ -53,7 +53,14 @@ export default function MyBidDetail({
     isLoading: isClosing,
     write: closeAction,
     isSuccess: isCloseSuccess,
-  } = useCloseOffer(offer.marketplace.chain);
+  } = useCloseOffer({
+    chain: offer.marketplace.chain,
+    marketplaceStr: offer.marketplace.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    holdingStr: holdingId,
+    isNativeToken,
+  });
 
   const {
     isLoading: isBidClosing,

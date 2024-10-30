@@ -64,7 +64,24 @@ export default function MyBalances() {
 
   const { address: wallet } = useChainWallet();
 
-  const { data: tokens } = useTokens(ChainType.ETH);
+  const { data: ethTokens } = useTokens(ChainType.ETH);
+  const { data: bnbTokens } = useTokens(ChainType.BNB);
+  const { data: solanaTokens } = useTokens(ChainType.SOLANA);
+
+  const allTokens = useMemo(() => {
+    function addChainToToken(chain: ChainType, tokens: IToken[]) {
+      return tokens.map((token) => ({
+        ...token,
+        chain,
+      }));
+    }
+
+    return [
+      ...addChainToToken(ChainType.ETH, ethTokens || []),
+      ...addChainToToken(ChainType.BNB, bnbTokens || []),
+      ...addChainToToken(ChainType.SOLANA, solanaTokens || []),
+    ];
+  }, [ethTokens, bnbTokens, solanaTokens]);
 
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);
@@ -76,11 +93,11 @@ export default function MyBalances() {
 
   const getTokenDataFormat = useCallback(
     (bData: Array<ITokenBalance> | undefined, key: string) => {
-      if (!bData || !tokens) return [];
+      if (!bData || !allTokens.length) return [];
 
       const itemData = bData?.map((t) => {
         const tokenInfo =
-          tokens.find((token) => token.address === t.token_addr) ||
+          allTokens.find((token) => token.address === t.token_addr) ||
           TokenListMap[t.token_addr];
 
         const amount = NP.divide(
@@ -96,7 +113,7 @@ export default function MyBalances() {
 
       return itemData;
     },
-    [tokens],
+    [allTokens],
   );
 
   const getPointDataFormat = useCallback(

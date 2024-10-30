@@ -26,13 +26,15 @@ export function TokenGetCard({
     isLoading: isWdTokenLoading,
     write: wdTokenAction,
     isSuccess: isWdTokenSuccess,
-  } = useWithdrawToken((tokenInfo as any)?.market.chain);
+  } = useWithdrawToken({
+    chain: (tokenInfo as any)?.chain,
+  });
 
   const {
     isLoading: isWdItemLoading,
     write: wdItemAction,
     isSuccess: isWdItemSuccess,
-  } = useWithdrawItem((tokenInfo as any)?.market.chain);
+  } = useWithdrawItem({ chain: (tokenInfo as any)?.chain });
 
   function handleWithdrawToken() {
     if (isWdTokenLoading) return;

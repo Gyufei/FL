@@ -1,55 +1,45 @@
 import { ChainType } from "@/lib/types/chain";
-import { useEndPoint } from "../api/use-endpoint";
-import { useDataApiTransactionRecord } from "../api/use-transactionRecord";
-import { useChainSendTx } from "./help/use-chain-send-tx";
-import { dataApiFetcher } from "@/lib/fetcher";
-import useTxStatus from "./help/use-tx-status";
-import { useChainWallet } from "../web3/use-chain-wallet";
+import { useChainTx } from "./help/use-chain-tx";
+import { useCreateTakerOrderEth } from "./eth/use-create-taker-order-eth";
+import { useCreateTakerOrderSol } from "./solana/use-create-taker-order-sol";
 
-export function useCreateTakerOrder(chain: ChainType) {
-  const { address } = useChainWallet();
-  const { submitTransaction } = useDataApiTransactionRecord();
-  const { dataApiEndPoint } = useEndPoint();
-  const { sendTx } = useChainSendTx(chain);
-
-  const txAction = async (args: { offerId: string; itemAmount: string }) => {
-    const { offerId, itemAmount } = args;
-
-    const reqData = {
-      item_amount: itemAmount,
-    };
-    const res = await dataApiFetcher(
-      `${dataApiEndPoint}/offer/${offerId}/take?chain=${chain}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reqData),
-      },
-    );
-
-    const callParams = {
-      ...res.tx_data,
-      from: address,
-    };
-
-    console.log("callParams", callParams);
-    const txHash = await sendTx({
-      ...callParams,
-    });
-
-    await submitTransaction({
+export function useCreateTakerOrder({
+  chain,
+  marketplaceStr,
+  offerStr,
+  makerStr,
+  originOfferStr,
+  originOfferAuthStr,
+  preOfferAuthStr,
+  referrerStr,
+  isNativeToken,
+}: {
+  chain: ChainType;
+  marketplaceStr: string;
+  offerStr: string;
+  makerStr: string;
+  originOfferStr: string;
+  originOfferAuthStr: string;
+  preOfferAuthStr: string;
+  referrerStr: string;
+  isNativeToken: boolean;
+}) {
+  const chainActionRes = useChainTx(
+    chain,
+    useCreateTakerOrderEth,
+    useCreateTakerOrderSol,
+    {
       chain,
-      txHash,
-      txType: "createTakerOrder",
-      txData: reqData,
-    });
+      marketplaceStr,
+      offerStr,
+      makerStr,
+      originOfferStr,
+      originOfferAuthStr,
+      preOfferAuthStr,
+      referrerStr,
+      isNativeToken,
+    },
+  );
 
-    return txHash;
-  };
-
-  const wrapRes = useTxStatus(txAction);
-
-  return wrapRes;
+  return chainActionRes;
 }

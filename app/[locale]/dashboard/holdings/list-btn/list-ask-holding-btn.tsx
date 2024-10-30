@@ -34,9 +34,10 @@ export default function ListAskHoldingBtn({
   const T = useTranslations("page-MyStocks");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { offerPointInfo, offerTokenInfo, tokenPrice } = useOfferFormat({
-    offer: holding.offer,
-  });
+  const { offerPointInfo, offerTokenInfo, tokenPrice, isNativeToken } =
+    useOfferFormat({
+      offer: holding.offer,
+    });
 
   const { data: entryInfo } = useEntryById(holding.offer.entry.id);
 
@@ -58,7 +59,18 @@ export default function ListAskHoldingBtn({
     isLoading: isDepositLoading,
     write: writeAction,
     isSuccess,
-  } = useList(holding.offer.marketplace.chain);
+  } = useList({
+    chain: holding.offer.marketplace.chain,
+    marketplaceStr: holding.offer.marketplace.market_place_account,
+    makerStr: holding.offer.offer_maker,
+    holdingStr: holding.holding_id,
+    // TODO: add field in new api
+    // preOfferStr: holding.pre_offer_account,
+    // originOfferStr: makerDetail?.origin_offer || "",
+    preOfferStr: "",
+    originOfferStr: "",
+    isNativeToken,
+  });
 
   function handleDeposit() {
     if (!sellPointAmount || !receiveTokenAmount) {

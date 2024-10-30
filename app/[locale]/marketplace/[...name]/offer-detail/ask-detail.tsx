@@ -28,6 +28,7 @@ export default function AskDetail({
   const isZh = locale === "zh";
 
   const { platformFee } = useGlobalConfig();
+
   const {
     tokenPrice,
     progress,
@@ -36,7 +37,8 @@ export default function AskDetail({
     forLogo,
     pointPerPrice,
     isFilled,
-    offerTokenInfo: orderTokenInfo,
+    offerTokenInfo,
+    isNativeToken,
   } = useOfferFormat({
     offer,
   });
@@ -50,10 +52,25 @@ export default function AskDetail({
     isLoading: isDepositLoading,
     isSuccess,
     write: writeAction,
-  } = useCreateTakerOrder(offer.marketplace.chain);
+  } = useCreateTakerOrder({
+    chain: offer.marketplace.chain,
+    marketplaceStr: offer.marketplace.market_place_account,
+    makerStr: offer.offer_maker,
+    offerStr: offer.offer_id,
+    // TODO: add field in new api
+    // preOfferAuthStr: order.authority,
+    // originOfferStr: makerDetail?.origin_offer || "",
+    // originOfferAuthStr: order.origin_offer_detail?.authority,
+    // referrerStr: referrer || "",
+    preOfferAuthStr: "",
+    originOfferStr: "",
+    originOfferAuthStr: "",
+    referrerStr: "",
+    isNativeToken,
+  });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(offer.marketplace.chain, orderTokenInfo?.address || "");
+    useApprove(offer.marketplace.chain, offerTokenInfo?.address || "");
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
@@ -99,7 +116,7 @@ export default function AskDetail({
         no: "",
         pay: payTokenAmount,
         tx: txHash,
-        token: orderTokenInfo,
+        token: offerTokenInfo,
       });
     }
   }, [isSuccess]);

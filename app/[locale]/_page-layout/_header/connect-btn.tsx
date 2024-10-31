@@ -45,8 +45,8 @@ export default function ConnectBtn() {
       <Dialog
         open={showSignIn}
         onOpenChange={(isOpen) => {
-          setDrawerOpen(isOpen);
-          // setShowSignIn(isOpen)
+          // setDrawerOpen(isOpen);
+          setShowSignIn(isOpen);
         }}
       >
         <VisuallyHidden asChild>

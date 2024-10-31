@@ -30,7 +30,10 @@
     "txt-SignAMessageInYourWallet": "Sign a message in your wallet to verify that you own this wallet.",
     "cap-Welcome": "Welcome",
     "btn-Continue": "Continue",
-    "txt-YourFriendSentYouAnOnboardingInvitation": "Your friend <name></name> sent you an onboarding invitation with <num></num> trading fee back! "
+    "txt-YourFriendSentYouAnOnboardingInvitation": "Your friend <name></name> sent you an onboarding invitation with <num></num> trading fee back! ",
+    "drawer-title-Info": "Info",
+    "drawer-Wallets": "Wallets",
+    "drawer-SocialMedia": "Social Media"
   },
   "pop-Setting": {
     "cap-Setting": "Setting",

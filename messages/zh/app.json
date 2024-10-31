@@ -30,7 +30,10 @@
     "txt-SignAMessageInYourWallet": "在您的钱包中签署一条消息，以验证您是连接地址的所有者",
     "cap-Welcome": "欢迎",
     "btn-Continue": "继续",
-    "txt-YourFriendSentYouAnOnboardingInvitation": "您的朋友 <name></name> 向您发送了一个交易费返还 <num></num> 的引导邀请"
+    "txt-YourFriendSentYouAnOnboardingInvitation": "您的朋友 <name></name> 向您发送了一个交易费返还 <num></num> 的引导邀请",
+    "drawer-title-Info": "信息",
+    "drawer-Wallets": "线包",
+    "drawer-SocialMedia": "社交媒体"
   },
   "pop-Setting": {
     "cap-Setting": "设置",

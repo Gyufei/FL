@@ -1,4 +1,3 @@
-import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { ChainType } from "@/lib/types/chain";
 import { IPoint, IToken } from "@/lib/types/token";
@@ -8,6 +7,7 @@ export function usePairApprove(
   chain: ChainType,
   token: IToken | undefined,
   point: IPoint | undefined,
+  type?: "sell" | "buy" | "sellToBid" | "buyFromAsk",
 ) {
   const isMarketPointToken =
     point?.marketplace?.market_catagory === "point_token";
@@ -15,42 +15,44 @@ export function usePairApprove(
   const skipToken = useMemo(() => {
     if (!token) return true;
 
-    if (isMarketPointToken) return true;
-
     if (token?.symbol === "ETH" || token?.symbol === "BNB") return true;
 
+    if (isMarketPointToken && type === "sell") return true;
+
     return false;
-  }, [token, isMarketPointToken]);
+  }, [token, isMarketPointToken, type]);
 
   const skipPoint = useMemo(() => {
-    if (!point || !point.marketplace) return true;
-
-    if (!isMarketPointToken) {
-      return true;
+    if (isMarketPointToken && ["sell", "sellToBid"].includes(type || "")) {
+      return false;
     }
 
-    if (
-      point?.marketplace?.project_token_addr === ChainConfigs[chain].zeroAddr
-    ) {
-      return true;
-    }
-
-    return false;
-  }, [point, isMarketPointToken, chain]);
+    return true;
+  }, [isMarketPointToken, type]);
 
   const {
     isShouldApprove: isShouldApproveToken,
     approveAction: approveActionToken,
     isApproving: isApprovingToken,
     approveBtnText: approveBtnTextToken,
-  } = useApprove(chain || "", token, skipToken);
+  } = useApprove(
+    chain || "",
+    token?.address || "",
+    token?.symbol || "",
+    skipToken,
+  );
 
   const {
     isShouldApprove: isShouldApprovePoint,
     approveAction: approveActionPoint,
     isApproving: isApprovingPoint,
     approveBtnText: approveBtnTextPoint,
-  } = useApprove(chain || "", point, skipPoint);
+  } = useApprove(
+    chain || "",
+    point?.marketplace.project_token_addr || "",
+    point?.marketplace.item_name || "",
+    skipPoint,
+  );
 
   const isShouldApprove = isShouldApprovePoint || isShouldApproveToken;
   const isApproving = isApprovingPoint || isApprovingToken;

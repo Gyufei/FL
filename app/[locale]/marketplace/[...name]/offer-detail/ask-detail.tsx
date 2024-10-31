@@ -13,7 +13,7 @@ import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
-import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
+import { usePairApprove } from "../create-offer/use-pair-approve";
 
 export default function AskDetail({
   offer,
@@ -39,6 +39,8 @@ export default function AskDetail({
     isFilled,
     offerTokenInfo,
     isNativeToken,
+    offerPointInfo,
+    pointDecimalNum,
   } = useOfferFormat({
     offer,
   });
@@ -70,7 +72,12 @@ export default function AskDetail({
   });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(offer.marketplace.chain, offerTokenInfo);
+    usePairApprove(
+      offer.marketplace.chain,
+      offerTokenInfo,
+      offerPointInfo,
+      "buyFromAsk",
+    );
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
@@ -106,7 +113,7 @@ export default function AskDetail({
     if (isDepositLoading || !receivePointAmount) return;
     await writeAction({
       offerId: offer.offer_id,
-      itemAmount: String(receivePointAmount),
+      itemAmount: NP.times(receivePointAmount, pointDecimalNum),
     });
   }
 

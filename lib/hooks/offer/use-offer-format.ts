@@ -7,6 +7,7 @@ import useTge from "../marketplace/useTge";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useTokens } from "../api/token/use-tokens";
 import { checkIsNativeToken } from "@/lib/utils/web3";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { data: tokens } = useTokens(offer.marketplace.chain);
@@ -142,6 +143,15 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     return false;
   }, [offer]);
 
+  const pointDecimalNum = useMemo(() => {
+    if (ProjectDecimalsMap[offer.marketplace.market_symbol]) {
+      const decimal = ProjectDecimalsMap[offer.marketplace.market_symbol];
+      return 10 ** decimal;
+    }
+
+    return 1;
+  }, [offer.marketplace]);
+
   return {
     orderDuration,
     afterTGE,
@@ -162,6 +172,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     offerPointInfo,
     offerTokenInfo,
     offerEqTokenInfo,
+    pointDecimalNum,
 
     isCanSettle,
     isSettled,

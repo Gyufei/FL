@@ -58,7 +58,12 @@ export function BuyContent({
   } = useOptionOfCreate();
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    usePairApprove(currentMarket.chain, payToken, receivePoint || undefined);
+    usePairApprove(
+      currentMarket.chain,
+      payToken,
+      receivePoint || undefined,
+      "buy",
+    );
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {

@@ -34,12 +34,13 @@ export default function BidDetail({
     offerTokenInfo,
     offerPointInfo,
     isNativeToken,
+    pointDecimalNum
   } = useOfferFormat({
     offer: offer,
   });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    usePairApprove(offer.marketplace.chain, offerTokenInfo, offerPointInfo);
+    usePairApprove(offer.marketplace.chain, offerTokenInfo, offerPointInfo, "sellToBid");
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -94,7 +95,7 @@ export default function BidDetail({
     if (isDepositLoading || !sellPointAmount) return;
     await writeAction({
       offerId: offer.offer_id,
-      itemAmount: String(sellPointAmount),
+      itemAmount: NP.times(sellPointAmount, pointDecimalNum),
     });
   }
 

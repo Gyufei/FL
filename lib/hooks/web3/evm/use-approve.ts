@@ -12,11 +12,11 @@ import { USDTAbi } from "@/lib/abi/eth/USDT";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
 import { ChainConfigs } from "@/lib/const/chain-configs";
-import { IPoint, IToken } from "@/lib/types/token";
 
 export function useApprove(
   chain: ChainType,
-  tokenOrPoint: IToken | IPoint | undefined,
+  tokenAddr: string,
+  tokenSymbol: string,
   skipApprove: boolean = false,
 ) {
   const allowAmount: number = 0;
@@ -43,43 +43,17 @@ export function useApprove(
     },
   });
 
-  const isPoint = !!tokenOrPoint?.marketplace;
-
-  const tokenAddr = useMemo(() => {
-    if (isPoint) {
-      return tokenOrPoint?.marketplace.project_token_addr;
-    } else {
-      return (tokenOrPoint as IToken)?.address;
-    }
-  }, [tokenOrPoint, isPoint]);
-
-  const tokenSymbol = useMemo(() => {
-    if (isPoint) {
-      return tokenOrPoint?.marketplace?.item_name;
-    } else {
-      return tokenOrPoint?.symbol;
-    }
-  }, [tokenOrPoint, isPoint]);
-
   const shouldWithApprove = useMemo(() => {
     if (skipApprove) return false;
 
-    if (!isEvm || !tokenOrPoint) return false;
+    if (!isEvm || !tokenAddr) return false;
 
     if (tokenSymbol === "ETH" || tokenSymbol === "BNB") return false;
 
     if (!walletAccount || !spender || !tokenAddr) return false;
 
     return true;
-  }, [
-    skipApprove,
-    isEvm,
-    walletAccount,
-    spender,
-    tokenAddr,
-    tokenOrPoint,
-    tokenSymbol,
-  ]);
+  }, [skipApprove, isEvm, walletAccount, spender, tokenAddr, tokenSymbol]);
 
   const readAllowance = useCallback(async () => {
     if (!shouldWithApprove) return;

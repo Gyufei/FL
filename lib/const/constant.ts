@@ -45,3 +45,7 @@ export const TzList = (() => {
   }
   return arr;
 })();
+
+export const ProjectDecimalsMap: Record<string, number> = {
+  din: 18,
+};

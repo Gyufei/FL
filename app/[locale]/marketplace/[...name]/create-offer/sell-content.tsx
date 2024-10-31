@@ -69,6 +69,7 @@ export function SellContent({
       currentMarket?.chain || "",
       receiveToken,
       sellPoint || undefined,
+      "sell",
     );
 
   async function handleConfirmBtnClick() {

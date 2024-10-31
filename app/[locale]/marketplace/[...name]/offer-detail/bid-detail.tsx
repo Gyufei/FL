@@ -11,8 +11,8 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
-import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import { usePairApprove } from "../create-offer/use-pair-approve";
 
 export default function BidDetail({
   offer,
@@ -32,13 +32,14 @@ export default function BidDetail({
     pointPerPrice,
     isFilled,
     offerTokenInfo,
+    offerPointInfo,
     isNativeToken,
   } = useOfferFormat({
     offer: offer,
   });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(offer.marketplace.chain, offerTokenInfo?.address || "");
+    usePairApprove(offer.marketplace.chain, offerTokenInfo, offerPointInfo);
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 

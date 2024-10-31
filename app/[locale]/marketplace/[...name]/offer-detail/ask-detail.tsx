@@ -12,8 +12,8 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
-import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 
 export default function AskDetail({
   offer,
@@ -70,7 +70,7 @@ export default function AskDetail({
   });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(offer.marketplace.chain, offerTokenInfo?.address || "");
+    useApprove(offer.marketplace.chain, offerTokenInfo);
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 

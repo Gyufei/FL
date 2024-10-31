@@ -15,9 +15,9 @@ import { SettleModeSelect } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { formatNum } from "@/lib/utils/number";
-import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
+import { usePairApprove } from "./use-pair-approve";
 
 export function SellContent({
   marketplace,
@@ -47,6 +47,12 @@ export function SellContent({
     isCreateSuccess,
   } = useCreateAction(marketplace, "sell");
 
+  useEffect(() => {
+    if (isCreateSuccess) {
+      onSuccess();
+    }
+  }, [isCreateSuccess, onSuccess]);
+
   const {
     collateralRate,
     setCollateralRate,
@@ -59,7 +65,11 @@ export function SellContent({
   } = useOptionOfCreate();
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(currentMarket?.chain || "", receiveToken?.address);
+    usePairApprove(
+      currentMarket?.chain || "",
+      receiveToken,
+      sellPoint || undefined,
+    );
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
@@ -72,12 +82,6 @@ export function SellContent({
       });
     }
   }
-
-  useEffect(() => {
-    if (isCreateSuccess) {
-      onSuccess();
-    }
-  }, [isCreateSuccess, onSuccess]);
 
   return (
     <div className="mt-6 flex flex-1 flex-col justify-between">

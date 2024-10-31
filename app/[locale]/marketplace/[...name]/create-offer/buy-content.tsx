@@ -14,9 +14,9 @@ import { SettleModeSelect } from "./settle-mode-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { formatNum } from "@/lib/utils/number";
-import { useApprove } from "@/lib/hooks/web3/evm/use-approve";
 import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
+import { usePairApprove } from "./use-pair-approve";
 
 export function BuyContent({
   marketplace,
@@ -58,7 +58,7 @@ export function BuyContent({
   } = useOptionOfCreate();
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    useApprove(currentMarket.chain, payToken?.address);
+    usePairApprove(currentMarket.chain, payToken, receivePoint || undefined);
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {

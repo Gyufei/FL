@@ -11,13 +11,13 @@ export function useMyHoldings(chain?: string) {
   const { dataApiEndPoint } = useEndPoint();
 
   const { data: offers, isLoading } = useMarketOffers({
-    marketSymbol: "",
+    marketSymbol: null,
     marketChain: chain || "",
   });
 
   // const tempAddress = 'D7jbXQgpQVr4J4xWtzDPKAgqLrrRWZ2NKrBmiGwyAceN';
   const holdingFetch = async () => {
-    if (!address || isLoading) return [];
+    if (!address || isLoading || !(offers && offers?.length > 0)) return [];
 
     const holdingRes = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.holding}?wallet=${address}&chain=${chain}`,

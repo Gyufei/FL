@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import AbortHoldingBtn from "./abort-holding-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import NP from "number-precision";
 
 export default function HoldingCard({
   openHoldingDrawer,
@@ -19,6 +20,7 @@ export default function HoldingCard({
   holding: IHolding;
   onSuccess: () => void;
 }) {
+  console.log("🚀 ~ holding:", holding);
   const ct = useTranslations("page-MyStocks");
   const {
     afterTGE,
@@ -31,6 +33,7 @@ export default function HoldingCard({
     forLogo,
     isCanSettle,
     isCanAbort,
+    pointDecimalNum,
   } = useOfferFormat({
     offer: holding.offer,
   });
@@ -90,7 +93,7 @@ export default function HoldingCard({
             {ct("lb-Offer")}
           </div>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(offerValue, 2, true)}
+            {formatNum(NP.divide(offerValue, pointDecimalNum), 2, true)}
             <Image
               src={offerLogo}
               width={16}
@@ -100,7 +103,7 @@ export default function HoldingCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} /{" "}
+            ${formatNum(NP.times(pointPerPrice, pointDecimalNum), 6)} /{" "}
             {holding.offer.marketplace.item_name}
           </div>
         </div>

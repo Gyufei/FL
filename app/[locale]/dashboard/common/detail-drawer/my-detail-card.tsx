@@ -16,9 +16,10 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
   const { address } = useChainWallet();
 
-  const { offerTokenInfo, offerPointInfo, duringTGE } = useOfferFormat({
-    offer: offer,
-  });
+  const { offerTokenInfo, offerPointInfo, duringTGE, pointDecimalNum } =
+    useOfferFormat({
+      offer: offer,
+    });
 
   const { data: entryInfo } = useEntryById(offer.entry.id);
 
@@ -73,7 +74,8 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
             {formatNum(offer.taken_item_amount, 2, true)} /{" "}
-            {formatNum(offer.item_amount, 2, true)} pts
+            {formatNum(NP.divide(offer.item_amount, pointDecimalNum), 2, true)}{" "}
+            pts
           </div>
           <Image
             src={offerPointInfo.logoURI}

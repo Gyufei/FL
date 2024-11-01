@@ -16,6 +16,7 @@ import { useRelist } from "@/lib/hooks/contract/use-relist";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import NP from "number-precision";
 
 export default function MyAskDetail({
   holdingId,
@@ -43,6 +44,7 @@ export default function MyAskDetail({
     isClosed,
     isCanAbort,
     isNativeToken,
+    pointDecimalNum,
   } = useOfferFormat({
     offer,
   });
@@ -138,7 +140,7 @@ export default function MyAskDetail({
             className="mt-5"
             topText={<>{ot("txt-YouHaveToSell")}</>}
             bottomText={<>~${formatNum(tokenTotalPrice)} </>}
-            value={String(offer.item_amount)}
+            value={String(NP.divide(offer.item_amount, pointDecimalNum))}
             tokenLogo={offerPointInfo.logoURI}
             onValueChange={() => {}}
             isCanInput={false}
@@ -151,7 +153,8 @@ export default function MyAskDetail({
             isCanInput={false}
             bottomText={
               <>
-                1 {offer.marketplace.item_name} = ${pointPerPrice}
+                1 {offer.marketplace.item_name} = $
+                {NP.times(pointPerPrice, pointDecimalNum)}
               </>
             }
             topText={

@@ -1,5 +1,5 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import { useAbortOrderAsTaker } from "@/lib/hooks/contract/use-abort-order-as-taker";
+import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IHolding } from "@/lib/types/holding";
 import { useTranslations } from "next-intl";
@@ -22,7 +22,7 @@ export default function AbortHoldingBtn({
     isLoading,
     write: abortOrderAsTakerAction,
     isSuccess,
-  } = useAbortOrderAsTaker({
+  } = useAbortAskOffer({
     chain: holding.offer.marketplace.chain,
     marketplaceStr: holding.offer.marketplace.market_place_account,
     makerStr: holding.offer.offer_maker,

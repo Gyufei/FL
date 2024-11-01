@@ -2,6 +2,9 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { formatNum } from "@/lib/utils/number";
 import { Skeleton } from "../ui/skeleton";
 import { useTranslations } from "next-intl";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
+import { useMemo } from "react";
+import NP from "number-precision";
 
 export default function MarketplaceOverview({
   marketplace,
@@ -13,6 +16,15 @@ export default function MarketplaceOverview({
   const t = useTranslations("card-Marketplace");
   const isLoadingFlag = !marketplace || isLoading;
 
+  const pointDecimalNum = useMemo(() => {
+    if (marketplace && ProjectDecimalsMap[marketplace.market_symbol]) {
+      const decimal = ProjectDecimalsMap[marketplace.market_symbol];
+      return 10 ** decimal;
+    }
+
+    return 1;
+  }, [marketplace]);
+
   return (
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
@@ -22,7 +34,11 @@ export default function MarketplaceOverview({
             <ValueSkeleton />
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
-              ${formatNum(marketplace!.floor_price, 6)}
+              $
+              {formatNum(
+                NP.times(marketplace!.floor_price, pointDecimalNum),
+                6,
+              )}
             </div>
           )}
         </div>
@@ -61,7 +77,7 @@ export default function MarketplaceOverview({
             <ValueSkeleton />
           ) : (
             <div className="flex items-center leading-6 text-black">
-              ${formatNum(marketplace!.avg_bid)}
+              ${formatNum(NP.times(marketplace!.avg_bid, pointDecimalNum))}
             </div>
           )}
         </div>

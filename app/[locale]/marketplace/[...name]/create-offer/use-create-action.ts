@@ -9,6 +9,7 @@ import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { ISettleMode } from "@/lib/types/offer";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
+import { toNonExponential } from "@/lib/utils/number";
 
 export function useCreateAction(
   marketplace: IMarketplace,
@@ -112,8 +113,10 @@ export function useCreateAction(
 
     writeAction({
       direction: direction,
-      price: NP.divide(tokenAmount, pointDecimalNum),
-      total_item_amount: NP.times(pointAmount, pointDecimalNum),
+      price: toNonExponential(NP.divide(tokenAmount, pointDecimalNum)),
+      total_item_amount: toNonExponential(
+        NP.times(pointAmount, pointDecimalNum),
+      ),
       payment_token: token.symbol,
       collateral_ratio: collateralRate,
       settle_mode: settleMode,

@@ -1,6 +1,6 @@
 import { ApiPaths, DataApiPaths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
-import { apiFetcher } from "@/lib/fetcher";
+import { apiFetcher, dataApiFetcher } from "@/lib/fetcher";
 import { ChainType } from "@/lib/types/chain";
 
 export function useTransactionRecord(chain: ChainType) {
@@ -39,6 +39,7 @@ export function useDataApiTransactionRecord() {
     txHash,
     txType,
     txData,
+    marketSymbol,
   }: {
     chain: ChainType;
     txHash: string;
@@ -51,7 +52,7 @@ export function useDataApiTransactionRecord() {
       data: txData,
     };
 
-    await apiFetcher(
+    await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.transactionSubmit}?chain=${chain}`,
       {
         method: "post",

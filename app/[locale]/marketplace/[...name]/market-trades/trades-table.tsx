@@ -14,6 +14,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { ChainType } from "@/lib/types/chain";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
+import NP from "number-precision";
 
 export function TradesTable({
   type,
@@ -97,6 +99,15 @@ export function TradesTable({
       nodes: tableData,
     };
   }, [tradeMsgs, type, isLoadingFlag]);
+
+  const pointDecimalNum = useMemo(() => {
+    if (marketplace && ProjectDecimalsMap[marketplace.market_symbol]) {
+      const decimal = ProjectDecimalsMap[marketplace.market_symbol];
+      return 10 ** decimal;
+    }
+
+    return 1;
+  }, [marketplace]);
 
   const theme = useTheme({
     Table: `
@@ -184,7 +195,9 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
         ) : (
-          <div>{formatNum(trade.amount, 2, true)}</div>
+          <div>
+            {formatNum(NP.divide(trade.amount, pointDecimalNum), 2, true)}
+          </div>
         ),
     },
     {

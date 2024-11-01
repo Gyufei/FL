@@ -43,7 +43,7 @@ export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
       chain,
       txHash,
       txType: "createTakerOrder",
-      txData: reqData,
+      txData: null,
     });
 
     return txHash;

@@ -20,6 +20,7 @@ import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 
 export function OfferCard({ offer }: { offer: IOffer }) {
   const t = useTranslations("cd-Order");
@@ -45,6 +46,15 @@ export function OfferCard({ offer }: { offer: IOffer }) {
   const done = useMemo(() => {
     return ["filled", "settled"].includes(offer.status);
   }, [offer]);
+
+  const pointDecimalNum = useMemo(() => {
+    if (ProjectDecimalsMap[offer.marketplace.market_symbol]) {
+      const decimal = ProjectDecimalsMap[offer.marketplace.market_symbol];
+      return 10 ** decimal;
+    }
+
+    return 1;
+  }, [offer.marketplace]);
 
   function handleShowOrderOffer(oId: string) {
     setAnchorValue(oId);
@@ -137,7 +147,8 @@ export function OfferCard({ offer }: { offer: IOffer }) {
               <>${formatNum(tokenTotalPrice)}</>
             ) : (
               <>
-                ${formatNum(pointPerPrice, 6)} / {offer.marketplace.item_name}
+                ${formatNum(NP.times(pointPerPrice, pointDecimalNum), 6)} /{" "}
+                {offer.marketplace.item_name}
               </>
             )}
           </div>

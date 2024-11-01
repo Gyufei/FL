@@ -56,7 +56,11 @@ export function useCreateOfferEth({
       chain,
       txHash,
       txType: "createOffer",
-      txData: reqData,
+      txData: {
+        wallet: reqData.creator,
+        market_symbol: marketSymbol,
+        total_item_amount: reqData.total_item_amount,
+      },
     });
 
     return txHash;

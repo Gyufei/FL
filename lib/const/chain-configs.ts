@@ -61,10 +61,10 @@ export const ChainConfigs: Record<string, IChainConfig> = {
         }
       : {
           // test
-          preMarkets: "0x350a46b98259730aDb72dbC1Af3D892A43F60953",
-          tokenManager: "0xb32C57B4718D744e7DB5440395302a9bAF871A40",
-          systemConfig: "0xd4e1c4aFfB64957076304FF140d1ad4F07250fBb",
-          deliveryPlace: "0xFbbB0159dc92273503f93A59fE1140f66A021510",
+          preMarkets: "0x5b61d7E49B77fA2F62F553C47e9e88223147DD30",
+          tokenManager: "0x87f25fe11280c82aEf7247157A06525Cff7A13e5",
+          systemConfig: "0xf29140CEE701A202215CC59800Ddd9a4382eD20f",
+          deliveryPlace: "0x30681E123b2eC25157f52f3d52baB1EBD8fb5450",
         },
     isEvm: true,
   },

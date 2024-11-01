@@ -73,7 +73,12 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offer.taken_item_amount, 2, true)} /{" "}
+            {formatNum(
+              NP.divide(offer.taken_item_amount, pointDecimalNum),
+              2,
+              true,
+            )}{" "}
+            /{" "}
             {formatNum(NP.divide(offer.item_amount, pointDecimalNum), 2, true)}{" "}
             pts
           </div>

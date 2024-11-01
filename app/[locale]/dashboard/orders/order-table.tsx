@@ -38,7 +38,7 @@ export function OrderTable({
 }) {
   const T = useTranslations("page-MyOrders");
 
-  const { data: orders, mutate: refreshMyOrders } = useMyOrders();
+  const { data: orders, mutate: refreshMyOrders } = useMyOrders("eth");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 

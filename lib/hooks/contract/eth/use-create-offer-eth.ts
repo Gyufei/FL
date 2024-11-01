@@ -47,10 +47,12 @@ export function useCreateOfferEth({
     const callParams = {
       ...res.tx_data,
     };
+    console.log("🚀 ~ callParams:", callParams);
 
     const txHash = await sendTx({
       ...callParams,
     });
+    console.log("🚀 ~ txHash:", txHash, reqData);
 
     await submitTransaction({
       chain,

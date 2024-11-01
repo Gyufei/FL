@@ -39,7 +39,6 @@ export function useDataApiTransactionRecord() {
     txHash,
     txType,
     txData,
-    marketSymbol,
   }: {
     chain: ChainType;
     txHash: string;

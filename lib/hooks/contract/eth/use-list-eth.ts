@@ -41,7 +41,7 @@ export function useListEth({ chain }: { chain: ChainType }) {
       chain,
       txHash,
       txType: "list",
-      txData: reqData,
+      txData: null,
     });
 
     return txHash;

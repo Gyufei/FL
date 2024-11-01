@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
+import NP from "number-precision";
 
 export default function TrendingAsset({ className }: { className?: string }) {
   const ct = useTranslations("Common");
@@ -81,6 +83,10 @@ export default function TrendingAsset({ className }: { className?: string }) {
     const nodes = (data || [])
       .filter((m) => m.status !== "offline")
       .map((item: any, index: number) => {
+        const pointDecimalNum = ProjectDecimalsMap[item.market_symbol]
+          ? 10 ** ProjectDecimalsMap[item.market_symbol]
+          : 1;
+
         return {
           id: item.market_symbol,
           no: index + 1,
@@ -88,7 +94,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
             logoURI: item.pointLogo,
             symbol: item.item_name,
           },
-          floorPrice: item.floor_price,
+          floorPrice: NP.times(item.floor_price, pointDecimalNum),
           change24h: item.change_rate_24h,
         };
       });

@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 
 export default function MyHoldings() {
   const T = useTranslations("page-MyStocks");
-  const { data: holdings, mutate: refreshHoldings } = useMyHoldings();
+  const { data: holdings, mutate: refreshHoldings } = useMyHoldings("eth"); //TODO:
 
   const [selectHId, setSelectHId] = useState("");
 

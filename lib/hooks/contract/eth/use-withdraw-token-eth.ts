@@ -47,7 +47,7 @@ export function useWithdrawTokenEth({ chain }: { chain: ChainType }) {
       chain,
       txHash,
       txType: "withdraw",
-      txData: reqData,
+      txData: null,
     });
 
     return txHash;

@@ -1,5 +1,5 @@
 import NP from "number-precision";
-import { formatNum } from "@/lib/utils/number";
+import { formatNum, toNonExponential } from "@/lib/utils/number";
 import OfferInfo from "./offer-info";
 import { useEffect, useMemo, useState } from "react";
 import SliderCard from "./slider-card";
@@ -113,7 +113,7 @@ export default function AskDetail({
     if (isDepositLoading || !receivePointAmount) return;
     await writeAction({
       offerId: offer.offer_id,
-      itemAmount: NP.times(receivePointAmount, pointDecimalNum),
+      itemAmount: toNonExponential(receivePointAmount),
     });
   }
 
@@ -159,7 +159,7 @@ export default function AskDetail({
                 1 {offer.marketplace.item_name} = ${formatNum(pointPerPrice)}
               </>
             }
-            value={String(receivePointAmount)}
+            value={String(NP.divide(receivePointAmount, pointDecimalNum))}
             tokenLogo={offerLogo}
           />
 

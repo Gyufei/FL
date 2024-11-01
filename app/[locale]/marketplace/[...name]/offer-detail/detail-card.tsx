@@ -13,9 +13,10 @@ import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
 
-  const { amount, offerTokenInfo, offerPointInfo } = useOfferFormat({
-    offer,
-  });
+  const { amount, offerTokenInfo, offerPointInfo, pointDecimalNum } =
+    useOfferFormat({
+      offer,
+    });
 
   const { data: entryInfo } = useEntryById(offer.entry.id);
 
@@ -56,7 +57,7 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-black">
-            {formatNum(offer.item_amount)} Vol
+            {formatNum(NP.divide(offer.item_amount, pointDecimalNum))} Vol
           </div>
           <Image
             src={offerPointInfo.logoURI}

@@ -10,7 +10,7 @@ import { checkIsNativeToken } from "@/lib/utils/web3";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 
 export function useOfferFormat({ offer }: { offer: IOffer }) {
-  const { data: tokens } = useTokens(offer.marketplace.chain);
+  const { data: tokens } = useTokens(offer?.marketplace?.chain);
 
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 

@@ -16,7 +16,7 @@ import useTge from "@/lib/hooks/marketplace/useTge";
 import { useRouter } from "@/app/navigation";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { ChainConfigs } from "@/lib/const/chain-configs";
-
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 export default function PointMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
 
@@ -142,6 +142,9 @@ export default function PointMarket({ className }: { className?: string }) {
     {
       label: t("th-LastPrice"),
       renderCell: (item: IMarketplace) => {
+        const pointDecimalNum = ProjectDecimalsMap[item.market_symbol]
+          ? 10 ** ProjectDecimalsMap[item.market_symbol]
+          : 1;
         const lastPrice = item.last_price || 0;
         const lastPrice24hAgo = item.last_price_24h_ago || 0;
         const lastPricePercent =
@@ -152,7 +155,9 @@ export default function PointMarket({ className }: { className?: string }) {
           <Skeleton className="h-[16px] w-[150px]" />
         ) : (
           <div className="flex flex-col items-end">
-            <PriceText num={Number(item.last_price)} />
+            <PriceText
+              num={Number(NP.times(item.last_price, pointDecimalNum))}
+            />
             <PercentText num={lastPricePercent * 100} />
           </div>
         );

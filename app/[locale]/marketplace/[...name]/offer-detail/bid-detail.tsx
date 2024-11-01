@@ -1,5 +1,5 @@
 import NP from "number-precision";
-import { formatNum } from "@/lib/utils/number";
+import { formatNum, toNonExponential } from "@/lib/utils/number";
 import OfferInfo from "./offer-info";
 import { useEffect, useMemo, useState } from "react";
 import SliderCard from "./slider-card";
@@ -34,13 +34,18 @@ export default function BidDetail({
     offerTokenInfo,
     offerPointInfo,
     isNativeToken,
-    pointDecimalNum
+    pointDecimalNum,
   } = useOfferFormat({
     offer: offer,
   });
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    usePairApprove(offer.marketplace.chain, offerTokenInfo, offerPointInfo, "sellToBid");
+    usePairApprove(
+      offer.marketplace.chain,
+      offerTokenInfo,
+      offerPointInfo,
+      "sellToBid",
+    );
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -95,7 +100,7 @@ export default function BidDetail({
     if (isDepositLoading || !sellPointAmount) return;
     await writeAction({
       offerId: offer.offer_id,
-      itemAmount: NP.times(sellPointAmount, pointDecimalNum),
+      itemAmount: toNonExponential(NP.divide(sellPointAmount, pointDecimalNum)),
     });
   }
 
@@ -130,10 +135,10 @@ export default function BidDetail({
                 1 {offer.marketplace.item_name} = ${formatNum(pointPerPrice)}
               </>
             }
-            value={String(sellPointAmount)}
+            value={String(NP.divide(sellPointAmount, pointDecimalNum))}
             canGoMax={sliderCanMax}
             sliderMax={Number(offer.item_amount)}
-            sliderValue={sellPointAmount}
+            sliderValue={NP.divide(sellPointAmount, pointDecimalNum)}
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
           />

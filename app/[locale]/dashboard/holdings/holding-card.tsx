@@ -9,7 +9,6 @@ import { useTranslations } from "next-intl";
 import AbortHoldingBtn from "./abort-holding-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { ChainConfigs } from "@/lib/const/chain-configs";
-import NP from "number-precision";
 
 export default function HoldingCard({
   openHoldingDrawer,
@@ -33,7 +32,6 @@ export default function HoldingCard({
     forLogo,
     isCanSettle,
     isCanAbort,
-    pointDecimalNum,
   } = useOfferFormat({
     offer: holding.offer,
   });

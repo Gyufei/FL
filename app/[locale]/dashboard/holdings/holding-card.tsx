@@ -93,7 +93,7 @@ export default function HoldingCard({
             {ct("lb-Offer")}
           </div>
           <div className="flex items-center leading-6 text-black">
-            {formatNum(NP.divide(offerValue, pointDecimalNum), 2, true)}
+            {formatNum(offerValue, 2, true)}
             <Image
               src={offerLogo}
               width={16}
@@ -103,7 +103,7 @@ export default function HoldingCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(NP.times(pointPerPrice, pointDecimalNum), 6)} /{" "}
+            ${formatNum(pointPerPrice, 6)} /{" "}
             {holding.offer.marketplace.item_name}
           </div>
         </div>

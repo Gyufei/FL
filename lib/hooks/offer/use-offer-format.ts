@@ -18,6 +18,18 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     return tokens?.find((t) => t.symbol === offer.payment_token);
   }, [offer, tokens]);
 
+  const pointDecimalNum = useMemo(() => {
+    if (
+      offer?.marketplace &&
+      ProjectDecimalsMap[offer.marketplace.market_symbol]
+    ) {
+      const decimal = ProjectDecimalsMap[offer.marketplace.market_symbol];
+      return 10 ** decimal;
+    }
+
+    return 1;
+  }, [offer]);
+
   const { data: tokenPrice } = useTokenPrice(
     offer.marketplace.chain,
     offerTokenInfo?.address || "",
@@ -38,6 +50,8 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const tokenLogo = offerTokenInfo?.logoURI || "/icons/empty.svg";
   const pointLogo = offerPointInfo?.logoURI || "/icons/empty.svg";
 
+  const offerItemAmount = NP.divide(offer.item_amount, pointDecimalNum);
+
   const amount = NP.times(offer.item_amount, offer.price);
 
   const progress = Number(
@@ -45,13 +59,13 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   );
 
   const offerType = offer.entry.direction;
-  const offerValue = offerType === "sell" ? offer.item_amount : amount;
-  const forValue = offerType === "sell" ? amount : offer.item_amount;
+  const offerValue = offerType === "sell" ? offerItemAmount : amount;
+  const forValue = offerType === "sell" ? amount : offerItemAmount;
   const offerLogo = offerType === "sell" ? pointLogo : tokenLogo;
   const forLogo = offerType === "sell" ? tokenLogo : pointLogo;
 
   const tokenTotalPrice = NP.times(amount, tokenPrice);
-  const pointPerPrice = NP.divide(tokenTotalPrice, offer.item_amount);
+  const pointPerPrice = NP.divide(tokenTotalPrice, offerItemAmount);
 
   const orderDuration = formatTimeDuration(
     Math.floor(NP.minus(Date.now() / 1000, offer.create_at)),
@@ -142,15 +156,6 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
     return false;
   }, [offer]);
-
-  const pointDecimalNum = useMemo(() => {
-    if (ProjectDecimalsMap[offer.marketplace.market_symbol]) {
-      const decimal = ProjectDecimalsMap[offer.marketplace.market_symbol];
-      return 10 ** decimal;
-    }
-
-    return 1;
-  }, [offer.marketplace]);
 
   return {
     orderDuration,

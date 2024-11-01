@@ -153,8 +153,7 @@ export default function MyAskDetail({
             isCanInput={false}
             bottomText={
               <>
-                1 {offer.marketplace.item_name} = $
-                {NP.times(pointPerPrice, pointDecimalNum)}
+                1 {offer.marketplace.item_name} = ${pointPerPrice}
               </>
             }
             topText={

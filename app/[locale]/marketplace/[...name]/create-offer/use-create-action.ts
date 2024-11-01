@@ -113,9 +113,7 @@ export function useCreateAction(
 
     writeAction({
       direction: direction,
-      price: toNonExponential(
-        NP.divide(NP.divide(tokenAmount, pointDecimalNum), pointDecimalNum),
-      ),
+      price: toNonExponential(NP.divide(tokenAmount, pointDecimalNum)),
       total_item_amount: toNonExponential(
         NP.times(pointAmount, pointDecimalNum),
       ),

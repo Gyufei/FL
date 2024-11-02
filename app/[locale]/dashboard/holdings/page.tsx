@@ -3,6 +3,7 @@ import { useMyHoldings } from "@/lib/hooks/api/use-my-holdings";
 import { SortSelect } from "@/components/share/sort-select";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
 import HoldingCard from "./holding-card";
+import OtherHoldingCard from "./other-holding-card";
 import { useSortHolding } from "@/lib/hooks/holding/use-sort-holding";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -10,6 +11,7 @@ import { useTranslations } from "next-intl";
 export default function MyHoldings() {
   const T = useTranslations("page-MyStocks");
   const { data: holdings, mutate: refreshHoldings } = useMyHoldings("eth"); //TODO:
+  console.log("🚀 ~ MyHoldings ~ holdings:", holdings);
 
   const [selectHId, setSelectHId] = useState("");
 
@@ -54,18 +56,23 @@ export default function MyHoldings() {
 
       {sortOffers.length ? (
         <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {(sortOffers || [])
-            .filter((s) => s.offer)
-            .map((holding) => (
+          {(sortOffers || []).map((holding) => {
+            if (!holding.offer) {
+              return (
+                <OtherHoldingCard key={holding.holding_id} holding={holding} />
+              );
+            }
+            return (
               <HoldingCard
+                key={holding.holding_id}
+                holding={holding}
                 openHoldingDrawer={(hId: string) =>
                   handleOpenHoldingDrawer(hId)
                 }
-                key={holding.holding_id}
-                holding={holding}
                 onSuccess={refreshHoldings}
               />
-            ))}
+            );
+          })}
         </div>
       ) : (
         <div className="flex flex-1 items-center justify-center text-base text-gray">

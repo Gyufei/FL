@@ -19,6 +19,7 @@ import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
+import NP from "number-precision";
 
 export default function MyBidDetail({
   holdingId,
@@ -45,6 +46,7 @@ export default function MyBidDetail({
     afterTGEPeriod,
     isFilled,
     isNativeToken,
+    pointDecimalNum,
   } = useOfferFormat({
     offer: offer,
   });
@@ -151,7 +153,7 @@ export default function MyBidDetail({
                 </WithTip>
               </div>
             }
-            value={String(offer.item_amount)}
+            value={String(NP.divide(offer.item_amount, pointDecimalNum))}
             tokenLogo={offerPointInfo.logoURI}
           />
 

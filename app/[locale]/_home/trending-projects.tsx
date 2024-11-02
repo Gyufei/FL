@@ -9,6 +9,8 @@ import { useMemo } from "react";
 import useTge from "@/lib/hooks/marketplace/useTge";
 import { formatNum } from "@/lib/utils/number";
 import { Skeleton } from "@/components/ui/skeleton";
+import NP from "number-precision";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 
 export default function TrendingProject() {
   const t = useTranslations("Home");
@@ -48,6 +50,15 @@ function ItemCard({
 }) {
   const t = useTranslations("card-Marketplace");
   const router = useRouter();
+
+  const pointDecimalNum = useMemo(() => {
+    if (marketplace && ProjectDecimalsMap[marketplace.market_symbol]) {
+      const decimal = ProjectDecimalsMap[marketplace.market_symbol];
+      return 10 ** decimal;
+    }
+
+    return 1;
+  }, [marketplace]);
 
   function handleGo() {
     router.push(`/marketplace/${marketplace.market_symbol}`);
@@ -91,7 +102,11 @@ function ItemCard({
               <ValueSkeleton />
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
-                ${formatNum(marketplace!.floor_price, 6)}
+                $
+                {formatNum(
+                  NP.times(marketplace!.floor_price, pointDecimalNum),
+                  6,
+                )}
               </div>
             )}
           </div>
@@ -132,7 +147,7 @@ function ItemCard({
               <ValueSkeleton />
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
-                ${marketplace!.vol_24h}
+                ${formatNum(marketplace!.vol_24h)}
               </div>
             )}
           </div>
@@ -147,7 +162,9 @@ function ItemCard({
               <ValueSkeleton />
             ) : (
               <div className="leading-6 text-black">
-                {formatNum(marketplace!.listed_supply)}
+                {formatNum(
+                  NP.divide(marketplace!.listed_supply, pointDecimalNum),
+                )}
               </div>
             )}
           </div>
@@ -158,7 +175,7 @@ function ItemCard({
               <ValueSkeleton />
             ) : (
               <div className="flex items-center leading-6 text-black">
-                ${formatNum(marketplace!.avg_bid)}
+                ${formatNum(NP.times(marketplace!.avg_bid, pointDecimalNum))}
               </div>
             )}
           </div>

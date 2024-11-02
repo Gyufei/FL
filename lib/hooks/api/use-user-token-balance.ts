@@ -5,6 +5,7 @@ import { dataApiFetcher } from "@/lib/fetcher";
 
 export interface ITokenBalance {
   token_addr: string;
+  token_address: string;
   withdrawable: string;
 
   ledgers: {

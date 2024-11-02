@@ -5,11 +5,12 @@ import { useEndPoint } from "./use-endpoint";
 import { IHolding } from "@/lib/types/holding";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useMarketOffers } from "./use-market-offers";
+import { useMarketplaces } from "./use-marketplaces";
 
 export function useMyHoldings(chain?: string) {
   const { address } = useChainWallet();
   const { dataApiEndPoint } = useEndPoint();
-
+  const { data: marketplaceData } = useMarketplaces();
   const { data: offers, isLoading } = useMarketOffers({
     marketSymbol: null,
     marketChain: chain || "",
@@ -41,6 +42,20 @@ export function useMyHoldings(chain?: string) {
         ...h,
         offer: matchingOffer,
       };
+    });
+    marketplaceData?.forEach((i) => {
+      if (
+        offchain_fungible_point_holding &&
+        offchain_fungible_point_holding.market_symbol === i.market_symbol
+      ) {
+        offchain_fungible_point_holding.marketplace = i;
+      }
+      if (
+        point_token_holding &&
+        point_token_holding.market_symbol === i.market_symbol
+      ) {
+        point_token_holding.marketplace = i;
+      }
     });
 
     return [

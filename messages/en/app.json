@@ -234,7 +234,9 @@
     "cap-ListStockAsAskOffer": "List Holding As Ask Offer",
     "txt-Listed": "Listed",
     "btn-Settle": "Settle",
-    "txt-YourStockAppearHere": "Your holding appear here.."
+    "txt-YourStockAppearHere": "Your holding appear here..",
+    "txt-Free": "Free",
+    "txt-Locked": "Locked"
   },
   "drawer-ListOrder": {
     "cap-StockId": "Holding Id",

@@ -94,15 +94,15 @@ export default function MyBalances() {
   const getTokenDataFormat = useCallback(
     (bData: Array<ITokenBalance> | undefined, key: string) => {
       if (!bData || !allTokens.length) return [];
-
+      console.log("🚀 ~ MyBalances ~ bData:", bData);
       const itemData = bData?.map((t) => {
         const tokenInfo =
-          allTokens.find((token) => token.address === t.token_addr) ||
+          allTokens.find((token) => token.address === t.token_address) ||
           TokenListMap[t.token_addr];
 
         const amount = NP.divide(
           (t.ledgers as any)[key],
-          10 ** tokenInfo.decimals,
+          10 ** tokenInfo?.decimals,
         );
 
         return {

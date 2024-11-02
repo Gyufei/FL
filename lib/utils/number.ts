@@ -109,10 +109,14 @@ export function toNonExponential(num: number | string) {
   if (typeof num !== "number") return num;
   if (!String(num).includes("e")) return String(num);
 
-  const m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
-  const fixedDig = Math.max(0, (m?.[1]?.length || 0) - Number(m?.[2]));
-
-  return num.toFixed(fixedDig);
+  const strParam: any = String(num);
+  const index = Number(strParam.match(/\d+$/)[0]);
+  const basis = strParam.match(/^[\d.]+/)[0].replace(/\./, "");
+  if (/e-/.test(strParam)) {
+    return basis.padStart(index + basis.length, 0).replace(/^0/, "0.");
+  } else {
+    return basis.padEnd(index + 1, 0);
+  }
 }
 
 export function toQuantity(amount: NumberType, price = 1) {
@@ -165,14 +169,13 @@ export function dealDecimals(num: NumberType, decimals: NumberType) {
 
     if (point?.length) {
       const match = point.match(/^0+/);
-      const firstNotZero =  (match ? match[0].length : 0) + 1;
+      const firstNotZero = (match ? match[0].length : 0) + 1;
       const len = firstNotZero > Number(decimals) ? firstNotZero : decimals;
       const subDecimalsNum = len ? Number(len) + 1 : 0;
       const maxLength = subDecimalsNum + integer.length;
       return notExpNum.substring(0, maxLength);
     }
   }
-
 
   return notExpNum;
 }

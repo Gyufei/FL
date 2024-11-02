@@ -66,7 +66,9 @@ export default function MarketplaceOverview({
             <ValueSkeleton />
           ) : (
             <div className="leading-6 text-black">
-              {formatNum(marketplace!.listed_supply)}
+              {formatNum(
+                NP.divide(marketplace!.listed_supply, pointDecimalNum),
+              )}
             </div>
           )}
         </div>

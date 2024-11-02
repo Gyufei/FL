@@ -86,19 +86,20 @@ export default function MyBalances() {
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);
 
-  const { data: itemBlcData, mutate: refetchItemBlcData } =
-    useUserItemBalance(wallet);
+  const { data: itemBlcData, mutate: refetchItemBlcData } = useUserItemBalance(
+    wallet,
+    "din",
+  );
 
   const { data: marketplaceData } = useMarketplaces();
 
   const getTokenDataFormat = useCallback(
     (bData: Array<ITokenBalance> | undefined, key: string) => {
       if (!bData || !allTokens.length) return [];
-      console.log("🚀 ~ MyBalances ~ bData:", bData);
       const itemData = bData?.map((t) => {
         const tokenInfo =
           allTokens.find((token) => token.address === t.token_address) ||
-          TokenListMap[t.token_addr];
+          TokenListMap[t.token_address];
 
         const amount = NP.divide(
           (t.ledgers as any)[key],
@@ -118,10 +119,10 @@ export default function MyBalances() {
 
   const getPointDataFormat = useCallback(
     (bData: IItemBalance | undefined) => {
-      if (!bData) return [];
+      if (!bData || !bData?.market_symbol) return [];
 
       const market = marketplaceData?.find(
-        (m) => m.market_symbol === bData.market_symbol,
+        (m) => m.market_symbol === bData!.market_symbol,
       );
 
       const tokenInfo = {
@@ -131,7 +132,7 @@ export default function MyBalances() {
       } as unknown as IToken;
 
       const amount = NP.divide(
-        bData.total_amount,
+        bData!.total_amount,
         isProduction ? 10 ** 6 : 10 ** 9,
       );
 
@@ -179,7 +180,7 @@ export default function MyBalances() {
     const items = [];
 
     if (taxIncomeData.length > 0) {
-      const total = taxIncomeData.reduce((acc, t) => acc + t.amount, 0);
+      const total = taxIncomeData.reduce((acc, t) => acc + t.amount || 0, 0);
       items.push({
         title: mbt("cap-TaxIncome"),
         panelName: "taxIncomeData",
@@ -191,7 +192,10 @@ export default function MyBalances() {
     }
 
     if (realizedAssetsData.length > 0) {
-      const total = realizedAssetsData.reduce((acc, t) => acc + t.amount, 0);
+      const total = realizedAssetsData.reduce(
+        (acc, t) => acc + t.amount || 0,
+        0,
+      );
       items.push({
         title: mbt("cap-RealizedAssets"),
         panelName: "realizedAssetsData",
@@ -203,7 +207,7 @@ export default function MyBalances() {
     }
 
     if (referralData.length > 0) {
-      const total = referralData.reduce((acc, t) => acc + t.amount, 0);
+      const total = referralData.reduce((acc, t) => acc + t.amount || 0, 0);
       items.push({
         title: mbt("cap-ReferralBonus"),
         panelName: "referralData",
@@ -215,7 +219,7 @@ export default function MyBalances() {
     }
 
     if (salesRevenueData.length > 0) {
-      const total = salesRevenueData.reduce((acc, t) => acc + t.amount, 0);
+      const total = salesRevenueData.reduce((acc, t) => acc + t.amount || 0, 0);
       items.push({
         title: mbt("cap-SalesRevenue"),
         panelName: "salesRevenueData",
@@ -227,7 +231,10 @@ export default function MyBalances() {
     }
 
     if (remainingCashData.length > 0) {
-      const total = remainingCashData.reduce((acc, t) => acc + t.amount, 0);
+      const total = remainingCashData.reduce(
+        (acc, t) => acc + t.amount || 0,
+        0,
+      );
       items.push({
         title: mbt("cap-RemainingCash"),
         panelName: "remainingCashData",
@@ -239,7 +246,7 @@ export default function MyBalances() {
     }
 
     if (makerRefundData.length > 0) {
-      const total = makerRefundData.reduce((acc, t) => acc + t.amount, 0);
+      const total = makerRefundData.reduce((acc, t) => acc + t.amount || 0, 0);
       items.push({
         title: mbt("cap-MakerRefund"),
         panelName: "makerRefundData",
@@ -303,7 +310,7 @@ export default function MyBalances() {
                       <TokenGetCard
                         key={index}
                         tokenInfo={i.tokenInfo}
-                        amount={i.amount}
+                        amount={i.amount || 0}
                         withdrawerName={
                           item.isItem ? null : item.withdrawerName
                         }

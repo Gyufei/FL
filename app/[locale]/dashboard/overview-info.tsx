@@ -24,7 +24,9 @@ export default function OverviewInfo() {
     to: undefined,
   });
 
-  const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats();
+  const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats(
+    ChainType.ETH,
+  );
 
   const { trigger: updateUserNameAction, data: updateRes } = useUserNameChange(
     ChainType.ETH,

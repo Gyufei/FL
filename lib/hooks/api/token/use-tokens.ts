@@ -47,7 +47,7 @@ export function useTokens(chain?: ChainType) {
 
   const { data, isLoading, error } = useSWRImmutable<{
     tokens: Array<IToken>;
-  }>(chain ? cdnEndPoint : null, tFetcher);
+  }>(chain ? chain : null, tFetcher);
 
   return {
     data: data?.tokens,

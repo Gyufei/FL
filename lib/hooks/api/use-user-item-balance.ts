@@ -15,12 +15,12 @@ interface IItemEntry {
   status: string;
 }
 
-export function useUserItemBalance(wallet: string) {
+export function useUserItemBalance(wallet: string, marketSymbol: string) {
   const { dataApiEndPoint } = useEndPoint();
 
   const res = useSWR<IItemBalance>(
     wallet
-      ? `${dataApiEndPoint}${DataApiPaths.userItemBalance}/${wallet}`
+      ? `${dataApiEndPoint}${DataApiPaths.userItemBalance}/${wallet}?market_symbol=${marketSymbol}`
       : null,
     dataApiFetcher,
   );

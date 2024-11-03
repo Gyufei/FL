@@ -33,16 +33,25 @@ const TokenListMap: Record<string, IToken> = {
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
     decimals: 9,
+    chain: ChainType.SOLANA,
   } as IToken,
   EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v: {
     symbol: "USDC",
     logoURI: "/icons/usdc.svg",
     decimals: 6,
+    chain: ChainType.SOLANA,
   } as IToken,
   So11111111111111111111111111111111111111112: {
     symbol: "SOL",
     logoURI: "/icons/solana.svg",
     decimals: 9,
+    chain: ChainType.SOLANA,
+  } as IToken,
+  "0x734d5ab96eeafe1f8ba36186627fad08e7ff7026": {
+    symbol: "DIN",
+    logoURI: "/icons/point.svg",
+    decimals: 18,
+    chain: ChainType.ETH,
   } as IToken,
 };
 
@@ -105,7 +114,6 @@ export default function MyBalances() {
           (t.ledgers as any)[key],
           10 ** tokenInfo?.decimals,
         );
-
         return {
           amount: Number(amount),
           tokenInfo,
@@ -173,6 +181,11 @@ export default function MyBalances() {
 
   const makerRefundData = useMemo(() => {
     const data = getTokenDataFormat(tokenBlcData, "maker_refund");
+    return data;
+  }, [tokenBlcData, getTokenDataFormat]);
+
+  const pointTokenData = useMemo(() => {
+    const data = getTokenDataFormat(tokenBlcData, "settlement");
     return data;
   }, [tokenBlcData, getTokenDataFormat]);
 
@@ -257,6 +270,18 @@ export default function MyBalances() {
       } as IPanelProps);
     }
 
+    if (pointTokenData.length > 0) {
+      const total = pointTokenData.reduce((acc, t) => acc + t.amount || 0, 0);
+      items.push({
+        title: mbt("cap-PointToken"),
+        panelName: "pointTokenData",
+        withdrawerName: "settlement",
+        isItem: false,
+        data: pointTokenData,
+        total,
+      } as IPanelProps);
+    }
+
     return items;
   }, [
     mbt,
@@ -266,6 +291,7 @@ export default function MyBalances() {
     salesRevenueData,
     remainingCashData,
     makerRefundData,
+    pointTokenData,
   ]);
 
   useEffect(() => {

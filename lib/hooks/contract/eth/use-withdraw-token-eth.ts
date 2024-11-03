@@ -25,7 +25,7 @@ export function useWithdrawTokenEth({ chain }: { chain: ChainType }) {
     };
 
     const res = await dataApiFetcher(
-      `${dataApiEndPoint}${DataApiPaths.accountWithdraw}`,
+      `${dataApiEndPoint}${DataApiPaths.accountWithdraw}?chain=${chain}`,
       {
         method: "POST",
         headers: {

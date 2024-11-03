@@ -1,4 +1,5 @@
 import { IMarketplace } from "./marketplace";
+import { ChainType } from "./chain";
 
 export interface IToken {
   address: string;
@@ -7,6 +8,7 @@ export interface IToken {
   decimals: number;
   logoURI: string;
   chainId: number;
+  chain: ChainType;
   ratingScore: string;
   [key: string]: any;
 }

@@ -15,9 +15,9 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
 import { useMemo, useState } from "react";
-import { useMyOrders } from "@/lib/hooks/api/use-my-orders";
+import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { IOrder } from "@/lib/types/order";
+import { IOffer } from "@/lib/types/offer";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
 import DetailDrawer from "../common/detail-drawer/detail-drawer";
@@ -38,36 +38,37 @@ export function OrderTable({
 }) {
   const T = useTranslations("page-MyOrders");
 
-  const { data: orders, mutate: refreshMyOrders } = useMyOrders("eth");
+  const { data: offers, mutate: refreshMyOffers } = useMyOffers({
+    marketSymbol: null,
+    marketChain: "eth",
+  });
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const [selectOrderId, setSelectOrderId] = useState("");
-  const selectedOrder = orders?.find((o) => o.order_id === selectOrderId);
+  const [selectOfferId, setSelectOfferId] = useState("");
+  const selectedOffer = offers?.find((o) => o.offer_id === selectOfferId);
 
   const data = useMemo(() => {
-    const orderData = (orders || [])
+    const offerData = (offers || [])
       .map((o) => {
         return {
           ...o,
-          id: o.order_id,
+          id: o.offer_id,
         };
       })
       .filter((o) => {
-        const oType = o.offer?.entry?.direction;
-        const isRole = role === "All" || role === o.role;
-        const isStatus =
-          status === "All" || status.toLowerCase() === o.offer.status;
+        const oType = o?.entry?.direction;
+        const isStatus = status === "All" || status.toLowerCase() === o.status;
 
-        return isRole && types.includes(oType as IOfferType) && isStatus;
+        return types.includes(oType as IOfferType) && isStatus;
       });
 
-    const sortData = sortBy(orderData, "create_at").reverse();
+    const sortData = sortBy(offerData, "create_at").reverse();
 
     return {
       nodes: sortData,
     };
-  }, [orders, role, status, types]);
+  }, [offers, role, status, types]);
 
   const theme = useTheme({
     Table: `
@@ -124,8 +125,8 @@ export function OrderTable({
       </div>
     );
   }
-  function handleOpenOrderDrawer(OId: string) {
-    setSelectOrderId(OId);
+  function handleOpenOfferDrawer(OId: string) {
+    setSelectOfferId(OId);
     setDrawerOpen(true);
   }
 
@@ -140,7 +141,7 @@ export function OrderTable({
         {(tableList: Array<any>) => (
           <>
             <Header className="text-xs leading-[18px] text-gray">
-              <HeaderRow className="border-none">
+              <HeaderRow className="boffer-none">
                 <HeaderCell className="h-10 px-1 py-[11px]">
                   {T("th-Items")}
                 </HeaderCell>
@@ -166,45 +167,45 @@ export function OrderTable({
               </HeaderRow>
             </Header>
             <Body>
-              {tableList.map((ord) => (
+              {tableList.map((off) => (
                 <Row
-                  key={ord.order_id}
-                  item={ord}
-                  className="h-12 border-none !bg-transparent"
+                  key={off.offer_id}
+                  item={off}
+                  className="boffer-none h-12 !bg-transparent"
                 >
                   <Cell className="h-12 px-1 py-[11px] align-top text-gray">
-                    <OrderItem order={ord} />
+                    <OfferItem offer={off} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <div>
                       <div className="text-sm leading-5 text-black">
-                        {ord.offer.marketplace?.market_name}
+                        {off.marketplace?.market_name}
                       </div>
                       <div className="text-[10px] leading-4 text-gray">
-                        #{ord.entry.id}
+                        #{off.entry.id}
                       </div>
                     </div>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderRole order={ord} />
+                    <OfferRole offer={off} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderEqToken order={ord} />
+                    <OfferEqToken offer={off} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderFromTo order={ord} />
+                    <OfferFromTo offer={off} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
-                    <OrderHash order={ord} />
+                    <OfferHash offer={off} />
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <span className="text-sm leading-5 text-black">
-                      {formatTimestamp(ord.create_at * 1000)}
+                      {formatTimestamp(off.create_at * 1000)}
                     </span>
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <DetailBtn
-                      onClick={() => handleOpenOrderDrawer(ord.order_id)}
+                      onClick={() => handleOpenOfferDrawer(off.offer_id)}
                     ></DetailBtn>
                   </Cell>
                 </Row>
@@ -239,29 +240,29 @@ export function OrderTable({
       )}
 
       <DetailDrawer
-        holdingId={selectOrderId}
+        holdingId={selectOfferId}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
-        offer={selectedOrder?.offer}
-        onSuccess={refreshMyOrders}
+        offer={selectedOffer}
+        onSuccess={refreshMyOffers}
       />
     </>
   );
 }
 
-function OrderItem({ order }: { order: IOrder }) {
+function OfferItem({ offer }: { offer: IOffer }) {
   return (
     <div className="relative h-fit w-fit">
       <Image
-        src={order.offer.marketplace?.projectLogo}
+        src={offer.marketplace?.projectLogo}
         width={32}
         height={32}
         alt="avatar"
         className="rounded-full"
       />
-      <div className="absolute bottom-0 right-0 flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white bg-white">
+      <div className="boffer boffer-white absolute bottom-0 right-0 flex h-[14px] w-[14px] items-center justify-center rounded-full bg-white">
         <Image
-          src={ChainConfigs[order.offer.marketplace.chain].logo}
+          src={ChainConfigs[offer.marketplace.chain].logo}
           width={14}
           height={14}
           alt="avatar"
@@ -272,8 +273,8 @@ function OrderItem({ order }: { order: IOrder }) {
   );
 }
 
-function OrderEqToken({ order }: { order: IOrder }) {
-  const { offerEqTokenInfo } = useOfferFormat({ offer: order.offer });
+function OfferEqToken({ offer }: { offer: IOffer }) {
+  const { offerEqTokenInfo } = useOfferFormat({ offer: offer });
 
   return (
     <div className="flex items-center space-x-1">
@@ -289,9 +290,9 @@ function OrderEqToken({ order }: { order: IOrder }) {
   );
 }
 
-function OrderFromTo({ order }: { order: IOrder }) {
+function OfferFromTo({ offer }: { offer: IOffer }) {
   const { offerValue, forValue, offerLogo, forLogo } = useOfferFormat({
-    offer: order.offer,
+    offer: offer,
   });
 
   return (
@@ -320,21 +321,21 @@ function OrderFromTo({ order }: { order: IOrder }) {
   );
 }
 
-function OrderRole({ order }: { order: IOrder }) {
-  const orderRole = order.role;
+function OfferRole({ offer }: { offer: IOffer }) {
+  const offerRole = offer.status;
 
   return (
     <div
-      data-type={orderRole}
+      data-type={offerRole}
       className="flex h-5 w-fit items-center rounded px-[5px] data-[type=Maker]:bg-[#E9F5FA] data-[type=Taker]:bg-[#FBF2EA] data-[type=Maker]:text-[#4EC4FA] data-[type=Taker]:text-[#FFA95B] "
     >
-      {orderRole}
+      {offerRole}
     </div>
   );
 }
 
-function OrderHash({ order }: { order: IOrder }) {
-  const hash = order.tx_hash;
+function OfferHash({ offer }: { offer: IOffer }) {
+  const hash = offer.tx_hash;
 
   return (
     <div className="flex items-center">
@@ -342,9 +343,7 @@ function OrderHash({ order }: { order: IOrder }) {
         {truncateAddr(hash || "")}
       </span>
       <Image
-        onClick={() =>
-          handleGoScan(order.offer.marketplace.chain, hash || "", "tx")
-        }
+        onClick={() => handleGoScan(offer.marketplace.chain, hash || "", "tx")}
         src="/icons/right-45.svg"
         width={16}
         height={16}
@@ -359,7 +358,7 @@ function DetailBtn({ onClick }: { onClick: () => void }) {
   const ct = useTranslations("Common");
   return (
     <WithWalletConnectBtn className="flex w-fit" onClick={onClick}>
-      <div className="flex h-7 w-full cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black">
+      <div className="boffer boffer-[#eee] hover:boffer-black flex h-7 w-full cursor-pointer items-center rounded-full px-[14px] text-sm leading-5 text-black">
         {ct("Detail")}
       </div>
     </WithWalletConnectBtn>

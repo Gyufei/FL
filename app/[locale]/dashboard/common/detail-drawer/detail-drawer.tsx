@@ -35,6 +35,7 @@ export default function DetailDrawer({
   }
 
   function handleSuccess() {
+    if (!drawerOpen) return;
     setDrawerOpen(false);
     onSuccess();
   }

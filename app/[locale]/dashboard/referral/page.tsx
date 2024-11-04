@@ -6,20 +6,21 @@ import { ReferralTable } from "./referral-table";
 import { useReferralData } from "@/lib/hooks/api/use-referral-data";
 import { useEffect } from "react";
 import { useCreateReferral } from "@/lib/hooks/contract/use-create-referral";
-import { ChainType } from "@/lib/types/chain";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function Referral() {
   const rt = useTranslations("page-Referral");
+  const { currentChainInfo } = useChainWallet();
 
   const { data: referralData, mutate: refetch } = useReferralData(
-    ChainType.ETH,
+    currentChainInfo.chainType,
   );
 
   const {
     write: createAction,
     isLoading: createLoading,
     isSuccess,
-  } = useCreateReferral(ChainType.ETH);
+  } = useCreateReferral(currentChainInfo.chainType);
 
   useEffect(() => {
     if (isSuccess) {

@@ -13,7 +13,6 @@ import {
 import { formatNum } from "@/lib/utils/number";
 import { IToken } from "@/lib/types/token";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
-import { isProduction } from "@/lib/PathMap";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";

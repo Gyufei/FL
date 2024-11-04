@@ -29,10 +29,12 @@ import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function OrderTable({
+  chain,
   role,
   status,
   types,
 }: {
+  chain?: ChainType;
   role: IRole;
   status: IStatus;
   types: Array<IOfferType>;
@@ -41,7 +43,7 @@ export function OrderTable({
 
   const { data: offers, mutate: refreshMyOffers } = useMyOffers({
     marketSymbol: null,
-    marketChain: "eth",
+    marketChain: chain || "eth",
   });
 
   const [drawerOpen, setDrawerOpen] = useState(false);

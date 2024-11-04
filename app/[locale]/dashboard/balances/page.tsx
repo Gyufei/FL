@@ -197,7 +197,7 @@ export default function MyBalances() {
       items.push({
         title: mbt("cap-TaxIncome"),
         panelName: "taxIncomeData",
-        withdrawerName: "taxIncome",
+        withdrawerName: "tax_income",
         isItem: false,
         data: taxIncomeData,
         total,
@@ -224,7 +224,7 @@ export default function MyBalances() {
       items.push({
         title: mbt("cap-ReferralBonus"),
         panelName: "referralData",
-        withdrawerName: "referralBonus",
+        withdrawerName: "referral_bonus",
         isItem: false,
         data: referralData,
         total,
@@ -236,7 +236,7 @@ export default function MyBalances() {
       items.push({
         title: mbt("cap-SalesRevenue"),
         panelName: "salesRevenueData",
-        withdrawerName: "salesRevenue",
+        withdrawerName: "sales_revenue",
         isItem: false,
         data: salesRevenueData,
         total,
@@ -251,7 +251,7 @@ export default function MyBalances() {
       items.push({
         title: mbt("cap-RemainingCash"),
         panelName: "remainingCashData",
-        withdrawerName: "remainingCash",
+        withdrawerName: "remaining_cash",
         isItem: false,
         data: remainingCashData,
         total,
@@ -263,7 +263,7 @@ export default function MyBalances() {
       items.push({
         title: mbt("cap-MakerRefund"),
         panelName: "makerRefundData",
-        withdrawerName: "makerRefund",
+        withdrawerName: "maker_refund",
         isItem: false,
         data: makerRefundData,
         total,

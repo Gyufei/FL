@@ -32,6 +32,7 @@ export default function CreateOfferBtn({
   return (
     <>
       <WithWalletConnectBtn
+        chain={marketplace.chain}
         className="w-full"
         onClick={() => setDrawerOpen(true)}
       >

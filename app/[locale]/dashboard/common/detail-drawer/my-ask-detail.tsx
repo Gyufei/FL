@@ -172,7 +172,11 @@ export default function MyAskDetail({
 
           <div className="flex items-center justify-between gap-2">
             {isCanSettle ? (
-              <WithWalletConnectBtn className="flex-1" onClick={handleSettle}>
+              <WithWalletConnectBtn
+                className="flex-1"
+                chain={offer?.marketplace.chain}
+                onClick={handleSettle}
+              >
                 <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                   {ot("btn-SettleThisOffer")}
                 </button>
@@ -194,7 +198,10 @@ export default function MyAskDetail({
                           {ot("btn-OfferClosed")}
                         </button>
                       ) : (
-                        <WithWalletConnectBtn onClick={handleRelist}>
+                        <WithWalletConnectBtn
+                          chain={offer?.marketplace.chain}
+                          onClick={handleRelist}
+                        >
                           <button className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                             {ot("btn-RelistThisOffer")}
                           </button>
@@ -210,6 +217,7 @@ export default function MyAskDetail({
                           <>
                             <WithWalletConnectBtn
                               className="flex-1"
+                              chain={offer?.marketplace.chain}
                               onClick={handleClose}
                             >
                               <button
@@ -237,7 +245,11 @@ export default function MyAskDetail({
             )}
 
             {isCanAbort && (
-              <WithWalletConnectBtn className="flex-1" onClick={handleAbort}>
+              <WithWalletConnectBtn
+                chain={offer?.marketplace.chain}
+                className="flex-1"
+                onClick={handleAbort}
+              >
                 <button
                   disabled={isAborting}
                   className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"

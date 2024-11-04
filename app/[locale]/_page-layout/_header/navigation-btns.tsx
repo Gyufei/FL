@@ -58,7 +58,7 @@ export default function NavigationBtns() {
             height={24}
             alt="marketplace"
             data-active={isMarketPlace}
-            className="data-[active=true]:mr-1"
+            className="cursor-pointer data-[active=true]:mr-1"
           />
           {isMarketPlace && <div>{t("btn-Marketplace")}</div>}
         </div>

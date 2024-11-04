@@ -60,6 +60,7 @@ export function useApprove(
 
     setIsAllowanceLoading(true);
 
+    console.log(config);
     const res = await readContract(config, {
       abi: erc20Abi,
       address: tokenAddr as any,

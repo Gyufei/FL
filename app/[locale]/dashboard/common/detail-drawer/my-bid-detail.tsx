@@ -165,7 +165,10 @@ export default function MyBidDetail({
             <>
               {isCanceled ? (
                 !afterTGE ? (
-                  <WithWalletConnectBtn onClick={handleRelist}>
+                  <WithWalletConnectBtn
+                    chain={offer?.marketplace.chain}
+                    onClick={handleRelist}
+                  >
                     <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                       {ot("btn-RelistThisOffer")}
                     </button>
@@ -187,7 +190,10 @@ export default function MyBidDetail({
                   ) : (
                     <>
                       {afterTGE ? (
-                        <WithWalletConnectBtn onClick={handleBidClose}>
+                        <WithWalletConnectBtn
+                          chain={offer?.marketplace.chain}
+                          onClick={handleBidClose}
+                        >
                           <button
                             disabled={isBidClosing}
                             className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
@@ -197,7 +203,10 @@ export default function MyBidDetail({
                         </WithWalletConnectBtn>
                       ) : (
                         <>
-                          <WithWalletConnectBtn onClick={handleClose}>
+                          <WithWalletConnectBtn
+                            chain={offer?.marketplace.chain}
+                            onClick={handleClose}
+                          >
                             <button
                               disabled={isClosing}
                               className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"

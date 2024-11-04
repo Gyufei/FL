@@ -5,10 +5,12 @@ import {
   useModalStatus,
   usePrivy,
   useSolanaWallets,
+  WalletListEntry,
 } from "@privy-io/react-auth";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { ENetworks, NetworkAtom } from "@/lib/states/network";
 import { useAtom } from "jotai";
+import { ChainType } from "@/lib/types/chain";
 
 export function usePrivyWallet() {
   const [network, setNetwork] = useAtom(NetworkAtom);
@@ -16,6 +18,7 @@ export function usePrivyWallet() {
   const { wallets: allSolanaWallets, select } = useWallet();
 
   const { login } = useLogin();
+
   const { connectWallet } = useConnectWallet({
     onSuccess: (linkW) => {
       syncChain(linkW);
@@ -36,15 +39,30 @@ export function usePrivyWallet() {
     [network, setNetwork],
   );
 
-  const toConnectWallet = useCallback(() => {
-    if (!ready || isOpen) return;
+  const toConnectWallet = useCallback(
+    (chain?: ChainType) => {
+      if (!ready || isOpen) return;
 
-    if (!authenticated) {
-      login();
-    } else {
-      connectWallet();
-    }
-  }, [ready, isOpen, authenticated, login, connectWallet]);
+      if (!authenticated) {
+        login();
+      } else {
+        const walletList: Array<WalletListEntry> | undefined = chain
+          ? chain === ChainType.SOLANA
+            ? ["detected_solana_wallets"]
+            : ["detected_ethereum_wallets"]
+          : undefined;
+
+        connectWallet(
+          walletList
+            ? {
+                walletList,
+              }
+            : undefined,
+        );
+      }
+    },
+    [ready, isOpen, authenticated, login, connectWallet],
+  );
 
   const syncSolWallet = useCallback(
     (linkW: any) => {

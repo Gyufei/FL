@@ -45,7 +45,10 @@ export default function AbortHoldingBtn({
   }, [isSuccess]);
 
   return (
-    <WithWalletConnectBtn onClick={() => handleConfirm()}>
+    <WithWalletConnectBtn
+      chain={holding.offer.marketplace.chain}
+      onClick={() => handleConfirm()}
+    >
       <button
         disabled={isLoading}
         className="data-[disabled=true]:bg-gra flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black"

@@ -26,6 +26,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import { ChainType } from "@/lib/types/chain";
 
 export function OrderTable({
   role,
@@ -205,6 +206,7 @@ export function OrderTable({
                   </Cell>
                   <Cell className="h-12 px-1 py-[11px] align-top">
                     <DetailBtn
+                      chain={off.marketplace.chain}
                       onClick={() => handleOpenOfferDrawer(off.offer_id)}
                     ></DetailBtn>
                   </Cell>
@@ -354,10 +356,20 @@ function OfferHash({ offer }: { offer: IOffer }) {
   );
 }
 
-function DetailBtn({ onClick }: { onClick: () => void }) {
+function DetailBtn({
+  onClick,
+  chain,
+}: {
+  chain: ChainType;
+  onClick: () => void;
+}) {
   const ct = useTranslations("Common");
   return (
-    <WithWalletConnectBtn className="flex w-fit" onClick={onClick}>
+    <WithWalletConnectBtn
+      chain={chain}
+      className="flex w-fit"
+      onClick={onClick}
+    >
       <div className="boffer boffer-[#eee] hover:boffer-black flex h-7 w-full cursor-pointer items-center rounded-full px-[14px] text-sm leading-5 text-black">
         {ct("Detail")}
       </div>

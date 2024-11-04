@@ -177,6 +177,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           )}
           {showBuy && (
             <WithWalletConnectBtn
+              chain={offer.marketplace.chain}
               onClick={() => handleShowOrderOffer(String(offer.entry.id))}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
@@ -186,6 +187,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           )}
           {done && (
             <WithWalletConnectBtn
+              chain={offer.marketplace.chain}
               onClick={() => handleShowOrderOffer(String(offer.entry.id))}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">

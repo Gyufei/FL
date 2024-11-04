@@ -141,7 +141,11 @@ export function BuyContent({
         <OrderNoteAndFee value={note} onValueChange={setNote} type={"buy"} />
       </div>
 
-      <WithWalletConnectBtn className="w-full" onClick={handleConfirmBtnClick}>
+      <WithWalletConnectBtn
+        chain={currentMarket.chain}
+        className="w-full"
+        onClick={handleConfirmBtnClick}
+      >
         <button
           disabled={isCreating || isApproving}
           className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"

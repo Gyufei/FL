@@ -171,7 +171,10 @@ export default function AskDetail({
             </>
           ) : (
             <>
-              <WithWalletConnectBtn onClick={handleDeposit}>
+              <WithWalletConnectBtn
+                chain={offer.marketplace.chain}
+                onClick={handleDeposit}
+              >
                 <button
                   disabled={
                     isDepositLoading || !receivePointAmount || isApproving

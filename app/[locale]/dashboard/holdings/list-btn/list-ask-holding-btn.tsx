@@ -94,7 +94,10 @@ export default function ListAskHoldingBtn({
 
   return (
     <div>
-      <WithWalletConnectBtn onClick={() => setDrawerOpen(true)}>
+      <WithWalletConnectBtn
+        chain={holding.offer.marketplace.chain}
+        onClick={() => setDrawerOpen(true)}
+      >
         <ListBtn />
       </WithWalletConnectBtn>
       <Drawer
@@ -186,7 +189,10 @@ export default function ListAskHoldingBtn({
             <OrderNoteAndFee value={note} onValueChange={setNote} type="sell" />
           </div>
 
-          <WithWalletConnectBtn onClick={handleDeposit}>
+          <WithWalletConnectBtn
+            chain={holding.offer.marketplace.chain}
+            onClick={handleDeposit}
+          >
             <button
               disabled={isDepositLoading}
               className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"

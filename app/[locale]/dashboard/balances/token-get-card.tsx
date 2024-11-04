@@ -89,6 +89,7 @@ export function TokenGetCard({
         </div>
         <WithWalletConnectBtn
           onClick={withdrawerName ? handleWithdrawToken : handleWithdrawItem}
+          chain={tokenInfo?.chain}
         >
           <div
             data-active={amount > 0}

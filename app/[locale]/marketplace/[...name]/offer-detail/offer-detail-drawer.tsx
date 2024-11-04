@@ -42,7 +42,7 @@ export default function OfferDetailDrawer({
     if (!offerId) {
       setDrawerOpen(false);
     }
-  }, [offer, offerId]);
+  }, [offer, offerId, connected]);
 
   function handleSuccess(ord: Record<string, any>) {
     setDrawerOpen(false);

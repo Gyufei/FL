@@ -11,7 +11,6 @@ import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { SettleModeSelect } from "./settle-mode-select";
-import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { formatNum } from "@/lib/utils/number";
 import { useCreateAction } from "./use-create-action";
@@ -141,18 +140,13 @@ export function BuyContent({
         <OrderNoteAndFee value={note} onValueChange={setNote} type={"buy"} />
       </div>
 
-      <WithWalletConnectBtn
-        chain={currentMarket.chain}
-        className="w-full"
+      <button
         onClick={handleConfirmBtnClick}
+        disabled={isCreating || isApproving}
+        className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
       >
-        <button
-          disabled={isCreating || isApproving}
-          className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
-        >
-          {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
-        </button>
-      </WithWalletConnectBtn>
+        {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
+      </button>
     </div>
   );
 }

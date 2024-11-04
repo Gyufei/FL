@@ -46,11 +46,20 @@ export function usePrivyWallet() {
       if (!authenticated) {
         login();
       } else {
+        console.log("chain", chain, "connectWallet");
         const walletList: Array<WalletListEntry> | undefined = chain
           ? chain === ChainType.SOLANA
             ? ["detected_solana_wallets"]
-            : ["detected_ethereum_wallets"]
+            : [
+                "metamask",
+                "okx_wallet",
+                "coinbase_wallet",
+                "rainbow",
+                "wallet_connect",
+              ]
           : undefined;
+
+        console.log("walletList", walletList);
 
         connectWallet(
           walletList

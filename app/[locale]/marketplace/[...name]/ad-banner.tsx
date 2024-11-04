@@ -24,7 +24,7 @@ export default function AdBanner({ className }: { className?: string }) {
         alt="ad1"
         className="rounded-2xl"
       />
-      <div className="absolute top-0 bottom-0 right-3 my-3 flex flex-col items-center justify-between gap-2">
+      <div className="absolute bottom-0 right-3 top-0 my-3 flex flex-col items-center justify-between gap-2">
         {images.map((src, index) => (
           <Image
             onClick={() => handleClick(src)}
@@ -34,6 +34,7 @@ export default function AdBanner({ className }: { className?: string }) {
             height={40}
             alt="ad1"
             className="cursor-pointer rounded-lg border border-white"
+            loading="lazy"
           />
         ))}
       </div>

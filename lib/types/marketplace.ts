@@ -17,7 +17,14 @@ export interface IMarketplace {
   settlement_period: string;
   status: string;
   market_symbol: string;
-  market_catagory: string;
+  market_catagory:
+    | "offchain_fungible_point"
+    | "onchain_fungible_point"
+    | "onchain_nonfungible_point"
+    | "point_token"
+    | "future_token"
+    | "token"
+    | "whitelist";
   item_name: string;
   project_token_addr: string;
   token_per_item: string;

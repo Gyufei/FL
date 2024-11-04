@@ -46,7 +46,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
     return ["filled", "settled"].includes(offer.status);
   }, [offer]);
 
-  function handleShowOrderOffer(oId: string) {
+  function handleShowOffer(oId: string) {
     setAnchorValue(oId);
   }
 
@@ -178,7 +178,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           {showBuy && (
             <WithWalletConnectBtn
               chain={offer.marketplace.chain}
-              onClick={() => handleShowOrderOffer(String(offer.entry.id))}
+              onClick={() => handleShowOffer(String(offer.entry.id))}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 {orderType === "sell" ? t("btn-Buy") : t("btn-Sell")}
@@ -188,7 +188,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           {done && (
             <WithWalletConnectBtn
               chain={offer.marketplace.chain}
-              onClick={() => handleShowOrderOffer(String(offer.entry.id))}
+              onClick={() => handleShowOffer(String(offer.entry.id))}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 {t("btn-Detail")}

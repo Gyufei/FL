@@ -20,7 +20,7 @@ import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
 import { formatTimestamp } from "@/lib/utils/time";
 import { IRole, IStatus } from "./filter-select";
-import DetailDrawer from "../common/detail-drawer/detail-drawer";
+import OfferAboutMineDetailDrawer from "../common/offer-about-mine-detail-drawer";
 import { IOfferType } from "@/components/share/offer-type-select";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
@@ -241,7 +241,7 @@ export function OrderTable({
         </Pagination>
       )}
 
-      <DetailDrawer
+      <OfferAboutMineDetailDrawer
         holdingId={selectOfferId}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}

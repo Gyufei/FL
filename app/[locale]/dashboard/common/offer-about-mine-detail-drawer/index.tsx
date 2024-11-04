@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import { upperFirst } from "lodash";
 import { useTranslations } from "next-intl";
 
-export default function DetailDrawer({
+export default function OfferAboutMineDetailDrawer({
   holdingId,
   offer,
   onSuccess,

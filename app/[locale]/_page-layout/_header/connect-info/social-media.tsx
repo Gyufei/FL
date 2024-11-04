@@ -106,7 +106,7 @@ export default function Component() {
       const newLinks = links.map((link) => {
         let value = (user as any)?.[link.type]?.address || "";
         if (["github", "telegram", "twitter", "discord"].includes(link.type)) {
-          value = (user as any)?.[link.type]?.username;
+          value = (user as any)?.[link.type]?.username || "";
         }
         return {
           ...link,

@@ -81,6 +81,7 @@ export default function MarketplaceCard({
           height={73}
           className="absolute -top-4 rounded-3xl"
           alt="marketplace"
+          loading="lazy"
         />
       )}
 

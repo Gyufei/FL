@@ -1,7 +1,7 @@
 "use client";
 import { useMyHoldings } from "@/lib/hooks/api/use-my-holdings";
 import { SortSelect } from "@/components/share/sort-select";
-import DetailDrawer from "../common/detail-drawer/detail-drawer";
+import OfferAboutMineDetailDrawer from "../common/offer-about-mine-detail-drawer";
 import HoldingCard from "./holding-card";
 import OtherHoldingCard from "./other-holding-card";
 import { useSortHolding } from "@/lib/hooks/holding/use-sort-holding";
@@ -46,7 +46,7 @@ export default function MyHoldings() {
         />
       </div>
 
-      <DetailDrawer
+      <OfferAboutMineDetailDrawer
         holdingId={selectHId}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}

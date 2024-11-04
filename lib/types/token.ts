@@ -7,9 +7,7 @@ export interface IToken {
   symbol: string;
   decimals: number;
   logoURI: string;
-  chainId: number;
   chain: ChainType;
-  ratingScore: string;
   [key: string]: any;
 }
 

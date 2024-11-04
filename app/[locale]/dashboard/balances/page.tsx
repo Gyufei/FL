@@ -27,33 +27,9 @@ import {
 } from "@/lib/hooks/api/use-user-item-balance";
 import { TokenGetCard } from "./token-get-card";
 import { ChainType } from "@/lib/types/chain";
-
-const TokenListMap: Record<string, IToken> = {
-  BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ: {
-    symbol: "USDC",
-    logoURI: "/icons/usdc.svg",
-    decimals: 9,
-    chain: ChainType.SOLANA,
-  } as IToken,
-  EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v: {
-    symbol: "USDC",
-    logoURI: "/icons/usdc.svg",
-    decimals: 6,
-    chain: ChainType.SOLANA,
-  } as IToken,
-  So11111111111111111111111111111111111111112: {
-    symbol: "SOL",
-    logoURI: "/icons/solana.svg",
-    decimals: 9,
-    chain: ChainType.SOLANA,
-  } as IToken,
-  "0x734d5ab96eeafe1f8ba36186627fad08e7ff7026": {
-    symbol: "DIN",
-    logoURI: "/icons/point.svg",
-    decimals: 18,
-    chain: ChainType.ETH,
-  } as IToken,
-};
+import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
+import { compact } from "lodash";
 
 interface IPanelProps {
   title: string;
@@ -76,6 +52,7 @@ export default function MyBalances() {
   const { data: ethTokens } = useTokens(ChainType.ETH);
   const { data: bnbTokens } = useTokens(ChainType.BNB);
   const { data: solanaTokens } = useTokens(ChainType.SOLANA);
+  const { data: allMarketPoint } = useMarketPoints();
 
   const allTokens = useMemo(() => {
     function addChainToToken(chain: ChainType, tokens: IToken[]) {
@@ -85,12 +62,25 @@ export default function MyBalances() {
       }));
     }
 
+    const marketToken = (allMarketPoint || [])
+      .filter((t) => t.marketplace.market_catagory === "point_token")
+      .map(
+        (t) =>
+          ({
+            symbol: t.symbol,
+            logoURI: t.logoURI,
+            decimals: ProjectDecimalsMap[t.marketplace.market_symbol],
+            chain: ChainType.SOLANA,
+          } as IToken),
+      );
+
     return [
       ...addChainToToken(ChainType.ETH, ethTokens || []),
       ...addChainToToken(ChainType.BNB, bnbTokens || []),
       ...addChainToToken(ChainType.SOLANA, solanaTokens || []),
+      ...marketToken,
     ];
-  }, [ethTokens, bnbTokens, solanaTokens]);
+  }, [ethTokens, bnbTokens, solanaTokens, allMarketPoint]);
 
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);
@@ -106,9 +96,11 @@ export default function MyBalances() {
     (bData: Array<ITokenBalance> | undefined, key: string) => {
       if (!bData || !allTokens.length) return [];
       const itemData = bData?.map((t) => {
-        const tokenInfo =
-          allTokens.find((token) => token.address === t.token_address) ||
-          TokenListMap[t.token_address];
+        const tokenInfo = allTokens.find(
+          (token) => token.address === t.token_address,
+        );
+
+        if (!tokenInfo) return null;
 
         const amount = NP.divide(
           (t.ledgers as any)[key],
@@ -120,7 +112,7 @@ export default function MyBalances() {
         };
       });
 
-      return itemData;
+      return compact(itemData);
     },
     [allTokens],
   );
@@ -133,16 +125,16 @@ export default function MyBalances() {
         (m) => m.market_symbol === bData!.market_symbol,
       );
 
+      if (!market) return [];
+
       const tokenInfo = {
         symbol: market?.item_name,
         logoURI: market?.pointLogo,
         market: market,
       } as unknown as IToken;
 
-      const amount = NP.divide(
-        bData!.total_amount,
-        isProduction ? 10 ** 6 : 10 ** 9,
-      );
+      const decimals = ProjectDecimalsMap[market?.market_symbol] || 0;
+      const amount = NP.divide(bData!.total_amount, 10 ** decimals);
 
       const taxIncome = {
         amount: Number(amount),

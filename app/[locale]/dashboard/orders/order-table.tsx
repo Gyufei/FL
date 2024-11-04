@@ -26,6 +26,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export function OrderTable({
   role,
@@ -38,9 +39,11 @@ export function OrderTable({
 }) {
   const T = useTranslations("page-MyOrders");
 
+  const { currentChainInfo } = useChainWallet();
+
   const { data: offers, mutate: refreshMyOffers } = useMyOffers({
     marketSymbol: null,
-    marketChain: "eth",
+    marketChain: currentChainInfo.chainType,
   });
 
   const [drawerOpen, setDrawerOpen] = useState(false);

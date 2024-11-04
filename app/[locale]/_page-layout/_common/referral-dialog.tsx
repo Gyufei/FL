@@ -64,9 +64,10 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const { currentChainInfo } = useChainWallet();
 
   const { data: codeData } = useReferralCodeData({
-    chain: ChainType.ETH,
+    chain: currentChainInfo.chainType,
     code: referralCode,
   });
 
@@ -89,7 +90,7 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
     isSuccess,
     write: writeAction,
   } = useUpdateReferral({
-    chain: ChainType.ETH,
+    chain: currentChainInfo.chainType,
     referrerStr,
     referralCode,
   });

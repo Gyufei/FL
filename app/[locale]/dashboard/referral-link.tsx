@@ -2,15 +2,16 @@ import HoverIcon from "@/components/share/hover-icon";
 // import { Input } from "@/components/ui/input";
 import { useReferralData } from "@/lib/hooks/api/use-referral-data";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
-import { ChainType } from "@/lib/types/chain";
 import { useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function ReferralLink() {
   const T = useTranslations("page-Referral");
+  const { currentChainInfo } = useChainWallet();
 
-  const { data: referralData } = useReferralData(ChainType.ETH);
+  const { data: referralData } = useReferralData(currentChainInfo.chainType);
 
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 

@@ -14,22 +14,24 @@ import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
 import { useTranslations } from "next-intl";
 import ReferralLink from "./referral-link";
 import RollInBtn from "./roll-in-btn";
-import { ChainType } from "@/lib/types/chain";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function OverviewInfo() {
   const T = useTranslations("cd-AccountOverview");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { currentChainInfo } = useChainWallet();
+
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
     to: undefined,
   });
 
   const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats(
-    ChainType.ETH,
+    currentChainInfo.chainType,
   );
 
   const { trigger: updateUserNameAction, data: updateRes } = useUserNameChange(
-    ChainType.ETH,
+    currentChainInfo.chainType,
   );
 
   const [nameInputValue, setNameInputValue] = useState("");

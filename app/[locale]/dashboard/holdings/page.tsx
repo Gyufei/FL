@@ -7,11 +7,15 @@ import OtherHoldingCard from "./other-holding-card";
 import { useSortHolding } from "@/lib/hooks/holding/use-sort-holding";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function MyHoldings() {
   const T = useTranslations("page-MyStocks");
-  const { data: holdings, mutate: refreshHoldings } = useMyHoldings("eth"); //TODO:
-  console.log("🚀 ~ MyHoldings ~ holdings:", holdings);
+  const { currentChainInfo } = useChainWallet();
+
+  const { data: holdings, mutate: refreshHoldings } = useMyHoldings(
+    currentChainInfo.chainType,
+  );
 
   const [selectHId, setSelectHId] = useState("");
 

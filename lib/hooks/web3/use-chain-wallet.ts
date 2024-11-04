@@ -6,7 +6,7 @@ import { useCurrentChain } from "./use-current-chain";
 import { usePrivy } from "@privy-io/react-auth";
 
 export function useChainWallet() {
-  const { isEvm, isSolana } = useCurrentChain();
+  const { isEvm, isSolana, currentChainInfo } = useCurrentChain();
   const { ready, authenticated } = usePrivy();
 
   const {
@@ -72,5 +72,6 @@ export function useChainWallet() {
     connected,
     connecting,
     disconnect,
+    currentChainInfo,
   };
 }

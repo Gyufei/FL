@@ -34,7 +34,7 @@ import {
   useReferralNoteChange,
 } from "@/lib/hooks/api/use-referral";
 import { useRemoveReferral } from "@/lib/hooks/contract/use-remove-referral";
-import { ChainType } from "@/lib/types/chain";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export function ReferralTable({
   referralData,
@@ -382,7 +382,10 @@ function OpBtn({
 }) {
   const { trigger: setDefaultAction, data: setDefaultRes } =
     useReferralDefault();
-  const { write: deleteAction, isSuccess } = useRemoveReferral(ChainType.ETH);
+  const { currentChainInfo } = useChainWallet();
+  const { write: deleteAction, isSuccess } = useRemoveReferral(
+    currentChainInfo.chainType,
+  );
 
   useEffect(() => {
     if (setDefaultRes) {

@@ -10,11 +10,13 @@ export interface IChainConfig {
   zeroAddr: string;
   contracts: Record<string, string>;
   isEvm: boolean;
+  chainType: ChainType;
 }
 
 export const ChainConfigs: Record<string, IChainConfig> = {
   [ChainType.SOLANA]: {
     name: "Solana",
+    chainType: ChainType.SOLANA,
     logo: "/icons/solana.svg",
     rpcs: {
       TadleDefaultRPC: isProduction
@@ -43,6 +45,7 @@ export const ChainConfigs: Record<string, IChainConfig> = {
   },
   [ChainType.ETH]: {
     name: "Ethereum",
+    chainType: ChainType.ETH,
     logo: "/icons/eth.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 1 : 1337,
@@ -72,6 +75,7 @@ export const ChainConfigs: Record<string, IChainConfig> = {
   },
   [ChainType.BNB]: {
     name: "BNB Chain",
+    chainType: ChainType.BNB,
     logo: "/icons/bnb.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
     network: isProduction ? 56 : 97,

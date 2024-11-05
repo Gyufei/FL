@@ -5,7 +5,7 @@ import OfferAboutMineDetailDrawer from "../common/offer-about-mine-detail-drawer
 import HoldingCard from "./holding-card";
 import OtherHoldingCard from "./other-holding-card";
 import { useSortHolding } from "@/lib/hooks/holding/use-sort-holding";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
 import { NetworkSelect } from "@/components/share/network-select";
@@ -27,9 +27,12 @@ export default function MyHoldings() {
     handleSortDirChange,
     sortOffers,
   } = useSortHolding(holdings || []);
-  console.log("🚀 ~ MyHoldings ~ sortOffers:", sortOffers);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    refreshHoldings();
+  }, [selectedChain, refreshHoldings]);
 
   function handleOpenHoldingDrawer(hId: string) {
     setSelectHId(hId);

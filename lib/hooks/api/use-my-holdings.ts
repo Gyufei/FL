@@ -11,14 +11,15 @@ export function useMyHoldings({ chain }: { chain?: string }) {
   const { address } = useChainWallet();
   const { dataApiEndPoint } = useEndPoint();
   const { data: marketplaceData } = useMarketplaces();
-  const { data: offers, isLoading } = useMarketOffers({
+  const { data: offers, isLoading: isOfferLoading } = useMarketOffers({
     marketSymbol: null,
     marketChain: chain || "",
   });
 
   // const tempAddress = 'D7jbXQgpQVr4J4xWtzDPKAgqLrrRWZ2NKrBmiGwyAceN';
   const holdingFetch = async () => {
-    if (!address || isLoading || !(offers && offers?.length > 0)) return [];
+    if (!address || isOfferLoading || !(offers && offers?.length > 0))
+      return [];
 
     const holdingRes = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.holding}?wallet=${address}&chain=${chain}`,
@@ -65,7 +66,10 @@ export function useMyHoldings({ chain }: { chain?: string }) {
     ].filter((i) => i) as Array<IHolding>;
   };
 
-  const res = useSWR(`my_stock:${address}${isLoading}`, holdingFetch);
+  const res = useSWR(
+    `my_stock:${chain}${address}${isOfferLoading}`,
+    holdingFetch,
+  );
 
   return res;
 }

@@ -5,13 +5,12 @@ import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
-import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
 
 export default function ReferralLink() {
   const T = useTranslations("page-Referral");
-  const { currentChainInfo } = useChainWallet();
 
-  const { data: referralData } = useReferralData(currentChainInfo.chainType);
+  const { data: referralData } = useReferralData(ChainType.ETH);
 
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 

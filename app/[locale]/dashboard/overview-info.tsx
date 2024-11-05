@@ -15,23 +15,23 @@ import { useTranslations } from "next-intl";
 import ReferralLink from "./referral-link";
 import RollInBtn from "./roll-in-btn";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
 
 export default function OverviewInfo() {
   const T = useTranslations("cd-AccountOverview");
   const inputRef = useRef<HTMLInputElement>(null);
-  const { currentChainInfo } = useChainWallet();
+  const { currentChain } = useChainWallet();
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
     to: undefined,
   });
 
-  const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats(
-    currentChainInfo.chainType,
-  );
+  const { data: accountInfo, mutate: refetchAccountInfo } =
+    useAccountStats(currentChain);
 
   const { trigger: updateUserNameAction, data: updateRes } = useUserNameChange(
-    currentChainInfo.chainType,
+    ChainType.ETH,
   );
 
   const [nameInputValue, setNameInputValue] = useState("");

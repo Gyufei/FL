@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import { NumericalInput } from "@/components/share/numerical-input";
 import { useReferralRateChange } from "@/lib/hooks/api/use-referral";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
-import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
 export function ReferralDrawer({
   referral,
   onSuccess,
@@ -26,10 +26,7 @@ export function ReferralDrawer({
   setDrawerOpen: (_v: boolean) => void;
 }) {
   const rt = useTranslations("page-Referral");
-  const { currentChainInfo } = useChainWallet();
-  const { data: extraRateData } = useReferralExtraRate(
-    currentChainInfo.chainType,
-  );
+  const { data: extraRateData } = useReferralExtraRate(ChainType.ETH);
   const extraRate = useMemo(
     () => (extraRateData?.data || 0) / 10 ** 4,
     [extraRateData],

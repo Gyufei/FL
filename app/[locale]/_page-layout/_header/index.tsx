@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import ConnectBtn from "./connect-btn";
-import { NetworkSelect } from "./network-select";
 import NavigationBtns from "./navigation-btns";
 import MessageBtn from "./message-btn";
 import MobileRouterMenu from "./mobile-router-menu";
@@ -53,8 +52,7 @@ export default function Header() {
         {/* pc */}
         <NavigationBtns />
         <Logo />
-        <div className="hidden flex-1 items-center justify-end space-x-4 sm:flex md:space-x-6">
-          <NetworkSelect />
+        <div className="hidden flex-1 items-center justify-end space-x-4 sm:flex md:space-x-4">
           <ConnectBtn />
           <MessageBtn />
         </div>

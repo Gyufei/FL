@@ -1,12 +1,12 @@
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useMemo } from "react";
-import { useAccount, useDisconnect } from "wagmi";
-import { useCurrentChain } from "./use-current-chain";
+import { useAccount, useChainId, useDisconnect } from "wagmi";
 import { usePrivy } from "@privy-io/react-auth";
+import { ChainConfigs } from "@/lib/const/chain-configs";
+import { ChainType } from "@/lib/types/chain";
 
 export function useChainWallet() {
-  const { isEvm, isSolana, currentChainInfo } = useCurrentChain();
   const { ready, authenticated } = usePrivy();
 
   const {
@@ -15,6 +15,8 @@ export function useChainWallet() {
     // isDisconnected: isEthDisconnected,
     isConnecting: evmConnecting,
   } = useAccount();
+
+  const chainId = useChainId();
 
   const { disconnect: evmDisconnect } = useDisconnect();
 
@@ -31,16 +33,26 @@ export function useChainWallet() {
         return defaultThing;
       }
 
-      if (isEvm) {
-        return evmThing;
-      }
-
-      if (isSolana) {
-        return solThing;
-      }
+      return evmThing || solThing;
     },
-    [isEvm, isSolana, ready, authenticated],
+    [ready, authenticated],
   );
+
+  const currentChain = useMemo(() => {
+    if (ChainConfigs[ChainType.ETH].network === chainId) {
+      return ChainType.ETH;
+    }
+
+    if (ChainConfigs[ChainType.BNB].network === chainId) {
+      return ChainType.BNB;
+    }
+
+    if (solAddress) {
+      return ChainType.SOLANA;
+    }
+
+    return ChainType.ETH;
+  }, [chainId, solAddress]);
 
   const connected = useMemo(() => {
     return getAboutChain(evmConnected, evmConnected, solConnected, false);
@@ -72,6 +84,6 @@ export function useChainWallet() {
     connected,
     connecting,
     disconnect,
-    currentChainInfo,
+    currentChain,
   };
 }

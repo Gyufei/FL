@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/accordion";
 import { formatNum } from "@/lib/utils/number";
 import { IToken } from "@/lib/types/token";
-import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { useTranslations } from "next-intl";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
@@ -20,10 +19,6 @@ import {
   ITokenBalance,
   useUserTokenBalance,
 } from "@/lib/hooks/api/use-user-token-balance";
-import {
-  IItemBalance,
-  useUserItemBalance,
-} from "@/lib/hooks/api/use-user-item-balance";
 import { TokenGetCard } from "./token-get-card";
 import { ChainType } from "@/lib/types/chain";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
@@ -34,7 +29,6 @@ interface IPanelProps {
   title: string;
   panelName: string;
   withdrawerName: string | null;
-  isItem: boolean;
   data: {
     amount: number;
     tokenInfo: IToken;
@@ -84,13 +78,6 @@ export default function MyBalances() {
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);
 
-  const { data: itemBlcData, mutate: refetchItemBlcData } = useUserItemBalance(
-    wallet,
-    "din",
-  );
-
-  const { data: marketplaceData } = useMarketplaces();
-
   const getTokenDataFormat = useCallback(
     (bData: Array<ITokenBalance> | undefined, key: string) => {
       if (!bData || !allTokens.length) return [];
@@ -116,44 +103,10 @@ export default function MyBalances() {
     [allTokens],
   );
 
-  const getPointDataFormat = useCallback(
-    (bData: IItemBalance | undefined) => {
-      if (!bData || !bData?.market_symbol) return [];
-
-      const market = marketplaceData?.find(
-        (m) => m.market_symbol === bData!.market_symbol,
-      );
-
-      if (!market) return [];
-
-      const tokenInfo = {
-        symbol: market?.item_name,
-        logoURI: market?.pointLogo,
-        market: market,
-      } as unknown as IToken;
-
-      const decimals = ProjectDecimalsMap[market?.market_symbol] || 0;
-      const amount = NP.divide(bData!.total_amount, 10 ** decimals);
-
-      const taxIncome = {
-        amount: Number(amount),
-        tokenInfo,
-      };
-
-      return [taxIncome];
-    },
-    [marketplaceData],
-  );
-
   const taxIncomeData = useMemo(() => {
     const data = getTokenDataFormat(tokenBlcData, "tax_income");
     return data;
   }, [tokenBlcData, getTokenDataFormat]);
-
-  const realizedAssetsData = useMemo(() => {
-    const data = getPointDataFormat(itemBlcData);
-    return data;
-  }, [getPointDataFormat, itemBlcData]);
 
   const referralData = useMemo(() => {
     const data = getTokenDataFormat(tokenBlcData, "referral_bonus");
@@ -189,23 +142,7 @@ export default function MyBalances() {
         title: mbt("cap-TaxIncome"),
         panelName: "taxIncomeData",
         withdrawerName: "tax_income",
-        isItem: false,
         data: taxIncomeData,
-        total,
-      } as IPanelProps);
-    }
-
-    if (realizedAssetsData.length > 0) {
-      const total = realizedAssetsData.reduce(
-        (acc, t) => acc + t.amount || 0,
-        0,
-      );
-      items.push({
-        title: mbt("cap-RealizedAssets"),
-        panelName: "realizedAssetsData",
-        withdrawerName: null,
-        isItem: true,
-        data: realizedAssetsData,
         total,
       } as IPanelProps);
     }
@@ -216,7 +153,6 @@ export default function MyBalances() {
         title: mbt("cap-ReferralBonus"),
         panelName: "referralData",
         withdrawerName: "referral_bonus",
-        isItem: false,
         data: referralData,
         total,
       } as IPanelProps);
@@ -228,7 +164,6 @@ export default function MyBalances() {
         title: mbt("cap-SalesRevenue"),
         panelName: "salesRevenueData",
         withdrawerName: "sales_revenue",
-        isItem: false,
         data: salesRevenueData,
         total,
       } as IPanelProps);
@@ -243,7 +178,6 @@ export default function MyBalances() {
         title: mbt("cap-RemainingCash"),
         panelName: "remainingCashData",
         withdrawerName: "remaining_cash",
-        isItem: false,
         data: remainingCashData,
         total,
       } as IPanelProps);
@@ -255,7 +189,6 @@ export default function MyBalances() {
         title: mbt("cap-MakerRefund"),
         panelName: "makerRefundData",
         withdrawerName: "maker_refund",
-        isItem: false,
         data: makerRefundData,
         total,
       } as IPanelProps);
@@ -267,7 +200,6 @@ export default function MyBalances() {
         title: mbt("cap-PointToken"),
         panelName: "pointTokenData",
         withdrawerName: "settlement",
-        isItem: false,
         data: pointTokenData,
         total,
       } as IPanelProps);
@@ -277,7 +209,6 @@ export default function MyBalances() {
   }, [
     mbt,
     taxIncomeData,
-    realizedAssetsData,
     referralData,
     salesRevenueData,
     remainingCashData,
@@ -328,14 +259,8 @@ export default function MyBalances() {
                         key={index}
                         tokenInfo={i.tokenInfo}
                         amount={i.amount || 0}
-                        withdrawerName={
-                          item.isItem ? null : item.withdrawerName
-                        }
-                        onSuccess={() =>
-                          item.isItem
-                            ? refetchItemBlcData()
-                            : refetchTokenBlcData()
-                        }
+                        withdrawerName={item.withdrawerName}
+                        onSuccess={() => refetchTokenBlcData()}
                       />
                     ))}
                   </div>

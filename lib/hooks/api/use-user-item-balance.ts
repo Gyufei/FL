@@ -4,15 +4,8 @@ import { DataApiPaths } from "@/lib/PathMap";
 import { dataApiFetcher } from "@/lib/fetcher";
 
 export interface IItemBalance {
-  market_symbol: string;
-  total_amount: number;
-  entries: IItemEntry[];
-}
-
-interface IItemEntry {
-  entry_id: number;
-  item_amount: number;
-  status: string;
+  available: number;
+  locked: number;
 }
 
 export function useUserItemBalance(wallet: string, marketSymbol: string) {
@@ -20,7 +13,9 @@ export function useUserItemBalance(wallet: string, marketSymbol: string) {
 
   const res = useSWR<IItemBalance>(
     wallet
-      ? `${dataApiEndPoint}${DataApiPaths.userItemBalance}/${wallet}?market_symbol=${marketSymbol}`
+      ? `${dataApiEndPoint}${
+          DataApiPaths.userItemBalance
+        }/${"0xdBbEf79D460Df7e9f017104b8803A0dC68014524"}?market_symbol=${"spherex"}&chain=${"bnb"}`
       : null,
     dataApiFetcher,
   );

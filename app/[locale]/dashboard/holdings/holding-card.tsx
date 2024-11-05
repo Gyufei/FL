@@ -19,7 +19,6 @@ export default function HoldingCard({
   holding: IHolding;
   onSuccess: () => void;
 }) {
-  console.log("🚀 ~ holding:", holding);
   const ct = useTranslations("page-MyStocks");
   const {
     afterTGE,

@@ -27,6 +27,7 @@ export default function MyHoldings() {
     handleSortDirChange,
     sortOffers,
   } = useSortHolding(holdings || []);
+  console.log("🚀 ~ MyHoldings ~ sortOffers:", sortOffers);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 

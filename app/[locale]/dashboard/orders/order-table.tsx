@@ -14,7 +14,7 @@ import { useTheme } from "@table-library/react-table-library/theme";
 
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { Pagination } from "@/components/ui/pagination/pagination";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMyOffers } from "@/lib/hooks/api/use-my-offers";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { IOffer } from "@/lib/types/offer";
@@ -71,6 +71,10 @@ export function OrderTable({
       nodes: sortData,
     };
   }, [offers, role, status, types]);
+
+  useEffect(() => {
+    refreshMyOffers();
+  }, [chain, refreshMyOffers]);
 
   const theme = useTheme({
     Table: `

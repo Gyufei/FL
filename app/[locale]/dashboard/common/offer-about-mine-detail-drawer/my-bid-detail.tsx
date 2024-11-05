@@ -96,7 +96,7 @@ export default function MyBidDetail({
 
   function handleClose() {
     if (isClosing) return;
-    closeAction?.(undefined);
+    closeAction?.({ offerId: offer.offer_id });
   }
 
   function handleRelist() {

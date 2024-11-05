@@ -100,7 +100,7 @@ export default function BidDetail({
     if (isDepositLoading || !sellPointAmount) return;
     await writeAction({
       offerId: offer.offer_id,
-      itemAmount: toNonExponential(NP.divide(sellPointAmount, pointDecimalNum)),
+      itemAmount: toNonExponential(sellPointAmount),
     });
   }
 
@@ -138,7 +138,7 @@ export default function BidDetail({
             value={String(NP.divide(sellPointAmount, pointDecimalNum))}
             canGoMax={sliderCanMax}
             sliderMax={Number(offer.item_amount)}
-            sliderValue={NP.divide(sellPointAmount, pointDecimalNum)}
+            sliderValue={sellPointAmount}
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
           />
@@ -161,7 +161,7 @@ export default function BidDetail({
             >
               <button
                 disabled={isDepositLoading || !sellPointAmount || isApproving}
-                onClick={handleDeposit}
+                // onClick={handleDeposit}
                 className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
               >
                 {isShouldApprove ? approveBtnText : T("btn-ConfirmTakerOrder")}

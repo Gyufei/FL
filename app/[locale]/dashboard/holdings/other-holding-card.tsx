@@ -4,12 +4,12 @@ import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useBalanceDataOf } from "@/lib/hooks/api/use-balanceof";
 import NP from "number-precision";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useUserItemBalance } from "@/lib/hooks/api/use-user-item-balance";
+import { ChainType } from "@/lib/types/chain";
 
 export default function OtherHoldingCard({ holding }: { holding: any }) {
-  console.log("🚀 ~ holding:", holding);
   const ct = useTranslations("page-MyStocks");
-  const { data: balanceData } = useBalanceDataOf();
-  console.log("🚀 ~ OtherHoldingCard ~ balanceData:", balanceData);
 
   return (
     <div className="rounded-[20px] bg-white p-5">
@@ -38,14 +38,24 @@ export default function OtherHoldingCard({ holding }: { holding: any }) {
             {ct("txt-Free")}
           </div>
           <div className="flex items-center leading-6 text-black">
-            {balanceData
-              ? formatNum(NP.divide(balanceData as any, 10 ** 18), 2, false)
-              : 0}
+            <BalanceValue
+              type="free"
+              marketCatagory={holding.marketplace.market_catagory}
+              marketSymbol={holding.marketplace.market_symbol}
+              chain={holding.marketplace.chain}
+            />
           </div>
           <div className="mb-[2px] text-xs leading-[18px] text-gray">
             {ct("txt-Locked")}
           </div>
-          <div className="flex items-center leading-6 text-black">0</div>
+          <div className="flex items-center leading-6 text-black">
+            <BalanceValue
+              type="locked"
+              marketCatagory={holding.marketplace.market_catagory}
+              marketSymbol={holding.marketplace.market_symbol}
+              chain={holding.marketplace.chain}
+            />
+          </div>
         </div>
       </div>
 
@@ -53,3 +63,63 @@ export default function OtherHoldingCard({ holding }: { holding: any }) {
     </div>
   );
 }
+
+const BalanceValue = ({
+  type,
+  marketCatagory,
+  marketSymbol,
+  chain,
+}: {
+  type: string;
+  marketCatagory: any;
+  marketSymbol?: string;
+  chain: ChainType;
+}) => {
+  if (marketCatagory === "point_token") {
+    if (type === "free") return <PointTokenBalance chain={chain} />;
+    return <>0</>;
+  }
+
+  if (marketCatagory === "offchain_fungible_point" && marketSymbol)
+    return (
+      <OffchainFungiblePointBalance
+        marketSymbol={marketSymbol}
+        type={type}
+        chain={chain}
+      />
+    );
+  return <>0</>;
+};
+
+const PointTokenBalance = ({ chain }: { chain: ChainType }) => {
+  const { data: balanceData } = useBalanceDataOf(chain);
+  return (
+    <>
+      {balanceData
+        ? formatNum(NP.divide(balanceData as any, 10 ** 18), 2, false)
+        : 0}
+    </>
+  );
+};
+
+const OffchainFungiblePointBalance = ({
+  type,
+  marketSymbol,
+  chain,
+}: {
+  type: string;
+  marketSymbol: string;
+  chain: ChainType;
+}) => {
+  const { address: wallet } = useChainWallet();
+
+  const { data: itemBlcData } = useUserItemBalance(wallet, marketSymbol, chain);
+  if (itemBlcData) {
+    if (type === "free") {
+      return <>{itemBlcData?.available || 0}</>;
+    } else {
+      return <>{itemBlcData?.locked || 0}</>;
+    }
+  }
+  return <>0</>;
+};

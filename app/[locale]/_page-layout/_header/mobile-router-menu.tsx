@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 export default function MobileRouterMenu() {
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <div className="block md:hidden">
+    <div className="block sm:hidden">
       <button
         data-show={showMenu ? true : false}
         className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-[#d3d4d6] bg-white transition-all data-[show=true]:border-black"

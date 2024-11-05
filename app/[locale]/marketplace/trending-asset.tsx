@@ -155,7 +155,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
 
   return (
     <div className={cn(className, "flex flex-col")}>
-      <div className="flex items-center justify-between">
+      <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
           <div className="leading-6 text-black">{t("cap-TrendingAssets")}</div>

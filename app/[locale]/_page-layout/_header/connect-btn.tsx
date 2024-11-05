@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -13,16 +14,37 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { usePrivyWallet } from "@/lib/hooks/web3/use-privy-wallet";
 import { useState } from "react";
 import { useLogout } from "@privy-io/react-auth";
-import ConnectInfoDrawer from "./connect-info-drawer";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+// import ConnectInfoDrawer from "./connect-info-drawer";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
   const t = useTranslations("Header");
 
+  const { isMobile } = useDeviceSize();
   const { toConnectWallet } = usePrivyWallet();
   const { shortAddr, connected, connecting } = useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false);
+
+  function handleConnect() {
+    if (connected) {
+      setShowSignIn(true);
+    } else {
+      toConnectWallet();
+    }
+  }
+
+  if (isMobile) {
+    return (
+      <button
+        className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#d3d4d6] bg-white "
+        onClick={handleConnect}
+      >
+        <Image src="/icons/wallet.svg" width={20} height={20} alt="wallet" />
+      </button>
+    );
+  }
 
   if (!connected) {
     return (
@@ -74,10 +96,10 @@ export default function ConnectBtn() {
           <SignOutBtn />
         </DialogContent>
       </Dialog>
-      <ConnectInfoDrawer
+      {/* <ConnectInfoDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-      />
+      /> */}
     </>
   );
 }

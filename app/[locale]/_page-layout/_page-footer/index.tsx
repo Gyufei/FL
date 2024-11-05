@@ -5,10 +5,16 @@ import HoverIcon from "@/components/share/hover-icon";
 import FooterSetting from "./footer-setting";
 import LanguageSetting from "./language-setting";
 import { LiveMs } from "./live-ms";
+import { cn } from "@/lib/utils/common";
 
-export default function PageFooter() {
+export default function PageFooter({ className }: { className?: string }) {
   return (
-    <div className="flex items-center justify-between px-6 pt-5 pb-4">
+    <div
+      className={cn(
+        "flex items-center justify-between px-6 pb-4 pt-5",
+        className,
+      )}
+    >
       <LiveMs />
       <div className="flex items-center space-x-5">
         <HoverIcon

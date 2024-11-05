@@ -12,7 +12,7 @@ export default function NavigationBtns() {
   const isDashboard = pathname.startsWith(`/dashboard`);
   const isMarketPlace = pathname.startsWith(`/marketplace`);
   const pointPattern = /\/marketplace\/[a-zA-Z]+/;
-  const isPoint = pointPattern.test(pathname);
+  const isMarketDetailPage = pointPattern.test(pathname);
 
   const router = useRouter();
 
@@ -49,7 +49,7 @@ export default function NavigationBtns() {
           data-active={isMarketPlace}
           className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-yellow data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
           style={{
-            borderRight: isPoint ? "2px solid #fff" : "",
+            borderRight: isMarketDetailPage ? "2px solid #fff" : "",
           }}
         >
           <Image
@@ -62,7 +62,7 @@ export default function NavigationBtns() {
           />
           {isMarketPlace && <div>{t("btn-Marketplace")}</div>}
         </div>
-        {isPoint && (
+        {isMarketDetailPage && (
           <div className="z-1 absolute -right-[100px] flex h-12 cursor-pointer items-center justify-center rounded-full border border-yellow bg-yellow pl-[64px] pr-6">
             <div className="flex items-center space-x-1 text-gray">
               <div>Point</div>

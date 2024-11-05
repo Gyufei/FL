@@ -46,7 +46,7 @@ export default function Web3ModalProvider({
       appId={PrivyAppId}
       config={{
         appearance: {
-          showWalletLoginFirst: false,
+          showWalletLoginFirst: true,
           logo: "/icons/logo.svg",
           walletChainType: "ethereum-and-solana",
         },

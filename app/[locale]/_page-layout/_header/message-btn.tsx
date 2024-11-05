@@ -13,6 +13,7 @@ import { ChainType } from "@/lib/types/chain";
 import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { formatNum } from "@/lib/utils/number";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
@@ -28,40 +29,43 @@ export default function MessageBtn() {
 
   const pathname = usePathname();
 
+  const { isMobile } = useDeviceSize();
+
   if (pathname === "/") return null;
 
   return (
     <>
       <div
         onClick={() => setDrawerOpen(true)}
-        className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6] hover:border-transparent hover:bg-yellow"
+        className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-[#D3D4D6] hover:border-transparent hover:bg-yellow sm:h-12 sm:w-12 sm:rounded-full"
       >
         <Image src="/icons/bell.svg" width={24} height={24} alt="bell" />
         {(data || []).length > 0 && (
           <Badge
             variant="destructive"
-            className="absolute -right-1 -top-1 h-4 min-w-4 px-1"
+            className="absolute -right-2 -top-2 h-4 min-w-4 px-1 sm:-right-1 sm:-top-1"
           >
             {showLen}
           </Badge>
         )}
-        <Drawer
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          direction="right"
-          size={500}
-          className="overflow-y-auto rounded-l-2xl p-6"
-          customIdSuffix="msg-drawer"
-        >
-          <DrawerTitle
-            title={t("cap-Notifications")}
-            onClose={() => setDrawerOpen(false)}
-          />
-          {(data || []).map((i, idx) => (
-            <MsgRow key={idx} msgDetail={i} />
-          ))}
-        </Drawer>
       </div>
+
+      <Drawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        direction={isMobile ? "top" : "right"}
+        size={isMobile ? "99%" : 500}
+        className="overflow-y-auto rounded-b-2xl p-6 sm:rounded-l-2xl"
+        customIdSuffix="msg-drawer"
+      >
+        <DrawerTitle
+          title={t("cap-Notifications")}
+          onClose={() => setDrawerOpen(false)}
+        />
+        {(data || []).map((i, idx) => (
+          <MsgRow key={idx} msgDetail={i} />
+        ))}
+      </Drawer>
     </>
   );
 }

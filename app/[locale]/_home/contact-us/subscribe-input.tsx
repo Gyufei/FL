@@ -45,10 +45,7 @@ export default function SubscribeInput() {
       />
       <div
         data-active={isEmail}
-        style={{
-          left: "calc(50% + 116px)",
-        }}
-        className="absolute top-0 flex h-10 items-center rounded-lg px-5 leading-5 text-lightgray data-[active=true]:cursor-pointer data-[active=true]:bg-yellow data-[active=true]:text-black sm:top-1 sm:leading-[22px]"
+        className="absolute left-[70%] top-0 flex h-10 items-center rounded-lg px-5 leading-5 text-lightgray data-[active=true]:cursor-pointer data-[active=true]:bg-yellow data-[active=true]:text-black sm:top-1 sm:leading-[22px] md:left-[calc(50%+116px)]"
         onClick={handleSubscribe}
       >
         {t("btn-Subscribe")}

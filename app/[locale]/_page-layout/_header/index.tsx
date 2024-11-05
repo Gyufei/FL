@@ -10,6 +10,7 @@ import { usePathname } from "@/app/navigation";
 export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isMarketItemPage = /\/marketplace\/[a-zA-Z]+/.test(pathname);
 
   if (isHome) {
     return (
@@ -59,9 +60,15 @@ export default function Header() {
 
         {/* Mobile */}
         <div className="flex flex-1 items-center justify-between sm:hidden">
-          <div className="flex items-center space-x-4">
+          <MobileRouterMenu />
+          <div
+            className="flex items-center justify-between space-x-3"
+            style={{
+              paddingRight: isMarketItemPage ? "52px" : "0",
+            }}
+          >
+            <MessageBtn />
             <ConnectBtn />
-            <MobileRouterMenu />
           </div>
         </div>
       </div>

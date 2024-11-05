@@ -152,7 +152,7 @@ export default function PointMarket({ className }: { className?: string }) {
             ? 0
             : NP.divide(NP.minus(lastPrice, lastPrice24hAgo), lastPrice24hAgo);
         return isLoadingFlag ? (
-          <Skeleton className="h-[16px] w-[150px]" />
+          <Skeleton className="h-[16px] w-[120px]" />
         ) : (
           <div className="flex flex-col items-end">
             <PriceText
@@ -283,14 +283,19 @@ export default function PointMarket({ className }: { className?: string }) {
   }
 
   return (
-    <div className={cn(className, "flex flex-1 flex-col")}>
-      <div className="flex items-center justify-between">
+    <div
+      className={cn(
+        className,
+        "flex max-w-[100vw] flex-1 flex-col overflow-x-scroll pr-6 sm:max-w-none sm:overflow-x-hidden sm:pr-0",
+      )}
+    >
+      <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
           <div className="leading-6 text-black">{t("cap-PointMarket")}</div>
         </div>
       </div>
-      <div className="max-h-auto relative min-h-[296px] w-full flex-1 flex-col overflow-y-hidden">
+      <div className="max-h-auto relative min-h-[296px] w-[820px] flex-1 flex-col overflow-y-hidden sm:w-full sm:min-w-0">
         <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-1 flex-col">
           <CompactTable
             columns={COLUMNS}

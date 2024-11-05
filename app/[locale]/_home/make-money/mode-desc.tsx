@@ -24,7 +24,7 @@ export default function ModeDesc() {
         <div
           data-active={mode === "turbo"}
           onClick={() => setMode("turbo")}
-          className="flex h-12 cursor-pointer items-center justify-center rounded-xl px-[30px] text-[#c0c4cc] data-[active=true]:bg-yellow data-[active=true]:text-black"
+          className="flex h-12 cursor-pointer items-center justify-center rounded-xl px-[20px] text-[#c0c4cc] data-[active=true]:bg-yellow data-[active=true]:text-black md:px-[30px]"
         >
           {t("btn-TurboMode")}
         </div>

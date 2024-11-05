@@ -24,7 +24,6 @@ import { ChainType } from "@/lib/types/chain";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { compact } from "lodash";
-import { NetworkSelect } from "@/components/share/network-select";
 
 interface IPanelProps {
   title: string;
@@ -40,7 +39,6 @@ interface IPanelProps {
 export default function MyBalances() {
   const mbt = useTranslations("page-MyBalance");
   const [openPanel, setOpenPanel] = useState("taxIncomeData");
-  const [selectedChain, setSelectedChain] = useState<ChainType>(ChainType.ETH);
 
   const { address: wallet } = useChainWallet();
 
@@ -48,10 +46,6 @@ export default function MyBalances() {
   const { data: bnbTokens } = useTokens(ChainType.BNB);
   const { data: solanaTokens } = useTokens(ChainType.SOLANA);
   const { data: allMarketPoint } = useMarketPoints();
-
-  function handleChainChange(chain: ChainType) {
-    setSelectedChain(chain);
-  }
 
   const allTokens = useMemo(() => {
     function addChainToToken(chain: ChainType, tokens: IToken[]) {
@@ -235,15 +229,9 @@ export default function MyBalances() {
 
   return (
     <div className="ml-5 flex h-full flex-1 flex-col">
-      <div className="flex items-center justify-between space-x-5">
+      <div className="flex items-center space-x-5">
         <div className="text-xl leading-[30px] text-black">
           {mbt("cap-MyBalances")}
-        </div>
-        <div className="flex items-center justify-end space-x-6">
-          <NetworkSelect
-            selectedChain={selectedChain}
-            handleChainChange={handleChainChange}
-          />
         </div>
       </div>
       {dataArray.length > 0 ? (

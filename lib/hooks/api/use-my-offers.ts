@@ -5,14 +5,9 @@ import { DataApiPaths } from "@/lib/PathMap";
 import { dataApiFetcher } from "@/lib/fetcher";
 import { useMarketplaces } from "./use-marketplaces";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
 
-export function useMyOffers({
-  marketSymbol,
-  marketChain,
-}: {
-  marketSymbol: string | null;
-  marketChain: string;
-}) {
+export function useMyOffers({ chain }: { chain: ChainType }) {
   const { dataApiEndPoint } = useEndPoint();
   const { address } = useChainWallet();
 
@@ -21,9 +16,9 @@ export function useMyOffers({
 
   const myOffersFetcher = async () => {
     if (isMarketLoading) return [];
+
     const fetchParams = Object.entries({
-      market_symbol: marketSymbol,
-      chain: marketChain,
+      chain: chain,
       wallet: address,
     })
       .filter(([_, v]) => v !== null)
@@ -34,18 +29,16 @@ export function useMyOffers({
       `${dataApiEndPoint}${DataApiPaths.offers}?${fetchParams}`,
     );
 
-    const parsedRes = await Promise.all(
-      offerRes.map((o: Record<string, any>) => {
-        const marketplace = marketplaceData?.find(
-          (m) => m.market_symbol === o.entry.market_symbol,
-        );
+    const parsedRes = offerRes.map((o: Record<string, any>) => {
+      const marketplace = marketplaceData?.find(
+        (m) => m.market_symbol === o.entry.market_symbol,
+      );
 
-        return {
-          ...o,
-          marketplace,
-        };
-      }),
-    );
+      return {
+        ...o,
+        marketplace,
+      };
+    });
 
     return parsedRes as Array<IOffer>;
   };

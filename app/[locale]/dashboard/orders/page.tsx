@@ -7,12 +7,15 @@ import {
 import { OrderTable } from "./order-table";
 import { FilterSelect, IRole, IStatus, Roles, Status } from "./filter-select";
 import { useTranslations } from "next-intl";
+import { ChainType } from "@/lib/types/chain";
+import { NetworkSelect } from "@/components/share/network-select";
 
 export default function MyOrders() {
   const T = useTranslations("page-MyOrders");
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
+  const [selectedChain, setSelectedChain] = useState<ChainType>(ChainType.ETH);
 
   function handleTypeChange(t: Array<IOfferType>) {
     setOrderTypes(t);
@@ -26,6 +29,10 @@ export default function MyOrders() {
     setStatus(s);
   }
 
+  function handleChainChange(chain: ChainType) {
+    setSelectedChain(chain);
+  }
+
   return (
     <div className="ml-5 flex h-full flex-1 flex-col">
       <div className="flex items-center justify-between">
@@ -35,6 +42,10 @@ export default function MyOrders() {
           </div>
         </div>
         <div className="flex items-center space-x-6">
+          <NetworkSelect
+            selectedChain={selectedChain}
+            handleChainChange={handleChainChange}
+          />
           <OfferTypeSelect
             types={orderTypes}
             handleTypeChange={handleTypeChange}
@@ -48,7 +59,12 @@ export default function MyOrders() {
         </div>
       </div>
       <div className="relative mt-5 flex flex-1 flex-col justify-end border-t border-[#eee]">
-        <OrderTable types={orderTypes} status={status} role={role} />
+        <OrderTable
+          chain={selectedChain}
+          types={orderTypes}
+          status={status}
+          role={role}
+        />
       </div>
     </div>
   );

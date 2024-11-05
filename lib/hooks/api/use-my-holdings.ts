@@ -7,7 +7,7 @@ import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useMarketOffers } from "./use-market-offers";
 import { useMarketplaces } from "./use-marketplaces";
 
-export function useMyHoldings(chain?: string) {
+export function useMyHoldings({ chain }: { chain?: string }) {
   const { address } = useChainWallet();
   const { dataApiEndPoint } = useEndPoint();
   const { data: marketplaceData } = useMarketplaces();

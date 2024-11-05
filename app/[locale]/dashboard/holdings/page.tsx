@@ -7,15 +7,16 @@ import OtherHoldingCard from "./other-holding-card";
 import { useSortHolding } from "@/lib/hooks/holding/use-sort-holding";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainType } from "@/lib/types/chain";
+import { NetworkSelect } from "@/components/share/network-select";
 
 export default function MyHoldings() {
   const T = useTranslations("page-MyStocks");
-  const { currentChainInfo } = useChainWallet();
+  const [selectedChain, setSelectedChain] = useState<ChainType>(ChainType.ETH);
 
-  const { data: holdings, mutate: refreshHoldings } = useMyHoldings(
-    currentChainInfo.chainType,
-  );
+  const { data: holdings, mutate: refreshHoldings } = useMyHoldings({
+    chain: selectedChain,
+  });
 
   const [selectHId, setSelectHId] = useState("");
 
@@ -34,6 +35,10 @@ export default function MyHoldings() {
     setDrawerOpen(true);
   }
 
+  function handleChainChange(chain: ChainType) {
+    setSelectedChain(chain);
+  }
+
   const selectedHolding = holdings?.find((h) => h.holding_id === selectHId);
 
   return (
@@ -42,12 +47,18 @@ export default function MyHoldings() {
         <div className="text-xl leading-[30px] text-black">
           {T("cap-MyStocks")}
         </div>
-        <SortSelect
-          sortField={sortField}
-          sortDir={sortDir}
-          handleSortFieldChange={handleSortFieldChange}
-          handleSortDirChange={handleSortDirChange}
-        />
+        <div className="flex items-center justify-end space-x-6">
+          <NetworkSelect
+            selectedChain={selectedChain}
+            handleChainChange={handleChainChange}
+          />
+          <SortSelect
+            sortField={sortField}
+            sortDir={sortDir}
+            handleSortFieldChange={handleSortFieldChange}
+            handleSortDirChange={handleSortDirChange}
+          />
+        </div>
       </div>
 
       <OfferAboutMineDetailDrawer

@@ -34,7 +34,7 @@ export function OrderTable({
   status,
   types,
 }: {
-  chain?: ChainType;
+  chain: ChainType;
   role: IRole;
   status: IStatus;
   types: Array<IOfferType>;
@@ -42,8 +42,7 @@ export function OrderTable({
   const T = useTranslations("page-MyOrders");
 
   const { data: offers, mutate: refreshMyOffers } = useMyOffers({
-    marketSymbol: null,
-    marketChain: chain || "eth",
+    chain,
   });
 
   const [drawerOpen, setDrawerOpen] = useState(false);

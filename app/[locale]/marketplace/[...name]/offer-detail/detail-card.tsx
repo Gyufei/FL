@@ -5,7 +5,7 @@ import { WithTip } from "../../../../../components/share/with-tip";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
@@ -19,6 +19,12 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
     });
 
   const { data: entryInfo } = useEntryById(offer.entry.id);
+
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const handleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   const totalColl = useMemo(() => {
     if (Number(offer.collateral_ratio) <= 100) {
@@ -45,8 +51,19 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
   const originMaker = entryInfo?.original_creator || offer.offer_maker;
 
   return (
-    <div className="flex-1 px-6">
-      <div className="leading-6 text-black">{T("cap-OfferDetail")}</div>
+    <div className="flex-1 px-0 sm:px-6">
+      <div className="flex items-center justify-between">
+        <div className="leading-6 text-black">{T("cap-OfferDetail")}</div>
+        <Image
+          onClick={handleExpand}
+          src="/icons/arrow-down.svg"
+          width={20}
+          height={20}
+          alt="arrow-down"
+          data-expanded={isExpanded}
+          className="data-[expanded=true]:rotate-180"
+        />
+      </div>
       <DetailRow>
         <DetailLabel
           tipText={
@@ -95,120 +112,124 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
         </div>
       </DetailRow>
 
-      <DetailRow>
-        <DetailLabel
-          tipText={
-            offerType === "sell"
-              ? T("tip-BonusRateForEachTX")
-              : T("tip-BonusForMaker")
-          }
-        >
-          {offerType === "sell"
-            ? T("lb-BonusRateForEachTX")
-            : T("lb-BonusForMaker")}
-        </DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-green">
-            {NP.divide(offer?.trade_tax_pct || 0, 100)}%
-          </div>
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText={T("tip-CollateralRate")}>
-          {T("lb-CollateralRate")}
-        </DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-[#FFA95B]">
-            {NP.divide(offer.collateral_ratio, 100)}%
-          </div>
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel
-          tipText={
-            offerType === "sell"
-              ? T("tip-TotalCollateral")
-              : T("tip-TotalDeposit")
-          }
-        >
-          {offerType === "sell"
-            ? T("lb-TotalCollateral")
-            : T("lb-TotalDeposit")}
-        </DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-black">
-            {formatNum(totalColl)}
-          </div>
-          <Image
-            src={offerTokenInfo?.logoURI || "/icons/empty.png"}
-            width={16}
-            height={16}
-            alt="stable token"
-            className="rounded-full"
-          />
-        </div>
-      </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText={T("tip-EstSettlingOn")}>
-          {T("lb-EstSettlingOn")}
-        </DetailLabel>
-        <div className="flex items-center space-x-1">
-          {tgeTime ? (
-            formatTimestamp(tgeTime)
-          ) : (
-            <div className="text-sm leading-5 text-gray">
-              {T("txt-NotStarted")}
-            </div>
-          )}
-        </div>
-      </DetailRow>
-
-      {offerType === "sell" && (
+      {isExpanded && (
         <>
           <DetailRow>
-            <DetailLabel tipText={T("tip-InitialOfferMaker")}>
-              {T("lb-InitialOfferMaker")}
+            <DetailLabel
+              tipText={
+                offerType === "sell"
+                  ? T("tip-BonusRateForEachTX")
+                  : T("tip-BonusForMaker")
+              }
+            >
+              {offerType === "sell"
+                ? T("lb-BonusRateForEachTX")
+                : T("lb-BonusForMaker")}
             </DetailLabel>
             <div className="flex items-center space-x-1">
-              <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
-                {originId ? `#${originId}` : ""}
+              <div className="text-sm leading-5 text-green">
+                {NP.divide(offer?.trade_tax_pct || 0, 100)}%
               </div>
+            </div>
+          </DetailRow>
+
+          <DetailRow>
+            <DetailLabel tipText={T("tip-CollateralRate")}>
+              {T("lb-CollateralRate")}
+            </DetailLabel>
+            <div className="flex items-center space-x-1">
+              <div className="text-sm leading-5 text-[#FFA95B]">
+                {NP.divide(offer.collateral_ratio, 100)}%
+              </div>
+            </div>
+          </DetailRow>
+
+          <DetailRow>
+            <DetailLabel
+              tipText={
+                offerType === "sell"
+                  ? T("tip-TotalCollateral")
+                  : T("tip-TotalDeposit")
+              }
+            >
+              {offerType === "sell"
+                ? T("lb-TotalCollateral")
+                : T("lb-TotalDeposit")}
+            </DetailLabel>
+            <div className="flex items-center space-x-1">
               <div className="text-sm leading-5 text-black">
-                {truncateAddr(originMaker || "", {
-                  nPrefix: 4,
-                  nSuffix: 4,
-                })}
+                {formatNum(totalColl)}
               </div>
               <Image
-                onClick={() =>
-                  handleGoScan(offer.marketplace.chain, String(originMaker))
-                }
-                src="/icons/right-45.svg"
+                src={offerTokenInfo?.logoURI || "/icons/empty.png"}
                 width={16}
                 height={16}
-                alt="goScan"
-                className="cursor-pointer"
+                alt="stable token"
+                className="rounded-full"
               />
             </div>
           </DetailRow>
 
-          <DetailRow showBottomLine={false}>
-            <DetailLabel tipText={T("tip-InitialOfferMakerBonus")}>
-              {T("lb-InitialOfferMakerBonus")}
+          <DetailRow>
+            <DetailLabel tipText={T("tip-EstSettlingOn")}>
+              {T("lb-EstSettlingOn")}
             </DetailLabel>
             <div className="flex items-center space-x-1">
-              <div className="text-sm leading-5 text-green">
-                $
-                {NP.divide(
-                  offer?.trade_tax_accum || 0,
-                  Math.pow(10, offerTokenInfo?.decimals || 0),
-                )}
-              </div>
+              {tgeTime ? (
+                formatTimestamp(tgeTime)
+              ) : (
+                <div className="text-sm leading-5 text-gray">
+                  {T("txt-NotStarted")}
+                </div>
+              )}
             </div>
           </DetailRow>
+
+          {offerType === "sell" && (
+            <>
+              <DetailRow>
+                <DetailLabel tipText={T("tip-InitialOfferMaker")}>
+                  {T("lb-InitialOfferMaker")}
+                </DetailLabel>
+                <div className="flex items-center space-x-1">
+                  <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
+                    {originId ? `#${originId}` : ""}
+                  </div>
+                  <div className="text-sm leading-5 text-black">
+                    {truncateAddr(originMaker || "", {
+                      nPrefix: 4,
+                      nSuffix: 4,
+                    })}
+                  </div>
+                  <Image
+                    onClick={() =>
+                      handleGoScan(offer.marketplace.chain, String(originMaker))
+                    }
+                    src="/icons/right-45.svg"
+                    width={16}
+                    height={16}
+                    alt="goScan"
+                    className="cursor-pointer"
+                  />
+                </div>
+              </DetailRow>
+
+              <DetailRow showBottomLine={false}>
+                <DetailLabel tipText={T("tip-InitialOfferMakerBonus")}>
+                  {T("lb-InitialOfferMakerBonus")}
+                </DetailLabel>
+                <div className="flex items-center space-x-1">
+                  <div className="text-sm leading-5 text-green">
+                    $
+                    {NP.divide(
+                      offer?.trade_tax_accum || 0,
+                      Math.pow(10, offerTokenInfo?.decimals || 0),
+                    )}
+                  </div>
+                </div>
+              </DetailRow>
+            </>
+          )}
         </>
       )}
     </div>

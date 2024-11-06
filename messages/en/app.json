@@ -291,6 +291,10 @@
   },
   "page-MarketList": {
     "cap-PointMarket": "Point Market",
+    "menu-Transaction": "Transaction",
+    "menu-Items": "Items",
+    "menu-MarketTrades": "Market Trades",
+    "menu-Charts": "Charts",
     "th-Asset": "Asset",
     "th-LastPrice": "Last Price",
     "th-Vol24h": "Vol 24h",

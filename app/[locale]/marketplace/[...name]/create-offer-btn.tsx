@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 import { useState } from "react";
@@ -8,6 +9,8 @@ import { BuyContent } from "./create-offer/buy-content";
 import { IMarketplace } from "@/lib/types/marketplace";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 
 export default function CreateOfferBtn({
   marketplace,
@@ -17,6 +20,7 @@ export default function CreateOfferBtn({
   onSuccess: () => void;
 }) {
   const T = useTranslations("drawer-CreateOffer");
+  const { isMobile } = useDeviceSize();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
 
@@ -36,21 +40,36 @@ export default function CreateOfferBtn({
         className="w-full"
         onClick={() => setDrawerOpen(true)}
       >
-        <button className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+        <button className="hidden h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black sm:flex">
           {T("btn-CreateOffer")}
+        </button>
+        <button className="absolute -top-[49px] right-[10px] flex h-10 w-10 items-center justify-center rounded-lg bg-yellow sm:hidden">
+          <Image
+            src="/icons/plus-black.svg"
+            width={30}
+            height={30}
+            alt="create"
+          />
         </button>
       </WithWalletConnectBtn>
       <Drawer
         open={drawerOpen}
         onClose={() => handleCloseDrawer()}
-        direction="right"
-        size={500}
-        className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
+        direction={isMobile ? "bottom" : "right"}
+        size={isMobile ? "calc(100vh - 44px)" : 500}
+        className="flex flex-col overflow-y-auto rounded-none p-4 sm:rounded-l-2xl sm:p-6"
       >
-        <DrawerTitle
-          title={T("cap-CreateMakerOffer")}
-          onClose={() => handleCloseDrawer()}
-        />
+        {isMobile ? (
+          <MobileDrawerTitle
+            title={T("cap-CreateMakerOffer")}
+            onClose={handleCloseDrawer}
+          />
+        ) : (
+          <DrawerTitle
+            title={T("cap-CreateMakerOffer")}
+            onClose={() => handleCloseDrawer()}
+          />
+        )}
 
         <Tabs
           value={currentTab}

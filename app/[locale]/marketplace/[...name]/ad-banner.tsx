@@ -22,9 +22,9 @@ export default function AdBanner({ className }: { className?: string }) {
         width={280}
         height={160}
         alt="ad1"
-        className="rounded-2xl"
+        className="h-[120px] w-full rounded-2xl sm:h-auto sm:w-[280px]"
       />
-      <div className="absolute bottom-0 right-3 top-0 my-3 flex flex-col items-center justify-between gap-2">
+      <div className="absolute bottom-0 right-3 top-0 my-3 flex flex-col items-center justify-center gap-2 sm:justify-between">
         {images.map((src, index) => (
           <Image
             onClick={() => handleClick(src)}
@@ -33,7 +33,7 @@ export default function AdBanner({ className }: { className?: string }) {
             width={64}
             height={40}
             alt="ad1"
-            className="cursor-pointer rounded-lg border border-white"
+            className="h-8 w-14 cursor-pointer rounded-lg border border-white sm:h-10 sm:w-16"
             loading="lazy"
           />
         ))}

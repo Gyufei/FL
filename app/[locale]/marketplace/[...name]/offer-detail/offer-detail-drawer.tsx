@@ -9,6 +9,8 @@ import { IOffer } from "@/lib/types/offer";
 import { upperFirst } from "lodash";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 
 export default function OfferDetailDrawer({
   offers,
@@ -19,6 +21,7 @@ export default function OfferDetailDrawer({
 }) {
   const ct = useTranslations("Common");
   const ot = useTranslations("drawer-OfferDetail");
+  const { isMobile } = useDeviceSize();
   const { connected } = useChainWallet();
   const { anchor: offerId, setAnchorValue } = useAnchor();
 
@@ -65,16 +68,23 @@ export default function OfferDetailDrawer({
       <Drawer
         open={drawerOpen}
         onClose={handleDrawerClose}
-        direction="right"
-        size={952}
-        className="overflow-y-auto rounded-l-2xl p-6"
+        direction={isMobile ? "bottom" : "right"}
+        size={isMobile ? "calc(100vh - 44px)" : 952}
+        className="overflow-y-auto rounded-none p-4 sm:rounded-l-2xl sm:p-6"
       >
-        <DrawerTitle
-          title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
-          onClose={() => setDrawerOpen(false)}
-          tag={ct(settleMode)}
-          tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
-        />
+        {isMobile ? (
+          <MobileDrawerTitle
+            title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
+            onClose={() => setDrawerOpen(false)}
+          />
+        ) : (
+          <DrawerTitle
+            title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
+            onClose={() => setDrawerOpen(false)}
+            tag={ct(settleMode)}
+            tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
+          />
+        )}
         {isAsk ? (
           <AskDetail onSuccess={(ord) => handleSuccess(ord)} offer={offer} />
         ) : (

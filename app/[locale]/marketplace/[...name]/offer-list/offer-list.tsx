@@ -12,6 +12,7 @@ import HoverIcon from "@/components/share/hover-icon";
 import { IOffer } from "@/lib/types/offer";
 import { useSortOffer } from "@/lib/hooks/offer/use-sort-offer";
 import { range } from "lodash";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 
 export default function OfferList({
   offers,
@@ -23,6 +24,7 @@ export default function OfferList({
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
   const [searchText, setSearchText] = useState("");
 
+  const { isMobile } = useDeviceSize();
   const {
     sortField,
     sortDir,
@@ -58,9 +60,9 @@ export default function OfferList({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-3xl bg-[#fafafa] p-5">
-      <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-5">
-        <div className="flex items-center space-x-4">
+    <div className="flex h-full flex-col rounded-none bg-[#fafafa] p-5 sm:rounded-3xl">
+      <div className="flex w-full items-center justify-between border-b border-[#d8d8d8] pb-5">
+        <div className="no-scroll-bar flex w-[calc(100vw-170px)] flex-1 items-center space-x-4 overflow-x-scroll sm:w-auto sm:overflow-hidden">
           <OfferTypeSelect
             types={orderTypes}
             handleTypeChange={handleTypeChange}
@@ -72,11 +74,18 @@ export default function OfferList({
             handleSortDirChange={handleSortDirChange}
           />
         </div>
-        <div className="ml-2 flex min-w-[100px] items-center">
+        <div
+          style={{
+            background: isMobile
+              ? "linear-gradient(270deg, #FAFAFA 0%, #FAFAFA 71%, rgba(250, 250, 250, 0) 107%)"
+              : "none",
+          }}
+          className="ml-6 flex min-w-[100px] items-center justify-end sm:ml-2"
+        >
           <SearchInput handleSearch={handleSearch} />
           <div
             data-active={layout === "list"}
-            className="ml-2 flex h-8 w-8 min-w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white"
+            className="ml-2 hidden h-8 w-8 min-w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white sm:flex"
           >
             <HoverIcon
               src="/icons/menu-gray.svg"

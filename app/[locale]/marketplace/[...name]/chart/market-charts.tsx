@@ -28,7 +28,7 @@ export default function MarketCharts({
   return (
     <div className="flex h-[336px] flex-col rounded-3xl bg-[#FAFAFA] p-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-[6px]">
+        <div className="flex w-full items-center justify-between space-x-[6px] sm:w-auto sm:justify-start">
           <ChartSwitch
             chartType={chartType}
             handleChangeType={handleChangType}
@@ -41,7 +41,7 @@ export default function MarketCharts({
           )}
         </div>
 
-        <div className="flex cursor-pointer items-center justify-center rounded-full p-[6px]">
+        <div className="hidden cursor-pointer items-center justify-center rounded-full p-[6px] sm:flex">
           <Image src="/icons/extend.svg" width={20} height={20} alt="extend" />
         </div>
       </div>
@@ -86,7 +86,7 @@ function ChartSwitch({
       </div> */}
       <div
         data-checked={isSales}
-        className="flex cursor-pointer items-center rounded-full bg-transparent data-[checked=true]:bg-[#FAFAFA] data-[checked=true]:px-3 data-[checked=false]:px-[6px] data-[checked=true]:py-[6px]"
+        className="flex cursor-pointer items-center rounded-full bg-transparent data-[checked=true]:bg-[#FAFAFA] data-[checked=false]:px-[6px] data-[checked=true]:px-3 data-[checked=true]:py-[6px]"
         onClick={() => handleChangeType("sales")}
       >
         <Image

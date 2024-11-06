@@ -25,7 +25,7 @@ export function InputPanel({
         <div className="text-xs leading-[18px] text-gray">{topText}</div>
         {isCanInput ? (
           <NumericalInput
-            className="mt-2 mr-1 h-9 text-2xl placeholder:text-lightgray"
+            className="mr-1 mt-2 h-9 max-w-[240px] text-left text-2xl placeholder:text-lightgray sm:max-w-full"
             placeholder={cot("pl-EnterAmount")}
             value={value}
             onUserInput={onValueChange}

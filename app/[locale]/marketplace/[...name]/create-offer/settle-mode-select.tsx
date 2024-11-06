@@ -30,7 +30,7 @@ export function SettleModeSelect({
   }
 
   return (
-    <div className="flex flex-1 flex-col space-y-2">
+    <div className="flex flex-1 basis-full flex-col space-y-2 sm:basis-auto">
       <div className="flex items-center">
         <div className="mr-1 text-sm leading-6 text-black">
           {cot("cap-Mode")}
@@ -60,7 +60,7 @@ export function SettleModeSelect({
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className="z-[110] flex w-[143px] flex-col items-stretch border-0 bg-white p-1"
+            className="z-[110] flex w-[calc(100vw-40px)] flex-col items-stretch border-0 bg-white p-1 sm:w-[143px]"
             style={{
               boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
             }}

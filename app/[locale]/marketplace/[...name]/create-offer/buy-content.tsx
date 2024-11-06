@@ -128,7 +128,7 @@ export function BuyContent({
           }
         />
 
-        <div className="mt-4 flex items-center justify-between space-x-3">
+        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4">
           <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
           <CollateralRateInput
             value={collateralRate}
@@ -143,7 +143,7 @@ export function BuyContent({
       <button
         onClick={handleConfirmBtnClick}
         disabled={isCreating || isApproving}
-        className="mt-[140px] flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white"
+        className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white sm:mt-[140px]"
       >
         {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
       </button>

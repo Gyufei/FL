@@ -21,8 +21,8 @@ export default function MobileRouterMenu() {
           <div className="flex flex-col space-y-[5.5px]">
             <Image
               src="/icons/line-menu.svg"
-              width={20}
-              height={20}
+              width={18}
+              height={18}
               alt="menu"
             />
           </div>
@@ -43,7 +43,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
   const isMarketplaceActive = currentRoute.includes(routePath[1]);
 
   const handleClick = (r: string) => {
-    if (currentRoute.includes(r)) {
+    if (currentRoute === r) {
       onEnd();
       return;
     }
@@ -74,24 +74,37 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
       </div>
       <div
         data-active={isMarketplaceActive}
-        className="mb-2 flex items-center space-x-3 py-3 data-[active=true]:opacity-50"
+        className="mb-2 flex items-center justify-between py-3 data-[active=true]:opacity-50"
         style={{
           boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
         }}
         onClick={() => handleClick("/marketplace")}
       >
-        <Image
-          src={
-            isMarketplaceActive
-              ? "/icons/marketplace.svg"
-              : "/icons/marketplace.svg"
-          }
-          width={40}
-          height={40}
-          alt="governance"
-        />
-        <div className="text-lg leading-5 text-black">
-          {t("btn-Marketplace")}
+        <div className="flex items-center justify-start space-x-3">
+          <Image
+            src={
+              isMarketplaceActive
+                ? "/icons/marketplace.svg"
+                : "/icons/marketplace.svg"
+            }
+            width={40}
+            height={40}
+            alt="governance"
+          />
+          <div className="text-lg leading-5 text-black">
+            {t("btn-Marketplace")}
+          </div>
+        </div>
+        <div className="flex items-center space-x-1">
+          <span className="text-[18px] leading-[28px] text-[#99a0af]">
+            Point
+          </span>
+          <Image
+            src="/icons/down-arrow.svg"
+            width={20}
+            height={20}
+            alt="down-arrow"
+          />
         </div>
       </div>
     </div>

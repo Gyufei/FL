@@ -291,6 +291,10 @@
   },
   "page-MarketList": {
     "cap-PointMarket": "Point市场",
+    "menu-Transaction": "事务",
+    "menu-Items": "项目",
+    "menu-MarketTrades": "交易",
+    "menu-Charts": "图表",
     "th-Asset": "资产",
     "th-LastPrice": "最后价格",
     "th-Vol24h": "24小时总量",

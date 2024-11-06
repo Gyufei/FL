@@ -39,7 +39,12 @@ export default function MessageBtn() {
         onClick={() => setDrawerOpen(true)}
         className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-[#D3D4D6] hover:border-transparent hover:bg-yellow sm:h-12 sm:w-12 sm:rounded-full"
       >
-        <Image src="/icons/bell.svg" width={24} height={24} alt="bell" />
+        <Image
+          src="/icons/bell.svg"
+          width={isMobile ? 20 : 24}
+          height={isMobile ? 20 : 24}
+          alt="bell"
+        />
         {(data || []).length > 0 && (
           <Badge
             variant="destructive"

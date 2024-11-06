@@ -112,8 +112,8 @@ export default function PointMarket({ className }: { className?: string }) {
           <div className="flex items-center">
             <Skeleton className="h-[32px] w-[32px] rounded-full" />
             <div className="ml-3 flex flex-col">
-              <Skeleton className="h-[18px] w-[100px]" />
-              <Skeleton className="mt-2 h-[16px] w-[80px]" />
+              <Skeleton className="h-[18px] w-[80px] sm:w-[100px]" />
+              <Skeleton className="mt-2 h-[16px] w-[60px] sm:w-[80px]" />
             </div>
           </div>
         ) : (
@@ -182,7 +182,6 @@ export default function PointMarket({ className }: { className?: string }) {
       renderCell: (item: IMarketplace) => {
         // const total = Number(item.total_vol);
         // const h24Change = Number(item.vol_24h);
-
         // const totalPercent =
         //   total === 0
         //     ? 0

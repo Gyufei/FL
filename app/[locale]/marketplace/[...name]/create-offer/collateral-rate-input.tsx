@@ -30,7 +30,7 @@ export default function CollateralRateInput({
   }
 
   return (
-    <div className="flex flex-1 flex-col space-y-2">
+    <div className="mr-3 flex flex-1 flex-col space-y-2 sm:mx-3">
       <div className="flex items-center">
         <div className="mr-1 text-sm leading-6 text-black">
           {cot("cap-CollateralRate")}
@@ -40,7 +40,7 @@ export default function CollateralRateInput({
       <div className="relative text-sm">
         <NumericalInput
           disabled={disabled}
-          className="h-[50px] w-full rounded-xl border border-[#d8d8d8] py-[14px] px-4 pr-[32px] focus:border-focus disabled:bg-[#f0f1f5]"
+          className="h-[50px] w-full rounded-xl border border-[#d8d8d8] px-4 py-[14px] pr-[32px] focus:border-focus disabled:bg-[#f0f1f5]"
           placeholder="100%"
           value={value}
           onUserInput={handleInput}

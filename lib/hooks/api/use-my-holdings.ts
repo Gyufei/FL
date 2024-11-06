@@ -26,13 +26,14 @@ export function useMyHoldings({ chain }: { chain?: string }) {
     );
 
     const holdings = holdingRes.filter(
-      (h: any) => !["card3", "spherex", "din"].includes(h.market_symbol),
+      (h: any) =>
+        !["card3", "spherex", "xdin", "txdin"].includes(h.market_symbol),
     );
     const offchain_fungible_point_holding = holdingRes.find((h: any) =>
       ["card3", "spherex"].includes(h.market_symbol),
     );
     const point_token_holding = holdingRes.find((h: any) =>
-      ["din"].includes(h.market_symbol),
+      ["xdin", "txdin"].includes(h.market_symbol),
     );
     const holdingsHasOffer = holdings.map((h: any) => {
       const matchingOffer = offers?.find(

@@ -48,4 +48,5 @@ export const TzList = (() => {
 
 export const ProjectDecimalsMap: Record<string, number> = {
   xdin: 18,
+  txdin: 18,
 };

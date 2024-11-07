@@ -6,6 +6,8 @@ import { IHolding } from "@/lib/types/holding";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useMarketOffers } from "./use-market-offers";
 import { useMarketplaces } from "./use-marketplaces";
+import { useMemo } from "react";
+import NP from "number-precision";
 
 export function useMyHoldings({ chain }: { chain?: string }) {
   const { address } = useChainWallet();
@@ -16,7 +18,21 @@ export function useMyHoldings({ chain }: { chain?: string }) {
     marketChain: chain || "",
   });
 
-  // const tempAddress = 'D7jbXQgpQVr4J4xWtzDPKAgqLrrRWZ2NKrBmiGwyAceN';
+  const itemTypeObject = useMemo(() => {
+    const categorized: any = {};
+    if (!marketplaceData) return {};
+
+    marketplaceData.forEach((item) => {
+      const { market_catagory, market_symbol } = item;
+      if (!categorized[market_catagory]) {
+        categorized[market_catagory] = [];
+      }
+      categorized[market_catagory].push(market_symbol);
+    });
+
+    return categorized;
+  }, [marketplaceData]);
+
   const holdingFetch = async () => {
     if (!address || isOfferLoading || !(offers && offers?.length > 0))
       return [];
@@ -24,16 +40,54 @@ export function useMyHoldings({ chain }: { chain?: string }) {
     const holdingRes = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.holding}?wallet=${address}&chain=${chain}`,
     );
+    if (holdingRes?.length <= 0) return [];
+
+    const offchain_fungible_point_holding = (
+      itemTypeObject?.offchain_fungible_point || []
+    ).map((item: any) => {
+      const curHolding = holdingRes.find((h: any) => item === h.market_symbol);
+      const curMarketplace = marketplaceData?.find(
+        (m: any) => "offchain_fungible_point" === m.market_catagory,
+      );
+      return {
+        ...curHolding,
+        marketplace: curMarketplace,
+      };
+    });
+    const point_token_holding = (itemTypeObject?.point_token_holding || []).map(
+      (item: any) => {
+        const curHolding = holdingRes.find(
+          (h: any) => item === h.market_symbol,
+        );
+        const curMarketplace = marketplaceData?.find(
+          (m: any) => "point_token_holding" === m.market_catagory,
+        );
+        return {
+          ...curHolding,
+          allItemAmount: holdingRes
+            .filter((h: any) => item === h.market_symbol)
+            .reduce(
+              (acc: number, cur: IHolding) =>
+                NP.plus(
+                  acc +
+                    cur.entries.reduce(
+                      (ac, cu) => NP.plus(ac + cu.item_amount),
+                      0,
+                    ),
+                ),
+              0,
+            ),
+          marketplace: curMarketplace,
+        };
+      },
+    );
 
     const holdings = holdingRes.filter(
       (h: any) =>
-        !["card3", "spherex", "xdin", "txdin"].includes(h.market_symbol),
-    );
-    const offchain_fungible_point_holding = holdingRes.find((h: any) =>
-      ["card3", "spherex"].includes(h.market_symbol),
-    );
-    const point_token_holding = holdingRes.find((h: any) =>
-      ["xdin", "txdin"].includes(h.market_symbol),
+        ![
+          ...(itemTypeObject?.offchain_fungible_point || []),
+          ...(itemTypeObject?.point_token || []),
+        ].includes(h.market_symbol),
     );
     const holdingsHasOffer = holdings.map((h: any) => {
       const matchingOffer = offers?.find(
@@ -45,26 +99,12 @@ export function useMyHoldings({ chain }: { chain?: string }) {
         offer: matchingOffer,
       };
     });
-    marketplaceData?.forEach((i) => {
-      if (
-        offchain_fungible_point_holding &&
-        offchain_fungible_point_holding.market_symbol === i.market_symbol
-      ) {
-        offchain_fungible_point_holding.marketplace = i;
-      }
-      if (
-        point_token_holding &&
-        point_token_holding.market_symbol === i.market_symbol
-      ) {
-        point_token_holding.marketplace = i;
-      }
-    });
 
     return [
-      offchain_fungible_point_holding,
-      point_token_holding,
+      ...offchain_fungible_point_holding,
+      ...point_token_holding,
       ...holdingsHasOffer,
-    ].filter((i) => i) as Array<IHolding>;
+    ].filter((i) => i.market_symbol) as Array<IHolding>;
   };
 
   const res = useSWR(

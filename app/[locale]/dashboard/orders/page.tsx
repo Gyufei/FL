@@ -34,8 +34,8 @@ export default function MyOrders() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-156px)] w-full flex-1 flex-col px-4 sm:ml-5 sm:h-[calc(100vh-96px)] sm:px-0">
-      <div className="mb-[10px] mt-4 flex w-full items-center sm:mb-0 sm:mt-0 sm:justify-between">
+    <div className="box-content flex h-[calc(100vh-156px)] w-full flex-1 flex-col sm:ml-5 sm:h-[calc(100vh-96px)] sm:px-0">
+      <div className="mb-[10px] mt-4 flex w-full items-center justify-between pl-2 sm:mb-0 sm:mt-0 sm:pl-0">
         <div className="hidden items-center space-x-5 sm:flex">
           <div className="text-xl leading-[30px] text-black">
             {T("cap-MyOrders")}
@@ -58,7 +58,7 @@ export default function MyOrders() {
           />
         </div>
       </div>
-      <div className="flex max-w-[100vw] flex-1 flex-col overflow-x-scroll pr-6 sm:max-w-none sm:overflow-x-hidden sm:pr-0">
+      <div className="flex max-w-[100vw] flex-1 flex-col overflow-x-scroll px-4 sm:max-w-none sm:overflow-x-hidden sm:px-0">
         <div className="max-h-auto relative min-h-[296px] w-[820px] flex-1 flex-col overflow-y-hidden sm:w-full sm:min-w-0">
           <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-1 flex-col">
             <OrderTable

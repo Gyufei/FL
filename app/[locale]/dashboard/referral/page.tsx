@@ -36,7 +36,7 @@ export default function Referral() {
   }
 
   return (
-    <div className="flex h-full flex-1 flex-col sm:ml-5">
+    <div className="flex h-full flex-1 flex-col px-4 sm:ml-5 sm:px-0">
       <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-5">
           <div className="text-xl leading-[30px] text-black">

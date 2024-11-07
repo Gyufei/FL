@@ -43,32 +43,22 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
 
     if (holdingRes?.length <= 0) return [];
 
-    const offchain_fungible_point_holding = (
-      itemTypeObject?.offchain_fungible_point || []
-    ).map((item: any) => {
-      const curHolding = holdingRes.find((h: any) => item === h.market_symbol);
-      const curMarketplace = marketplaceData?.find(
-        (m: any) => item === m.market_symbol,
-      );
-      return {
-        ...curHolding,
-        marketplace: curMarketplace,
-      };
-    });
-
-    const point_token_holding = (itemTypeObject?.point_token_holding || []).map(
-      (item: any) => {
-        const curHolding = holdingRes.find(
-          (h: any) => item === h.market_symbol,
-        );
+    const holdings = holdingRes
+      .map((h: any) => {
         const curMarketplace = marketplaceData?.find(
-          (m: any) => item === m.market_symbol,
+          (m: any) => h.market_symbol === m.market_symbol,
         );
+
         return {
-          ...curHolding,
-          allItemAmount: holdingRes
-            .filter((h: any) => item === h.market_symbol)
-            .reduce(
+          ...h,
+          marketplace: curMarketplace,
+        };
+      })
+      .map((h: any, _idx: number, arr: Array<any>) => {
+        if (h.marketplace?.market_catagory === "point_token") {
+          return {
+            ...h,
+            allItemAmount: arr.reduce(
               (acc: number, cur: IHolding) =>
                 NP.plus(
                   acc +
@@ -79,35 +69,26 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
                 ),
               0,
             ),
-          marketplace: curMarketplace,
-        };
-      },
-    );
+          };
+        }
 
-    const holdings = holdingRes.filter(
-      (h: any) =>
-        ![
-          ...(itemTypeObject?.offchain_fungible_point || []),
-          ...(itemTypeObject?.point_token || []),
-        ].includes(h.market_symbol),
-    );
+        if (
+          !["point_token", "offchain_fungible_point"].includes(
+            h.marketplace?.market_catagory,
+          )
+        ) {
+          const matchingOffer = offers?.find(
+            (offer: any) => offer.entry.id === h.entries[0].id,
+          );
 
-    const holdingsHasOffer = holdings.map((h: any) => {
-      const matchingOffer = offers?.find(
-        (offer: any) => offer.entry.id === h.entries[0].id,
-      );
+          return {
+            ...h,
+            offer: matchingOffer,
+          };
+        }
+      });
 
-      return {
-        ...h,
-        offer: matchingOffer,
-      };
-    });
-
-    return [
-      ...offchain_fungible_point_holding,
-      ...point_token_holding,
-      ...holdingsHasOffer,
-    ].filter((i) => i.market_symbol) as Array<IHolding>;
+    return holdings as Array<IHolding>;
   };
 
   const res = useSWR(

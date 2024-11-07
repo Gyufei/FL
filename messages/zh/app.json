@@ -196,8 +196,8 @@
   },
   "menu-Dashboard": {
     "cap-Orders": "订单",
-    "cap-Holdings": "持有",
-    "cap-Balance": "余额",
+    "cap-Holdings": "库存",
+    "cap-Balances": "余额",
     "cap-Referral": "推荐",
     "cap-Overview": "概览"
   },

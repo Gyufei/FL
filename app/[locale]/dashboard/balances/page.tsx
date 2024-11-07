@@ -24,8 +24,10 @@ import { ChainType } from "@/lib/types/chain";
 import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { compact } from "lodash";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import MobileBalances from "./mobile-balances";
 
-interface IPanelProps {
+export interface IPanelProps {
   title: string;
   panelName: string;
   withdrawerName: string | null;
@@ -46,6 +48,8 @@ export default function MyBalances() {
   const { data: bnbTokens } = useTokens(ChainType.BNB);
   const { data: solanaTokens } = useTokens(ChainType.SOLANA);
   const { data: allMarketPoint } = useMarketPoints();
+
+  const { isMobile } = useDeviceSize();
 
   const allTokens = useMemo(() => {
     function addChainToToken(chain: ChainType, tokens: IToken[]) {
@@ -227,9 +231,15 @@ export default function MyBalances() {
     setOpenPanel(panelIndex);
   }
 
+  if (isMobile) {
+    return (
+      <MobileBalances dataArray={dataArray} updateData={refetchTokenBlcData} />
+    );
+  }
+
   return (
-    <div className="ml-5 flex h-full flex-1 flex-col">
-      <div className="flex items-center space-x-5">
+    <div className="flex h-full flex-1 flex-col sm:ml-5">
+      <div className="hidden items-center space-x-5 sm:flex">
         <div className="text-xl leading-[30px] text-black">
           {mbt("cap-MyBalances")}
         </div>

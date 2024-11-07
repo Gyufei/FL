@@ -210,6 +210,13 @@
     "txt-YourRank": "Your Rank",
     "txt-UpdatedOn": "Updated On"
   },
+  "dashboard-module": {
+    "menu-Orders": "Orders",
+    "menu-Holdings": "Holdings",
+    "menu-Balances": "Balance",
+    "menu-Referral": "Referral",
+    "menu-Overview": "Overview"
+  },
   "page-MyOrders": {
     "cap-MyOrders": "My Orders",
     "sl-Type": "Type",

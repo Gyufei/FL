@@ -36,8 +36,8 @@ export default function Referral() {
   }
 
   return (
-    <div className="ml-5 flex h-full flex-1 flex-col">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full flex-1 flex-col sm:ml-5">
+      <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-5">
           <div className="text-xl leading-[30px] text-black">
             {rt("cap-ReferralSystem")}

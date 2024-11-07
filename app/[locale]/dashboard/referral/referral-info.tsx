@@ -49,9 +49,9 @@ export default function ReferralInfo({
 
   return (
     <>
-      <div className="mt-5 flex items-center justify-start space-x-5">
+      <div className="mt-5 flex flex-col items-center justify-start sm:flex-row sm:space-x-5">
         <div
-          className="flex w-[300px] items-stretch justify-between rounded-[20px] bg-white px-5 py-3"
+          className="flex w-full items-stretch justify-between rounded-[20px] bg-white px-5 py-3 sm:w-[300px]"
           style={{
             backgroundImage: "url(/img/new-users.png)",
             backgroundRepeat: "no-repeat",
@@ -72,7 +72,7 @@ export default function ReferralInfo({
             <div className="flex items-center space-x-1">
               <span
                 data-up={Number(signedUpRate === 0) ? "zero" : signedUpRate > 0}
-                className="data text-sm leading-5 data-[up=zero]:text-gray data-[up=true]:text-green data-[up=false]:text-red"
+                className="data text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-gray"
               >
                 {signedUpRate > 0 ? "+" : ""}
                 {formatNum(signedUpRate * 100)}%
@@ -82,7 +82,7 @@ export default function ReferralInfo({
           </div>
         </div>
         <div
-          className="flex w-[300px] items-stretch justify-between rounded-[20px] bg-white px-5 py-3"
+          className="mt-3 flex w-full items-stretch justify-between rounded-[20px] bg-white px-5 py-3 sm:mt-0 sm:w-[300px]"
           style={{
             backgroundImage: "url(/img/trading-fee.png)",
             backgroundRepeat: "no-repeat",
@@ -105,7 +105,7 @@ export default function ReferralInfo({
                 data-up={
                   Number(commissionRate === 0) ? "zero" : commissionRate > 0
                 }
-                className="text-sm leading-5 data-[up=zero]:text-gray  data-[up=true]:text-green data-[up=false]:text-red"
+                className="text-sm leading-5 data-[up=false]:text-red  data-[up=true]:text-green data-[up=zero]:text-gray"
               >
                 {commissionRate > 0 ? "+" : ""}
                 {formatNum(commissionRate * 100)}%
@@ -123,7 +123,7 @@ function DisplayArrow({ isUp }: { isUp: "zero" | boolean }) {
   return (
     <div
       data-up={isUp}
-      className="flex h-8 w-11 items-center justify-center rounded-[12px] data-[up=zero]:bg-[rgba(240,241,245,1)] data-[up=true]:bg-[rgba(76,191,135,0.2)] data-[up=false]:bg-[rgba(255,98,98,0.2)]"
+      className="flex h-8 w-11 items-center justify-center rounded-[12px] data-[up=false]:bg-[rgba(255,98,98,0.2)] data-[up=true]:bg-[rgba(76,191,135,0.2)] data-[up=zero]:bg-[rgba(240,241,245,1)]"
     >
       <Image
         src={

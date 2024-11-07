@@ -1,7 +1,4 @@
 "use client";
-import MenuCol from "@/app/[locale]/dashboard/menu-col";
-import OverviewInfo from "@/app/[locale]/dashboard/overview-info";
-import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 import { useTranslations } from "next-intl";
 import MobilePageFooter, {
   IMobilePanel,
@@ -9,6 +6,9 @@ import MobilePageFooter, {
 import { useMemo, useState } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import { useRouter } from "@/app/navigation";
+import PageFooter from "../_page-layout/_page-footer";
+import MenuCol from "./menu-col";
+import OverviewInfo from "./overview-info";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { isMobile } = useDeviceSize();
@@ -73,10 +73,12 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-[calc(100vh-96px)] w-full flex-col">
       <div className="flex flex-1 items-stretch">
-        <div className="ml-4 flex flex-1 rounded-3xl bg-[#fafafa] p-5">
-          <MenuCol />
-          {children}
-        </div>
+        {!(isMobile && checkIsActive("Overview")) && (
+          <div className="ml-4 flex flex-1 rounded-3xl bg-[#fafafa] p-5">
+            <MenuCol />
+            {children}
+          </div>
+        )}
         {checkIsActive("Overview") && (
           <div className="w-full sm:w-[368px]">
             <OverviewInfo />

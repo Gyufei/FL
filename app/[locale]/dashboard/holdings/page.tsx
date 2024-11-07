@@ -42,9 +42,9 @@ export default function MyHoldings() {
   const selectedHolding = holdings?.find((h) => h.holding_id === selectHId);
 
   return (
-    <div className="ml-5 flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col p-4 sm:ml-5 sm:p-0">
       <div className="flex items-center justify-between">
-        <div className="text-xl leading-[30px] text-black">
+        <div className="hidden text-xl leading-[30px] text-black sm:flex">
           {T("cap-MyStocks")}
         </div>
         <div className="flex items-center justify-end space-x-6">

@@ -56,6 +56,12 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
           };
         }
 
+        if (h.marketplace?.market_catagory === "offchain_fungible_point") {
+          return {
+            ...h,
+          };
+        }
+
         if (
           !["point_token", "offchain_fungible_point"].includes(
             h.marketplace?.market_catagory,

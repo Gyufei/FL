@@ -38,7 +38,7 @@ export function useSortHolding(holdings: Array<IHolding>) {
 
     if (sortField === "Created") {
       const createdFunc = (off: IHolding) => {
-        return new Date(off.create_at).getTime();
+        return new Date(off?.create_at).getTime();
       };
 
       sortArr = sortBy<any>(holdings, [createdFunc]);

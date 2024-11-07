@@ -15,16 +15,17 @@ export default function OtherHoldingCard({ holding }: { holding: any }) {
   return (
     <div className="rounded-[20px] bg-white p-5">
       <div className="flex items-start justify-between">
-        <div className="flex cursor-pointer items-center space-x-3">
-          <TokenPairImg
-            src1={holding.marketplace?.projectLogo}
-            src2={ChainConfigs[holding.marketplace.chain].logo}
-            width1={48}
-            height1={48}
-            width2={8.8}
-            height2={8.8}
-          />
-
+        <div className="flex cursor-pointer items-start space-x-3">
+          <div className="mt-2">
+            <TokenPairImg
+              src1={holding.marketplace?.projectLogo}
+              src2={ChainConfigs[holding.marketplace.chain_name].logo}
+              width1={48}
+              height1={48}
+              width2={8.8}
+              height2={8.8}
+            />
+          </div>
           <div>
             <div className="mb-[2px] leading-6 text-black">
               {holding.marketplace.item_name}
@@ -75,7 +76,7 @@ const BalanceValue = ({ type, holding }: { type: string; holding: any }) => {
       <OffchainFungiblePointBalance
         marketSymbol={holding.marketplace.market_symbol}
         type={type}
-        chain={holding.marketplace.chain}
+        chain={holding.marketplace.chain_name}
       />
     );
   return <>0</>;

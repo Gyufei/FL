@@ -126,7 +126,7 @@ export function OrderTable({
 
   if (!data.nodes.length) {
     return (
-      <div className="flex flex-1 items-center justify-center text-base text-gray">
+      <div className="flex w-screen flex-1 items-center justify-center text-base text-gray sm:w-full">
         {T("txt-YourOrderAppearHere")}
       </div>
     );

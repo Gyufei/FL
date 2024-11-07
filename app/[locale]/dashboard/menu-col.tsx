@@ -17,7 +17,12 @@ export default function MenuCol() {
         href={`/dashboard/holdings`}
         isActive={pathname === `/dashboard/holdings`}
       >
-        <Image src="/icons/holdings.svg" width={24} height={24} alt="holdings" />
+        <Image
+          src="/icons/holdings.svg"
+          width={24}
+          height={24}
+          alt="holdings"
+        />
       </MenuIcon>
       <MenuIcon
         href={`/dashboard/balances`}

@@ -29,28 +29,25 @@ export default function OtherHoldingCard({ holding }: { holding: any }) {
             <div className="mb-[2px] leading-6 text-black">
               {holding.marketplace.item_name}
             </div>
+            <div className="mt-4 flex items-start justify-between ">
+              <div className="flex flex-col">
+                <div className="mt-[2px] text-xs leading-[18px] text-gray">
+                  {ct("txt-Free")}
+                </div>
+                <div className="flex items-center leading-6 text-black">
+                  <BalanceValue type="free" holding={holding} />
+                </div>
+                <div className="mt-[2px] text-xs leading-[18px] text-gray">
+                  {ct("txt-Locked")}
+                </div>
+                <div className="flex items-center leading-6 text-black">
+                  <BalanceValue type="locked" holding={holding} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="mt-4 flex items-center justify-between ">
-        <div className="flex flex-col">
-          <div className="mb-[2px] text-xs leading-[18px] text-gray">
-            {ct("txt-Free")}
-          </div>
-          <div className="flex items-center leading-6 text-black">
-            <BalanceValue type="free" holding={holding} />
-          </div>
-          <div className="mb-[2px] text-xs leading-[18px] text-gray">
-            {ct("txt-Locked")}
-          </div>
-          <div className="flex items-center leading-6 text-black">
-            <BalanceValue type="locked" holding={holding} />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between pt-4"></div>
     </div>
   );
 }

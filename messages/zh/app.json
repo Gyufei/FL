@@ -210,6 +210,12 @@
     "txt-YourRank": "你的分数",
     "txt-UpdatedOn": "更新于"
   },
+  "dashboard-module": {
+    "menu-Orders": "订单",
+    "menu-Holdings": "库存",
+    "menu-Balances": "余额",
+    "menu-Referral": "系统"
+  },
   "page-MyOrders": {
     "cap-MyOrders": "我的订单",
     "sl-Type": "类型",

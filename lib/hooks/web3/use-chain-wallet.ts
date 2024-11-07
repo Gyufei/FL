@@ -59,6 +59,7 @@ export function useChainWallet(chain?: ChainType) {
 
   const switchToTargetChain = useCallback(
     async function () {
+      console.log("switchToTargetChain", chain, currentWalletChain);
       if (!chain) {
         return true;
       }
@@ -72,6 +73,8 @@ export function useChainWallet(chain?: ChainType) {
       if (chain !== currentWalletChain) {
         return switchChainAsync({ chainId });
       }
+
+      return true;
     },
     [chain, currentWalletChain, switchChainAsync],
   );

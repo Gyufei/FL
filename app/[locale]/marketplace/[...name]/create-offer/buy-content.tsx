@@ -127,7 +127,7 @@ export function BuyContent({
           }
           bottomText={
             <>
-              1 {marketplace.item_name} = ${formatNum(pointPrice)}
+              1 {currentMarket.item_name} = ${formatNum(pointPrice)}
             </>
           }
           tokenSelect={
@@ -139,7 +139,7 @@ export function BuyContent({
           }
         />
 
-        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4">
+        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
           <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
           <CollateralRateInput
             value={collateralRate}

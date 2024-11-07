@@ -55,8 +55,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   }
 
   function handleClickMenuItem(pn: string) {
+    setActivePanel(pn);
+
     if (pn === "Overview") {
-      setActivePanel(pn);
       return;
     }
 

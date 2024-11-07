@@ -9,7 +9,7 @@ import { ChainType } from "@/lib/types/chain";
 
 export function useMyOffers({ chain }: { chain: ChainType }) {
   const { dataApiEndPoint } = useEndPoint();
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(chain);
 
   const { data: marketplaceData, isLoading: isMarketLoading } =
     useMarketplaces();

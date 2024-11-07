@@ -20,6 +20,7 @@ export default function HoldingCard({
   onSuccess: () => void;
 }) {
   const ct = useTranslations("page-MyStocks");
+  
   const {
     afterTGE,
     afterTGEPeriod,

@@ -8,9 +8,10 @@ import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 import { IOrder } from "@/lib/types/order";
+import { ChainType } from "@/lib/types/chain";
 
-export function useMyOrders(chain?: string) {
-  const { address } = useChainWallet();
+export function useMyOrders(chain: ChainType) {
+  const { address } = useChainWallet(chain);
 
   const { dataApiEndPoint } = useEndPoint();
   const { data: offers, isLoading } = useMarketOffers({

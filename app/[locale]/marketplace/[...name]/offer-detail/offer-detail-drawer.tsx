@@ -22,12 +22,13 @@ export default function OfferDetailDrawer({
   const ct = useTranslations("Common");
   const ot = useTranslations("drawer-OfferDetail");
   const { isMobile } = useDeviceSize();
-  const { connected } = useChainWallet();
   const { anchor: offerId, setAnchorValue } = useAnchor();
 
   const offer = useMemo(() => {
     return offers?.find((o) => String(o.entry.id) === offerId);
   }, [offers, offerId]);
+
+  const { connected } = useChainWallet(offer?.marketplace.chain);
 
   const settleMode = upperFirst(offer?.origin_settle_mode);
 

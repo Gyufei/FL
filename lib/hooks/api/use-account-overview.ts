@@ -18,7 +18,7 @@ interface IAccountInfo {
 
 export function useAccountStats(chain: ChainType) {
   const { dataApiEndPoint } = useEndPoint();
-  const { address: wallet } = useChainWallet();
+  const { address: wallet } = useChainWallet(chain);
 
   const res = useSWR<IAccountInfo>(
     wallet

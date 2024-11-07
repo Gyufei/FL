@@ -21,7 +21,7 @@ export function useCloseBidOfferEth({
   const evmConfig = ChainConfigs[chain];
   const { getGasParams } = useGasEth();
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(chain);
 
   const { recordTransaction } = useTransactionRecord(chain);
   const { writeContractAsync } = useWriteContract();

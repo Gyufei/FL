@@ -12,7 +12,7 @@ export default function RollInBtn() {
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
   const T = useTranslations("cd-AccountOverview");
-  const { connected } = useChainWallet();
+  const { connected } = useChainWallet(ChainType.ETH);
 
   const {
     isLoading,

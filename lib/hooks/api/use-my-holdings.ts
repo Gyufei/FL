@@ -8,9 +8,10 @@ import { useMarketOffers } from "./use-market-offers";
 import { useMarketplaces } from "./use-marketplaces";
 import { useMemo } from "react";
 import NP from "number-precision";
+import { ChainType } from "@/lib/types/chain";
 
-export function useMyHoldings({ chain }: { chain?: string }) {
-  const { address } = useChainWallet();
+export function useMyHoldings({ chain }: { chain?: ChainType }) {
+  const { address } = useChainWallet(chain);
   const { dataApiEndPoint } = useEndPoint();
   const { data: marketplaceData } = useMarketplaces();
   const { data: offers, isLoading: isOfferLoading } = useMarketOffers({
@@ -34,12 +35,12 @@ export function useMyHoldings({ chain }: { chain?: string }) {
   }, [marketplaceData]);
 
   const holdingFetch = async () => {
-    if (!address || isOfferLoading || !(offers && offers?.length > 0))
-      return [];
+    if (!address || isOfferLoading) return [];
 
     const holdingRes = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.holding}?wallet=${address}&chain=${chain}`,
     );
+
     if (holdingRes?.length <= 0) return [];
 
     const offchain_fungible_point_holding = (
@@ -54,6 +55,7 @@ export function useMyHoldings({ chain }: { chain?: string }) {
         marketplace: curMarketplace,
       };
     });
+
     const point_token_holding = (itemTypeObject?.point_token_holding || []).map(
       (item: any) => {
         const curHolding = holdingRes.find(
@@ -89,6 +91,7 @@ export function useMyHoldings({ chain }: { chain?: string }) {
           ...(itemTypeObject?.point_token || []),
         ].includes(h.market_symbol),
     );
+
     const holdingsHasOffer = holdings.map((h: any) => {
       const matchingOffer = offers?.find(
         (offer: any) => offer.entry.id === h.entries[0].id,

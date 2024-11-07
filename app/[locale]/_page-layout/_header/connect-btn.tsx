@@ -23,6 +23,7 @@ export default function ConnectBtn() {
 
   const { isMobile } = useDeviceSize();
   const { toConnectWallet } = usePrivyWallet();
+  // TODO: Connect To get all wallet info;
   const { shortAddr, connected, connecting } = useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
   // const [drawerOpen, setDrawerOpen] = useState(false);

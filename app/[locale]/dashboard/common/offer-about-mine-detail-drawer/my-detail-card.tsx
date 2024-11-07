@@ -14,7 +14,7 @@ import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(offer.marketplace.chain);
 
   const { offerTokenInfo, offerPointInfo, duringTGE, pointDecimalNum } =
     useOfferFormat({

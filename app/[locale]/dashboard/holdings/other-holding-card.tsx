@@ -90,7 +90,7 @@ const OffchainFungiblePointBalance = ({
   marketSymbol: string;
   chain: ChainType;
 }) => {
-  const { address: wallet } = useChainWallet();
+  const { address: wallet } = useChainWallet(chain);
 
   const { data: itemBlcData } = useUserItemBalance(wallet, marketSymbol, chain);
   if (itemBlcData) {

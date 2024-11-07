@@ -42,7 +42,7 @@ export default function MyBalances() {
   const mbt = useTranslations("page-MyBalance");
   const [openPanel, setOpenPanel] = useState("taxIncomeData");
 
-  const { address: wallet } = useChainWallet();
+  const { address: wallet } = useChainWallet(ChainType.ETH);
 
   const { data: ethTokens } = useTokens(ChainType.ETH);
   const { data: bnbTokens } = useTokens(ChainType.BNB);

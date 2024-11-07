@@ -46,7 +46,6 @@ export function usePrivyWallet() {
       if (!authenticated) {
         login();
       } else {
-        console.log("chain", chain, "connectWallet");
         const walletList: Array<WalletListEntry> | undefined = chain
           ? chain === ChainType.SOLANA
             ? ["detected_solana_wallets"]

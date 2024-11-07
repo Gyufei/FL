@@ -20,15 +20,16 @@ import { ChainType } from "@/lib/types/chain";
 export default function OverviewInfo() {
   const T = useTranslations("cd-AccountOverview");
   const inputRef = useRef<HTMLInputElement>(null);
-  const { currentChain } = useChainWallet();
+  const { currentChain } = useChainWallet(ChainType.ETH);
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 5),
     to: undefined,
   });
 
-  const { data: accountInfo, mutate: refetchAccountInfo } =
-    useAccountStats(currentChain);
+  const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats(
+    currentChain!,
+  );
 
   const { trigger: updateUserNameAction, data: updateRes } = useUserNameChange(
     ChainType.ETH,

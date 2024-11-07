@@ -11,7 +11,7 @@ export default function ReferralPage({ params }: { params: any }) {
   const referral = params.referral[0];
   const router = useRouter();
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(ChainType.ETH);
 
   const { data: codeData, isLoading } = useReferralCodeData({
     chain: ChainType.ETH,

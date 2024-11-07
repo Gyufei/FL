@@ -13,7 +13,7 @@ export function useWithdrawTokenEth({ chain }: { chain: ChainType }) {
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(chain);
 
   const txAction = async (args: {
     token_symbol: string;

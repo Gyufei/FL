@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useWallets, useSolanaWallets, usePrivy } from "@privy-io/react-auth";
-import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useTranslations } from "next-intl";
 import WalletTypeItem from "./wallet-type-item";
 import { useAccount } from "wagmi";
-export default function Component() {
+export default function Wallet() {
   const t = useTranslations("Header");
 
   const [walletTypes, setWalletTypes] = useState<any[]>([]);
@@ -12,7 +11,6 @@ export default function Component() {
   const { wallets } = useWallets();
   const { wallets: solanaWallets } = useSolanaWallets();
   const { logout } = usePrivy();
-  const { disconnect } = useChainWallet();
 
   const { address } = useAccount();
 
@@ -75,9 +73,9 @@ export default function Component() {
     });
     setWalletTypes(newWalletTypes);
   };
+
   const handleLogout = () => {
     wallets.forEach((wallet) => wallet.disconnect());
-    disconnect();
     logout();
   };
 

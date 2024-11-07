@@ -11,7 +11,7 @@ export function useWithdrawItemEth({ chain }: { chain: ChainType }) {
   const evmConfig = ChainConfigs["eth"];
   const { getGasParams } = useGasEth();
 
-  const { address: userAddress } = useChainWallet();
+  const { address: userAddress } = useChainWallet(chain);
 
   const { recordTransaction } = useTransactionRecord(chain);
   const { writeContractAsync } = useWriteContract();

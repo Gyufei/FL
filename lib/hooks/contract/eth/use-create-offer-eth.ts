@@ -18,7 +18,7 @@ export function useCreateOfferEth({
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(chain);
 
   const txAction = async (args: {
     direction: "buy" | "sell";

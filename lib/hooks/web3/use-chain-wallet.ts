@@ -1,12 +1,22 @@
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useMemo } from "react";
-import { useAccount, useChainId, useDisconnect } from "wagmi";
+import { useAccount, useChainId, useDisconnect, useSwitchChain } from "wagmi";
 import { usePrivy } from "@privy-io/react-auth";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
-export function useChainWallet() {
+const EmptyWallet = {
+  address: "",
+  shortAddr: "",
+  connected: false,
+  connecting: false,
+  disconnect: () => {},
+  currentChain: ChainType.ETH,
+  switchToTargetChain: () => {},
+};
+
+export function useChainWallet(chain?: ChainType) {
   const { ready, authenticated } = usePrivy();
 
   const {
@@ -17,8 +27,10 @@ export function useChainWallet() {
   } = useAccount();
 
   const chainId = useChainId();
-
+  const { switchChainAsync } = useSwitchChain();
   const { disconnect: evmDisconnect } = useDisconnect();
+
+  const isEvm = [ChainType.ETH, ChainType.BNB].includes(chain as ChainType);
 
   const {
     publicKey: solAddress,
@@ -27,63 +39,93 @@ export function useChainWallet() {
     disconnect: solDisconnect,
   } = useWallet();
 
-  const getAboutChain = useCallback(
-    (evmThing: any, bnbThing: any, solThing: any, defaultThing?: any) => {
-      if (!ready || !authenticated) {
-        return defaultThing;
+  const currentWalletChain = useMemo(() => {
+    if (isEvm) {
+      if (ChainConfigs[ChainType.ETH].network === chainId) {
+        return ChainType.ETH;
       }
 
-      return evmThing || solThing;
+      if (ChainConfigs[ChainType.BNB].network === chainId) {
+        return ChainType.BNB;
+      }
+    }
+
+    if (chain === ChainType.SOLANA) {
+      return chain;
+    }
+
+    return null;
+  }, [chainId, isEvm, chain]);
+
+  const switchToTargetChain = useCallback(
+    async function () {
+      if (!chain) {
+        return true;
+      }
+
+      if (chain === ChainType.SOLANA) {
+        return true;
+      }
+
+      const chainId = Number(ChainConfigs[chain].network);
+
+      if (chain !== currentWalletChain) {
+        return switchChainAsync({ chainId });
+      }
     },
-    [ready, authenticated],
+    [chain, currentWalletChain, switchChainAsync],
   );
 
-  const currentChain = useMemo(() => {
-    if (ChainConfigs[ChainType.ETH].network === chainId) {
-      return ChainType.ETH;
-    }
+  const evmWallet = useMemo(
+    () => ({
+      address: evmAddress || "",
+      shortAddr: evmAddress
+        ? truncateAddr(evmAddress, { nPrefix: 4, nSuffix: 4 })
+        : "",
+      connected: evmConnected,
+      connecting: evmConnecting,
+      disconnect: evmDisconnect,
+      currentChain: currentWalletChain,
+      switchToTargetChain,
+    }),
+    [
+      evmAddress,
+      evmConnected,
+      evmConnecting,
+      evmDisconnect,
+      currentWalletChain,
+      switchToTargetChain,
+    ],
+  );
 
-    if (ChainConfigs[ChainType.BNB].network === chainId) {
-      return ChainType.BNB;
-    }
+  const solanaWallet = useMemo(
+    () => ({
+      address: solAddress ? solAddress.toBase58() : "",
+      shortAddr: solAddress
+        ? truncateAddr(solAddress.toBase58(), { nPrefix: 4, nSuffix: 4 })
+        : "",
+      connected: solConnected,
+      connecting: solConnecting,
+      disconnect: solDisconnect,
+      currentChain: ChainType.SOLANA,
+      switchToTargetChain: () => {},
+    }),
+    [solAddress, solConnected, solConnecting, solDisconnect],
+  );
 
-    if (solAddress) {
-      return ChainType.SOLANA;
-    }
+  if (!ready || !authenticated) {
+    return EmptyWallet;
+  }
 
-    return ChainType.ETH;
-  }, [chainId, solAddress]);
+  if (!chain) {
+    return evmWallet.address ? evmWallet : solanaWallet;
+  }
 
-  const connected = useMemo(() => {
-    return getAboutChain(evmConnected, evmConnected, solConnected, false);
-  }, [getAboutChain, evmConnected, solConnected]);
-
-  const connecting = useMemo(() => {
-    return getAboutChain(evmConnecting, evmConnecting, solConnecting, false);
-  }, [getAboutChain, evmConnecting, solConnecting]);
-
-  const address = useMemo(() => {
-    return getAboutChain(evmAddress, evmAddress, solAddress?.toBase58(), null);
-  }, [getAboutChain, evmAddress, solAddress]);
-
-  const disconnect = useMemo(() => {
-    return getAboutChain(evmDisconnect, evmDisconnect, solDisconnect, null);
-  }, [getAboutChain, evmDisconnect, solDisconnect]);
-
-  const shortAddr = useMemo(() => {
-    if (!address) return "";
-    return truncateAddr(address, {
-      nPrefix: 4,
-      nSuffix: 4,
-    });
-  }, [address]);
-
-  return {
-    address,
-    shortAddr,
-    connected,
-    connecting,
-    disconnect,
-    currentChain,
-  };
+  if (isEvm) {
+    return evmWallet;
+  } else if (chain === ChainType.SOLANA) {
+    return solanaWallet;
+  } else {
+    return EmptyWallet;
+  }
 }

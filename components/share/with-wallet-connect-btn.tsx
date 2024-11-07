@@ -14,7 +14,7 @@ export default function WithWalletConnectBtn({
   children: React.ReactNode;
   className?: string;
 }) {
-  const { connected } = useChainWallet();
+  const { connected } = useChainWallet(chain);
 
   const { toConnectWallet } = usePrivyWallet();
 

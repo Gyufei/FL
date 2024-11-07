@@ -16,7 +16,7 @@ export function useAccountVerify({
   chain: ChainType;
 }) {
   const { dataApiEndPoint } = useEndPoint();
-  const { address: wallet } = useChainWallet();
+  const { address: wallet } = useChainWallet(chain);
 
   async function checkIsVerifiedFetch() {
     if (marketCategory !== "offchain_fungible_point" || !wallet) {

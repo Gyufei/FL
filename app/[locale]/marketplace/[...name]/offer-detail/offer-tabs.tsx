@@ -12,7 +12,7 @@ export default function OfferTabs({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
   const [currentTab, setCurrentTab] = useState("orders");
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(offer.marketplace.chain);
 
   const { offerLogo, offerEqTokenInfo, offerTokenInfo } = useOfferFormat({
     offer: offer,

@@ -20,7 +20,7 @@ export default function ReferralDialog() {
 
   const { trigger: viewReferral } = useReferralView();
 
-  const { address } = useChainWallet();
+  const { address } = useChainWallet(ChainType.ETH);
 
   const [showReDialog, setShowReDialog] = useState(false);
 

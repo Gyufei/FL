@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePrivy } from "@privy-io/react-auth";
 // import { useSetActiveWallet } from "@privy-io/wagmi";
 import { truncateAddr } from "@/lib/utils/web3";
-import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import {
   Popover,
   PopoverTrigger,
@@ -36,7 +35,6 @@ export default function WalletTypeItem({
   updateSelectedChain: (walletType: string, chain: string) => void;
 }) {
   // const { setActiveWallet } = useSetActiveWallet();
-  const { disconnect } = useChainWallet();
 
   const [popOpen, setPopOpen] = useState(false);
 
@@ -53,9 +51,6 @@ export default function WalletTypeItem({
 
   const handleConnect = (link: any) => {
     if (link.linked) {
-      if (["okx_wallet", "metamask"].includes(link.walletClientType)) {
-        disconnect();
-      }
       link.disconnect();
     } else {
       link.loginOrLink();

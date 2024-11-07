@@ -2,7 +2,7 @@
 import Header from "@/app/[locale]/_page-layout/_header";
 import GlobalActionTip from "@/components/share/global-action-tip";
 import { useEffect } from "react";
-import ReferralDialog from "./_common/referral-dialog";
+import ReferralDialog from "../dashboard/referral/referral-dialog";
 import NP from "number-precision";
 
 export default function MainLayout({

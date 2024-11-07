@@ -47,7 +47,7 @@ export function useMyHoldings({ chain }: { chain?: string }) {
     ).map((item: any) => {
       const curHolding = holdingRes.find((h: any) => item === h.market_symbol);
       const curMarketplace = marketplaceData?.find(
-        (m: any) => "offchain_fungible_point" === m.market_catagory,
+        (m: any) => item === m.market_symbol,
       );
       return {
         ...curHolding,
@@ -60,7 +60,7 @@ export function useMyHoldings({ chain }: { chain?: string }) {
           (h: any) => item === h.market_symbol,
         );
         const curMarketplace = marketplaceData?.find(
-          (m: any) => "point_token_holding" === m.market_catagory,
+          (m: any) => item === m.market_symbol,
         );
         return {
           ...curHolding,

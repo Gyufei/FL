@@ -8,10 +8,12 @@ import MobilePageFooter, {
 } from "../_page-layout/_page-footer/page-footer-mobile";
 import { useMemo, useState } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import { useRouter } from "@/app/navigation";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { isMobile } = useDeviceSize();
   const pt = useTranslations("menu-Dashboard");
+  const router = useRouter();
 
   const mobilePanels: Array<IMobilePanel> = useMemo(
     () => [
@@ -52,6 +54,22 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     return activePanel === name;
   }
 
+  function handleClickMenuItem(pn: string) {
+    if (pn === "Overview") {
+      setActivePanel(pn);
+      return;
+    }
+
+    const hrefMap = {
+      orders: "/dashboard/orders",
+      holdings: "/dashboard/holdings",
+      balances: "/dashboard/balances",
+      referral: "/dashboard/referral",
+    };
+
+    router.push((hrefMap as any)[pn]);
+  }
+
   return (
     <div className="flex h-[calc(100vh-96px)] w-full flex-col">
       <div className="flex flex-1 items-stretch">
@@ -69,7 +87,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
       <MobilePageFooter
         panels={mobilePanels}
         activePanel={activePanel}
-        setActivePanel={setActivePanel}
+        setActivePanel={handleClickMenuItem}
       />
     </div>
   );

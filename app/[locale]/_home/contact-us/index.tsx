@@ -83,10 +83,10 @@ export default function ContactUs() {
       >
         <div className="text-sm leading-5 text-lightgray">
           <span className="hidden sm:inline-block">
-            Copyright @ Tadle Protocol 2024. All Rights Reserved.
+            Copyright @ Whity Ltd 2024. All Rights Reserved.
           </span>
           <span className="inline-block sm:hidden">
-            Copyright @ Tadle Protocol 2024. All Rights Reserved.
+            Copyright @ Whity Ltd 2024. All Rights Reserved.
           </span>
         </div>
       </div>

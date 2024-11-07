@@ -17,6 +17,8 @@ import { formatNum } from "@/lib/utils/number";
 import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
+import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
+import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 
 export function SellContent({
   marketplace,
@@ -71,7 +73,15 @@ export function SellContent({
       "sell",
     );
 
+  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
+    useAccountVerifyDialog(currentMarket);
+
   async function handleConfirmBtnClick() {
+    if (isAccountVerify) {
+      setVerifyDialogOpen(true);
+      return;
+    }
+
     if (isShouldApprove) {
       await approveAction();
     } else {
@@ -161,6 +171,13 @@ export function SellContent({
       >
         {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
       </button>
+
+      <AccountVerifyDialog
+        open={verifyDialogOpen}
+        setOpen={setVerifyDialogOpen}
+        marketSymbol={currentMarket.market_symbol}
+        targetUrl={targetUrl || ""}
+      />
     </div>
   );
 }

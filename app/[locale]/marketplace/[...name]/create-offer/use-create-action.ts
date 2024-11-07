@@ -102,28 +102,32 @@ export function useCreateAction(
     settleMode: ISettleMode;
     taxForSub: string;
   }) {
-    const isPriceValid = checkMinPrice(
-      pointPrice,
-      Number(currentMarket.minimum_price),
-    );
+    try {
+      const isPriceValid = checkMinPrice(
+        pointPrice,
+        Number(currentMarket.minimum_price),
+      );
 
-    if (!pointAmount || !tokenAmount || !isPriceValid) {
-      return;
+      if (!pointAmount || !tokenAmount || !isPriceValid) {
+        return;
+      }
+
+      writeAction({
+        direction: direction,
+        price: toNonExponential(
+          NP.divide(NP.divide(tokenAmount, pointAmount), pointDecimalNum),
+        ),
+        total_item_amount: toNonExponential(
+          NP.times(pointAmount, pointDecimalNum),
+        ),
+        payment_token: token.symbol,
+        collateral_ratio: collateralRate,
+        settle_mode: settleMode,
+        trade_tax_pct: taxForSub,
+      });
+    } catch (error) {
+      console.error(error);
     }
-
-    writeAction({
-      direction: direction,
-      price: toNonExponential(
-        NP.divide(NP.divide(tokenAmount, pointAmount), pointDecimalNum),
-      ),
-      total_item_amount: toNonExponential(
-        NP.times(pointAmount, pointDecimalNum),
-      ),
-      payment_token: token.symbol,
-      collateral_ratio: collateralRate,
-      settle_mode: settleMode,
-      trade_tax_pct: taxForSub,
-    });
   }
 
   return {

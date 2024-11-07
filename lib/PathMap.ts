@@ -55,6 +55,7 @@ export const DataApiPaths = {
   accountStats: "/account/stats",
   accountWithdraw: "/account/withdraw",
   transactionSubmit: "/transaction/submit",
+  accountVerify: "/account/verify",
 };
 
 export const ApiPaths = {

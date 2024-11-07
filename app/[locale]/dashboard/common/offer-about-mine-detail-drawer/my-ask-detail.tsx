@@ -125,7 +125,7 @@ export default function MyAskDetail({
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex flex-col justify-between gap-y-4 sm:flex-row sm:gap-y-0">
         {/* left card */}
         <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo

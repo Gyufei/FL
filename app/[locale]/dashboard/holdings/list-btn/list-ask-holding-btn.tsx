@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NP from "number-precision";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
+import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import { useTranslations } from "next-intl";
 
 import { InputPanel } from "../../../marketplace/[...name]/create-offer/input-panel";
@@ -22,6 +23,7 @@ import { useList } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 
 export default function ListAskHoldingBtn({
   holding,
@@ -32,6 +34,8 @@ export default function ListAskHoldingBtn({
 }) {
   const cot = useTranslations("drawer-CreateOffer");
   const T = useTranslations("page-MyStocks");
+  const { isMobile } = useDeviceSize();
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { offerPointInfo, offerTokenInfo, tokenPrice, isNativeToken } =
@@ -103,14 +107,21 @@ export default function ListAskHoldingBtn({
       <Drawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        direction="right"
-        size={500}
-        className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
+        direction={isMobile ? "bottom" : "right"}
+        size={isMobile ? "calc(100vh - 44px)" : 952}
+        className="overflow-y-auto rounded-none p-4 sm:flex sm:flex-col sm:rounded-l-2xl sm:p-6 "
       >
-        <DrawerTitle
-          title={T("cap-ListStockAsAskOffer")}
-          onClose={() => setDrawerOpen(false)}
-        />
+        {isMobile ? (
+          <MobileDrawerTitle
+            title={T("cap-ListStockAsAskOffer")}
+            onClose={() => setDrawerOpen(false)}
+          />
+        ) : (
+          <DrawerTitle
+            title={T("cap-ListStockAsAskOffer")}
+            onClose={() => setDrawerOpen(false)}
+          />
+        )}
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <ListInfo

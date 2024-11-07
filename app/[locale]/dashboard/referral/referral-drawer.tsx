@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
+import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 
 import { useTranslations } from "next-intl";
 import {
@@ -14,6 +15,8 @@ import { NumericalInput } from "@/components/share/numerical-input";
 import { useReferralRateChange } from "@/lib/hooks/api/use-referral";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import { ChainType } from "@/lib/types/chain";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+
 export function ReferralDrawer({
   referral,
   onSuccess,
@@ -31,6 +34,7 @@ export function ReferralDrawer({
     () => (extraRateData?.data || 0) / 10 ** 4,
     [extraRateData],
   );
+  const { isMobile } = useDeviceSize();
 
   const { referralBaseRate } = useGlobalConfig();
 
@@ -106,15 +110,22 @@ export function ReferralDrawer({
     <Drawer
       open={drawerOpen}
       onClose={handleDrawerClose}
-      direction="right"
-      size={500}
-      className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
+      direction={isMobile ? "bottom" : "right"}
+      size={isMobile ? "calc(100vh - 44px)" : 952}
+      className="overflow-y-auto rounded-none p-4 sm:flex sm:flex-col sm:rounded-l-2xl sm:p-6 "
       customIdSuffix="referral-drawer"
     >
-      <DrawerTitle
-        title={rt("th-CommissionRates")}
-        onClose={() => setDrawerOpen(false)}
-      />
+      {isMobile ? (
+        <MobileDrawerTitle
+          title={rt("th-CommissionRates")}
+          onClose={() => setDrawerOpen(false)}
+        />
+      ) : (
+        <DrawerTitle
+          title={rt("th-CommissionRates")}
+          onClose={() => setDrawerOpen(false)}
+        />
+      )}
 
       <div className="mt-6 flex flex-1 flex-col justify-between">
         <div className="flex flex-1 flex-col">

@@ -73,7 +73,7 @@ const BalanceValue = ({ type, holding }: { type: string; holding: any }) => {
   if (holding.marketplace.market_catagory === "offchain_fungible_point")
     return (
       <OffchainFungiblePointBalance
-        marketSymbol={holding.marketplace.market_catagory}
+        marketSymbol={holding.marketplace.market_symbol}
         type={type}
         chain={holding.marketplace.chain}
       />

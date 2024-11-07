@@ -16,6 +16,7 @@ export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
     const { offerId, itemAmount } = args;
 
     const reqData = {
+      taker: address,
       item_amount: itemAmount,
     };
     const res = await dataApiFetcher(

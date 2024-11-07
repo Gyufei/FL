@@ -142,7 +142,7 @@ export function SellContent({
           }
         />
 
-        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4">
+        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
           <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
           <CollateralRateInput
             value={collateralRate}

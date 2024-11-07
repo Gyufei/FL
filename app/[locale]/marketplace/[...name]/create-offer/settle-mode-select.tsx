@@ -30,7 +30,7 @@ export function SettleModeSelect({
   }
 
   return (
-    <div className="flex flex-1 basis-full flex-col space-y-2 sm:basis-auto">
+    <div className="flex flex-1 basis-full flex-col space-y-2 sm:basis-0">
       <div className="flex items-center">
         <div className="mr-1 text-sm leading-6 text-black">
           {cot("cap-Mode")}

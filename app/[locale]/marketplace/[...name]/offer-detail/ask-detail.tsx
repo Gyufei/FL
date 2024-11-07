@@ -104,7 +104,7 @@ export default function AskDetail({
     setReceivePointAmount(v);
   }
 
-  async function handleDeposit() {
+  async function handleConfirmTakerOrder() {
     if (isShouldApprove) {
       await approveAction();
       return;
@@ -173,7 +173,7 @@ export default function AskDetail({
             <>
               <WithWalletConnectBtn
                 chain={offer.marketplace.chain}
-                onClick={handleDeposit}
+                onClick={handleConfirmTakerOrder}
               >
                 <button
                   disabled={

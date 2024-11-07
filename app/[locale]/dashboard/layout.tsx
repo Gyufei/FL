@@ -75,7 +75,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     <div className="flex h-[calc(100vh-96px)] w-full flex-col">
       <div className="flex flex-1 items-stretch">
         {!(isMobile && checkIsActive("Overview")) && (
-          <div className="ml-4 flex flex-1 rounded-3xl bg-[#fafafa] p-5">
+          <div className="ml-0 flex flex-1 rounded-none bg-[#fafafa] p-5 sm:ml-4 sm:rounded-3xl">
             <MenuCol />
             {children}
           </div>

@@ -30,7 +30,7 @@ const MobileBalances: React.FC<MobileBalancesProps> = ({
   }
 
   return (
-    <div className="flex h-[calc(100vh-166px)] w-full flex-1 flex-col overflow-y-auto">
+    <div className="flex h-[calc(100vh-206px)] w-full flex-1 flex-col overflow-y-auto">
       {dataArray.length > 0 ? (
         <div className="mx-auto max-w-sm space-y-2 bg-white p-4">
           <Accordion

@@ -194,6 +194,13 @@
     "th-TxHash": "交易哈希",
     "th-Time": "时间"
   },
+  "menu-Dashboard": {
+    "cap-Orders": "订单",
+    "cap-Holdings": "持有",
+    "cap-Balance": "余额",
+    "cap-Referral": "推荐",
+    "cap-Overview": "概览"
+  },
   "cd-AccountOverview": {
     "pl-Username": "用户名",
     "txt-PickADate": "选择日期",

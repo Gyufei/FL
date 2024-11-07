@@ -21,12 +21,16 @@ import { IOffer } from "@/lib/types/offer";
 
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import MobilePageFooter, {
+  IMobilePanel,
+} from "../../_page-layout/_page-footer/page-footer-mobile";
 
 export default function MarketplaceContent({
   marketplace,
 }: {
   marketplace: IMarketplace;
 }) {
+  const pt = useTranslations("page-MarketList");
   const mt = useTranslations("pn-Marketplace");
 
   const { isMobile } = useDeviceSize();
@@ -37,6 +41,32 @@ export default function MarketplaceContent({
 
     return activePanel === name;
   }
+
+  const mobilePanels: Array<IMobilePanel> = useMemo(
+    () => [
+      {
+        name: "Transaction",
+        icon: "/icons/items.svg",
+        label: pt("menu-Transaction"),
+      },
+      {
+        name: "Items",
+        icon: "/icons/items.svg",
+        label: pt("menu-Items"),
+      },
+      {
+        name: "MarketTrades",
+        icon: "/icons/trades.svg",
+        label: pt("menu-MarketTrades"),
+      },
+      {
+        name: "Charts",
+        icon: "/icons/charts.svg",
+        label: pt("menu-Charts"),
+      },
+    ],
+    [pt],
+  );
 
   const {
     data: offers,
@@ -166,107 +196,11 @@ export default function MarketplaceContent({
         )}
       </div>
       <PageFooter className="hidden sm:flex" />
-      <MobileFooter activePanel={activePanel} setActivePanel={setActivePanel} />
-    </div>
-  );
-}
-
-function MobileFooter({
-  activePanel,
-  setActivePanel,
-}: {
-  activePanel: string;
-  setActivePanel: (panel: string) => void;
-}) {
-  const pt = useTranslations("page-MarketList");
-  const isActiveTx = activePanel === "Transaction";
-  const isActiveItems = activePanel === "Items";
-  const isActiveTrades = activePanel === "MarketTrades";
-  const isActiveChart = activePanel === "Charts";
-
-  return (
-    <div
-      className="flex h-14 w-full justify-between bg-white py-2 sm:hidden"
-      style={{
-        boxShadow: "0px -10px 20px 0px rgba(14, 4, 62, 0.02)",
-      }}
-    >
-      <div
-        onClick={() => setActivePanel("Transaction")}
-        className="flex flex-1 flex-col items-center justify-center gap-y-[2px]"
-      >
-        <Image
-          src={"/icons/items.svg"}
-          width={20}
-          height={20}
-          alt="tx"
-          data-active={isActiveTx}
-          className="data-[active=false]:opacity-40"
-        />
-        <div
-          data-active={isActiveTx}
-          className="w-fit text-xs leading-[18px] text-[#2D2E33] data-[active=false]:opacity-40"
-        >
-          {pt("menu-Transaction")}
-        </div>
-      </div>
-      <div
-        onClick={() => setActivePanel("Items")}
-        className="flex flex-1 flex-col items-center justify-center gap-y-[2px]"
-      >
-        <Image
-          src={"/icons/items.svg"}
-          width={20}
-          height={20}
-          alt="items"
-          data-active={isActiveItems}
-          className="data-[active=false]:opacity-40"
-        />
-        <div
-          data-active={isActiveItems}
-          className="w-fit text-xs leading-[18px] text-[#2D2E33] data-[active=false]:opacity-40"
-        >
-          {pt("menu-Items")}
-        </div>
-      </div>
-      <div
-        onClick={() => setActivePanel("MarketTrades")}
-        className="flex flex-1 flex-col items-center justify-center gap-y-[2px]"
-      >
-        <Image
-          src={"/icons/trades.svg"}
-          width={20}
-          height={20}
-          alt="trades"
-          data-active={isActiveTrades}
-          className="data-[active=false]:opacity-40"
-        />
-        <div
-          data-active={isActiveTrades}
-          className="w-fit text-xs leading-[18px] text-[#2D2E33] data-[active=false]:opacity-40"
-        >
-          {pt("menu-MarketTrades")}
-        </div>
-      </div>
-      <div
-        onClick={() => setActivePanel("Charts")}
-        className="flex flex-1 flex-col items-center justify-center gap-y-[2px]"
-      >
-        <Image
-          src={"/icons/charts.svg"}
-          width={20}
-          height={20}
-          alt="trending-assets"
-          data-active={isActiveChart}
-          className="data-[active=false]:opacity-40"
-        />
-        <div
-          data-active={isActiveChart}
-          className="w-fit text-xs leading-[18px] text-[#2D2E33] data-[active=false]:opacity-40"
-        >
-          {pt("menu-Charts")}
-        </div>
-      </div>
+      <MobilePageFooter
+        panels={mobilePanels}
+        activePanel={activePanel}
+        setActivePanel={setActivePanel}
+      />
     </div>
   );
 }

@@ -194,6 +194,13 @@
     "th-TxHash": "Tx Hash",
     "th-Time": "Time"
   },
+  "menu-Dashboard": {
+    "cap-Orders": "Orders",
+    "cap-Holdings": "Holdings",
+    "cap-Balance": "Balance",
+    "cap-Referral": "Referral",
+    "cap-Overview": "Overview"
+  },
   "cd-AccountOverview": {
     "pl-Username": "username",
     "txt-PickADate": "Pick a Date",

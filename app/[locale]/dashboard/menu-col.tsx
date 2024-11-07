@@ -6,7 +6,7 @@ export default function MenuCol() {
   const pathname = usePathname();
 
   return (
-    <div className="mt-[70px] flex flex-col  space-y-5">
+    <div className="mt-[70px] hidden flex-col space-y-5 sm:flex">
       <MenuIcon
         href={`/dashboard/orders`}
         isActive={pathname === `/dashboard/orders`}
@@ -17,7 +17,12 @@ export default function MenuCol() {
         href={`/dashboard/holdings`}
         isActive={pathname === `/dashboard/holdings`}
       >
-        <Image src="/icons/holdings.svg" width={24} height={24} alt="holdings" />
+        <Image
+          src="/icons/holdings.svg"
+          width={24}
+          height={24}
+          alt="holdings"
+        />
       </MenuIcon>
       <MenuIcon
         href={`/dashboard/balances`}

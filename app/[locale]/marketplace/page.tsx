@@ -1,15 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import PageFooter from "../_page-layout/_page-footer";
 import PointMarket from "./point-market";
 import TrendingAsset from "./trending-asset";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import MobilePageFooter, { IMobilePanel } from "../_page-layout/_page-footer/page-footer-mobile";
 
 export default function Marketplace() {
   const { isMobile } = useDeviceSize();
-  const [activePanel, setActivePanel] = useState("market");
+
+  const pt = useTranslations("page-MarketList");
+
+  const mobilePanels: Array<IMobilePanel> = useMemo(
+    () => [
+      {
+        name: "market",
+        icon: "/icons/point-market.svg",
+        label: pt("cap-PointMarket"),
+      },
+      {
+        name: "assets",
+        icon: "/icons/trending-assets.svg",
+        label: pt("cap-TrendingAssets"),
+      },
+    ],
+    [pt],
+  );
+
+  const [activePanel, setActivePanel] = useState(mobilePanels[0].name);
 
   function checkIsActive(name: string) {
     if (!isMobile) return true;
@@ -19,7 +39,7 @@ export default function Marketplace() {
 
   return (
     <div className="flex h-[calc(100vh-100px)] w-full flex-col sm:h-[calc(100vh-96px)]">
-      <MobileBreadcrumb />
+      <MobileMarketBreadcrumb />
       <div className="flex flex-1 items-stretch">
         {checkIsActive("market") && (
           <div className="flex flex-1 flex-col pl-4 sm:pl-6">
@@ -33,12 +53,16 @@ export default function Marketplace() {
         )}
       </div>
       <PageFooter className="hidden sm:flex" />
-      <MobileFooter activePanel={activePanel} setActivePanel={setActivePanel} />
+      <MobilePageFooter
+        panels={mobilePanels}
+        activePanel={activePanel}
+        setActivePanel={setActivePanel}
+      />
     </div>
   );
 }
 
-function MobileBreadcrumb() {
+function MobileMarketBreadcrumb() {
   const ht = useTranslations("Header");
 
   return (
@@ -55,66 +79,6 @@ function MobileBreadcrumb() {
           height={20}
           alt="down-arrow"
         />
-      </div>
-    </div>
-  );
-}
-
-function MobileFooter({
-  activePanel,
-  setActivePanel,
-}: {
-  activePanel: string;
-  setActivePanel: (panel: string) => void;
-}) {
-  const pt = useTranslations("page-MarketList");
-  const isActiveMarket = activePanel === "market";
-  const isActiveAssets = activePanel === "assets";
-
-  return (
-    <div
-      className="flex h-14 w-full justify-between bg-white py-2 sm:hidden"
-      style={{
-        boxShadow: "0px -10px 20px 0px rgba(14, 4, 62, 0.02)",
-      }}
-    >
-      <div
-        onClick={() => setActivePanel("market")}
-        className="flex flex-1 flex-col items-center justify-center gap-y-[2px]"
-      >
-        <Image
-          src={"/icons/point-market.svg"}
-          width={20}
-          height={20}
-          alt="point-market"
-          data-active={isActiveMarket}
-          className="data-[active=false]:opacity-40"
-        />
-        <div
-          data-active={isActiveMarket}
-          className="w-fit text-xs leading-[18px] text-[#2D2E33] data-[active=false]:opacity-40"
-        >
-          {pt("cap-PointMarket")}
-        </div>
-      </div>
-      <div
-        onClick={() => setActivePanel("assets")}
-        className="flex flex-1 flex-col items-center justify-center gap-y-[2px]"
-      >
-        <Image
-          src={"/icons/trending-assets.svg"}
-          width={20}
-          height={20}
-          alt="trending-assets"
-          data-active={isActiveAssets}
-          className="data-[active=false]:opacity-40"
-        />
-        <div
-          data-active={isActiveAssets}
-          className="w-fit text-xs leading-[18px] text-[#2D2E33] data-[active=false]:opacity-40"
-        >
-          {pt("cap-TrendingAssets")}
-        </div>
       </div>
     </div>
   );

@@ -16,6 +16,8 @@ import { formatNum } from "@/lib/utils/number";
 import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
+import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
+import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 
 export function BuyContent({
   marketplace,
@@ -64,16 +66,25 @@ export function BuyContent({
       "buy",
     );
 
+  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
+    useAccountVerifyDialog(currentMarket);
+
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
       await approveAction();
-    } else {
-      handleCreate({
-        collateralRate: String(Number(collateralRate || 100) * 100),
-        settleMode,
-        taxForSub: String(Number(taxForSub || 1) * 100),
-      });
+      return;
     }
+
+    if (!isAccountVerify) {
+      setVerifyDialogOpen(true);
+      return;
+    }
+
+    handleCreate({
+      collateralRate: String(Number(collateralRate || 100) * 100),
+      settleMode,
+      taxForSub: String(Number(taxForSub || 1) * 100),
+    });
   }
 
   useEffect(() => {
@@ -147,6 +158,13 @@ export function BuyContent({
       >
         {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
       </button>
+
+      <AccountVerifyDialog
+        open={verifyDialogOpen}
+        setOpen={setVerifyDialogOpen}
+        marketSymbol={currentMarket.market_symbol}
+        targetUrl={targetUrl || ""}
+      />
     </div>
   );
 }

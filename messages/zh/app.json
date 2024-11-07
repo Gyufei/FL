@@ -121,7 +121,10 @@
     "pl-AnythingYouWantToInformTheSeller": "任何你想告诉卖家的内容",
     "lb-MinimumOrderAmount": "最低订单数量",
     "lb-PlatformTradingFee": "平台交易手续费",
-    "btn-ConfirmMakerOrder": "确认订单"
+    "btn-ConfirmMakerOrder": "确认订单",
+    "cap-RegisterAccount": "注册账户",
+    "text-RegisterAccount": "请前往<symbol>market symbol</symbol>注册一个账户以进行交易",
+    "text-Go": "前往"
   },
   "drawer-OfferDetail": {
     "cap-OfferDetail": "订单详情",

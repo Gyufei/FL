@@ -14,6 +14,8 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useLocale, useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
+import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
+import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 
 export default function AskDetail({
   offer,
@@ -79,6 +81,9 @@ export default function AskDetail({
       "buyFromAsk",
     );
 
+  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
+    useAccountVerifyDialog(offer.marketplace);
+
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
@@ -107,6 +112,11 @@ export default function AskDetail({
   async function handleConfirmTakerOrder() {
     if (isShouldApprove) {
       await approveAction();
+      return;
+    }
+
+    if (!isAccountVerify) {
+      setVerifyDialogOpen(true);
       return;
     }
 
@@ -213,6 +223,13 @@ export default function AskDetail({
       </div>
 
       <OfferTabs offer={offer} />
+
+      <AccountVerifyDialog
+        open={verifyDialogOpen}
+        setOpen={setVerifyDialogOpen}
+        marketSymbol={offer.marketplace.market_symbol}
+        targetUrl={targetUrl || ""}
+      />
     </>
   );
 }

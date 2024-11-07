@@ -30,6 +30,11 @@ export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
       },
     );
 
+    if (!res.tx_data) {
+      throw new Error("Invalid transaction data");
+      return null;
+    }
+
     const callParams = {
       ...res.tx_data,
       from: address,

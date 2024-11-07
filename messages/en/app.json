@@ -121,7 +121,10 @@
     "pl-AnythingYouWantToInformTheSeller": "Anything you want to inform the seller...",
     "lb-MinimumOrderAmount": "Minimum Order Amount",
     "lb-PlatformTradingFee": "Platform Trading Fee",
-    "btn-ConfirmMakerOrder": "Confirm Maker Order"
+    "btn-ConfirmMakerOrder": "Confirm Maker Order",
+    "cap-RegisterAccount": "Register Account",
+    "text-RegisterAccount": "Go to the <symbol>marketSymbol</symbol> to register an account to trade",
+    "text-Go": "Go"
   },
   "drawer-OfferDetail": {
     "cap-OfferDetail": "Offer Detail",

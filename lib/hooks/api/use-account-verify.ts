@@ -19,12 +19,8 @@ export function useAccountVerify({
   const { address: wallet } = useChainWallet();
 
   async function checkIsVerifiedFetch() {
-    if (marketCategory !== "offchain_fungible_point") {
+    if (marketCategory !== "offchain_fungible_point" || !wallet) {
       return true;
-    }
-
-    if (!wallet) {
-      return false;
     }
 
     const res = await dataApiFetcher(

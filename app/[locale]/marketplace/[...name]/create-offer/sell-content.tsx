@@ -77,20 +77,21 @@ export function SellContent({
     useAccountVerifyDialog(currentMarket);
 
   async function handleConfirmBtnClick() {
-    if (isAccountVerify) {
+    if (isShouldApprove) {
+      await approveAction();
+      return;
+    } 
+
+    if (!isAccountVerify) {
       setVerifyDialogOpen(true);
       return;
     }
 
-    if (isShouldApprove) {
-      await approveAction();
-    } else {
-      handleCreate({
-        collateralRate: String(Number(collateralRate || 100) * 100),
-        settleMode,
-        taxForSub: String(Number(taxForSub || 1) * 100),
-      });
-    }
+    handleCreate({
+      collateralRate: String(Number(collateralRate || 100) * 100),
+      settleMode,
+      taxForSub: String(Number(taxForSub || 1) * 100),
+    });
   }
 
   return (

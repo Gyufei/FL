@@ -13,6 +13,8 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
+import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
+import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 
 export default function BidDetail({
   offer,
@@ -46,6 +48,9 @@ export default function BidDetail({
       offerPointInfo,
       "sellToBid",
     );
+
+  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
+    useAccountVerifyDialog(offer.marketplace);
 
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
@@ -97,7 +102,13 @@ export default function BidDetail({
       return;
     }
 
+    if (!isAccountVerify) {
+      setVerifyDialogOpen(true);
+      return;
+    }
+
     if (isDepositLoading || !sellPointAmount) return;
+
     await writeAction({
       offerId: offer.offer_id,
       itemAmount: toNonExponential(sellPointAmount),
@@ -175,6 +186,13 @@ export default function BidDetail({
       </div>
 
       <OfferTabs offer={offer} />
+
+      <AccountVerifyDialog
+        open={verifyDialogOpen}
+        setOpen={setVerifyDialogOpen}
+        marketSymbol={offer.marketplace.market_symbol}
+        targetUrl={targetUrl || ""}
+      />
     </>
   );
 }

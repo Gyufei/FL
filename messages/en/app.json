@@ -212,9 +212,10 @@
   },
   "dashboard-module": {
     "menu-Orders": "Orders",
-    "menu-Holdings": "Inventory",
+    "menu-Holdings": "Holdings",
     "menu-Balances": "Balance",
-    "menu-Referral": "System"
+    "menu-Referral": "Referral",
+    "menu-Overview": "Overview"
   },
   "page-MyOrders": {
     "cap-MyOrders": "My Orders",

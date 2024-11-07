@@ -7,7 +7,6 @@ import { useReferralData } from "@/lib/hooks/api/use-referral-data";
 import { useEffect } from "react";
 import { useCreateReferral } from "@/lib/hooks/contract/use-create-referral";
 import { ChainType } from "@/lib/types/chain";
-import OverviewInfo from "@/app/[locale]/dashboard/overview-info";
 
 export default function Referral() {
   const rt = useTranslations("page-Referral");
@@ -35,11 +34,6 @@ export default function Referral() {
 
     createAction(undefined);
   }
-  return (
-    <div className="h-[calc(100vh-156px)] w-full overflow-y-auto bg-white py-4 sm:h-full">
-      <OverviewInfo />
-    </div>
-  );
 
   return (
     <div className="flex h-full flex-1 flex-col sm:ml-5">

@@ -34,8 +34,8 @@ export default function MyOrders() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-156px)] w-full flex-col  px-4 sm:h-[calc(100vh-96px)] sm:px-0">
-      <div className="mb-[10px] mt-4 flex w-full items-center sm:pl-4">
+    <div className="flex h-[calc(100vh-156px)] w-full flex-1 flex-col px-4 sm:ml-5 sm:h-[calc(100vh-96px)] sm:px-0">
+      <div className="mb-[10px] mt-4 flex w-full items-center sm:mb-0 sm:mt-0 sm:justify-between">
         <div className="hidden items-center space-x-5 sm:flex">
           <div className="text-xl leading-[30px] text-black">
             {T("cap-MyOrders")}

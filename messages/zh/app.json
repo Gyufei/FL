@@ -214,7 +214,8 @@
     "menu-Orders": "订单",
     "menu-Holdings": "库存",
     "menu-Balances": "余额",
-    "menu-Referral": "系统"
+    "menu-Referral": "系统",
+    "menu-Overview": "概览"
   },
   "page-MyOrders": {
     "cap-MyOrders": "我的订单",

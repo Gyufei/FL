@@ -12,14 +12,15 @@ import { ChainType } from "@/lib/types/chain";
 export function useMyHoldings({ chain }: { chain?: ChainType }) {
   const { address } = useChainWallet(chain);
   const { dataApiEndPoint } = useEndPoint();
-  const { data: marketplaceData } = useMarketplaces();
+  const { data: marketplaceData, isLoading: isMarketLoading } =
+    useMarketplaces();
   const { data: offers, isLoading: isOfferLoading } = useMarketOffers({
     marketSymbol: null,
     marketChain: chain || "",
   });
 
   const holdingFetch = async () => {
-    if (!address || isOfferLoading) return [];
+    if (!address || isOfferLoading || isMarketLoading) return [];
 
     const holdingRes = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.holding}?wallet=${address}&chain=${chain}`,
@@ -82,7 +83,7 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
   };
 
   const res = useSWR(
-    `my_stock:${chain}${address}${isOfferLoading}`,
+    `my_stock:${chain}${address}${isOfferLoading}${isMarketLoading}`,
     holdingFetch,
   );
 

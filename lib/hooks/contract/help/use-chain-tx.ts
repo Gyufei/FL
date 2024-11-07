@@ -48,7 +48,6 @@ export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
   const write = async (args: any) => {
     try {
       const res = await switchToTargetChain();
-      console.log("switch res", res);
 
       if (res) {
         return chainActionRes.write(args);

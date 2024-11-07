@@ -48,11 +48,11 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     chainType: ChainType.ETH,
     logo: "/icons/eth.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
-    network: isProduction ? 1 : 1337,
+    network: isProduction ? 1 : 11155111,
     rpcs: {
       TadleDefaultRPC: isProduction
         ? process.env.NEXT_PUBLIC_DEFAULT_RPC_ETH || "https://rpc.ankr.com/eth"
-        : "https://devnet-rpc.aggregation.top/",
+        : "https://rpc.ankr.com/eth_sepolia",
     },
     contracts: isProduction
       ? {

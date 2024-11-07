@@ -6,7 +6,6 @@ import { IHolding } from "@/lib/types/holding";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useMarketOffers } from "./use-market-offers";
 import { useMarketplaces } from "./use-marketplaces";
-import { useMemo } from "react";
 import NP from "number-precision";
 import { ChainType } from "@/lib/types/chain";
 
@@ -18,21 +17,6 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
     marketSymbol: null,
     marketChain: chain || "",
   });
-
-  const itemTypeObject = useMemo(() => {
-    const categorized: any = {};
-    if (!marketplaceData) return {};
-
-    marketplaceData.forEach((item) => {
-      const { market_catagory, market_symbol } = item;
-      if (!categorized[market_catagory]) {
-        categorized[market_catagory] = [];
-      }
-      categorized[market_catagory].push(market_symbol);
-    });
-
-    return categorized;
-  }, [marketplaceData]);
 
   const holdingFetch = async () => {
     if (!address || isOfferLoading) return [];

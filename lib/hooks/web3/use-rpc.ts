@@ -3,9 +3,9 @@ import { useAtom } from "jotai";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
 import { Connection } from "@solana/web3.js";
 import { createPublicClient, http } from "viem";
-import { mainnet } from "viem/chains";
+import { mainnet, sepolia } from "viem/chains";
 import { isProduction } from "@/lib/PathMap";
-import { testnet } from "@/components/provider/wallet-context/testnet";
+// import { testnet } from "@/components/provider/wallet-context/testnet";
 import { ChainType } from "@/lib/types/chain";
 import { isEvmChain } from "@/lib/utils/web3";
 
@@ -43,7 +43,7 @@ export function useRpc() {
 
     if (isEvmChain(chain)) {
       const publicClient = createPublicClient({
-        chain: isProduction ? mainnet : testnet,
+        chain: isProduction ? mainnet : sepolia,
         transport: http(testRpc),
       });
 

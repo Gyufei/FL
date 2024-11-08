@@ -4,23 +4,54 @@ import { DataApiPaths } from "@/lib/PathMap";
 import { useEndPoint } from "./use-endpoint";
 import { IHolding } from "@/lib/types/holding";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useMarketOffers } from "./use-market-offers";
 import { useMarketplaces } from "./use-marketplaces";
 import NP from "number-precision";
 import { ChainType } from "@/lib/types/chain";
+import { IMarketplace } from "@/lib/types/marketplace";
+import { uniqBy } from "lodash";
 
 export function useMyHoldings({ chain }: { chain?: ChainType }) {
   const { address } = useChainWallet(chain);
   const { dataApiEndPoint } = useEndPoint();
   const { data: marketplaceData, isLoading: isMarketLoading } =
     useMarketplaces();
-  const { data: offers, isLoading: isOfferLoading } = useMarketOffers({
-    marketSymbol: null,
-    marketChain: chain || "",
-  });
+
+  async function marketOfferFetch(marketSymbol: string, chain: ChainType) {
+    const offers = await dataApiFetcher(
+      `${dataApiEndPoint}${DataApiPaths.offers}?market_symbol=${marketSymbol}&chain=${chain}`,
+    );
+
+    return offers;
+  }
+
+  async function getAllMarketOffers(markets: Array<IMarketplace>) {
+    const uniqueMarkets = uniqBy(markets, "market_symbol");
+
+    const allMarketOffMapArr = await Promise.all(
+      uniqueMarkets.map(async (market) => {
+        const offers = await marketOfferFetch(
+          market.market_symbol,
+          market.chain,
+        );
+        return {
+          market_symbol: offers,
+        };
+      }),
+    );
+
+    const allMarketOffObj = allMarketOffMapArr.reduce(
+      (acc, cur) => ({
+        ...acc,
+        ...cur,
+      }),
+      {},
+    );
+
+    return allMarketOffObj as Record<string, Array<any>>;
+  }
 
   const holdingFetch = async () => {
-    if (!address || isOfferLoading || isMarketLoading) return [];
+    if (!address || isMarketLoading) return [];
 
     const holdingRes = await dataApiFetcher(
       `${dataApiEndPoint}${DataApiPaths.holding}?wallet=${address}&chain=${chain}`,
@@ -28,18 +59,23 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
 
     if (holdingRes?.length <= 0) return [];
 
-    const holdings = holdingRes
-      .map((h: any) => {
-        const curMarketplace = marketplaceData?.find(
-          (m: any) => h.market_symbol === m.market_symbol,
-        );
+    const holdings = holdingRes.map((h: any) => {
+      const curMarketplace = marketplaceData?.find(
+        (m: any) => h.market_symbol === m.market_symbol,
+      );
 
-        return {
-          ...h,
-          marketplace: curMarketplace,
-        };
-      })
-      .map((h: any, _idx: number, arr: Array<any>) => {
+      return {
+        ...h,
+        marketplace: curMarketplace,
+      };
+    });
+
+    const allMarketOfferMap = await getAllMarketOffers(
+      holdings.map((h: any) => h.marketplace),
+    );
+
+    const cateHoldings = holdings.map(
+      (h: any, _idx: number, arr: Array<any>) => {
         if (h.marketplace?.market_catagory === "point_token") {
           const getHoldingEntriesAmount = (holding: IHolding) => {
             return holding.entries.reduce(
@@ -69,6 +105,7 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
             h.marketplace?.market_catagory,
           )
         ) {
+          const offers = allMarketOfferMap[h.marketplace?.market_symbol];
           const matchingOffer = offers?.find(
             (offer: any) => offer.entry.id === h.entries[0].id,
           );
@@ -78,13 +115,14 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
             offer: matchingOffer,
           };
         }
-      });
+      },
+    );
 
-    return holdings as Array<IHolding>;
+    return cateHoldings as Array<IHolding>;
   };
 
   const res = useSWR(
-    `my_stock:${chain}${address}${isOfferLoading}${isMarketLoading}`,
+    `my_stock:${chain}${address}${isMarketLoading}`,
     holdingFetch,
   );
 

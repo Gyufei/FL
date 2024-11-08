@@ -20,7 +20,7 @@ export default function HoldingCard({
   onSuccess: () => void;
 }) {
   const ct = useTranslations("page-MyStocks");
-  
+
   const {
     afterTGE,
     afterTGEPeriod,
@@ -33,10 +33,10 @@ export default function HoldingCard({
     isCanSettle,
     isCanAbort,
   } = useOfferFormat({
-    offer: holding.offer,
+    offer: holding?.offer || ({} as any),
   });
 
-  const isAskStock = holding.offer.entry.direction === "sell";
+  const isAskStock = holding?.offer?.entry?.direction === "sell";
 
   const { data: subOrders } = {
     data: [],
@@ -59,8 +59,8 @@ export default function HoldingCard({
           onClick={handleOpenDetail}
         >
           <TokenPairImg
-            src1={holding.offer.marketplace?.projectLogo}
-            src2={ChainConfigs[holding.offer.marketplace.chain].logo}
+            src1={holding.marketplace?.projectLogo}
+            src2={ChainConfigs[holding.marketplace.chain].logo}
             width1={48}
             height1={48}
             width2={8.8}
@@ -69,7 +69,7 @@ export default function HoldingCard({
 
           <div>
             <div className="mb-[2px] leading-6 text-black">
-              {holding.offer.marketplace?.market_name}
+              {holding.marketplace?.market_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
               #{holding.entries[0].id}
@@ -78,7 +78,7 @@ export default function HoldingCard({
         </div>
 
         <div
-          data-type={holding.offer.entry.direction}
+          data-type={holding.offer?.entry?.direction}
           className="flex h-5 items-center rounded px-[10px] text-xs leading-[18px] data-[type=ask]:bg-[#EDF8F4] data-[type=bid]:bg-[#FFEFEF] data-[type=buy]:text-red data-[type=sell]:text-green"
         >
           {!isAskStock ? ct("tag-Bid") : ct("tag-Ask")}
@@ -101,8 +101,7 @@ export default function HoldingCard({
             />
           </div>
           <div className="overflow-visible whitespace-nowrap text-xs leading-[18px] text-lightgray">
-            ${formatNum(pointPerPrice, 6)} /{" "}
-            {holding.offer.marketplace.item_name}
+            ${formatNum(pointPerPrice, 6)} / {holding.marketplace.item_name}
           </div>
         </div>
         <Image

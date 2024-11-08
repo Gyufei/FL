@@ -41,17 +41,18 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
       })
       .map((h: any, _idx: number, arr: Array<any>) => {
         if (h.marketplace?.market_catagory === "point_token") {
+          const getHoldingEntriesAmount = (holding: IHolding) => {
+            return holding.entries.reduce(
+              (ac: number, cu) => NP.plus(ac + cu.item_amount),
+              0,
+            );
+          };
+
           return {
             ...h,
             allItemAmount: arr.reduce(
               (acc: number, cur: IHolding) =>
-                NP.plus(
-                  acc +
-                    cur.entries.reduce(
-                      (ac, cu) => NP.plus(ac + cu.item_amount),
-                      0,
-                    ),
-                ),
+                NP.plus(acc, getHoldingEntriesAmount(cur)),
               0,
             ),
           };

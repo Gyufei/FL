@@ -27,13 +27,13 @@ export default function ConfirmAskTakerSettleDialog({
     offerPointInfo,
     afterTGEPeriod,
     isNativeToken,
-  } = useOfferFormat({ offer: holding.offer });
+  } = useOfferFormat({ offer: holding?.offer || ({} as any) });
 
   // const [sliderMax] = useState(100);
   // const [sliderValue, setSliderValue] = useState(100);
   const [sliderValue] = useState(100);
 
-  const pointAmount = !afterTGEPeriod ? holding.offer.item_amount : 0;
+  const pointAmount = !afterTGEPeriod ? holding?.offer?.item_amount : 0;
   const settleAmount = Math.floor(Number(pointAmount) * (sliderValue / 100));
 
   function handleSuccess() {
@@ -100,11 +100,11 @@ export default function ConfirmAskTakerSettleDialog({
           </div>
 
           <ConfirmAskTakerSettleBtn
-            chain={holding.offer.marketplace.chain}
-            marketplaceStr={holding.offer.marketplace.market_place_account}
+            chain={holding.marketplace.chain}
+            marketplaceStr={holding.marketplace.market_place_account}
             holdingStr={holding.holding_id}
-            makerStr={holding.offer.offer_maker}
-            preOfferStr={holding.offer.offer_id}
+            makerStr={holding?.offer?.offer_maker || ""}
+            preOfferStr={holding?.offer?.offer_id || ""}
             preOfferAuthorityStr={""}
             settleAmount={settleAmount}
             isNativeToken={isNativeToken}

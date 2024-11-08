@@ -40,19 +40,19 @@ export default function ListAskHoldingBtn({
 
   const { offerPointInfo, offerTokenInfo, tokenPrice, isNativeToken } =
     useOfferFormat({
-      offer: holding.offer,
+      offer: holding?.offer || ({} as any),
     });
 
-  const { data: entryInfo } = useEntryById(holding.offer.entry.id);
+  const { data: entryInfo } = useEntryById(holding?.offer?.entry?.id);
 
-  const [sellPointAmount] = useState(String(holding.offer.item_amount));
+  const [sellPointAmount] = useState(String(holding?.offer?.item_amount));
   const [receiveTokenAmount, setReceiveTokenAmount] = useState("");
 
   const [collateralRate, setCollateralRate] = useState(
     String(Number(holding?.offer?.collateral_ratio) / 100),
   );
   const taxForSub = String(Number(holding.offer?.trade_tax_pct) / 100);
-  const settleMode = holding?.offer.origin_settle_mode || "protected";
+  const settleMode = holding?.offer?.origin_settle_mode || "protected";
 
   const [note, setNote] = useState("");
 
@@ -64,9 +64,9 @@ export default function ListAskHoldingBtn({
     write: writeAction,
     isSuccess,
   } = useList({
-    chain: holding.offer.marketplace.chain,
-    marketplaceStr: holding.offer.marketplace.market_place_account,
-    makerStr: holding.offer.offer_maker,
+    chain: holding.marketplace.chain,
+    marketplaceStr: holding.marketplace.market_place_account,
+    makerStr: holding?.offer?.offer_maker || "",
     holdingStr: holding.holding_id,
     // TODO: add field in new api
     // preOfferStr: holding.pre_offer_account,
@@ -99,7 +99,7 @@ export default function ListAskHoldingBtn({
   return (
     <div>
       <WithWalletConnectBtn
-        chain={holding.offer.marketplace.chain}
+        chain={holding.marketplace.chain}
         onClick={() => setDrawerOpen(true)}
       >
         <ListBtn />
@@ -136,8 +136,7 @@ export default function ListAskHoldingBtn({
               topText={<>{cot("txt-YouWillSell")}</>}
               bottomText={
                 <>
-                  1 {holding.offer.marketplace.item_name} = $
-                  {formatNum(pointPrice)}
+                  1 {holding.marketplace.item_name} = ${formatNum(pointPrice)}
                 </>
               }
               isCanInput={false}
@@ -160,7 +159,7 @@ export default function ListAskHoldingBtn({
                   {cot("txt-YouDLikeToReceive")}
                   <WithTip align="start">
                     {cot("tip-YouDLikeToReceive", {
-                      pointName: holding.offer.marketplace.item_name,
+                      pointName: holding.marketplace.item_name,
                     })}
                   </WithTip>
                 </div>
@@ -172,7 +171,7 @@ export default function ListAskHoldingBtn({
               }
               tokenSelect={
                 <StableTokenSelectDisplay
-                  chain={holding.offer.marketplace.chain}
+                  chain={holding.marketplace.chain}
                   token={offerTokenInfo as IToken}
                   setToken={() => {}}
                 />
@@ -201,7 +200,7 @@ export default function ListAskHoldingBtn({
           </div>
 
           <WithWalletConnectBtn
-            chain={holding.offer.marketplace.chain}
+            chain={holding.marketplace.chain}
             onClick={handleDeposit}
           >
             <button

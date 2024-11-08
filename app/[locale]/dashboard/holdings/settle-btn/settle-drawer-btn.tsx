@@ -22,7 +22,7 @@ export default function SettleDrawerBtn({
   return (
     <div>
       <WithWalletConnectBtn
-        chain={holding.offer.marketplace.chain}
+        chain={holding.marketplace.chain}
         onClick={() => handleDrawerOpen(true)}
       >
         <div className="flex h-7 cursor-pointer items-center space-x-1 rounded-full border border-[#eee] px-5 text-sm leading-5 text-black data-[disabled=true]:bg-gray">

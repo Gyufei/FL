@@ -1,3 +1,4 @@
+import { IMarketplace } from "./marketplace";
 import { IOffer } from "./offer";
 
 export interface IHolding {
@@ -7,7 +8,8 @@ export interface IHolding {
   status: string;
   create_at: number;
 
-  offer: IOffer;
+  marketplace: IMarketplace;
+  offer?: IOffer;
 }
 
 interface IHoldingEntry {

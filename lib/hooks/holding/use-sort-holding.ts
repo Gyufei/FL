@@ -31,7 +31,7 @@ export function useSortHolding(holdings: Array<IHolding>) {
 
     if (sortField === "Price") {
       const priceFunc = (hd: IHolding) => {
-        return hd.offer.price;
+        return hd?.offer?.price;
       };
       sortArr = sortBy<any>(holdings, [priceFunc]);
     }

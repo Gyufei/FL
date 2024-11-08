@@ -3,12 +3,12 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTranslations } from "next-intl";
 
 export default function AccountVerifyDialog({
-  marketSymbol,
+  marketName,
   targetUrl,
   open,
   setOpen,
 }: {
-  marketSymbol: string;
+  marketName: string;
   targetUrl: string;
   open: boolean;
   setOpen: (_o: boolean) => void;
@@ -33,7 +33,7 @@ export default function AccountVerifyDialog({
         <div className="min-h-10 px-5 text-center text-sm leading-5 text-black">
           {t.rich("text-RegisterAccount", {
             symbol: () => (
-              <span className="mx-2 inline-block text-red">{marketSymbol}</span>
+              <span className="mx-2 inline-block text-red">{marketName}</span>
             ),
           })}
         </div>

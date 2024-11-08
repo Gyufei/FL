@@ -45,6 +45,7 @@ export default function MyBidDetail({
     afterTGE,
     afterTGEPeriod,
     isFilled,
+    isOfferNoNeedSettle,
     isNativeToken,
     pointDecimalNum,
   } = useOfferFormat({
@@ -164,7 +165,14 @@ export default function MyBidDetail({
           ) : (
             <>
               {isCanceled ? (
-                !afterTGE ? (
+                afterTGE || isOfferNoNeedSettle ? (
+                  <button
+                    disabled={true}
+                    className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                  >
+                    {ot("btn-OfferClosed")}
+                  </button>
+                ) : (
                   <WithWalletConnectBtn
                     chain={offer?.marketplace.chain}
                     onClick={handleRelist}
@@ -173,17 +181,10 @@ export default function MyBidDetail({
                       {ot("btn-RelistThisOffer")}
                     </button>
                   </WithWalletConnectBtn>
-                ) : (
-                  <button
-                    disabled={true}
-                    className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
-                  >
-                    {ot("btn-OfferClosed")}
-                  </button>
                 )
               ) : (
                 <>
-                  {isClosed ? (
+                  {isClosed && !isOfferNoNeedSettle ? (
                     <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                       {ot("btn-AwaitingSettlement")}
                     </button>

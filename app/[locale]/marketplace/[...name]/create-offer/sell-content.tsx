@@ -19,15 +19,22 @@ import { usePairApprove } from "./use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
+import { cn } from "@/lib/utils/common";
 
 export function SellContent({
   marketplace,
   onSuccess,
+  className,
 }: {
   marketplace: IMarketplace;
   onSuccess: () => void;
+  className?: string;
 }) {
   const T = useTranslations("drawer-CreateOffer");
+
+  const isOffChainFungiblePoint =
+    marketplace?.market_catagory === "offchain_fungible_point";
+  const isPointToken = marketplace?.market_catagory === "point_token";
 
   const {
     token: receiveToken,
@@ -93,7 +100,7 @@ export function SellContent({
   }
 
   return (
-    <div className="mt-6 flex flex-1 flex-col justify-between">
+    <div className={cn("mt-6 flex flex-1 flex-col justify-between", className)}>
       <div className="flex flex-1 flex-col">
         <InputPanel
           value={sellPointAmount}
@@ -146,11 +153,18 @@ export function SellContent({
         />
 
         <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
-          <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
-          <CollateralRateInput
-            value={collateralRate}
-            onValueChange={setCollateralRate}
-          />
+          {!(isOffChainFungiblePoint || isPointToken) && (
+            <>
+              <SettleModeSelect
+                value={settleMode}
+                onValueChange={setSettleMode}
+              />
+              <CollateralRateInput
+                value={collateralRate}
+                onValueChange={setCollateralRate}
+              />
+            </>
+          )}
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
 
@@ -168,7 +182,7 @@ export function SellContent({
       <AccountVerifyDialog
         open={verifyDialogOpen}
         setOpen={setVerifyDialogOpen}
-        marketSymbol={currentMarket.market_symbol}
+        marketName={currentMarket.market_name}
         targetUrl={targetUrl || ""}
       />
     </div>

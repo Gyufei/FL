@@ -45,6 +45,7 @@ export default function MyAskDetail({
     isCanAbort,
     isNativeToken,
     pointDecimalNum,
+    isOfferNoNeedSettle,
   } = useOfferFormat({
     offer,
   });
@@ -190,7 +191,7 @@ export default function MyAskDetail({
                 ) : (
                   <>
                     {isCanceled ? (
-                      afterTGE ? (
+                      afterTGE || isOfferNoNeedSettle ? (
                         <button
                           disabled={true}
                           className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
@@ -209,7 +210,7 @@ export default function MyAskDetail({
                       )
                     ) : (
                       <>
-                        {isClosed || afterTGE ? (
+                        {(isClosed || afterTGE) && !isOfferNoNeedSettle ? (
                           <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                             {ot("btn-AwaitingSettlement")}
                           </button>
@@ -228,13 +229,11 @@ export default function MyAskDetail({
                               </button>
                             </WithWalletConnectBtn>
 
-                            <>
-                              {isFilled && (
-                                <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                  {ot("txt-YouHaveTheOptionToClose")}
-                                </div>
-                              )}
-                            </>
+                            {isFilled && (
+                              <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
+                                {ot("txt-YouHaveTheOptionToClose")}
+                              </div>
+                            )}
                           </>
                         )}
                       </>

@@ -104,7 +104,17 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     checkIsAfterTgePeriod,
   ]);
 
+  const isOfferNoNeedSettle = useMemo(() => {
+    const noNeed = ["offchain_fungible_point", "point_token"].includes(
+      offer.marketplace.market_catagory,
+    );
+
+    return noNeed;
+  }, [offer.marketplace.market_catagory]);
+
   const isCanSettle = useMemo(() => {
+    if (isOfferNoNeedSettle) return false;
+
     if (!afterTGE) return false;
 
     const offerSettleType = offer?.origin_settle_mode;
@@ -118,11 +128,13 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
       !["canceled", "settled"].includes(offer.status) ||
       (offer.status === "canceled" && Number(offer.taken_item_amount) > 0)
     );
-  }, [offer, afterTGE]);
+  }, [offer, afterTGE, isOfferNoNeedSettle]);
 
   const isSettled = useMemo(() => {
+    if (isOfferNoNeedSettle) return false;
+
     return ["settled", "finished"].includes(offer.status);
-  }, [offer.status]);
+  }, [offer.status, isOfferNoNeedSettle]);
 
   const isCanceled = offer.status === "canceled";
 
@@ -131,6 +143,9 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   }, [offer.status]);
 
   const isCanAbort = useMemo(() => {
+    if (["offchain_fungible_point"].includes(offer.marketplace.market_catagory))
+      return false;
+
     if (offer.entry.direction === "buy") return false;
 
     if (["unknown", "settled"].includes(offer.status)) return false;
@@ -174,6 +189,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
 
     isCanSettle,
     isSettled,
+    isOfferNoNeedSettle,
     isFilled,
     isCanceled,
     isClosed,

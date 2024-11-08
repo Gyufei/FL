@@ -190,7 +190,7 @@ export default function BidDetail({
       <AccountVerifyDialog
         open={verifyDialogOpen}
         setOpen={setVerifyDialogOpen}
-        marketSymbol={offer.marketplace.market_symbol}
+        marketName={offer.marketplace.market_name}
         targetUrl={targetUrl || ""}
       />
     </>

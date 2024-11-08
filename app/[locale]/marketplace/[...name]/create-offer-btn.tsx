@@ -33,6 +33,8 @@ export default function CreateOfferBtn({
     onSuccess();
   }
 
+  const isJustSell = marketplace?.market_catagory === "offchain_fungible_point";
+
   return (
     <>
       <WithWalletConnectBtn
@@ -76,34 +78,42 @@ export default function CreateOfferBtn({
           className="flex flex-1 flex-col"
           onValueChange={setCurrentTab}
         >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger
-              className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:border-[#eee] data-[state=active]:text-red data-[state=inactive]:text-[#99a0af]"
-              value="sell"
-            >
-              {T("cap-Sell")} / {T("cap-Ask")}
-            </TabsTrigger>
-            <TabsTrigger
-              className="rounded-none data-[state=active]:border-b-2 data-[state=inactive]:border-b data-[state=active]:border-green data-[state=inactive]:border-[#eee] data-[state=active]:text-green data-[state=inactive]:text-[#99a0af]"
-              value="buy"
-            >
-              {T("cap-Buy")} / {T("cap-Bid")}
-            </TabsTrigger>
-          </TabsList>
+          {!isJustSell && (
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger
+                className="rounded-none border-b-2 data-[state=inactive]:border-b data-[state=active]:border-red data-[state=inactive]:border-[#eee] data-[state=active]:text-red data-[state=inactive]:text-[#99a0af]"
+                value="sell"
+              >
+                {T("cap-Sell")} / {T("cap-Ask")}
+              </TabsTrigger>
+              <TabsTrigger
+                className="rounded-none data-[state=active]:border-b-2 data-[state=inactive]:border-b data-[state=active]:border-green data-[state=inactive]:border-[#eee] data-[state=active]:text-green data-[state=inactive]:text-[#99a0af]"
+                value="buy"
+              >
+                {T("cap-Buy")} / {T("cap-Bid")}
+              </TabsTrigger>
+            </TabsList>
+          )}
           <TabsContent
             value="sell"
             className="flex flex-1 flex-col data-[state=inactive]:hidden"
             forceMount={true}
           >
-            <SellContent onSuccess={handleSuccess} marketplace={marketplace} />
+            <SellContent
+              className={isJustSell ? "mt-0" : ""}
+              onSuccess={handleSuccess}
+              marketplace={marketplace}
+            />
           </TabsContent>
-          <TabsContent
-            value="buy"
-            className="flex flex-1 flex-col data-[state=inactive]:hidden"
-            forceMount={true}
-          >
-            <BuyContent onSuccess={handleSuccess} marketplace={marketplace} />
-          </TabsContent>
+          {!isJustSell && (
+            <TabsContent
+              value="buy"
+              className="flex flex-1 flex-col data-[state=inactive]:hidden"
+              forceMount={true}
+            >
+              <BuyContent onSuccess={handleSuccess} marketplace={marketplace} />
+            </TabsContent>
+          )}
         </Tabs>
       </Drawer>
     </>

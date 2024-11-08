@@ -28,6 +28,10 @@ export function BuyContent({
 }) {
   const cot = useTranslations("drawer-CreateOffer");
 
+  const isOffChainFungiblePoint =
+    marketplace?.market_catagory === "offchain_fungible_point";
+  const isPointToken = marketplace?.market_catagory === "point_token";
+
   const {
     token: payToken,
     setToken: setPayToken,
@@ -132,11 +136,18 @@ export function BuyContent({
         />
 
         <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
-          <SettleModeSelect value={settleMode} onValueChange={setSettleMode} />
-          <CollateralRateInput
-            value={collateralRate}
-            onValueChange={setCollateralRate}
-          />
+          {!(isOffChainFungiblePoint || isPointToken) && (
+            <>
+              <SettleModeSelect
+                value={settleMode}
+                onValueChange={setSettleMode}
+              />
+              <CollateralRateInput
+                value={collateralRate}
+                onValueChange={setCollateralRate}
+              />
+            </>
+          )}
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
 
@@ -154,7 +165,7 @@ export function BuyContent({
       <AccountVerifyDialog
         open={verifyDialogOpen}
         setOpen={setVerifyDialogOpen}
-        marketSymbol={currentMarket.market_symbol}
+        marketName={currentMarket.market_name}
         targetUrl={targetUrl || ""}
       />
     </div>

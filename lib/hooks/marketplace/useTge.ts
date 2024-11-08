@@ -16,8 +16,7 @@ export default function useTge() {
     return false;
   }, []);
 
-  const checkIsAfterTge = useCallback((mpTge: string, period: number) => {
-    period;
+  const checkIsAfterTge = useCallback((mpTge: string) => {
     if (mpTge === "0") {
       return false;
     }
@@ -39,10 +38,9 @@ export default function useTge() {
     return now > tgeTimeNum + period;
   }, []);
 
-
   return {
     checkIsDuringTge,
     checkIsAfterTge,
-    checkIsAfterTgePeriod
+    checkIsAfterTgePeriod,
   };
 }

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
-import { PointTokenSelectDisplay } from "./point-token-display";
 
 import ArrowBetween from "./arrow-between";
 import { WithTip } from "../../../../../components/share/with-tip";
@@ -18,6 +17,7 @@ import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
+import { PointTokenDisplay } from "./point-token-display";
 
 export function BuyContent({
   marketplace,
@@ -32,14 +32,12 @@ export function BuyContent({
     token: payToken,
     setToken: setPayToken,
     point: receivePoint,
-    setPoint: setReceivePoint,
     tokenAmount: payTokenAmount,
     setTokenAmount: setPayTokenAmount,
     pointAmount: receivePointAmount,
     setPointAmount: setReceivePointAmount,
     tokenAmountValue: payTokenAmountValue,
     currentMarket,
-    points,
     pointPrice,
 
     isCreating,
@@ -130,13 +128,7 @@ export function BuyContent({
               1 {currentMarket.item_name} = ${formatNum(pointPrice)}
             </>
           }
-          tokenSelect={
-            <PointTokenSelectDisplay
-              points={points || []}
-              point={receivePoint}
-              setPoint={setReceivePoint}
-            />
-          }
+          tokenSelect={<PointTokenDisplay point={receivePoint} />}
         />
 
         <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">

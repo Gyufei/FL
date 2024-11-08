@@ -96,10 +96,7 @@ export default function MarketplaceContent({
 
   const isAfterTge = useMemo(() => {
     if (!marketplace) return false;
-    return checkIsAfterTge(
-      marketplace.tge,
-      Number(marketplace.settlement_period),
-    );
+    return checkIsAfterTge(marketplace.tge);
   }, [marketplace, checkIsAfterTge]);
 
   if (marketplace && offers && offerId && !anchorOffer) {

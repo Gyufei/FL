@@ -10,7 +10,6 @@ import { IToken } from "@/lib/types/token";
 import { WithTip } from "../../../../../components/share/with-tip";
 import ArrowBetween from "../../../marketplace/[...name]/create-offer/arrow-between";
 import { StableTokenSelectDisplay } from "../../../marketplace/[...name]/create-offer/stable-token-display";
-import { PointTokenSelectDisplay } from "../../../marketplace/[...name]/create-offer/point-token-display";
 import CollateralRateInput from "../../../marketplace/[...name]/create-offer/collateral-rate-input";
 import TaxForSubTrades from "../../../marketplace/[...name]/create-offer/tax-for-sub-trades";
 import OrderNoteAndFee from "../../../marketplace/[...name]/create-offer/order-note-and-fee";
@@ -24,6 +23,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import { PointTokenDisplay } from "@/app/[locale]/marketplace/[...name]/create-offer/point-token-display";
 
 export default function ListAskHoldingBtn({
   holding,
@@ -140,13 +140,7 @@ export default function ListAskHoldingBtn({
                 </>
               }
               isCanInput={false}
-              tokenSelect={
-                <PointTokenSelectDisplay
-                  points={[offerPointInfo]}
-                  point={offerPointInfo}
-                  setPoint={() => {}}
-                />
-              }
+              tokenSelect={<PointTokenDisplay point={offerPointInfo} />}
             />
 
             <ArrowBetween className="-my-4 self-center" />

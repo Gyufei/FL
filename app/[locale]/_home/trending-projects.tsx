@@ -20,7 +20,7 @@ export default function TrendingProject() {
   const markets = useMemo(() => {
     return (marketplaceData || [])
       .filter((m) => m.status !== "offline")
-      .filter((m) => !checkIsAfterTge(m.tge, Number(m.settlement_period)));
+      .filter((m) => !checkIsAfterTge(m.tge));
   }, [marketplaceData, checkIsAfterTge]);
 
   return (

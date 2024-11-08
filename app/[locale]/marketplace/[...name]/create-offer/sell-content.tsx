@@ -3,7 +3,6 @@ import { useEffect } from "react";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
-import { PointTokenSelectDisplay } from "./point-token-display";
 
 import ArrowBetween from "./arrow-between";
 import { WithTip } from "../../../../../components/share/with-tip";
@@ -19,6 +18,7 @@ import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
+import { PointTokenDisplay } from "./point-token-display";
 
 export function SellContent({
   marketplace,
@@ -33,14 +33,12 @@ export function SellContent({
     token: receiveToken,
     setToken: setReceiveToken,
     point: sellPoint,
-    setPoint: setSellPoint,
     tokenAmount: receiveTokenAmount,
     setTokenAmount: setReceiveAmount,
     pointAmount: sellPointAmount,
     setPointAmount: setSellPointAmount,
     tokenAmountValue: sellPrice,
     currentMarket,
-    points,
     pointPrice,
 
     isCreating,
@@ -80,7 +78,7 @@ export function SellContent({
     if (isShouldApprove) {
       await approveAction();
       return;
-    } 
+    }
 
     if (!isAccountVerify) {
       setVerifyDialogOpen(true);
@@ -106,13 +104,7 @@ export function SellContent({
               1 {currentMarket.item_name} = ${formatNum(pointPrice)}
             </>
           }
-          tokenSelect={
-            <PointTokenSelectDisplay
-              points={points || []}
-              point={sellPoint}
-              setPoint={setSellPoint}
-            />
-          }
+          tokenSelect={<PointTokenDisplay point={sellPoint} />}
         />
 
         <ArrowBetween className="-my-4 self-center" />

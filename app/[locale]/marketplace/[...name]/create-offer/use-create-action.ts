@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import NP from "number-precision";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
-import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { IPoint, IToken } from "@/lib/types/token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
@@ -15,7 +14,6 @@ export function useCreateAction(
   marketplace: IMarketplace,
   direction: "buy" | "sell",
 ) {
-  const { data: points } = useMarketPoints();
   const { data: stableTokens } = useStableToken(marketplace.chain);
   const { checkMinPrice } = useCreateOfferMinPrice();
 
@@ -25,7 +23,14 @@ export function useCreateAction(
     decimals: 9,
   } as IToken);
   const [tokenAmount, setTokenAmount] = useState("0");
-  const [point, setPoint] = useState<IPoint | null>(null);
+  const point = useMemo<IPoint | null>(
+    () => ({
+      logoURI: marketplace.pointLogo,
+      symbol: marketplace.item_name,
+      marketplace,
+    }),
+    [marketplace],
+  );
   const [pointAmount, setPointAmount] = useState("");
 
   const currentMarket = useMemo(() => {
@@ -44,18 +49,6 @@ export function useCreateAction(
 
     return 1;
   }, [currentMarket]);
-
-  useEffect(() => {
-    if (points) {
-      setPoint(
-        points.find(
-          (point) =>
-            point.marketplace.market_place_account ===
-            marketplace.market_place_account,
-        ) || null,
-      );
-    }
-  }, [points, marketplace]);
 
   useEffect(() => {
     if (stableTokens && stableTokens.length > 0) {
@@ -134,9 +127,7 @@ export function useCreateAction(
     token,
     setToken,
     point,
-    setPoint,
 
-    points,
     currentMarket,
     tokenAmount,
     setTokenAmount,

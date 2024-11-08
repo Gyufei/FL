@@ -220,7 +220,7 @@ function FoldPop() {
     return (marketplaceData || [])
       .filter((m) => m.status !== "offline")
       .filter((m) => {
-        return !checkIsAfterTge(m.tge, Number(m.settlement_period));
+        return !checkIsAfterTge(m.tge);
       })
       .map((marketplace) => {
         return {

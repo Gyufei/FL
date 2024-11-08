@@ -14,7 +14,7 @@ export function useMarketPoints() {
 
     const pts: Array<IPoint> = marketRes.data
       .filter((m) => m.status !== "offline")
-      .filter((m) => !checkIsAfterTge(m.tge, Number(m.settlement_period)))
+      .filter((m) => !checkIsAfterTge(m.tge))
       .map((market) => ({
         logoURI: market.pointLogo,
         symbol: market.item_name,
@@ -22,7 +22,7 @@ export function useMarketPoints() {
       }));
 
     return pts;
-  }, [marketRes.data]);
+  }, [marketRes.data, checkIsAfterTge]);
 
   return {
     ...marketRes,

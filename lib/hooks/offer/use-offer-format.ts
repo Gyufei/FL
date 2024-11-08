@@ -79,15 +79,8 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const isFilled = offer.taken_item_amount === offer.item_amount;
 
   const afterTGE = useMemo(() => {
-    return checkIsAfterTge(
-      offer.marketplace.tge,
-      Number(offer.marketplace.settlement_period),
-    );
-  }, [
-    offer.marketplace.tge,
-    offer.marketplace.settlement_period,
-    checkIsAfterTge,
-  ]);
+    return checkIsAfterTge(offer.marketplace.tge);
+  }, [offer.marketplace.tge, checkIsAfterTge]);
 
   const duringTGE = useMemo(() => {
     return checkIsDuringTge(

@@ -79,7 +79,7 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
         if (h.marketplace?.market_catagory === "point_token") {
           const getHoldingEntriesAmount = (holding: IHolding) => {
             return holding.entries.reduce(
-              (ac: number, cu) => NP.plus(ac + cu.item_amount),
+              (ac: number, cu) => NP.plus(ac, cu.item_amount),
               0,
             );
           };

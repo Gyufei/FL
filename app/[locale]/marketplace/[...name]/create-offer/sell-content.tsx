@@ -140,7 +140,9 @@ export function SellContent({
           }
           bottomText={
             <>
-              {T("txt-RequiredCollateral")} ${sellPrice}
+              {!(isOffChainFungiblePoint || isPointToken)
+                ? `${T("txt-RequiredCollateral")} ${sellPrice}`
+                : null}
             </>
           }
           tokenSelect={

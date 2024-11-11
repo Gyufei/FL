@@ -123,7 +123,7 @@
     "lb-PlatformTradingFee": "平台交易手续费",
     "btn-ConfirmMakerOrder": "确认订单",
     "cap-RegisterAccount": "注册账户",
-    "text-RegisterAccount": "请前往<symbol>market symbol</symbol>注册一个账户以进行交易",
+    "text-RegisterAccount": "检测到您目前连接的钱包尚未在<symbol>market symbol</symbol>注册，请前往<symbol>market symbol</symbol>注册以进行交易，交易后您将可以随时查询积分信息",
     "text-Go": "前往"
   },
   "drawer-OfferDetail": {

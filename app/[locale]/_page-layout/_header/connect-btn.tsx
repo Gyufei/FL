@@ -32,11 +32,12 @@ export default function ConnectBtn() {
     if (connected) {
       setShowSignIn(true);
     } else {
+      setShowSignIn(false);
       toConnectWallet();
     }
   }
 
-  if (isMobile) {
+  if (isMobile && !connected) {
     return (
       <button
         className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#d3d4d6] bg-white "

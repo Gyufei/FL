@@ -118,7 +118,31 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
       },
     );
 
-    return cateHoldings as Array<IHolding>;
+    const filteredCateHoldings = [
+      ...Array.from(
+        new Map(
+          cateHoldings
+            .filter((h: IHolding) =>
+              ["point_token", "offchain_fungible_point"].includes(
+                h.marketplace?.market_catagory,
+              ),
+            )
+            .map((item: IHolding) => [item.marketplace?.market_catagory, item]),
+        ).values(),
+      ),
+    ];
+
+    const finalHoldings = [
+      ...filteredCateHoldings,
+      ...cateHoldings.filter(
+        (h: IHolding) =>
+          !["point_token", "offchain_fungible_point"].includes(
+            h.marketplace?.market_catagory,
+          ),
+      ),
+    ];
+
+    return finalHoldings as Array<IHolding>;
   };
 
   const res = useSWR(

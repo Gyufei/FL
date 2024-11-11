@@ -138,7 +138,7 @@ export default function MarketplaceContent({
                 : "min(calc(100vh - 156px), 691px)",
               maxHeight: isMobile
                 ? "calc(100vh - 175px)"
-                : "min(calc(100vh - 156px), 691px)",
+                : "max(calc(100vh - 156px), 691px)",
               // "max(calc(100vh - 156px), 691px)",
             }}
           >

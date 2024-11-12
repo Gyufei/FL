@@ -6,6 +6,7 @@ import Drawer from "react-modern-drawer";
 
 import { useMemo, useState } from "react";
 import DrawerTitle from "@/components/share/drawer-title";
+import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { IMsg, useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { useTranslations } from "next-intl";
@@ -63,10 +64,17 @@ export default function MessageBtn() {
         className="overflow-y-auto rounded-b-2xl p-6 sm:rounded-l-2xl"
         customIdSuffix="msg-drawer"
       >
-        <DrawerTitle
-          title={t("cap-Notifications")}
-          onClose={() => setDrawerOpen(false)}
-        />
+        {isMobile ? (
+          <MobileDrawerTitle
+            title={t("cap-Notifications")}
+            onClose={() => setDrawerOpen(false)}
+          />
+        ) : (
+          <DrawerTitle
+            title={t("cap-Notifications")}
+            onClose={() => setDrawerOpen(false)}
+          />
+        )}
         {(data || []).map((i, idx) => (
           <MsgRow key={idx} msgDetail={i} />
         ))}
@@ -168,7 +176,7 @@ function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
                 width={16}
                 height={16}
                 alt="right"
-                className="ml-1 -rotate-45 cursor-pointer"
+                className="absolute right-8 ml-1 -rotate-45 cursor-pointer"
               />
             </div>
           </div>

@@ -126,8 +126,12 @@ export default function ListAskHoldingBtn({
           <div className="flex flex-1 flex-col">
             <ListInfo
               id={holding.holding_id}
-              inherit={String(holding?.offer?.entry.id) || ""}
-              origin={String(entryInfo?.root_entry_id) || ""}
+              inherit={
+                holding?.offer?.entry.id ? String(holding?.offer?.entry.id) : ""
+              }
+              origin={
+                entryInfo?.root_entry_id ? String(entryInfo?.root_entry_id) : ""
+              }
             />
 
             <InputPanel
@@ -172,7 +176,7 @@ export default function ListAskHoldingBtn({
               }
             />
 
-            <div className="mt-4 flex items-center justify-between space-x-3">
+            <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
               <SettleModeSelect
                 disabled
                 value={settleMode}

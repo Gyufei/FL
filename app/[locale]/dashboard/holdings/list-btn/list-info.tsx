@@ -11,8 +11,8 @@ export default function ListInfo({
 }) {
   const T = useTranslations("drawer-ListOrder");
   return (
-    <div className="mb-4 flex justify-between space-x-3">
-      <div className="flex-1 rounded-2xl bg-[#fafafa] p-4">
+    <div className="mb-4 flex flex-wrap justify-between space-x-3 space-y-4 sm:space-y-0">
+      <div className="break-all rounded-2xl bg-[#fafafa] p-4 sm:flex-1 sm:break-normal">
         <div className="text-xs leading-[18px] text-gray">
           {T("cap-StockId")}
         </div>

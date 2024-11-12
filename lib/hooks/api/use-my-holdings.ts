@@ -34,7 +34,7 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
           market.chain,
         );
         return {
-          market_symbol: offers,
+          [market.market_symbol]: offers,
         };
       }),
     );
@@ -112,7 +112,10 @@ export function useMyHoldings({ chain }: { chain?: ChainType }) {
 
           return {
             ...h,
-            offer: matchingOffer,
+            offer: {
+              ...matchingOffer,
+              marketplace: h.marketplace,
+            },
           };
         }
       },

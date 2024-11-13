@@ -8,6 +8,7 @@ import {
 import { cn } from "@/lib/utils/common";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { CTooltipArrow } from "@/components/share/c-tooltip-arrow";
+import { useState } from "react";
 
 export function WithTip({
   className,
@@ -18,10 +19,16 @@ export function WithTip({
   children?: React.ReactNode;
   align?: "center" | "end" | "start" | undefined;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
+      <Tooltip open={isOpen} onOpenChange={setIsOpen}>
+        <TooltipTrigger onClick={handleToggle}>
           <Image
             src="/icons/help.svg"
             width={16}

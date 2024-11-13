@@ -109,7 +109,7 @@ function SortOptions({
       <DropdownMenuPortal>
         <DropdownMenuSubContent
           sideOffset={6}
-          className="w-[158px] border-0 bg-white p-1"
+          className="w-[88px] border-0 bg-white p-1 sm:w-[158px]"
           style={{
             boxShadow: "0px 0px 10px 0px rgba(45, 46, 51, 0.1)",
           }}

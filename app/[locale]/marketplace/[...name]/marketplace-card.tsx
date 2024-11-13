@@ -21,6 +21,9 @@ import useTge from "@/lib/hooks/marketplace/useTge";
 import { useTranslations } from "next-intl";
 import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
 import { ChainType } from "@/lib/types/chain";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
+import Drawer from "react-modern-drawer";
 
 export default function MarketplaceCard({
   marketplace,
@@ -210,6 +213,8 @@ function FoldPop() {
 
   const router = useRouter();
 
+  const { isMobile } = useDeviceSize();
+
   const [popOpen, setPopOpen] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -248,22 +253,9 @@ function FoldPop() {
     router.push(`/marketplace/${id}`);
   }
 
-  return (
-    <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
-      <PopoverTrigger asChild>
-        <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
-          <Image
-            src={popOpen ? "/icons/fold.svg" : "/icons/fold-gray.svg"}
-            width={20}
-            height={20}
-            alt="fold"
-          />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="end"
-        className="flex w-[240px] flex-col items-stretch border-none bg-white p-2"
-      >
+  function renderContent() {
+    return (
+      <>
         <div className="relative mb-3 border-b border-[#fafafa] pb-3">
           <Image
             src={
@@ -290,6 +282,7 @@ function FoldPop() {
             key={cate.name}
             style={{
               marginTop: i === 0 ? 0 : 12,
+              boxShadow: isMobile ? "inset 0px -1px 0px 0px #EEEEEE" : "",
             }}
           >
             <Image
@@ -314,6 +307,58 @@ function FoldPop() {
             </div>
           </div>
         ))}
+      </>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <div>
+        <button
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white"
+          onClick={() => setPopOpen(!popOpen)}
+        >
+          <Image
+            src={popOpen ? "/icons/fold.svg" : "/icons/fold-gray.svg"}
+            width={20}
+            height={20}
+            alt="fold"
+          />
+        </button>
+        <Drawer
+          open={popOpen}
+          onClose={() => setPopOpen(!popOpen)}
+          direction={"bottom"}
+          size={"calc(100vh - 100px)"}
+          className="flex flex-col overflow-y-auto rounded-3xl p-4"
+        >
+          <MobileDrawerTitle
+            title={t("Switch")}
+            onClose={() => setPopOpen(!popOpen)}
+          />
+          {renderContent()}
+        </Drawer>
+      </div>
+    );
+  }
+
+  return (
+    <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
+      <PopoverTrigger asChild>
+        <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+          <Image
+            src={popOpen ? "/icons/fold.svg" : "/icons/fold-gray.svg"}
+            width={20}
+            height={20}
+            alt="fold"
+          />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        className="flex w-[240px] flex-col items-stretch border-none bg-white p-2"
+      >
+        {renderContent()}
       </PopoverContent>
     </Popover>
   );

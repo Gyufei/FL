@@ -9,11 +9,13 @@ import { useRouter } from "@/app/navigation";
 import PageFooter from "../_page-layout/_page-footer";
 import MenuCol from "./menu-col";
 import OverviewInfo from "./overview-info";
+import { usePathname } from "@/app/navigation";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { isMobile } = useDeviceSize();
   const pt = useTranslations("menu-Dashboard");
   const router = useRouter();
+  const pathname = usePathname();
 
   const mobilePanels: Array<IMobilePanel> = useMemo(
     () => [
@@ -45,8 +47,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     ],
     [pt],
   );
-
-  const [activePanel, setActivePanel] = useState(mobilePanels[0].name);
+  const [activePanel, setActivePanel] = useState(
+    pathname.split("/").pop() || mobilePanels[0].name,
+  );
 
   function checkIsActive(name: string) {
     if (!isMobile) return true;

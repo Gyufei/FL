@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 
 export default function MobileRouterMenu() {
   const [showMenu, setShowMenu] = useState(false);
@@ -107,6 +108,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           />
         </div>
       </div>
+      <PageFooter className="fixed bottom-0 left-0 w-screen" />
     </div>
   );
 }

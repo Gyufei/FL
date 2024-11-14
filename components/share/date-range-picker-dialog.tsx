@@ -38,13 +38,14 @@ export default function DateRangePickerDialog({
     <Dialog aria-describedby={undefined} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        className="w-full border-none bg-white p-4 sm:w-[838px]"
+        className="h-[80%] w-[80%] border-none bg-white p-4 sm:h-auto sm:w-[838px]"
         showClose={false}
       >
         <div>
           <Calendar
             initialFocus
             mode="range"
+            className=""
             defaultMonth={range?.from}
             selected={range}
             onSelect={setRange}

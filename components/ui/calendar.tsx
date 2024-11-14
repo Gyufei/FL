@@ -31,12 +31,12 @@ function Calendar({
         ),
         nav_button_previous: "absolute left-1 border-none",
         nav_button_next: "absolute right-4 border-none",
-        table: "w-full border-collapse space-y-1",
+        table: " border-collapse space-y-1",
         head_row: "flex",
         head_cell:
-          "text-muted-foreground rounded-md w-10 mr-[15px] font-normal text-[0.8rem]",
+          "text-muted-foreground rounded-md sm:w-10 w-7 mr-[5px] sm:mr-[15px] font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
-        cell: "h-10 w-10 mr-[15px] text-center text-sm p-0 relative rounded-full [&:has([aria-selected].day-range-end)]:rounded-full [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-full last:[&:has([aria-selected])]:rounded-full focus-within:relative focus-within:z-20",
+        cell: "h-10 sm:w-10 w-7 mr-[5px] sm:mr-[15px] text-center text-sm p-0 relative rounded-full [&:has([aria-selected].day-range-end)]:rounded-full [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-full last:[&:has([aria-selected])]:rounded-full focus-within:relative focus-within:z-20",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-10 w-10 p-0 font-normal aria-selected:opacity-100",

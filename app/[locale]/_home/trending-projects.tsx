@@ -66,7 +66,7 @@ function ItemCard({
 
   return (
     <div
-      className="relative min-w-[calc(95vw)] cursor-pointer rounded-3xl p-5 pt-3 sm:w-auto sm:min-w-fit"
+      className="relative w-full cursor-pointer rounded-3xl p-5 pt-3 sm:w-auto sm:min-w-fit"
       onClick={handleGo}
       style={{
         background:
@@ -118,36 +118,6 @@ function ItemCard({
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
                 {formatNum(marketplace!.total_vol || 0)}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <LabelText isLoading={isLoadingFlag}>{t("lb-24hChange")}</LabelText>
-            {isLoadingFlag ? (
-              <ValueSkeleton />
-            ) : (
-              <div
-                data-up={
-                  Number(marketplace!.change_rate_24h) === 0
-                    ? "zero"
-                    : Number(marketplace!.change_rate_24h) > 0
-                }
-                className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
-              >
-                {marketplace!.change_rate_24h}%
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col items-end">
-            <LabelText isLoading={isLoadingFlag}>{t("lb-24hVol")}</LabelText>
-            {isLoadingFlag ? (
-              <ValueSkeleton />
-            ) : (
-              <div className="flex items-center text-sm leading-5 text-black">
-                ${formatNum(marketplace!.vol_24h)}
               </div>
             )}
           </div>

@@ -257,3 +257,11 @@ export function truncateNumber(num: number | string, n: number) {
   const truncatedNum = Math.trunc(multipliedNum); // 截断小数部分，保留整数部分
   return truncatedNum;
 }
+
+export function bigIntOrNpMinus(a: NumberType, b: NumberType) {
+  if (NP.digitLength(a) && NP.digitLength(b)) {
+    return NP.minus(a, b);
+  } else {
+    return (BigInt(a) - BigInt(b)).toString();
+  }
+}

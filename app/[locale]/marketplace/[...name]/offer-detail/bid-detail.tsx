@@ -1,5 +1,9 @@
 import NP from "number-precision";
-import { formatNum, toNonExponential } from "@/lib/utils/number";
+import {
+  formatNum,
+  toNonExponential,
+  bigIntOrNpMinus,
+} from "@/lib/utils/number";
 import OfferInfo from "./offer-info";
 import { useEffect, useMemo, useState } from "react";
 import SliderCard from "./slider-card";
@@ -55,7 +59,7 @@ export default function BidDetail({
   const [sellPointAmount, setSellPointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
-    return NP.minus(offer.item_amount, offer.taken_item_amount);
+    return +bigIntOrNpMinus(offer.item_amount, offer.taken_item_amount);
   }, [offer]);
 
   const receiveTokenAmount = useMemo(() => {

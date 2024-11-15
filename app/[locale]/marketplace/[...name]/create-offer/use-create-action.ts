@@ -95,17 +95,18 @@ export function useCreateAction(
     settleMode: ISettleMode;
     taxForSub: string;
   }) {
+    console.log("🚀 ~ collateralRate, taxForSub:", collateralRate, taxForSub);
     try {
       const isPriceValid = checkMinPrice(
         pointPrice,
         Number(currentMarket.minimum_price),
       );
+      console.log("🚀 ~ isPriceValid:", isPriceValid);
 
       if (!pointAmount || !tokenAmount || !isPriceValid) {
         return;
       }
-
-      writeAction({
+      const params = {
         direction: direction,
         price: toNonExponential(
           NP.divide(NP.divide(tokenAmount, pointAmount), pointDecimalNum),
@@ -117,7 +118,9 @@ export function useCreateAction(
         collateral_ratio: collateralRate,
         settle_mode: settleMode,
         trade_tax_pct: taxForSub,
-      });
+      };
+      console.log("🚀 ~ writeAction: start", params);
+      writeAction(params);
     } catch (error) {
       console.error(error);
     }

@@ -5,7 +5,9 @@ import MarketplaceContent from "./marketplace-content";
 import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { useEffect } from "react";
 import { ChainType } from "@/lib/types/chain";
+import VConsole from "vconsole";
 
+new VConsole();
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
   const { data: markets, mutate } = useMarketplaces();

@@ -85,8 +85,8 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           <Image
             src={
               isMarketplaceActive
-                ? "/icons/marketplace.svg"
-                : "/icons/marketplace.svg"
+                ? "/icons/Marketplace.svg"
+                : "/icons/Marketplace.svg"
             }
             width={40}
             height={40}

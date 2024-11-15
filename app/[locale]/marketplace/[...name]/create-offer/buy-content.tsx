@@ -72,24 +72,15 @@ export function BuyContent({
     useAccountVerifyDialog(currentMarket);
 
   async function handleConfirmBtnClick() {
-    console.log(
-      "🚀 ~ handleConfirmBtnClick ~: isShouldApprove",
-      isShouldApprove,
-    );
     if (isShouldApprove) {
       await approveAction();
       return;
     }
-    console.log(
-      "🚀 ~ handleConfirmBtnClick ~: isAccountVerify",
-      isAccountVerify,
-    );
 
     if (!isAccountVerify) {
       setVerifyDialogOpen(true);
       return;
     }
-    console.log("🚀 ~ handleConfirmBtnClick ~: handleCreate start");
 
     handleCreate({
       collateralRate: String(Number(collateralRate || 100) * 100),

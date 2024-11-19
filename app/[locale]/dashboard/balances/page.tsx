@@ -87,7 +87,8 @@ export default function MyBalances() {
       if (!bData || !allTokens.length) return [];
       const itemData = bData?.map((t) => {
         const tokenInfo = allTokens.find(
-          (token) => token.address === t.token_address,
+          (token) =>
+            token.address.toLowerCase() === t.token_address.toLowerCase(),
         );
 
         if (!tokenInfo) return null;
@@ -219,6 +220,10 @@ export default function MyBalances() {
     makerRefundData,
     pointTokenData,
   ]);
+  console.log(
+    "🚀 ~ constdataArray:Array<IPanelProps>=useMemo ~ dataArray:",
+    dataArray,
+  );
 
   useEffect(() => {
     if (dataArray.length > 0) {

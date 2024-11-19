@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTokens } from "./use-tokens";
 import { ChainType } from "@/lib/types/chain";
+import { getOrderArr } from "@/lib/utils/common";
 
 export function useStableToken(chain: ChainType) {
   const { data: tokens, isLoading } = useTokens(chain);
@@ -17,7 +18,10 @@ export function useStableToken(chain: ChainType) {
 
     if (!tokens) return [];
 
-    return tokens.filter((t) => stableTokenList.includes(t.symbol));
+    return getOrderArr(
+      tokens.filter((t) => stableTokenList.includes(t.symbol)),
+      stableTokenList,
+    );
   }, [tokens, chain]);
 
   return {

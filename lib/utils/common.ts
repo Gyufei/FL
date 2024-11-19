@@ -44,3 +44,15 @@ export function generateRandomCode(length = 8) {
 
   return result;
 }
+
+export function getOrderArr(arr: any[], order: string[]) {
+  const sortArr = [...arr];
+  return sortArr.sort((a, b) => {
+    const indexA = order.indexOf(a.symbol);
+    const indexB = order.indexOf(b.symbol);
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+}

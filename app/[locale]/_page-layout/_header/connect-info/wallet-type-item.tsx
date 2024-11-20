@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { usePrivy, useConnectWallet } from "@privy-io/react-auth";
+import { useConnectWallet } from "@privy-io/react-auth";
 import { useSetActiveWallet } from "@privy-io/wagmi";
 
 import { truncateAddr } from "@/lib/utils/web3";
@@ -39,8 +39,6 @@ export default function WalletTypeItem({
   const { address, switchToTargetChain } = useChainWallet(
     walletType.selectedChain as any,
   );
-
-  console.log("🚀 ~ wallet:", address);
 
   const [popOpen, setPopOpen] = useState(false);
 

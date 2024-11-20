@@ -2,6 +2,7 @@ import { ISortDir, ISortField } from "@/components/share/sort-select";
 import { IOffer } from "@/lib/types/offer";
 import { sortBy } from "lodash";
 import { useMemo, useState } from "react";
+import NP from "number-precision";
 
 export function useSortOffer(offers: Array<any>) {
   const [sortField, setSortField] = useState<ISortField>("Created");
@@ -28,7 +29,22 @@ export function useSortOffer(offers: Array<any>) {
 
     if (sortField === "Price") {
       const priceFunc = (order: IOffer) => {
-        return order.price;
+        // return order.price;
+
+        const tokenPriceMap: any = {
+          USDC: 1,
+          USDT: 1,
+          BNB: 614,
+          ETH: 3125,
+          SOL: 237,
+        };
+        const amount = NP.times(order.item_amount, order.price);
+        const tokenTotalPrice = NP.times(
+          amount,
+          tokenPriceMap[order.payment_token] || 1,
+        );
+        const pointPerPrice = NP.divide(tokenTotalPrice, order.item_amount);
+        return pointPerPrice;
       };
       sortArr = sortBy(offers, [priceFunc]);
     }

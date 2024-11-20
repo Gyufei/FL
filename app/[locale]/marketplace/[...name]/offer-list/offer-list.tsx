@@ -83,7 +83,7 @@ export default function OfferList({
           className="ml-6 flex min-w-[100px] items-center justify-end sm:ml-2"
         >
           <SearchInput handleSearch={handleSearch} />
-          <div
+          {/* <div
             data-active={layout === "list"}
             className="ml-2 hidden h-8 w-8 min-w-8 cursor-pointer items-center justify-center rounded-full data-[active=true]:bg-white sm:flex"
           >
@@ -110,7 +110,7 @@ export default function OfferList({
               onClick={() => setLayout("grid")}
               alt="menu"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 

@@ -41,9 +41,9 @@ export default function MarketCharts({
           )}
         </div>
 
-        <div className="hidden cursor-pointer items-center justify-center rounded-full p-[6px] sm:flex">
+        {/* <div className="hidden cursor-pointer items-center justify-center rounded-full p-[6px] sm:flex">
           <Image src="/icons/extend.svg" width={20} height={20} alt="extend" />
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-5 h-[250px]">

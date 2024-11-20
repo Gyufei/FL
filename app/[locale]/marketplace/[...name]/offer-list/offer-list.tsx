@@ -8,7 +8,7 @@ import {
 import { SortSelect } from "@/components/share/sort-select";
 import SearchInput from "./search-input";
 import { OfferCard, OrderCardSkeleton } from "./offer-card";
-import HoverIcon from "@/components/share/hover-icon";
+// import HoverIcon from "@/components/share/hover-icon";
 import { IOffer } from "@/lib/types/offer";
 import { useSortOffer } from "@/lib/hooks/offer/use-sort-offer";
 import { range } from "lodash";
@@ -49,7 +49,7 @@ export default function OfferList({
     });
   }, [sortOffers, orderTypes, searchText]);
 
-  const [layout, setLayout] = useState<"grid" | "list">("grid");
+  // const [layout, setLayout] = useState<"grid" | "list">("grid");
 
   function handleTypeChange(t: Array<IOfferType>) {
     setOrderTypes(t);

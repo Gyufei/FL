@@ -44,16 +44,13 @@ export default function WalletTypeItem({
 
   const [popOpen, setPopOpen] = useState(false);
 
-  const { linkWallet } = usePrivy();
   const { connectWallet } = useConnectWallet({
-    onSuccess: (wallet) => {
-      console.log(
-        "🚀 ~ ChainConfigs[walletType.selectedChain].network:",
-        walletType.selectedChain,
-        ChainConfigs[walletType.selectedChain].network,
-      );
-      wallet.switchChain(ChainConfigs[walletType.selectedChain].network);
-      console.log("🚀 ~ wallet:", wallet);
+    onSuccess: (wallet: any) => {
+      if (wallet.type !== "solana") {
+        wallet.switchChain(ChainConfigs[walletType.selectedChain].network);
+      } else {
+        switchToTargetChain();
+      }
     },
   });
 
@@ -64,13 +61,9 @@ export default function WalletTypeItem({
 
   const handleAddAddress = async () => {
     connectWallet();
-    // const res = await linkWallet();
-    // console.log("🚀 ~ handleAddAddress ~ res:", res);
-    // await switchToTargetChain();
   };
 
   const handleConnect = (link: any) => {
-    console.log("🚀 ~ handleConnect ~ link:", link);
     if (link.linked) {
       if (link.type !== "solana") {
         link.switchChain(ChainConfigs[walletType.selectedChain].network);

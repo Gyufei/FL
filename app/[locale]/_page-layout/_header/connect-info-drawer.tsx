@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslations } from "next-intl";
 import Wallets from "./connect-info/wallets";
 import SocialMedia from "./connect-info/social-media";
+import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 
 export default function ConnectInfoDrawer({
   open,
@@ -14,14 +15,16 @@ export default function ConnectInfoDrawer({
   onClose: () => void;
 }) {
   const T = useTranslations("Header");
+  const { isMobile } = useDeviceSize();
+
   const [currentTab, setCurrentTab] = useState("wallets");
 
   return (
     <Drawer
       open={open}
       onClose={() => onClose()}
-      direction="right"
-      size={500}
+      direction={isMobile ? "bottom" : "right"}
+      size={isMobile ? "calc(100vh - 44px)" : 500}
       className="flex flex-col overflow-y-auto rounded-l-2xl p-6"
     >
       <DrawerTitle title={T("drawer-title-Info")} onClose={() => onClose()} />

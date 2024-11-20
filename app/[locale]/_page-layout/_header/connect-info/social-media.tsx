@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Twitter, Mail, Send, MessageSquare, Github } from "lucide-react";
+import { Mail, Send, MessageSquare, Github, X } from "lucide-react";
 import Image from "next/image";
 import { usePrivy } from "@privy-io/react-auth";
 
@@ -35,7 +35,7 @@ export default function Component() {
   } = usePrivy();
   const [links, setLinks] = useState<SocialLink[]>([
     {
-      icon: Twitter,
+      icon: X,
       name: "X (twitter)",
       type: "twitter",
       url: "https://x.com/",
@@ -127,13 +127,13 @@ export default function Component() {
   };
   const handleInputFocus = (index: number) => {
     const newLinks = [...links];
-    newLinks[index].focus = true; // 设置 focus 为 true
+    newLinks[index].focus = true;
     setLinks(newLinks);
   };
 
   const handleInputBlur = (index: number) => {
     const newLinks = [...links];
-    newLinks[index].focus = false; // 设置 focus 为 false
+    newLinks[index].focus = false;
     setLinks(newLinks);
   };
 
@@ -174,7 +174,7 @@ export default function Component() {
             <Image
               onClick={() => handleLinkChange(link)}
               src={
-                link.linked ? "/icons/disconnect.svg" : "/icons/rpc-link.svg"
+                link.linked ? "/icons/rpc-link.svg" : "/icons/disconnect.svg"
               }
               width={24}
               height={24}

@@ -3,8 +3,9 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { usePrivy } from "@privy-io/react-auth";
-// import { useSetActiveWallet } from "@privy-io/wagmi";
+import { usePrivy, useConnectWallet } from "@privy-io/react-auth";
+import { useSetActiveWallet } from "@privy-io/wagmi";
+
 import { truncateAddr } from "@/lib/utils/web3";
 import {
   Popover,
@@ -12,7 +13,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { ChainConfigs } from "@/lib/const/chain-configs";
-
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 interface AddressEntry {
   address: string;
   linked: boolean;
@@ -34,27 +35,52 @@ export default function WalletTypeItem({
   walletType: WalletType;
   updateSelectedChain: (walletType: string, chain: string) => void;
 }) {
-  // const { setActiveWallet } = useSetActiveWallet();
+  const { setActiveWallet } = useSetActiveWallet();
+  const { address, switchToTargetChain } = useChainWallet(
+    walletType.selectedChain as any,
+  );
+
+  console.log("🚀 ~ wallet:", address);
 
   const [popOpen, setPopOpen] = useState(false);
 
   const { linkWallet } = usePrivy();
+  const { connectWallet } = useConnectWallet({
+    onSuccess: (wallet) => {
+      console.log(
+        "🚀 ~ ChainConfigs[walletType.selectedChain].network:",
+        walletType.selectedChain,
+        ChainConfigs[walletType.selectedChain].network,
+      );
+      wallet.switchChain(ChainConfigs[walletType.selectedChain].network);
+      console.log("🚀 ~ wallet:", wallet);
+    },
+  });
 
   const handleChainSelect = (chain: string) => {
     updateSelectedChain(walletType.name, chain);
     setPopOpen(false); // 选择后关闭下拉菜单
   };
 
-  const handleAddAddress = () => {
-    linkWallet();
+  const handleAddAddress = async () => {
+    connectWallet();
+    // const res = await linkWallet();
+    // console.log("🚀 ~ handleAddAddress ~ res:", res);
+    // await switchToTargetChain();
   };
 
   const handleConnect = (link: any) => {
+    console.log("🚀 ~ handleConnect ~ link:", link);
     if (link.linked) {
-      link.disconnect();
+      if (link.type !== "solana") {
+        link.switchChain(ChainConfigs[walletType.selectedChain].network);
+      } else {
+        switchToTargetChain();
+      }
+
+      setActiveWallet(link).then(() => {});
     } else {
       link.loginOrLink();
-      // setActiveWallet(link);
     }
   };
 
@@ -141,9 +167,9 @@ export default function WalletTypeItem({
                   <Image
                     onClick={() => handleConnect(entry)}
                     src={
-                      entry.linked
-                        ? "/icons/disconnect.svg"
-                        : "/icons/rpc-link.svg"
+                      address === entry.address
+                        ? "/icons/rpc-link.svg"
+                        : "/icons/disconnect.svg"
                     }
                     width={24}
                     height={24}

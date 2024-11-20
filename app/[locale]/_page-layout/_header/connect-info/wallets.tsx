@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useWallets, useSolanaWallets, usePrivy } from "@privy-io/react-auth";
 import { useTranslations } from "next-intl";
 import WalletTypeItem from "./wallet-type-item";
-import { useAccount } from "wagmi";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { ChainConfigs } from "@/lib/const/chain-configs";
+
 export default function Wallet() {
   const t = useTranslations("Header");
 
@@ -11,15 +13,16 @@ export default function Wallet() {
   const { wallets } = useWallets();
   const { wallets: solanaWallets } = useSolanaWallets();
   const { logout } = usePrivy();
-
-  const { address } = useAccount();
+  const { disconnect } = useChainWallet();
 
   useEffect(() => {
     if (wallets.length > 0 || solanaWallets.length > 0) {
-      const chainWallets = wallets.filter((w: any) =>
-        walletTypes[0]?.selectedChain === "bnb"
-          ? w.type !== "ethereum"
-          : w.type === "ethereum",
+      const chainWallets = wallets.filter(
+        (w: any) =>
+          w.chainId ===
+          `eip155:${
+            ChainConfigs[walletTypes[0]?.selectedChain || "eth"].network
+          }`,
       );
       const newWalletTypes = [
         {
@@ -32,7 +35,6 @@ export default function Wallet() {
               ? [{}]
               : chainWallets.map((wallet) => ({
                   ...wallet,
-                  linked: address === wallet.address,
                 })),
           types: ["ethereum"],
         },
@@ -44,7 +46,6 @@ export default function Wallet() {
               ? [{}]
               : solanaWallets.map((wallet) => ({
                   ...wallet,
-                  linked: address === wallet.address,
                   walletClientType: wallet.walletClientType,
                 })),
           types: ["solana"],
@@ -54,14 +55,9 @@ export default function Wallet() {
         setWalletTypes(newWalletTypes);
       }
     }
-  }, [wallets, solanaWallets, walletTypes, address]);
+  }, [wallets, solanaWallets, walletTypes]);
 
   const handleChainSelect = (walletType: string, chain: string) => {
-    console.log(
-      "🚀 ~ handleChainSelect ~ walletType, chain:",
-      walletType,
-      chain,
-    );
     const newWalletTypes = walletTypes.map((wallet) => {
       if (wallet.name === walletType) {
         return {
@@ -76,12 +72,13 @@ export default function Wallet() {
 
   const handleLogout = () => {
     wallets.forEach((wallet) => wallet.disconnect());
+    disconnect();
     logout();
   };
 
   return (
     <>
-      <div className="font-video mx-auto w-full max-w-md space-y-4 p-4 text-[14px] ">
+      <div className="font-video mx-auto w-full max-w-md space-y-4 py-4 text-[14px] ">
         {walletTypes.map((walletType, walletIndex) => (
           <WalletTypeItem
             key={walletIndex}

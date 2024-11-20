@@ -15,7 +15,8 @@ import { usePrivyWallet } from "@/lib/hooks/web3/use-privy-wallet";
 import { useState } from "react";
 import { useLogout } from "@privy-io/react-auth";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
-// import ConnectInfoDrawer from "./connect-info-drawer";
+import ConnectInfoDrawer from "./connect-info-drawer";
+import { isProduction } from "@/lib/PathMap";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -26,7 +27,7 @@ export default function ConnectBtn() {
   // TODO: Connect To get all wallet info;
   const { shortAddr, connected, connecting } = useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
-  // const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   function handleConnect() {
     if (connected) {
@@ -69,8 +70,11 @@ export default function ConnectBtn() {
       <Dialog
         open={showSignIn}
         onOpenChange={(isOpen) => {
-          // setDrawerOpen(isOpen);
-          setShowSignIn(isOpen);
+          if (isProduction) {
+            setShowSignIn(isOpen);
+          } else {
+            setDrawerOpen(isOpen);
+          }
         }}
       >
         <VisuallyHidden asChild>
@@ -98,10 +102,10 @@ export default function ConnectBtn() {
           <SignOutBtn />
         </DialogContent>
       </Dialog>
-      {/* <ConnectInfoDrawer
+      <ConnectInfoDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-      /> */}
+      />
     </>
   );
 }

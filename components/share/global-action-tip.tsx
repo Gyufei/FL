@@ -40,7 +40,7 @@ export default function GlobalActionTip() {
     <>
       {message && type ? (
         <div
-          className="fixed bottom-6 left-1/2 z-[1000] mt-4 flex -translate-x-1/2 items-center gap-x-2 rounded-md border px-5 py-3"
+          className="fixed bottom-6 left-1/2 z-[1000] mt-4 flex w-11/12 -translate-x-1/2 items-center gap-x-2 rounded-md border px-5 py-3 sm:w-auto"
           style={{
             borderColor: colorMap[type].border,
             backgroundColor: colorMap[type].bg,

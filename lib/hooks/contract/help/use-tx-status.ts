@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function useTxStatus(
   txFn: (_args: any) => Promise<any>,
   successTip?: string,
-  // errorTip?: string,
+  errorTip?: string,
 ) {
   const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
@@ -42,10 +42,16 @@ export default function useTxStatus(
       console.error(e);
       setIsError(true);
       setError(e);
-      // setGlobalMessage({
-      //   type: "error",
-      //   message: e?.message || errorTip || "Fail: Some error occur",
-      // });
+      let eMsg = null;
+      if (e?.message.includes("An internal error was received")) {
+        eMsg = "Please check the balance in wallet.";
+      }
+      if (eMsg) {
+        setGlobalMessage({
+          type: "error",
+          message: errorTip || eMsg || "Fail: Some error occur",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

@@ -69,7 +69,7 @@ export default function WalletTypeItem({
         switchToTargetChain();
       }
 
-      setActiveWallet(link).then(() => {});
+      setActiveWallet(link);
     } else {
       link.loginOrLink();
     }

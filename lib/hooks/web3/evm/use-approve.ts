@@ -117,7 +117,8 @@ export function useApprove(
     setIsApproving(true);
 
     const isUSDT = tokenSymbol === "USDT";
-    const amountMax = 10000 * 10 ** 18;
+    const amountMax =
+      "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     const amount = isUSDT ? (allowAmount == 0 ? amountMax : "0") : amountMax;
 
     const callParams = {

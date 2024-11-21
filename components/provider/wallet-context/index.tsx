@@ -12,14 +12,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getEvmWagmiConfig, supportedChains } from "./wagmi-config";
 
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
-import { isProduction } from "@/lib/PathMap";
+// import { isProduction } from "@/lib/PathMap";
 
 // Setup queryClient
 const queryClient = new QueryClient();
 
-const PrivyAppId = isProduction
-  ? "cm1zw8i5x0467pxhlk18wzyat"
-  : "cm2snsdxe0695w0q7mis0tapu";
+// const PrivyAppId = isProduction
+//   ? "cm1zw8i5x0467pxhlk18wzyat"
+//   : "cm2snsdxe0695w0q7mis0tapu";
+
+const PrivyAppId = "cm2snsdxe0695w0q7mis0tapu";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled

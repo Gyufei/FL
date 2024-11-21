@@ -4,11 +4,13 @@ import { useDataApiTransactionRecord } from "@/lib/hooks/api/use-transactionReco
 import { useChainSendTx } from "@/lib/hooks/contract/help/use-chain-send-tx";
 import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
 import { dataApiFetcher } from "@/lib/fetcher";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useAbortAskOfferEth({ chain }: { chain: ChainType }) {
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
+  const { ApiCallGas } = useGasEth();
 
   const txAction = async (args: { offerId: string }) => {
     const { offerId } = args;
@@ -30,6 +32,7 @@ export function useAbortAskOfferEth({ chain }: { chain: ChainType }) {
 
     const callParams = {
       ...res.tx_data,
+      ...ApiCallGas,
     };
 
     const txHash = await sendTx({

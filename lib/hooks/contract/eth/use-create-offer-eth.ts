@@ -6,6 +6,7 @@ import { useDataApiTransactionRecord } from "../../api/use-transactionRecord";
 import useTxStatus from "../help/use-tx-status";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { ChainType } from "@/lib/types/chain";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useCreateOfferEth({
   marketSymbol,
@@ -17,6 +18,7 @@ export function useCreateOfferEth({
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
+  const { ApiCallGas } = useGasEth();
 
   const { address } = useChainWallet(chain);
 
@@ -51,6 +53,7 @@ export function useCreateOfferEth({
 
     const callParams = {
       ...res.tx_data,
+      ...ApiCallGas,
     };
 
     const txHash = await sendTx({

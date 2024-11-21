@@ -1,8 +1,11 @@
 import NP from "number-precision";
-import { useGasPrice, usePublicClient } from "wagmi";
+import { parseGwei } from "viem";
+// import { useGasPrice, usePublicClient } from "wagmi";
+import { usePublicClient } from "wagmi";
 
 export function useGasEth() {
-  const { data: gasPrice } = useGasPrice();
+  // const { data: gasPrice } = useGasPrice();
+  // console.log("gasPrice from api", gasPrice);
 
   const publicClient = usePublicClient();
 
@@ -11,16 +14,18 @@ export function useGasEth() {
       const estGas = await publicClient!.estimateContractGas(callParams as any);
 
       const gasLimit = NP.times(Number(estGas), 130 / 100).toFixed();
-      const maxPriorityFeePerGas = Math.ceil(NP.times(Number(gasPrice), 0.05));
+      // const maxPriorityFeePerGas = Math.ceil(NP.times(Number(gasPrice), 0.05));
 
       const gasParams: {
+        gasPrice?: bigint;
         maxFeePerGas?: bigint;
         gas?: bigint;
         maxPriorityFeePerGas?: bigint;
       } = {
-        maxFeePerGas: gasPrice,
+        gasPrice: parseGwei("1"),
         gas: BigInt(gasLimit),
-        maxPriorityFeePerGas: BigInt(maxPriorityFeePerGas),
+        // maxFeePerGas: parseGwei("1"),
+        // maxPriorityFeePerGas: BigInt(maxPriorityFeePerGas),
       };
 
       console.log(gasParams);
@@ -31,7 +36,12 @@ export function useGasEth() {
     }
   };
 
+  const ApiCallGas = {
+    gasPrice: parseGwei("1"),
+  };
+
   return {
+    ApiCallGas,
     getGasParams,
   };
 }

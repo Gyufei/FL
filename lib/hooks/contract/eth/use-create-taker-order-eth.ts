@@ -5,12 +5,14 @@ import { useDataApiTransactionRecord } from "../../api/use-transactionRecord";
 import useTxStatus from "../help/use-tx-status";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { ChainType } from "@/lib/types/chain";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
   const { address } = useChainWallet(chain);
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
+  const { ApiCallGas } = useGasEth();
 
   const txAction = async (args: { offerId: string; itemAmount: string }) => {
     const { offerId, itemAmount } = args;
@@ -37,6 +39,7 @@ export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
 
     const callParams = {
       ...res.tx_data,
+      ...ApiCallGas,
       from: address,
     };
 

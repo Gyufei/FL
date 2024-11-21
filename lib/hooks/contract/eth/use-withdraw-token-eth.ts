@@ -7,11 +7,13 @@ import { dataApiFetcher } from "@/lib/fetcher";
 import { DataApiPaths } from "@/lib/PathMap";
 import useTxStatus from "../help/use-tx-status";
 import { IBalanceType } from "../use-withdraw-token";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useWithdrawTokenEth({ chain }: { chain: ChainType }) {
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
+  const { ApiCallGas } = useGasEth();
 
   const { address } = useChainWallet(chain);
 
@@ -42,6 +44,7 @@ export function useWithdrawTokenEth({ chain }: { chain: ChainType }) {
 
     const callParams = {
       ...res.tx_data,
+      ...ApiCallGas,
     };
 
     const txHash = await sendTx({

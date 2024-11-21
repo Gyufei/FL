@@ -4,11 +4,13 @@ import { dataApiFetcher } from "@/lib/fetcher";
 import { useDataApiTransactionRecord } from "../../api/use-transactionRecord";
 import useTxStatus from "../help/use-tx-status";
 import { ChainType } from "@/lib/types/chain";
+import { useGasEth } from "../help/use-gas-eth";
 
 export function useListEth({ chain }: { chain: ChainType }) {
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
+  const { ApiCallGas } = useGasEth();
 
   const txAction = async (args: {
     price: string;
@@ -36,6 +38,7 @@ export function useListEth({ chain }: { chain: ChainType }) {
 
     const callParams = {
       ...res.tx_data,
+      ...ApiCallGas,
     };
 
     const txHash = await sendTx({

@@ -14,7 +14,6 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
 import { useState } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
-// import { isProduction } from "@/lib/PathMap";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils/common";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { usePrivyWallet } from "@/lib/hooks/web3/use-privy-wallet";
+import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
 import { ChainType } from "@/lib/types/chain";
 
 export default function WithWalletConnectBtn({
@@ -16,7 +16,7 @@ export default function WithWalletConnectBtn({
 }) {
   const { connected } = useChainWallet(chain);
 
-  const { toConnectWallet } = usePrivyWallet();
+  const { toConnectWallet } = useWeb3Wallet();
 
   function handleClick() {
     if (!connected) {

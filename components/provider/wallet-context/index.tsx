@@ -1,30 +1,24 @@
 "use client";
+import "@rainbow-me/rainbowkit/styles.css";
 
 import React, { ReactNode } from "react";
 import { State } from "wagmi";
-import { PrivyProvider } from "@privy-io/react-auth";
-import { WagmiProvider } from "@privy-io/wagmi";
-// @ts-expect-error ignore this error of declare
-import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider, cookieStorage, createStorage, http } from "wagmi";
+import { mainnet, bsc, bscTestnet, sepolia } from "wagmi/chains";
 import { useAtomValue } from "jotai";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import { getEvmWagmiConfig, supportedChains } from "./wagmi-config";
-
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
 import { isProduction } from "@/lib/PathMap";
 
 // Setup queryClient
 const queryClient = new QueryClient();
 
-const PrivyAppId = isProduction
-  ? "cm1zw8i5x0467pxhlk18wzyat"
-  : "cm2snsdxe0695w0q7mis0tapu";
-
-const solanaConnectors = toSolanaWalletConnectors({
-  // By default, shouldAutoConnect is enabled
-  shouldAutoConnect: false,
-});
+export const supportedChains = isProduction
+  ? ([mainnet, bsc] as const)
+  : // : ([mainnet, bsc, sepolia, testnet, bscTestnet] as const);
+    ([mainnet, bsc, sepolia, bscTestnet] as const);
 
 export default function Web3ModalProvider({
   children,
@@ -39,41 +33,35 @@ export default function Web3ModalProvider({
   const ethRpc = customRpcs.eth || globalRpcs.eth;
   const bnbRpc = customRpcs.bnb || globalRpcs.bnb;
 
-  const wagmiConfig = getEvmWagmiConfig({
-    ethRpc,
-    bnbRpc,
+  const transports = isProduction
+    ? {
+        [mainnet.id]: http(ethRpc),
+        [bsc.id]: http(bnbRpc),
+      }
+    : {
+        [mainnet.id]: http(ethRpc),
+        [bsc.id]: http(bnbRpc),
+        [bscTestnet.id]: http(bnbRpc),
+        [sepolia.id]: http(),
+        // [testnet.id]: http(),
+      };
+
+  const wagmiConfig = getDefaultConfig({
+    appName: "Tadle",
+    projectId: "8e507d09486ed2283f0d0922c0a02261",
+    chains: supportedChains,
+    ssr: true,
+    storage: createStorage({
+      storage: cookieStorage,
+    }),
+    transports: transports as any,
   });
 
   return (
-    <PrivyProvider
-      appId={PrivyAppId}
-      config={{
-        appearance: {
-          showWalletLoginFirst: true,
-          logo: "/icons/logo.svg",
-          walletChainType: "ethereum-and-solana",
-        },
-        loginMethods: [
-          "email",
-          "wallet",
-          "google",
-          "apple",
-          "github",
-          "discord",
-        ],
-        supportedChains: supportedChains as any,
-        externalWallets: {
-          solana: {
-            connectors: solanaConnectors,
-          },
-        },
-      }}
-    >
+    <WagmiProvider config={wagmiConfig} initialState={initialState}>
       <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig} initialState={initialState}>
-          {children}
-        </WagmiProvider>
+        <RainbowKitProvider>{children}</RainbowKitProvider>
       </QueryClientProvider>
-    </PrivyProvider>
+    </WagmiProvider>
   );
 }

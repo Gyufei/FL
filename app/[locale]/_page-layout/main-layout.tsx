@@ -17,6 +17,7 @@ export default function MainLayout({
     localStorage.removeItem("globalRpcs");
     localStorage.removeItem("customRpcs");
     localStorage.removeItem("access_token");
+    localStorage.removeItem("privy:token");
   }, []);
 
   NP.enableBoundaryChecking(false);

@@ -2,7 +2,6 @@ import { truncateAddr } from "@/lib/utils/web3";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useMemo } from "react";
 import { useAccount, useChainId, useDisconnect, useSwitchChain } from "wagmi";
-import { usePrivy } from "@privy-io/react-auth";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
@@ -17,8 +16,6 @@ const EmptyWallet = {
 };
 
 export function useChainWallet(chain?: ChainType) {
-  const { ready, authenticated } = usePrivy();
-
   const {
     address: evmAddress,
     isConnected: evmConnected,
@@ -115,10 +112,6 @@ export function useChainWallet(chain?: ChainType) {
     }),
     [solAddress, solConnected, solConnecting, solDisconnect],
   );
-
-  if (!ready || !authenticated) {
-    return EmptyWallet;
-  }
 
   if (!chain) {
     return evmWallet.address ? evmWallet : solanaWallet;

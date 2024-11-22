@@ -24,18 +24,6 @@ export default function SubscribeInput() {
 
   return (
     <div className="relative mt-5 flex w-full justify-center sm:w-fit">
-      {/* <iframe
-        src="https://embeds.beehiiv.com/c77f4105-291d-498e-b453-51890806d944?slim=true"
-        data-test-id="beehiiv-embed"
-        height="52"
-        frameBorder="0"
-        scrolling="no"
-        style={{
-          margin: 0,
-          borderRadius: "0px !important",
-          backgroundColor: "transparent",
-        }}
-      ></iframe> */}
       <Input
         className="h-10 w-full rounded-xl border border-[#d8d8d8] hover:border-green focus:border-green sm:h-12 sm:w-[480px]"
         type="email"

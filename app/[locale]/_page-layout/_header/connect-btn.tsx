@@ -21,9 +21,15 @@ export default function ConnectBtn() {
 
   const { isMobile } = useDeviceSize();
   const { toConnectWallet } = useWeb3Wallet();
-  // TODO: Connect To get all wallet info;
   const { shortAddr, connected, connecting } = useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
+
+  const { disconnect } = useChainWallet();
+
+  const handleDisconnect = () => {
+    setShowSignIn(false);
+    disconnect();
+  };
 
   function handleConnect() {
     if (connected) {
@@ -91,20 +97,15 @@ export default function ConnectBtn() {
           }}
           aria-describedby={undefined}
         >
-          <SignOutBtn />
+          <SignOutBtn logout={handleDisconnect} />
         </DialogContent>
       </Dialog>
     </>
   );
 }
 
-function SignOutBtn() {
+function SignOutBtn({ logout }: { logout: () => void }) {
   const t = useTranslations("Header");
-  const { disconnect } = useChainWallet();
-
-  const handleDisconnect = () => {
-    disconnect();
-  };
 
   return (
     <>
@@ -114,7 +115,7 @@ function SignOutBtn() {
       <div className="min-h-10 px-5 text-center text-sm leading-5 text-black"></div>
       <div className="mt-10 w-full">
         <button
-          onClick={handleDisconnect}
+          onClick={logout}
           className="flex h-12 w-full items-center justify-center rounded-2xl border border-red bg-white text-red hover:bg-red hover:text-white"
         >
           {t("btn-SignOut")}

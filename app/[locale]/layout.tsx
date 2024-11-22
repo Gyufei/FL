@@ -2,7 +2,7 @@ import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
@@ -10,6 +10,7 @@ import MainLayout from "@/app/[locale]/_page-layout/main-layout";
 import SolanaWalletProviders from "@/components/provider/solana-wallets";
 import Web3ModalProvider from "@/components/provider/wallet-context";
 import "react-modern-drawer/dist/index.css";
+import { isProduction } from "@/lib/PathMap";
 
 export const metadata = {
   title: {
@@ -79,6 +80,7 @@ export default async function RootLayout({
           </Web3ModalProvider>
         </JotaiProvider>
       </body>
+      <GoogleAnalytics gaId={isProduction ? "G-5LQD7PLMH8" : "G-S508W8QNEG"} />
     </html>
   );
 }

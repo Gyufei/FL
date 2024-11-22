@@ -29,6 +29,7 @@ export function useRemoveReferralEth({ chain }: { chain: ChainType }) {
       ...callParams,
       ...gasParams,
     });
+
     await recordTransaction({
       txHash,
       note: "",

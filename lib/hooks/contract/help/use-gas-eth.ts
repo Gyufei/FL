@@ -8,7 +8,9 @@ export function useGasEth() {
 
   const publicClient = usePublicClient();
 
-  const getGasParams = async (callParams: Record<string, any>) => {
+  const getGasParams = async (
+    callParams: Record<string, any>,
+  ): Promise<any> => {
     try {
       const estGas = await publicClient!.estimateContractGas(callParams as any);
 

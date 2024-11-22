@@ -35,18 +35,18 @@ export default function ConnectBtn() {
     }
   }
 
-  if (isMobile && !connected) {
-    return (
-      <button
-        className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#d3d4d6] bg-white "
-        onClick={handleConnect}
-      >
-        <Image src="/icons/wallet.svg" width={20} height={20} alt="wallet" />
-      </button>
-    );
-  }
-
   if (!connected) {
+    if (isMobile) {
+      return (
+        <button
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#d3d4d6] bg-white "
+          onClick={() => handleConnect()}
+        >
+          <Image src="/icons/wallet.svg" width={20} height={20} alt="wallet" />
+        </button>
+      );
+    }
+
     return (
       <>
         <button
@@ -67,11 +67,7 @@ export default function ConnectBtn() {
       <Dialog
         open={showSignIn}
         onOpenChange={(isOpen) => {
-          // if (isProduction) {
           setShowSignIn(isOpen);
-          // } else {
-          //   setDrawerOpen(isOpen);
-          // }
         }}
       >
         <VisuallyHidden asChild>

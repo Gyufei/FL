@@ -17,7 +17,8 @@ export function usePairApprove(
 
     if (token?.symbol === "ETH" || token?.symbol === "BNB") return true;
 
-    if (isMarketPointToken && type === "sell") return true;
+    if (isMarketPointToken && ["sell", "sellToBid"].includes(type || ""))
+      return true;
 
     return false;
   }, [token, isMarketPointToken, type]);

@@ -21,7 +21,14 @@ export function useWsMsgSub(chain: ChainType) {
   const res = useSWRSubscription<Array<IMsg>>(
     chain,
     (_key: string, { next }: { next: any }) => {
-      const socket = io(`${wssEndPoint}/${chain}`);
+      // const socket = io(`${wssEndPoint}/${chain}`);
+      const socket = {
+        on: (_event: string, _cb: any) => {},
+        off: (_event: string, _cb: any) => {},
+        mock: () => {
+          return wssEndPoint || io;
+        },
+      };
 
       function onConnect() {
         console.log("connected");
@@ -49,7 +56,7 @@ export function useWsMsgSub(chain: ChainType) {
       socket.on("connect", onConnect);
       socket.on("disconnect", onDisconnect);
       socket.on("message", onMsgEvent);
-      socket.on("error", (event) => next(event.error));
+      socket.on("error", (event: any) => next(event.error));
 
       return () => {
         socket.off("connect", onConnect);

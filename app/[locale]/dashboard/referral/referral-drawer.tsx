@@ -168,7 +168,7 @@ export function ReferralDrawer({
                 disabled={extraRate === 0}
                 data-error={rateError}
                 className="h-[50px] w-full rounded-xl border border-[#d8d8d8] px-4 py-[14px] focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5] data-[error=true]:!border-red"
-                placeholder="1%"
+                placeholder="0%"
                 value={friendRate || ""}
                 onUserInput={handleFRateInput}
               />

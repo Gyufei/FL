@@ -114,7 +114,12 @@ export default function OfferList({
         </div>
       </div>
 
-      <div className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto xl:grid-cols-2 2xl:grid-cols-3">
+      <div
+        className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto xl:grid-cols-2 2xl:grid-cols-3"
+        style={{
+          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+        }}
+      >
         {isLoading
           ? range(6).map((i) => <OrderCardSkeleton key={i} />)
           : (filterOrders || []).map((offer) => (

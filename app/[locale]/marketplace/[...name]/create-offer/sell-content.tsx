@@ -95,7 +95,7 @@ export function SellContent({
     handleCreate({
       collateralRate: String(Number(collateralRate || 100) * 100),
       settleMode,
-      taxForSub: String(Number(taxForSub || 1) * 100),
+      taxForSub: String(Number(taxForSub || 0) * 100),
     });
   }
 

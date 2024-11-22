@@ -36,7 +36,7 @@ export default function TaxForSubTrades({
         <NumericalInput
           disabled={disabled}
           className="h-[50px] w-full rounded-xl border border-[#d8d8d8] px-4 py-[14px] focus:border-focus disabled:cursor-not-allowed disabled:bg-[#F0F1F5]"
-          placeholder="1%"
+          placeholder="0%"
           value={value}
           onUserInput={handleInput}
         />

@@ -36,12 +36,13 @@ export default function RollInBtn() {
   }
 
   async function getRollinState() {
-    const res = await getRollingData();
-    const rollinAt = res.rollinAt * 1000;
+    // const res = await getRollingData();
+    // const rollinAt = res.rollinAt * 1000;
 
-    const pastTime = differenceInMinutes(new Date(), new Date(rollinAt));
-    const hasSign = pastTime < 60;
-    setIsSign(hasSign);
+    // const pastTime = differenceInMinutes(new Date(), new Date(rollinAt));
+    // const hasSign = pastTime < 60;
+    // setIsSign(hasSign);
+    setIsSign(false);
   }
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export default function RollInBtn() {
       onClick={handleSign}
       className="pointer-events-none cursor-not-allowed"
     >
-      <div className="flex h-7 w-[74px]  cursor-pointer items-center justify-center rounded-[52px] border border-[#d3d4d6] text-sm leading-5 text-[#d3d4d6] hover:border-[#FFA95B] hover:text-[#FFA95B]">
+      <div className="flex h-7 w-[74px] cursor-pointer items-center justify-center rounded-[52px] border border-[#d3d4d6] text-sm leading-5 text-[#d3d4d6] hover:border-[#FFA95B] hover:text-[#FFA95B]">
         {T("btn-Rollin")}
       </div>
     </WithWalletConnectBtn>

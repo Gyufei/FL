@@ -6,6 +6,7 @@ import {
   useConfig,
   useWaitForTransactionReceipt,
   useWriteContract,
+  useChainId,
 } from "wagmi";
 
 import { USDTAbi } from "@/lib/abi/eth/USDT";
@@ -29,6 +30,7 @@ export function useApprove(
   const CT = useTranslations("Common");
 
   const { address: walletAccount } = useAccount();
+  const chainId = useChainId();
 
   const [allowance, setAllowance] = useState<number | null>(null);
   const [isAllowanceLoading, setIsAllowanceLoading] = useState(false);
@@ -58,6 +60,8 @@ export function useApprove(
   const readAllowance = useCallback(async () => {
     if (!shouldWithApprove) return;
 
+    if (chainId !== chainConf.network) return;
+
     setIsAllowanceLoading(true);
 
     const res = await readContract(config, {
@@ -69,7 +73,15 @@ export function useApprove(
 
     setIsAllowanceLoading(false);
     setAllowance(Number(res) / 10 ** 18);
-  }, [shouldWithApprove, walletAccount, config, spender, tokenAddr]);
+  }, [
+    shouldWithApprove,
+    walletAccount,
+    config,
+    spender,
+    tokenAddr,
+    chainId,
+    chainConf.network,
+  ]);
 
   useEffect(() => {
     readAllowance();

@@ -1,7 +1,7 @@
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useRollin } from "@/lib/hooks/contract/use-rollin";
-import { differenceInMinutes } from "date-fns";
+// import { differenceInMinutes } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
@@ -18,7 +18,7 @@ export default function RollInBtn() {
     isLoading,
     isSuccess,
     write: rollinAction,
-    getRollingData,
+    // getRollingData,
   } = useRollin(ChainType.SOLANA);
 
   const [isSign, setIsSign] = useState(false);

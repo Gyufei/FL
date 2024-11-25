@@ -220,10 +220,6 @@ export default function MyBalances() {
     makerRefundData,
     pointTokenData,
   ]);
-  console.log(
-    "🚀 ~ constdataArray:Array<IPanelProps>=useMemo ~ dataArray:",
-    dataArray,
-  );
 
   useEffect(() => {
     if (dataArray.length > 0) {

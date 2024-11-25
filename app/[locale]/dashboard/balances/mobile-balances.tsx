@@ -1,5 +1,5 @@
 import React from "react";
-import { TokenGetCard } from "./token-get-card"; // Assuming this component is reusable
+import { TokenGetCard } from "./token-get-card";
 import { useTranslations } from "next-intl";
 import { formatNum } from "@/lib/utils/number";
 import Image from "next/image";

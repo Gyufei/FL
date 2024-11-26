@@ -38,7 +38,7 @@ export default function ConnectBtn() {
   const handleDisconnect = () => {
     setShowSignIn(false);
     // 测试报错 'sentry test'
-    Sentry.captureMessage("sentry test");
+    Sentry.captureException(new Error("sentry test2"));
     disconnect();
   };
 

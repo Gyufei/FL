@@ -53,8 +53,11 @@ module.exports = withNextIntl(
 
       // Suppresses source map uploading logs during build
       silent: true,
-      org: "fei-qy",
+      org: "derek-za",
       project: "tadle",
+      // An auth token is required for uploading source maps.
+      authToken:
+        "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",
     },
     {
       // For all available options, see:

@@ -12,8 +12,9 @@ import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import * as Sentry from "@sentry/nextjs";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -21,13 +22,23 @@ export default function ConnectBtn() {
 
   const { isMobile } = useDeviceSize();
   const { toConnectWallet } = useWeb3Wallet();
-  const { shortAddr, connected, connecting } = useChainWallet();
+  const { address, shortAddr, connected, connecting } = useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
 
   const { disconnect } = useChainWallet();
 
+  useEffect(() => {
+    if (address) {
+      Sentry.setUser({
+        userAddress: address,
+      });
+    }
+  }, [address]);
+
   const handleDisconnect = () => {
     setShowSignIn(false);
+    // 测试报错 'sentry test'
+    Sentry.captureMessage("sentry test");
     disconnect();
   };
 

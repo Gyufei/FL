@@ -53,11 +53,10 @@ module.exports = withNextIntl(
 
       // Suppresses source map uploading logs during build
       silent: true,
-      org: process.env.SENTRY_ORG || "tadle",
+      org: "tadle",
       project: "tadle",
       // An auth token is required for uploading source maps.
       authToken:
-        process.env.SENTRY_USER_AUTH_TOKEN ||
         "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",
     },
     {

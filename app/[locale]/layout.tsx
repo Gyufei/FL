@@ -2,7 +2,10 @@ import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import {
+  GoogleAnalytics,
+  // GoogleTagManager
+} from "@next/third-parties/google";
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
@@ -81,9 +84,9 @@ export default async function RootLayout({
         </JotaiProvider>
       </body>
       <GoogleAnalytics gaId={isProduction ? "G-FN03SV9KCF" : "G-1PQBDX806E"} />
-      <GoogleTagManager
+      {/* <GoogleTagManager
         gtmId={isProduction ? "GTM-TPXPN9FF" : "GTM-MRM39HBK"}
-      />
+      /> */}
     </html>
   );
 }

@@ -22,6 +22,7 @@
     "cap-Notifications": "Notifications",
     "btn-Connect": "Connect",
     "btn-ConnectWallet": "Connect Wallet",
+    "btn-ConnectWalletConfirmWarning": "Please select your wallet and confirm the connection in the extension",
     "btn-SignIn": "Sign in",
     "btn-SignOut": "Sign out",
     "cap-YouAreSignedOut": "Sign in",

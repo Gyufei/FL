@@ -22,6 +22,7 @@
     "cap-Notifications": "通知",
     "btn-Connect": "连接",
     "btn-ConnectWallet": "连接钱包",
+    "btn-ConnectWalletConfirmWarning": "请选择钱包后在扩展中确认连接",
     "btn-SignIn": "登录",
     "btn-SignOut": "退出",
     "cap-YouAreSignedOut": "登录",

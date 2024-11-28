@@ -13,7 +13,7 @@ export default function GlobalActionTip() {
     if (globalMessage) {
       const d = setTimeout(() => {
         setGlobalMessage(null);
-      }, 5000);
+      }, globalMessage?.duration || 5000);
       return () => clearTimeout(d);
     }
   }, [globalMessage, setGlobalMessage]);
@@ -44,6 +44,8 @@ export default function GlobalActionTip() {
           style={{
             borderColor: colorMap[type].border,
             backgroundColor: colorMap[type].bg,
+            zIndex: globalMessage?.zIndex || 1000,
+            bottom: globalMessage?.bottom || "24px",
           }}
         >
           {((type) => {
@@ -79,9 +81,7 @@ export default function GlobalActionTip() {
                 return null;
             }
           })(type)}
-          <div className="text-title-color max-w-[440px] overflow-hidden text-ellipsis whitespace-nowrap leading-6">
-            {message}
-          </div>
+          <div className="text-title-color leading-6">{message}</div>
         </div>
       ) : null}
     </>

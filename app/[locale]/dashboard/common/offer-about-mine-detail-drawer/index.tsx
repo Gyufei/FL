@@ -59,14 +59,14 @@ export default function OfferAboutMineDetailDrawer({
           title={
             isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")
           }
-          onClose={() => setDrawerOpen(false)}
+          onClose={handleDrawerClose}
         />
       ) : (
         <DrawerTitle
           title={
             isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")
           }
-          onClose={() => setDrawerOpen(false)}
+          onClose={handleDrawerClose}
           tag={ct(settleMode)}
           tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
         />

@@ -56,7 +56,7 @@ export default function CreateOfferBtn({
       </WithWalletConnectBtn>
       <Drawer
         open={drawerOpen}
-        onClose={() => handleCloseDrawer()}
+        onClose={handleCloseDrawer}
         direction={isMobile ? "bottom" : "right"}
         size={isMobile ? "calc(100vh - 44px)" : 500}
         className="flex flex-col overflow-y-auto rounded-none p-4 sm:rounded-l-2xl sm:p-6"
@@ -69,7 +69,7 @@ export default function CreateOfferBtn({
         ) : (
           <DrawerTitle
             title={T("cap-CreateMakerOffer")}
-            onClose={() => handleCloseDrawer()}
+            onClose={handleCloseDrawer}
           />
         )}
 

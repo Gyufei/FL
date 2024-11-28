@@ -76,12 +76,12 @@ export default function OfferDetailDrawer({
         {isMobile ? (
           <MobileDrawerTitle
             title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
-            onClose={() => setDrawerOpen(false)}
+            onClose={handleDrawerClose}
           />
         ) : (
           <DrawerTitle
             title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
-            onClose={() => setDrawerOpen(false)}
+            onClose={handleDrawerClose}
             tag={ct(settleMode)}
             tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
           />

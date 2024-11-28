@@ -118,12 +118,12 @@ export function ReferralDrawer({
       {isMobile ? (
         <MobileDrawerTitle
           title={rt("th-CommissionRates")}
-          onClose={() => setDrawerOpen(false)}
+          onClose={handleDrawerClose}
         />
       ) : (
         <DrawerTitle
           title={rt("th-CommissionRates")}
-          onClose={() => setDrawerOpen(false)}
+          onClose={handleDrawerClose}
         />
       )}
 

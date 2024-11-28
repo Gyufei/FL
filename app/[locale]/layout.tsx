@@ -80,7 +80,7 @@ export default async function RootLayout({
           </Web3ModalProvider>
         </JotaiProvider>
       </body>
-      <GoogleAnalytics gaId={isProduction ? "G-5LQD7PLMH8" : "G-S508W8QNEG"} />
+      <GoogleAnalytics gaId={isProduction ? "G-YJVM2V3MKP" : "G-1PQBDX806E"} />
     </html>
   );
 }

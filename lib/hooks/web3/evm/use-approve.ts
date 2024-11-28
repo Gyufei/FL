@@ -1,13 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { erc20Abi } from "viem";
 import { readContract } from "@wagmi/core";
-import {
-  useAccount,
-  useConfig,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-  useChainId,
-} from "wagmi";
+import { useAccount, useConfig, useWriteContract, useChainId } from "wagmi";
 
 import { USDTAbi } from "@/lib/abi/eth/USDT";
 import { useTranslations } from "next-intl";
@@ -36,14 +30,7 @@ export function useApprove(
   const [isAllowanceLoading, setIsAllowanceLoading] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
-  const { data: hash, writeContract } = useWriteContract();
-
-  const { data: txReceipt, error: txError } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: !!hash,
-    },
-  });
+  const { writeContract } = useWriteContract();
 
   const shouldWithApprove = useMemo(() => {
     if (skipApprove) return false;
@@ -87,17 +74,6 @@ export function useApprove(
     readAllowance();
   }, [readAllowance]);
 
-  useEffect(() => {
-    if (txReceipt) {
-      setIsApproving(false);
-      readAllowance();
-    }
-
-    if (txError) {
-      setIsApproving(false);
-    }
-  }, [txReceipt, txError, readAllowance]);
-
   const isShouldApprove = useMemo(() => {
     if (!shouldWithApprove) return false;
 
@@ -123,23 +99,39 @@ export function useApprove(
   }, [shouldWithApprove, isShouldApprove, CT, tokenSymbol, isApproving]);
 
   async function approveAction() {
-    if (!shouldWithApprove) return () => {};
+    try {
+      if (!shouldWithApprove) return () => {};
 
-    setIsApproving(true);
+      setIsApproving(true);
 
-    const isUSDT = tokenSymbol === "USDT";
-    const amountMax =
-      "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-    const amount = isUSDT ? (allowAmount == 0 ? amountMax : "0") : amountMax;
+      const isUSDT = tokenSymbol === "USDT";
+      const amountMax =
+        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+      const amount = isUSDT ? (allowAmount == 0 ? amountMax : "0") : amountMax;
 
-    const callParams = {
-      abi: isUSDT ? USDTAbi : erc20Abi,
-      address: tokenAddr as any,
-      functionName: "approve",
-      args: [spender, amount],
-    };
+      const callParams = {
+        abi: isUSDT ? USDTAbi : erc20Abi,
+        address: tokenAddr as any,
+        functionName: "approve",
+        args: [spender, amount],
+      };
 
-    writeContract(callParams as any);
+      writeContract(
+        {
+          ...(callParams as any),
+        },
+        {
+          onSuccess: () => {
+            readAllowance();
+          },
+          onError: (error) => {
+            console.error("approveAction error: =>", error);
+          },
+        },
+      );
+    } catch (e) {
+      console.error("approveAction error: =>", e);
+    }
   }
 
   return {

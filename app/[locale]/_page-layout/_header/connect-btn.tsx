@@ -15,6 +15,7 @@ import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
 import { useEffect, useState } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import * as Sentry from "@sentry/nextjs";
+import { reportEvent } from "@/lib/utils/analytics";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -32,6 +33,7 @@ export default function ConnectBtn() {
       Sentry.setUser({
         userAddress: address,
       });
+      reportEvent("connectWalletSuccess", { value: address });
     }
   }, [address]);
 

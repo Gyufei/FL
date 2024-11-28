@@ -4,6 +4,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useSetAtom } from "jotai";
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useTranslations } from "next-intl";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export function useWeb3Wallet() {
   const { openConnectModal: connectWallet, connectModalOpen } =
@@ -22,6 +23,7 @@ export function useWeb3Wallet() {
           duration: 3000000,
           zIndex: 999999999999,
         });
+        reportEvent("connectWalletFail", { value: new Date() });
       }, 60000);
     } else {
       setGlobalMessage(null);
@@ -32,6 +34,7 @@ export function useWeb3Wallet() {
   const toConnectWallet = useCallback(
     (chain?: ChainType) => {
       console.log(chain);
+      reportEvent("buttonClicked", { value: "toConnectWallet" });
       if (connectWallet) {
         connectWallet();
       }

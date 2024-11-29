@@ -31,7 +31,7 @@ export default function ConnectBtn() {
   useEffect(() => {
     if (address) {
       Sentry.setUser({
-        userAddress: address,
+        username: address,
       });
       reportEvent("connectWalletSuccess", { value: address.slice(-8) });
     }

@@ -7,9 +7,9 @@ import { useEffect } from "react";
 import { ChainType } from "@/lib/types/chain";
 import VConsole from "vconsole";
 import { isProduction } from "@/lib/PathMap";
-if (!isProduction) {
-  new VConsole();
-}
+// if (!isProduction) {
+new VConsole();
+// }
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
   const { data: markets, mutate } = useMarketplaces();

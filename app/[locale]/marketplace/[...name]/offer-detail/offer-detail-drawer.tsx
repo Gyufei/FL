@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export default function OfferDetailDrawer({
   offers,
@@ -49,7 +50,10 @@ export default function OfferDetailDrawer({
   }, [offer, offerId, connected]);
 
   function handleSuccess(ord: Record<string, any>) {
-    setDrawerOpen(false);
+    reportEvent((isAsk ? "askOffer" : "bidOffer") + "Success", {
+      value: isAsk ? "buy" : "sell",
+    });
+    handleDrawerClose();
     setResultOrder(ord);
     setOrderFillDialog(true);
     onSuccess();

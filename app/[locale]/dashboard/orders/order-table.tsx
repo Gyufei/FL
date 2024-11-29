@@ -27,6 +27,7 @@ import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export function OrderTable({
   chain,
@@ -251,7 +252,12 @@ export function OrderTable({
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
         offer={selectedOffer}
-        onSuccess={refreshMyOffers}
+        onSuccess={() => {
+          if (selectOfferId) {
+            reportEvent("offerDetailActionSuccess", { value: +selectOfferId });
+          }
+          refreshMyOffers();
+        }}
       />
     </>
   );

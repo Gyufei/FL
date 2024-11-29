@@ -20,6 +20,7 @@ import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-veri
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
 import { cn } from "@/lib/utils/common";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export function SellContent({
   marketplace,
@@ -83,6 +84,7 @@ export function SellContent({
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
+      reportEvent("buttonClicked", { value: "approve" });
       await approveAction();
       return;
     }
@@ -97,6 +99,7 @@ export function SellContent({
       settleMode,
       taxForSub: String(Number(taxForSub || 0) * 100),
     });
+    reportEvent("buttonClicked", { value: "confirmOffer-sell" });
   }
 
   return (

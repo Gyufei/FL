@@ -33,7 +33,7 @@ export default function ConnectBtn() {
       Sentry.setUser({
         userAddress: address,
       });
-      reportEvent("connectWalletSuccess", { value: address });
+      reportEvent("connectWalletSuccess", { value: address.slice(-8) });
     }
   }, [address]);
 

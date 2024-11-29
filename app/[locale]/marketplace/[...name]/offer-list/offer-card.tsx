@@ -20,6 +20,7 @@ import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export function OfferCard({ offer }: { offer: IOffer }) {
   const t = useTranslations("cd-Order");
@@ -48,6 +49,9 @@ export function OfferCard({ offer }: { offer: IOffer }) {
 
   function handleShowOffer(oId: string) {
     setAnchorValue(oId);
+    reportEvent("buttonClicked", {
+      value: orderType === "sell" ? "buy-offer" : "sell-offer",
+    });
   }
 
   return (

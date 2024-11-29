@@ -17,6 +17,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import NP from "number-precision";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export default function MyAskDetail({
   holdingId,
@@ -93,6 +94,7 @@ export default function MyAskDetail({
 
   function handleClose() {
     if (isClosing) return;
+    reportEvent("buttonClicked", { value: "closeOffer" });
     closeAction?.({
       offerId: offer.offer_id,
     });
@@ -100,6 +102,7 @@ export default function MyAskDetail({
 
   function handleAbort() {
     if (isAborting) return;
+    reportEvent("buttonClicked", { value: "abortOffer" });
     abortAction?.({
       offerId: offer.offer_id,
     });
@@ -107,6 +110,7 @@ export default function MyAskDetail({
 
   function handleRelist() {
     if (isRelisting) return;
+    reportEvent("buttonClicked", { value: "relistOffer" });
     relistAction?.({
       price: offer.price,
       totalItemAmount: offer.item_amount,

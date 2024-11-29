@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SellContent } from "./create-offer/sell-content";
@@ -11,6 +11,7 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export default function CreateOfferBtn({
   marketplace,
@@ -23,14 +24,18 @@ export default function CreateOfferBtn({
   const { isMobile } = useDeviceSize();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
-
+  const hasReportedSuccessRef = useRef(false);
   function handleCloseDrawer() {
     setDrawerOpen(false);
   }
 
   function handleSuccess() {
-    handleCloseDrawer();
-    onSuccess();
+    if (!hasReportedSuccessRef.current) {
+      hasReportedSuccessRef.current = true;
+      reportEvent("createOfferSuccess", { value: currentTab });
+      handleCloseDrawer();
+      onSuccess();
+    }
   }
 
   const isJustSell = marketplace?.market_catagory === "offchain_fungible_point";
@@ -40,7 +45,11 @@ export default function CreateOfferBtn({
       <WithWalletConnectBtn
         chain={marketplace.chain}
         className="w-full"
-        onClick={() => setDrawerOpen(true)}
+        onClick={() => {
+          setDrawerOpen(true);
+          hasReportedSuccessRef.current = false;
+          reportEvent("buttonClicked", { value: "createOffer" });
+        }}
       >
         <button className="hidden h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black sm:flex">
           {T("btn-CreateOffer")}

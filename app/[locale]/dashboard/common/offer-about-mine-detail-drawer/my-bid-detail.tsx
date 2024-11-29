@@ -20,6 +20,7 @@ import { SwapItemPanel } from "./swap-item-panel";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import NP from "number-precision";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export default function MyBidDetail({
   holdingId,
@@ -92,16 +93,19 @@ export default function MyBidDetail({
 
   function handleBidClose() {
     if (isBidClosing) return;
+    reportEvent("buttonClicked", { value: "closeBidOffer" });
     bidCloseAction?.(undefined);
   }
 
   function handleClose() {
     if (isClosing) return;
+    reportEvent("buttonClicked", { value: "closeOffer" });
     closeAction?.({ offerId: offer.offer_id });
   }
 
   function handleRelist() {
     if (isRelisting) return;
+    reportEvent("buttonClicked", { value: "relistOffer" });
     relistAction?.(undefined);
   }
 

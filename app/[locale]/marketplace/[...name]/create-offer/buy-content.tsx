@@ -18,6 +18,7 @@ import { usePairApprove } from "./use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export function BuyContent({
   marketplace,
@@ -73,6 +74,7 @@ export function BuyContent({
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
+      reportEvent("buttonClicked", { value: "approve" });
       await approveAction();
       return;
     }
@@ -87,6 +89,7 @@ export function BuyContent({
       settleMode,
       taxForSub: String(Number(taxForSub || 0) * 100),
     });
+    reportEvent("buttonClicked", { value: "confirmOffer-buy" });
   }
 
   useEffect(() => {

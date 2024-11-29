@@ -7,7 +7,8 @@ import { useTranslations } from "next-intl";
 import { useWithdrawToken } from "@/lib/hooks/contract/use-withdraw-token";
 import { useWithdrawItem } from "@/lib/hooks/contract/use-withdraw-item";
 import { IToken } from "@/lib/types/token";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export function TokenGetCard({
   tokenInfo,
@@ -21,6 +22,7 @@ export function TokenGetCard({
   onSuccess: () => void;
 }) {
   const mbt = useTranslations("page-MyBalance");
+  const hasReportedSuccessRef = useRef(false);
 
   const {
     isLoading: isWdTokenLoading,
@@ -38,6 +40,8 @@ export function TokenGetCard({
 
   function handleWithdrawToken() {
     if (isWdTokenLoading) return;
+    hasReportedSuccessRef.current = false;
+    reportEvent("buttonClicked", { value: "withdrawToken" });
     wdTokenAction({
       token_symbol: tokenInfo?.symbol,
       token_balance_type: withdrawerName,
@@ -46,6 +50,8 @@ export function TokenGetCard({
 
   function handleWithdrawItem() {
     if (isWdItemLoading) return;
+    hasReportedSuccessRef.current = false;
+    reportEvent("buttonClicked", { value: "withdrawItem" });
     wdItemAction({
       marketplaceStr: (tokenInfo as any).market.market_place_account,
       tokenAddress: tokenInfo?.address,
@@ -54,7 +60,13 @@ export function TokenGetCard({
 
   useEffect(() => {
     if (isWdTokenSuccess || isWdItemSuccess) {
-      onSuccess();
+      if (!hasReportedSuccessRef.current) {
+        hasReportedSuccessRef.current = true;
+        reportEvent("withdrawSuccess", {
+          value: isWdTokenSuccess ? "token" : "item",
+        });
+        onSuccess();
+      }
     }
   }, [isWdTokenSuccess, isWdItemSuccess, onSuccess]);
 

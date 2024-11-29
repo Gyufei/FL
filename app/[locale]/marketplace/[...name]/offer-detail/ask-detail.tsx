@@ -20,6 +20,7 @@ import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
+import { reportEvent } from "@/lib/utils/analytics";
 
 export default function AskDetail({
   offer,
@@ -115,6 +116,7 @@ export default function AskDetail({
 
   async function handleConfirmTakerOrder() {
     if (isShouldApprove) {
+      reportEvent("buttonClicked", { value: "approve" });
       await approveAction();
       return;
     }
@@ -126,6 +128,7 @@ export default function AskDetail({
 
     if (isDepositLoading || !receivePointAmount) return;
 
+    reportEvent("buttonClicked", { value: "confirmOffer-ask" });
     await writeAction({
       offerId: offer.offer_id,
       itemAmount: toNonExponential(receivePointAmount),

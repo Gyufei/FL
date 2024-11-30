@@ -254,7 +254,9 @@ export function OrderTable({
         offer={selectedOffer}
         onSuccess={() => {
           if (selectOfferId) {
-            reportEvent("offerDetailActionSuccess", { value: +selectOfferId });
+            reportEvent("offerDetailActionSuccess", {
+              value: selectOfferId.slice(-8),
+            });
           }
           refreshMyOffers();
         }}

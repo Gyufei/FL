@@ -48,7 +48,7 @@ export default function CreateOfferBtn({
         onClick={() => {
           setDrawerOpen(true);
           hasReportedSuccessRef.current = false;
-          reportEvent("buttonClicked", { value: "createOffer" });
+          reportEvent("click", { value: "createOffer" });
         }}
       >
         <button className="hidden h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black sm:flex">

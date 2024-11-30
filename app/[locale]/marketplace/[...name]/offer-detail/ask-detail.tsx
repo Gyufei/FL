@@ -116,7 +116,7 @@ export default function AskDetail({
 
   async function handleConfirmTakerOrder() {
     if (isShouldApprove) {
-      reportEvent("buttonClicked", { value: "approve" });
+      reportEvent("click", { value: "approve" });
       await approveAction();
       return;
     }
@@ -128,7 +128,7 @@ export default function AskDetail({
 
     if (isDepositLoading || !receivePointAmount) return;
 
-    reportEvent("buttonClicked", { value: "confirmOffer-ask" });
+    reportEvent("click", { value: "confirmOffer-ask" });
     await writeAction({
       offerId: offer.offer_id,
       itemAmount: toNonExponential(receivePointAmount),

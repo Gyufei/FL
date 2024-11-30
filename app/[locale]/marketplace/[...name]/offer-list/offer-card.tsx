@@ -49,7 +49,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
 
   function handleShowOffer(oId: string) {
     setAnchorValue(oId);
-    reportEvent("buttonClicked", {
+    reportEvent("click", {
       value: orderType === "sell" ? "buy-offer" : "sell-offer",
     });
   }

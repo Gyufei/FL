@@ -94,7 +94,7 @@ export default function MyAskDetail({
 
   function handleClose() {
     if (isClosing) return;
-    reportEvent("buttonClicked", { value: "closeOffer" });
+    reportEvent("click", { value: "closeOffer" });
     closeAction?.({
       offerId: offer.offer_id,
     });
@@ -102,7 +102,7 @@ export default function MyAskDetail({
 
   function handleAbort() {
     if (isAborting) return;
-    reportEvent("buttonClicked", { value: "abortOffer" });
+    reportEvent("click", { value: "abortOffer" });
     abortAction?.({
       offerId: offer.offer_id,
     });
@@ -110,7 +110,7 @@ export default function MyAskDetail({
 
   function handleRelist() {
     if (isRelisting) return;
-    reportEvent("buttonClicked", { value: "relistOffer" });
+    reportEvent("click", { value: "relistOffer" });
     relistAction?.({
       price: offer.price,
       totalItemAmount: offer.item_amount,

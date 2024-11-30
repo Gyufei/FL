@@ -74,7 +74,7 @@ export function BuyContent({
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
-      reportEvent("buttonClicked", { value: "approve" });
+      reportEvent("click", { value: "approve" });
       await approveAction();
       return;
     }
@@ -89,7 +89,7 @@ export function BuyContent({
       settleMode,
       taxForSub: String(Number(taxForSub || 0) * 100),
     });
-    reportEvent("buttonClicked", { value: "confirmOffer-buy" });
+    reportEvent("click", { value: "confirmOffer-buy" });
   }
 
   useEffect(() => {

@@ -41,7 +41,7 @@ export function TokenGetCard({
   function handleWithdrawToken() {
     if (isWdTokenLoading) return;
     hasReportedSuccessRef.current = false;
-    reportEvent("buttonClicked", { value: "withdrawToken" });
+    reportEvent("click", { value: "withdrawToken" });
     wdTokenAction({
       token_symbol: tokenInfo?.symbol,
       token_balance_type: withdrawerName,
@@ -51,7 +51,7 @@ export function TokenGetCard({
   function handleWithdrawItem() {
     if (isWdItemLoading) return;
     hasReportedSuccessRef.current = false;
-    reportEvent("buttonClicked", { value: "withdrawItem" });
+    reportEvent("click", { value: "withdrawItem" });
     wdItemAction({
       marketplaceStr: (tokenInfo as any).market.market_place_account,
       tokenAddress: tokenInfo?.address,

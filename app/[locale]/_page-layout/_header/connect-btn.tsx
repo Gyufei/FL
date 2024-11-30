@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import * as Sentry from "@sentry/nextjs";
 import { reportEvent } from "@/lib/utils/analytics";
@@ -25,21 +25,23 @@ export default function ConnectBtn() {
   const { toConnectWallet } = useWeb3Wallet();
   const { address, shortAddr, connected, connecting } = useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
+  const prevAddressRef = useRef<string | null>(null);
 
   const { disconnect } = useChainWallet();
 
   useEffect(() => {
-    if (address) {
+    if (address && address !== prevAddressRef.current) {
       Sentry.setUser({
         username: address,
       });
       reportEvent("connectWalletSuccess", { value: address.slice(-8) });
+      prevAddressRef.current = address;
     }
   }, [address]);
 
   const handleDisconnect = () => {
     setShowSignIn(false);
-    Sentry.captureException(new Error("sentry test2"));
+    reportEvent("disconnectWalletSuccess", { value: address.slice(-8) });
     disconnect();
   };
 

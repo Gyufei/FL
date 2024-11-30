@@ -93,19 +93,19 @@ export default function MyBidDetail({
 
   function handleBidClose() {
     if (isBidClosing) return;
-    reportEvent("buttonClicked", { value: "closeBidOffer" });
+    reportEvent("click", { value: "closeBidOffer" });
     bidCloseAction?.(undefined);
   }
 
   function handleClose() {
     if (isClosing) return;
-    reportEvent("buttonClicked", { value: "closeOffer" });
+    reportEvent("click", { value: "closeOffer" });
     closeAction?.({ offerId: offer.offer_id });
   }
 
   function handleRelist() {
     if (isRelisting) return;
-    reportEvent("buttonClicked", { value: "relistOffer" });
+    reportEvent("click", { value: "relistOffer" });
     relistAction?.(undefined);
   }
 

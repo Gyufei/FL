@@ -103,7 +103,7 @@ export default function BidDetail({
 
   async function handleDeposit() {
     if (isShouldApprove) {
-      reportEvent("buttonClicked", { value: "approve" });
+      reportEvent("click", { value: "approve" });
       await approveAction();
       return;
     }
@@ -114,7 +114,7 @@ export default function BidDetail({
     }
 
     if (isDepositLoading || !sellPointAmount) return;
-    reportEvent("buttonClicked", { value: "confirmOffer-bid" });
+    reportEvent("click", { value: "confirmOffer-bid" });
     await writeAction({
       offerId: offer.offer_id,
       itemAmount: toNonExponential(sellPointAmount),

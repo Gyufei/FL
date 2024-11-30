@@ -1,6 +1,7 @@
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { reportError } from "@/lib/utils/analytics";
 
 export default function useTxStatus(
   txFn: (_args: any) => Promise<any>,
@@ -42,6 +43,7 @@ export default function useTxStatus(
       console.error(e);
       setIsError(true);
       setError(e);
+      reportError(e);
       let eMsg = null;
       if (e?.message.includes("An internal error was received")) {
         eMsg = "Please check the balance in wallet.";

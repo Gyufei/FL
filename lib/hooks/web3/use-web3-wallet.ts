@@ -23,8 +23,8 @@ export function useWeb3Wallet() {
           duration: 3000000,
           zIndex: 999999999999,
         });
-        reportEvent("connectWalletFail", { value: new Date() });
-      }, 60000);
+        reportEvent("connectWalletFail", { value: "longTime" });
+      }, 90000);
     } else {
       setGlobalMessage(null);
     }
@@ -34,7 +34,7 @@ export function useWeb3Wallet() {
   const toConnectWallet = useCallback(
     (chain?: ChainType) => {
       console.log(chain);
-      reportEvent("buttonClicked", { value: "toConnectWallet" });
+      reportEvent("click", { value: "toConnectWallet" });
       if (connectWallet) {
         connectWallet();
       }

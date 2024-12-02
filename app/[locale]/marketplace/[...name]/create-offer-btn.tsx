@@ -25,6 +25,7 @@ export default function CreateOfferBtn({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
   const hasReportedSuccessRef = useRef(false);
+
   function handleCloseDrawer() {
     setDrawerOpen(false);
   }

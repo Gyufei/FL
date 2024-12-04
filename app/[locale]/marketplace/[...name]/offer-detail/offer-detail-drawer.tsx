@@ -53,7 +53,6 @@ export default function OfferDetailDrawer({
     reportEvent((isAsk ? "askOffer" : "bidOffer") + "Success", {
       value: offer?.entry?.id,
     });
-    handleDrawerClose();
     setResultOrder(ord);
     setOrderFillDialog(true);
     onSuccess();

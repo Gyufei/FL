@@ -24,7 +24,7 @@ export default function FooterSetting() {
 
   const [popOpen, setPopOpen] = useState(false);
 
-  const [checkedChain, setCheckedChain] = useState<ChainType>(ChainType.ETH);
+  const [checkedChain, setCheckedChain] = useState<ChainType>(ChainType.BNB);
 
   const [inputRpc, setInputRpc] = useState("");
   const [inputRpcActive, setInputRpcActive] = useState(false);

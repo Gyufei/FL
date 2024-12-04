@@ -145,12 +145,7 @@ export default function PointMarket({ className }: { className?: string }) {
         const pointDecimalNum = ProjectDecimalsMap[item.market_symbol]
           ? 10 ** ProjectDecimalsMap[item.market_symbol]
           : 1;
-        const lastPrice = item.last_price || 0;
-        const lastPrice24hAgo = item.last_price_24h_ago || 0;
-        const lastPricePercent =
-          Number(lastPrice24hAgo) === 0
-            ? 0
-            : NP.divide(NP.minus(lastPrice, lastPrice24hAgo), lastPrice24hAgo);
+
         return isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[120px]" />
         ) : (
@@ -158,24 +153,29 @@ export default function PointMarket({ className }: { className?: string }) {
             <PriceText
               num={Number(NP.times(item.last_price, pointDecimalNum))}
             />
-            <PercentText num={lastPricePercent * 100} />
+            <PercentText num={Number(item.change_rate_24h)} />
           </div>
         );
       },
     },
     {
       label: t("th-Vol24h"),
-      renderCell: (item: IMarketplace) =>
-        isLoadingFlag ? (
+      renderCell: (item: IMarketplace) => {
+        const vol24h = item.vol_24h || 0;
+        const TotalVol = item.total_vol || 0;
+        const lastPricePercent =
+          Number(TotalVol) === 0 ? 0 : NP.divide(vol24h, TotalVol);
+        return isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
           </div>
         ) : (
           <div className="flex flex-col items-end">
             <PriceText num={Number(item.vol_24h)} />
-            <PercentText num={Number(item.change_rate_24h)} />
+            <PercentText num={lastPricePercent * 100} />
           </div>
-        ),
+        );
+      },
     },
     {
       label: t("th-TotalVol"),

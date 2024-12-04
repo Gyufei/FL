@@ -51,7 +51,7 @@ export default function OfferDetailDrawer({
 
   function handleSuccess(ord: Record<string, any>) {
     reportEvent((isAsk ? "askOffer" : "bidOffer") + "Success", {
-      value: isAsk ? "buy" : "sell",
+      value: offer?.entry?.id,
     });
     handleDrawerClose();
     setResultOrder(ord);
@@ -99,8 +99,14 @@ export default function OfferDetailDrawer({
       {resultOrder && (
         <OfferFillDialog
           open={orderFillDialog}
-          onOpenChange={(val) => setOrderFillDialog(val)}
+          onOpenChange={(val) => {
+            setOrderFillDialog(val);
+            if (!val) {
+              handleDrawerClose();
+            }
+          }}
           res={resultOrder}
+          chain={offer?.marketplace.chain}
         />
       )}
     </>

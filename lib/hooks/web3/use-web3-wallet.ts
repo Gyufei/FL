@@ -34,7 +34,7 @@ export function useWeb3Wallet() {
   const toConnectWallet = useCallback(
     (chain?: ChainType) => {
       console.log(chain);
-      reportEvent("click", { value: "toConnectWallet" });
+      // reportEvent("click", { value: "toConnectWallet" });
       if (connectWallet) {
         connectWallet();
       }

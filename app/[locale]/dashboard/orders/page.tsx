@@ -9,13 +9,17 @@ import { FilterSelect, IRole, IStatus, Roles, Status } from "./filter-select";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
 import { NetworkSelect } from "@/components/share/network-select";
+import { useSearchParams } from "next/navigation";
 
 export default function MyOrders() {
   const T = useTranslations("page-MyOrders");
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
   const [status, setStatus] = useState<IStatus>(Status[0]);
   const [role, setRole] = useState<IRole>(Roles[0]);
-  const [selectedChain, setSelectedChain] = useState<ChainType>(ChainType.ETH);
+  const chain: any = useSearchParams().get("chain");
+  const [selectedChain, setSelectedChain] = useState<ChainType>(
+    chain || ChainType.BNB,
+  );
 
   function handleTypeChange(t: Array<IOfferType>) {
     setOrderTypes(t);

@@ -1,7 +1,7 @@
 import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { reportError } from "@/lib/utils/analytics";
+import { reportError, reportEvent } from "@/lib/utils/analytics";
 
 export default function useTxStatus(
   txFn: (_args: any) => Promise<any>,
@@ -43,9 +43,20 @@ export default function useTxStatus(
       console.error(e);
       setIsError(true);
       setError(e);
+      if (e?.message.includes("User rejected the request")) {
+        reportEvent("walletReject", { value: e?.name });
+        return;
+      }
+      if (e?.message.includes("An internal error was received")) {
+        reportEvent("walletError", { value: e?.name });
+        return;
+      }
       reportError(e);
       let eMsg = null;
-      if (e?.message.includes("An internal error was received")) {
+      if (
+        e?.message.includes("An internal error was received") ||
+        e?.message.includes("Execution reverted for an unknown reason")
+      ) {
         eMsg = "Please check the balance in wallet.";
       }
       if (eMsg) {

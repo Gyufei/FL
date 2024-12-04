@@ -167,6 +167,10 @@ export function dealDecimals(num: NumberType, decimals: NumberType) {
     const integer = isDealPoint[0];
     const point = isDealPoint[1];
 
+    if (integer > 0) {
+      return notExpNum.substring(0, integer.length + decimals + 1);
+    }
+
     if (point?.length) {
       const match = point.match(/^0+/);
       const firstNotZero = (match ? match[0].length : 0) + 1;

@@ -34,7 +34,13 @@ export default function ConnectBtn() {
       Sentry.setUser({
         username: address,
       });
-      reportEvent("connectWalletSuccess", { value: address.slice(-8) });
+      Sentry.setTag(
+        "client_px",
+        document?.documentElement?.clientWidth +
+          "*" +
+          document?.documentElement?.clientHeight,
+      );
+      // reportEvent("connectWalletSuccess", { value: address.slice(-8) });
       prevAddressRef.current = address;
     }
   }, [address]);

@@ -9,10 +9,14 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
 import { NetworkSelect } from "@/components/share/network-select";
+import { useSearchParams } from "next/navigation";
 
 export default function MyHoldings() {
   const T = useTranslations("page-MyStocks");
-  const [selectedChain, setSelectedChain] = useState<ChainType>(ChainType.ETH);
+  const chain: any = useSearchParams().get("chain");
+  const [selectedChain, setSelectedChain] = useState<ChainType>(
+    chain || ChainType.BNB,
+  );
 
   const { data: holdings, mutate: refreshHoldings } = useMyHoldings({
     chain: selectedChain,

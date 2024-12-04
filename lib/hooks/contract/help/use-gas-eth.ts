@@ -12,6 +12,8 @@ export function useGasEth() {
     callParams: Record<string, any>,
   ): Promise<any> => {
     try {
+      if (isBSC) return ApiCallGas;
+
       const estGas = await publicClient!.estimateContractGas(callParams as any);
 
       const gasLimit = NP.times(Number(estGas), 130 / 100).toFixed();
@@ -28,7 +30,7 @@ export function useGasEth() {
         maxPriorityFeePerGas: BigInt(maxPriorityFeePerGas),
       };
 
-      return isBSC ? ApiCallGas : gasParams;
+      return gasParams;
     } catch (e) {
       console.error("calc gas error: =>", e);
       return {};

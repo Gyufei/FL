@@ -49,9 +49,9 @@ export default function useTxStatus(
       }
       if (e?.message.includes("An internal error was received")) {
         reportEvent("walletError", { value: e?.name });
-        return;
+      } else {
+        reportError(e);
       }
-      reportError(e);
       let eMsg = null;
       if (
         e?.message.includes("An internal error was received") ||

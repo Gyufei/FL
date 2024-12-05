@@ -87,6 +87,11 @@ export default function TrendingAsset({ className }: { className?: string }) {
           ? 10 ** ProjectDecimalsMap[item.market_symbol]
           : 1;
 
+        const vol24h = item.vol_24h || 0;
+        const TotalVol = item.total_vol || 0;
+        const lastPricePercent =
+          Number(TotalVol) === 0 ? 0 : NP.divide(vol24h, TotalVol);
+
         return {
           id: item.market_symbol,
           no: index + 1,
@@ -95,7 +100,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
             symbol: item.item_name,
           },
           floorPrice: NP.times(item.floor_price, pointDecimalNum),
-          change24h: item.change_rate_24h,
+          change24h: lastPricePercent,
         };
       });
 

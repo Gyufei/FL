@@ -14,13 +14,6 @@ export function useCheckBnbBalance() {
   function checkBalance(needValue: string = "0", needGasPrice: string) {
     const totalNeeded = NP.plus(NP.times(needValue, 10 ** 18), needGasPrice);
 
-    console.log(
-      "🚀 ~ checkBalance ~ String(balance) < totalNeeded:",
-      Number(balance),
-      totalNeeded,
-      NP.divide(needValue, 10 ** 18),
-      Number(balance) < totalNeeded,
-    );
     if (Number(balance) < totalNeeded) {
       reportEvent("InsufficientBalance", {
         value: `${balance}-${needValue}-${needGasPrice}`,

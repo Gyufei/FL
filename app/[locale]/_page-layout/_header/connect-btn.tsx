@@ -16,6 +16,7 @@ import { useEffect, useState, useRef } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import * as Sentry from "@sentry/nextjs";
 import { reportEvent } from "@/lib/utils/analytics";
+import { EIP6963AnnounceProviderEvent } from "@/lib/types/wallet";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
@@ -23,17 +24,43 @@ export default function ConnectBtn() {
 
   const { isMobile } = useDeviceSize();
   const { toConnectWallet } = useWeb3Wallet();
-  const { address, shortAddr, connected, connecting } = useChainWallet();
+  const { address, shortAddr, connected, connecting, connector } =
+    useChainWallet();
   const [showSignIn, setShowSignIn] = useState(false);
   const prevAddressRef = useRef<string | null>(null);
-
+  const userWallets = useRef<string[]>([]);
   const { disconnect } = useChainWallet();
+
+  useEffect(() => {
+    const onAnnounceProvider = (event: EIP6963AnnounceProviderEvent) => {
+      const walletName = event?.detail?.info?.name;
+      if (walletName && !userWallets.current.includes(walletName)) {
+        userWallets.current = [...userWallets.current, walletName];
+      }
+      Sentry.setTag("wallets", userWallets.current.join(","));
+    };
+
+    window.addEventListener(
+      "eip6963:announceProvider",
+      onAnnounceProvider as EventListener,
+    );
+
+    // window.dispatchEvent(new Event("eip6963:requestProvider"));
+    return () => {
+      window.removeEventListener(
+        "eip6963:announceProvider",
+        onAnnounceProvider as EventListener,
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (address && address !== prevAddressRef.current) {
       Sentry.setUser({
         username: address,
       });
+      Sentry.setTag("connectWallet", (connector as any)?.rkDetails?.name);
       Sentry.setTag(
         "client_px",
         document?.documentElement?.clientWidth +

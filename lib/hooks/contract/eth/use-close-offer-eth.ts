@@ -5,13 +5,13 @@ import { useChainSendTx } from "@/lib/hooks/contract/help/use-chain-send-tx";
 import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
 import { dataApiFetcher } from "@/lib/fetcher";
 import { useGasEth } from "../help/use-gas-eth";
-
+import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 export function useCloseOfferEth({ chain }: { chain: ChainType }) {
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
   const { ApiCallGas } = useGasEth();
-
+  const { checkBalance } = useCheckBnbBalance();
   const txAction = async (args: { offerId: string }) => {
     const { offerId } = args;
     const res = await dataApiFetcher(
@@ -28,6 +28,9 @@ export function useCloseOfferEth({ chain }: { chain: ChainType }) {
     if (!res.tx_data) {
       throw new Error("Invalid transaction data");
       return null;
+    }
+    if (!checkBalance("0", String(ApiCallGas.gasPrice))) {
+      throw new Error("Insufficient Balance");
     }
 
     const callParams = {

@@ -57,7 +57,7 @@ export default function useTxStatus(
         e?.message.includes("An internal error was received") ||
         e?.message.includes("Execution reverted for an unknown reason")
       ) {
-        eMsg = "Please check the balance in wallet.";
+        eMsg = "Insufficient Balance.";
       }
       if (eMsg) {
         setGlobalMessage({

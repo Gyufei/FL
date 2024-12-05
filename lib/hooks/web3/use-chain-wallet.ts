@@ -13,6 +13,7 @@ const EmptyWallet = {
   disconnect: () => {},
   currentChain: ChainType.ETH,
   switchToTargetChain: () => {},
+  connector: {},
 };
 
 export function useChainWallet(chain?: ChainType) {
@@ -21,6 +22,7 @@ export function useChainWallet(chain?: ChainType) {
     isConnected: evmConnected,
     // isDisconnected: isEthDisconnected,
     isConnecting: evmConnecting,
+    connector: evmConnector,
   } = useAccount();
 
   const chainId = useChainId();
@@ -87,6 +89,7 @@ export function useChainWallet(chain?: ChainType) {
       disconnect: evmDisconnect,
       currentChain: currentWalletChain,
       switchToTargetChain,
+      connector: evmConnector,
     }),
     [
       evmAddress,
@@ -95,6 +98,7 @@ export function useChainWallet(chain?: ChainType) {
       evmDisconnect,
       currentWalletChain,
       switchToTargetChain,
+      evmConnector,
     ],
   );
 
@@ -109,6 +113,7 @@ export function useChainWallet(chain?: ChainType) {
       disconnect: solDisconnect,
       currentChain: ChainType.SOLANA,
       switchToTargetChain: () => {},
+      connector: {},
     }),
     [solAddress, solConnected, solConnecting, solDisconnect],
   );

@@ -6,6 +6,7 @@ import MessageBtn from "./message-btn";
 import MobileRouterMenu from "./mobile-router-menu";
 import Link from "next/link";
 import { usePathname } from "@/app/navigation";
+import WalletSelectDialog from "@/components/share/wallet-select-dialog";
 
 export default function Header() {
   const pathname = usePathname();
@@ -72,6 +73,7 @@ export default function Header() {
           </div>
         </div>
       </div>
+      <WalletSelectDialog />
     </>
   );
 }

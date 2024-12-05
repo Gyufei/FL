@@ -8,6 +8,9 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChainConfigs, IChainConfig } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
+import { solWalletSelectDialogVisibleAtom } from "@/components/share/wallet-select-dialog";
+import { useSetAtom } from "jotai";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export function NetworkSelect({
   selectedChain,
@@ -18,12 +21,21 @@ export function NetworkSelect({
 }) {
   const [popOpen, setPopOpen] = useState(false);
 
+  const { connected } = useChainWallet(ChainType.SOLANA);
+
+  const setSolWalletSelectDialogVisible = useSetAtom(
+    solWalletSelectDialogVisibleAtom,
+  );
+
   const currentChainObj = useMemo(() => {
     return ChainConfigs[selectedChain];
   }, [selectedChain]);
 
   function handleClickOpt(chain: ChainType) {
     if (selectedChain !== chain) {
+      if (chain === ChainType.SOLANA && !connected) {
+        setSolWalletSelectDialogVisible(true);
+      }
       handleChainChange(chain);
     }
 
@@ -80,7 +92,7 @@ export function NetworkSelect({
                   {chain.name}
                 </div>
                 <Checkbox
-                  data-checked={selectedChain === key}
+                  checked={selectedChain === key}
                   onCheckedChange={() => handleClickOpt(key as ChainType)}
                   className="rounded-full"
                 />

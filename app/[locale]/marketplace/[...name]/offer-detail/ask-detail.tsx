@@ -15,12 +15,13 @@ import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useGlobalConfig } from "@/lib/hooks/use-global-config";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
+import AskDetailBtnTip from "./ask-detail-btn-tip";
 
 export default function AskDetail({
   offer,
@@ -30,9 +31,6 @@ export default function AskDetail({
   onSuccess: (_o: Record<string, any>) => void;
 }) {
   const T = useTranslations("drawer-OfferDetail");
-  const locale = useLocale();
-  const isEn = locale === "en";
-  const isZh = locale === "zh";
 
   const { platformFee } = useGlobalConfig();
 
@@ -205,23 +203,7 @@ export default function AskDetail({
                 </button>
               </WithWalletConnectBtn>
 
-              <div className="mt-3 text-xs leading-5 text-gray">
-                {isEn && (
-                  <>
-                    You will automatically receive the{" "}
-                    <span className="text-black">
-                      equivalent amount of the protocol&apos;s tokens
-                    </span>{" "}
-                    once the Origin Offer Creator settle the offer.
-                  </>
-                )}
-                {isZh && (
-                  <>
-                    只要初始 Maker 执行了清算, 你将自动收到{" "}
-                    <span className="text-black">等价的协议代币</span>{" "}
-                  </>
-                )}
-              </div>
+              <AskDetailBtnTip />
             </>
           )}
         </div>

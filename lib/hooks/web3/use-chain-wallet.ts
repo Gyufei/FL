@@ -58,19 +58,13 @@ export function useChainWallet(chain?: ChainType) {
 
   const switchToTargetChain = useCallback(
     async function () {
-      console.log("switchToTargetChain", chain, currentWalletChain);
-      if (!chain) {
+      if (!chain || chain === ChainType.SOLANA) {
         return true;
       }
-
-      if (chain === ChainType.SOLANA) {
-        return true;
-      }
-
-      const chainId = Number(ChainConfigs[chain].network);
 
       if (chain !== currentWalletChain) {
-        return switchChainAsync({ chainId });
+        const shouldChainId = Number(ChainConfigs[chain].network);
+        return switchChainAsync({ chainId: shouldChainId });
       }
 
       return true;

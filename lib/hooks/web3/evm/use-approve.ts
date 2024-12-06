@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { erc20Abi } from "viem";
 import { readContract } from "@wagmi/core";
-import { useAccount, useConfig, useWriteContract, useChainId } from "wagmi";
+import {
+  useAccount,
+  useConfig,
+  useWriteContract,
+  useChainId,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 
 import { USDTAbi } from "@/lib/abi/eth/USDT";
 import { useTranslations } from "next-intl";
@@ -30,7 +36,13 @@ export function useApprove(
   const [isAllowanceLoading, setIsAllowanceLoading] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
-  const { writeContract } = useWriteContract();
+  const { data: hash, writeContract } = useWriteContract();
+  const { data: txReceipt, error: txError } = useWaitForTransactionReceipt({
+    hash,
+    query: {
+      enabled: !!hash,
+    },
+  });
 
   const shouldWithApprove = useMemo(() => {
     if (skipApprove) return false;
@@ -73,6 +85,16 @@ export function useApprove(
   useEffect(() => {
     readAllowance();
   }, [readAllowance]);
+
+  useEffect(() => {
+    if (txReceipt) {
+      setIsApproving(false);
+      readAllowance();
+    }
+    if (txError) {
+      setIsApproving(false);
+    }
+  }, [txReceipt, txError, readAllowance]);
 
   const isShouldApprove = useMemo(() => {
     if (!shouldWithApprove) return false;
@@ -122,15 +144,17 @@ export function useApprove(
         },
         {
           onSuccess: () => {
-            readAllowance();
+            setIsApproving(false);
           },
           onError: (error) => {
             console.error("approveAction error: =>", error);
+            setIsApproving(false);
           },
         },
       );
     } catch (e) {
       console.error("approveAction error: =>", e);
+      setIsApproving(false);
     }
   }
 

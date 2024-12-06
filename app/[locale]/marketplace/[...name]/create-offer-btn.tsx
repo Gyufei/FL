@@ -2,6 +2,7 @@ import Image from "next/image";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 import { useState, useRef } from "react";
+import { useCheckSwitchChain } from "@/lib/hooks/web3/use-check-switch-chain";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SellContent } from "./create-offer/sell-content";
@@ -25,6 +26,7 @@ export default function CreateOfferBtn({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
   const hasReportedSuccessRef = useRef(false);
+  const { checkAndSwitchChain } = useCheckSwitchChain(marketplace.chain);
 
   function handleCloseDrawer() {
     setDrawerOpen(false);
@@ -47,6 +49,7 @@ export default function CreateOfferBtn({
         chain={marketplace.chain}
         className="w-full"
         onClick={() => {
+          checkAndSwitchChain();
           setDrawerOpen(true);
           hasReportedSuccessRef.current = false;
           reportEvent("click", { value: "createOffer" });

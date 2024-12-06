@@ -21,6 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { reportEvent } from "@/lib/utils/analytics";
+import { useCheckSwitchChain } from "@/lib/hooks/web3/use-check-switch-chain";
 
 export function OfferCard({ offer }: { offer: IOffer }) {
   const t = useTranslations("cd-Order");
@@ -36,6 +37,8 @@ export function OfferCard({ offer }: { offer: IOffer }) {
   } = useOfferFormat({
     offer: offer,
   });
+
+  const { checkAndSwitchChain } = useCheckSwitchChain(offer.marketplace.chain);
 
   const orderType = offer.entry.direction;
 
@@ -182,7 +185,10 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           {showBuy && (
             <WithWalletConnectBtn
               chain={offer.marketplace.chain}
-              onClick={() => handleShowOffer(String(offer.entry.id))}
+              onClick={() => {
+                checkAndSwitchChain();
+                handleShowOffer(String(offer.entry.id));
+              }}
             >
               <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
                 {orderType === "sell" ? t("btn-Buy") : t("btn-Sell")}

@@ -143,9 +143,7 @@ export function useApprove(
           ...(callParams as any),
         },
         {
-          onSuccess: () => {
-            setIsApproving(false);
-          },
+          onSuccess: () => {},
           onError: (error) => {
             console.error("approveAction error: =>", error);
             setIsApproving(false);

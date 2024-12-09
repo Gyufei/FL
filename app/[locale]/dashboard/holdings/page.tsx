@@ -45,6 +45,11 @@ export default function MyHoldings() {
 
   const selectedHolding = holdings?.find((h) => h.holding_id === selectHId);
 
+  const isOffChainFungiblePoint =
+    sortOffers[0]?.marketplace?.market_catagory === "offchain_fungible_point";
+  const isPointToken =
+    sortOffers[0]?.marketplace?.market_catagory === "point_token";
+
   return (
     <div className="flex flex-1 flex-col p-4 sm:ml-5 sm:p-0">
       <div className="flex items-center justify-between">
@@ -61,6 +66,7 @@ export default function MyHoldings() {
             sortDir={sortDir}
             handleSortFieldChange={handleSortFieldChange}
             handleSortDirChange={handleSortDirChange}
+            showCollateral={!(isOffChainFungiblePoint || isPointToken)}
           />
         </div>
       </div>

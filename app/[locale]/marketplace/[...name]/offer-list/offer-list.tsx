@@ -59,6 +59,11 @@ export default function OfferList({
     setSearchText(text);
   }
 
+  const isOffChainFungiblePoint =
+    filterOrders[0]?.marketplace?.market_catagory === "offchain_fungible_point";
+  const isPointToken =
+    filterOrders[0]?.marketplace?.market_catagory === "point_token";
+
   return (
     <div className="flex h-full flex-col rounded-none bg-[#fafafa] p-5 sm:rounded-3xl">
       <div className="flex w-full items-center justify-between border-b border-[#d8d8d8] pb-5">
@@ -72,6 +77,7 @@ export default function OfferList({
             sortDir={sortDir}
             handleSortFieldChange={handleSortFieldChange}
             handleSortDirChange={handleSortDirChange}
+            showCollateral={!(isOffChainFungiblePoint || isPointToken)}
           />
         </div>
         <div

@@ -90,7 +90,7 @@ export function TradesTable({
         time: time < 2 ? 2 : time,
       };
     });
-
+    console.log("🚀 ~ trades ~ trades:", trades);
     const typeTrades = trades.filter(() => type === "All" || true);
 
     const tableData =

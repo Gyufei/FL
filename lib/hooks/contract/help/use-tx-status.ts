@@ -40,13 +40,13 @@ export default function useTxStatus(
         message: successTip || "Successfully",
       });
     } catch (e: any) {
-      console.error(e);
       setIsError(true);
       setError(e);
       if (e?.message.includes("User rejected the request")) {
         reportEvent("walletReject", { value: e?.name });
         return;
       }
+      console.error(e);
       if (e?.message.includes("An internal error was received")) {
         reportEvent("walletError", { value: e?.name });
       } else {

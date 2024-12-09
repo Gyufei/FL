@@ -21,6 +21,8 @@ import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
 import { cn } from "@/lib/utils/common";
 import { reportEvent } from "@/lib/utils/analytics";
+import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 
 export function SellContent({
   marketplace,
@@ -82,6 +84,12 @@ export function SellContent({
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
     useAccountVerifyDialog(currentMarket);
 
+  const { checkBalance } = useCheckBnbBalance(currentMarket.chain, {
+    address: currentMarket.project_token_addr,
+    decimals: ProjectDecimalsMap[currentMarket.market_symbol],
+    symbol: currentMarket.item_name,
+  });
+
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
@@ -91,6 +99,10 @@ export function SellContent({
 
     if (!isAccountVerify) {
       setVerifyDialogOpen(true);
+      return;
+    }
+
+    if (!checkBalance(sellPointAmount)) {
       return;
     }
 

@@ -42,8 +42,10 @@ export default function useTxStatus(
     } catch (e: any) {
       setIsError(true);
       setError(e);
+      let eMsg = null;
       if (e?.message.includes("User rejected the request")) {
         reportEvent("walletReject", { value: e?.name });
+        eMsg = "User rejected.";
         return;
       }
       console.error(e);
@@ -52,7 +54,6 @@ export default function useTxStatus(
       } else {
         reportError(e);
       }
-      let eMsg = null;
       if (
         e?.message.includes("An internal error was received") ||
         e?.message.includes("Execution reverted for an unknown reason")

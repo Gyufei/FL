@@ -14,7 +14,7 @@ export default function OfferTabs({ offer }: { offer: IOffer }) {
 
   const { address } = useChainWallet(offer.marketplace.chain);
 
-  const { offerLogo, offerEqTokenInfo, offerTokenInfo } = useOfferFormat({
+  const { offerLogo, offerTokenInfo } = useOfferFormat({
     offer: offer,
   });
 
@@ -76,7 +76,6 @@ export default function OfferTabs({ offer }: { offer: IOffer }) {
                 offer={offer}
                 offerLogo={offerLogo}
                 orderTokenInfo={offerTokenInfo}
-                offerEqTokenInfo={offerEqTokenInfo}
               />
             )}
           </TabsContent>

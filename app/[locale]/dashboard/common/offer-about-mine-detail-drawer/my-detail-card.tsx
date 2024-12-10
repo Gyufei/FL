@@ -93,12 +93,8 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
       </DetailRow>
 
       <DetailRow>
-        <DetailLabel
-          tipText={
-            isAsk ? ot("tip-BaseTaxForEachTrade") : ot("tip-TaxForSubTrade")
-          }
-        >
-          {isAsk ? ot("lb-BaseTaxForEachTrade") : ot("lb-TaxForSubTrade")}
+        <DetailLabel tipText={ot("tip-TaxForSubTrade")}>
+          {ot("lb-TaxForSubTrade")}
         </DetailLabel>
         <div className="flex items-center space-x-1">
           <div className="text-sm leading-5 text-green">

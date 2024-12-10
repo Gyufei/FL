@@ -12,6 +12,7 @@ import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import { reportEvent } from "@/lib/utils/analytics";
+import { checkIsNeedCollateral } from "@/lib/helper/market";
 
 export default function OfferDetailDrawer({
   offers,
@@ -38,6 +39,9 @@ export default function OfferDetailDrawer({
   const [resultOrder, setResultOrder] = useState<any | null>(null);
 
   const isAsk = offer?.entry.direction === "sell";
+  const isNeedCollateral = checkIsNeedCollateral(
+    offer?.marketplace.market_catagory,
+  );
 
   useEffect(() => {
     if (offer && connected) {
@@ -85,7 +89,7 @@ export default function OfferDetailDrawer({
           <DrawerTitle
             title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
             onClose={handleDrawerClose}
-            tag={ct(settleMode)}
+            tag={isNeedCollateral ? ct(settleMode) : ""}
             tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
           />
         )}

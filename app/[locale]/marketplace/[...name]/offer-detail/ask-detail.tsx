@@ -22,6 +22,7 @@ import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-veri
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
 import AskDetailBtnTip from "./ask-detail-btn-tip";
+import ArrowBetween from "../create-offer/arrow-between";
 
 export default function AskDetail({
   offer,
@@ -148,7 +149,7 @@ export default function AskDetail({
     <>
       <div className="flex flex-col justify-between gap-y-4 sm:flex-row sm:gap-y-0">
         {/* left card */}
-        <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
+        <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
             img2={ChainConfigs[offer.marketplace.chain].logo}
@@ -167,6 +168,8 @@ export default function AskDetail({
             sliderValue={receivePointAmount}
             setSliderValue={handleSliderChange}
           />
+
+          <ArrowBetween className="-my-4 self-center" />
 
           <ReceiveCard
             topText={<>{T("txt-YouGet")}</>}

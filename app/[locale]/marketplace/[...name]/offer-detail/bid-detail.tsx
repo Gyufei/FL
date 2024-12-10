@@ -20,6 +20,7 @@ import { usePairApprove } from "../create-offer/use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
+import ArrowBetween from "../create-offer/arrow-between";
 
 export default function BidDetail({
   offer,
@@ -159,6 +160,8 @@ export default function BidDetail({
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
           />
+
+          <ArrowBetween className="-my-4 self-center" />
 
           <ReceiveCard
             topText={<>{T("txt-YouGet")}</>}

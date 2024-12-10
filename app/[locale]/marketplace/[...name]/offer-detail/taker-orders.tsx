@@ -17,13 +17,11 @@ export function TakerOrders({
   orders,
   offer,
   offerLogo,
-  offerEqTokenInfo,
   orderTokenInfo,
 }: {
   orders: Array<ITakerOrder>;
   offer: IOffer;
   offerLogo: string;
-  offerEqTokenInfo: IToken;
   orderTokenInfo: IToken;
 }) {
   const T = useTranslations("drawer-OfferDetail");
@@ -44,7 +42,7 @@ export function TakerOrders({
   const theme = useTheme({
     Table: `
       grid-template-rows: 40px repeat(auto-fit, 48px);
-      grid-template-columns: 60px repeat(5, minmax(0, 1fr));
+      grid-template-columns: 60px repeat(4, minmax(0, 1fr));
       font-weight: 400;
       grid-auto-rows: 48px;
     `,
@@ -99,21 +97,6 @@ export function TakerOrders({
       label: T("th-Deposits"),
       renderCell: (o: ITakerOrder) => (
         <AmountCell order={o} tokenInfo={orderTokenInfo} />
-      ),
-    },
-    {
-      label: T("th-EqToken"),
-      renderCell: () => (
-        <div className="flex items-center justify-end space-x-1">
-          <span>{offerEqTokenInfo.symbol}</span>
-          <Image
-            src={offerEqTokenInfo.logoURI}
-            width={16}
-            height={16}
-            alt="token"
-            className="rounded-full"
-          />
-        </div>
       ),
     },
     {

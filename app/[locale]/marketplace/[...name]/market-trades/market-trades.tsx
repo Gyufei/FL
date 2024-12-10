@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ITradeType, TradeTypeSelect } from "./trade-type-select";
+// import { useState } from "react";
+// import { ITradeType, TradeTypeSelect } from "./trade-type-select";
 import { TradesTable } from "./trades-table";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useTranslations } from "next-intl";
@@ -15,11 +15,11 @@ export default function MarketTrades({
 }) {
   const t = useTranslations("tb-MarketTrades");
   const isLoadingFlag = !marketplace || isLoading;
-  const [tradeType, setTradeType] = useState<ITradeType>("All");
+  // const [tradeType, setTradeType] = useState<ITradeType>("All");
 
-  function handleTradeTypeChange(t: ITradeType) {
-    setTradeType(t);
-  }
+  // function handleTradeTypeChange(t: ITradeType) {
+  //   setTradeType(t);
+  // }
 
   return (
     <div className="flex flex-1 flex-col">
@@ -28,14 +28,14 @@ export default function MarketTrades({
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
           <div className="leading-6 text-black">{t("cap-MarketTrades")}</div>
         </div>
-        <TradeTypeSelect
+        {/* <TradeTypeSelect
           type={tradeType}
           handleTypeChange={handleTradeTypeChange}
-        />
+        /> */}
       </div>
 
       <TradesTable
-        type={tradeType}
+        type={"All"}
         marketplace={marketplace}
         isLoading={isLoadingFlag}
       />

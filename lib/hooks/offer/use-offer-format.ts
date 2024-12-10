@@ -18,6 +18,12 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     return tokens?.find((t) => t.symbol === offer.payment_token);
   }, [offer, tokens]);
 
+  const offerChainInfo = useMemo(() => {
+    return tokens?.find(
+      (t) => t.symbol === offer?.marketplace?.chain?.toUpperCase(),
+    );
+  }, [offer, tokens]);
+
   const pointDecimalNum = useMemo(() => {
     if (
       offer?.marketplace &&
@@ -184,6 +190,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
     pointPerPrice,
     offerPointInfo,
     offerTokenInfo,
+    offerChainInfo,
     offerEqTokenInfo,
     pointDecimalNum,
 

@@ -1,12 +1,13 @@
 "use client";
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import PageFooter from "../_page-layout/_page-footer";
 import PointMarket from "./point-market";
 import TrendingAsset from "./trending-asset";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
-import MobilePageFooter, { IMobilePanel } from "../_page-layout/_page-footer/page-footer-mobile";
+import MobilePageFooter, {
+  IMobilePanel,
+} from "../_page-layout/_page-footer/page-footer-mobile";
 
 export default function Marketplace() {
   const { isMobile } = useDeviceSize();
@@ -70,15 +71,6 @@ function MobileMarketBreadcrumb() {
       <div className="text-base leading-6 text-[#99a0af]">
         {ht("btn-Marketplace")}
         <span className="inline-block px-2">&gt;</span>
-      </div>
-      <div className="flex items-center space-x-1">
-        <span className="text-base leading-6 text-[#2d2e33]">Point</span>
-        <Image
-          src="/icons/down-arrow.svg"
-          width={20}
-          height={20}
-          alt="down-arrow"
-        />
       </div>
     </div>
   );

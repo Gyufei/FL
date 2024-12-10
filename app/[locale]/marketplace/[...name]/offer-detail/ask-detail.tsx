@@ -22,6 +22,7 @@ import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-veri
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
 import AskDetailBtnTip from "./ask-detail-btn-tip";
+import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import ArrowBetween from "../create-offer/arrow-between";
 
 export default function AskDetail({
@@ -109,6 +110,11 @@ export default function AskDetail({
     return NP.times(payTokenAmount || 0, tokenPrice);
   }, [payTokenAmount, tokenPrice]);
 
+  const { checkBalance } = useCheckBnbBalance(
+    offer.marketplace.chain,
+    offerTokenInfo,
+  );
+
   function handleSliderChange(v: number) {
     setReceivePointAmount(v);
   }
@@ -126,6 +132,10 @@ export default function AskDetail({
     }
 
     if (isDepositLoading || !receivePointAmount) return;
+
+    if (!checkBalance(payTokenAmount)) {
+      return;
+    }
 
     reportEvent("click", { value: "confirmOffer-ask" });
     await writeAction({

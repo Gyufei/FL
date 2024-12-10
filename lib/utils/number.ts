@@ -269,3 +269,11 @@ export function bigIntOrNpMinus(a: NumberType, b: NumberType) {
     return (BigInt(a) - BigInt(b)).toString();
   }
 }
+
+export function formatLeadingZeros(num: number, decimalPlaces: number): string {
+  const threshold = Math.pow(10, -decimalPlaces);
+  if (Math.abs(num) < threshold) {
+    return `< ${threshold}`;
+  }
+  return parseFloat(num.toFixed(decimalPlaces)).toString();
+}

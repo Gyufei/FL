@@ -20,11 +20,13 @@ export function SortSelect({
   sortDir,
   handleSortFieldChange,
   handleSortDirChange,
+  showCollateral = false,
 }: {
   sortField: ISortField;
   sortDir: ISortDir;
   handleSortFieldChange: (_s: ISortField) => void;
   handleSortDirChange: (_s: ISortDir) => void;
+  showCollateral?: boolean;
 }) {
   const t = useTranslations("sl-OrderSort");
   const [popOpen, setPopOpen] = useState(false);
@@ -75,12 +77,14 @@ export function SortSelect({
           sortDir={sortDir}
           onSortDirChange={handleSortDirClick}
         />
-        <SortOptions
-          field="Collateral"
-          sortField={sortField}
-          sortDir={sortDir}
-          onSortDirChange={handleSortDirClick}
-        />
+        {showCollateral && (
+          <SortOptions
+            field="Collateral"
+            sortField={sortField}
+            sortDir={sortDir}
+            onSortDirChange={handleSortDirClick}
+          />
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -6,15 +6,12 @@ import useTxStatus from "../help/use-tx-status";
 import { useChainWallet } from "../../web3/use-chain-wallet";
 import { ChainType } from "@/lib/types/chain";
 import { useGasEth } from "../help/use-gas-eth";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
-
 export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
   const { address } = useChainWallet(chain);
   const { submitTransaction } = useDataApiTransactionRecord();
   const { dataApiEndPoint } = useEndPoint();
   const { sendTx } = useChainSendTx(chain);
   const { ApiCallGas } = useGasEth();
-  const { checkBalance } = useCheckBnbBalance();
 
   const txAction = async (args: { offerId: string; itemAmount: string }) => {
     const { offerId, itemAmount } = args;
@@ -37,9 +34,6 @@ export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
     if (!res.tx_data) {
       throw new Error("Invalid transaction data");
       return null;
-    }
-    if (!checkBalance("0", String(ApiCallGas.gasPrice))) {
-      throw new Error("Insufficient Balance");
     }
 
     const callParams = {

@@ -96,17 +96,6 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
             {t("btn-Marketplace")}
           </div>
         </div>
-        <div className="flex items-center space-x-1">
-          <span className="text-[18px] leading-[28px] text-[#99a0af]">
-            Point
-          </span>
-          <Image
-            src="/icons/down-arrow.svg"
-            width={20}
-            height={20}
-            alt="down-arrow"
-          />
-        </div>
       </div>
       <PageFooter className="fixed bottom-0 left-0 w-screen" />
     </div>

@@ -21,6 +21,7 @@ import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import NP from "number-precision";
 import { reportEvent } from "@/lib/utils/analytics";
+import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 
 export default function MyBidDetail({
   holdingId,
@@ -40,6 +41,7 @@ export default function MyBidDetail({
     amount,
     offerTokenInfo,
     offerPointInfo,
+    offerChainInfo,
     isSettled,
     isCanceled,
     isClosed,
@@ -91,21 +93,35 @@ export default function MyBidDetail({
     isNativeToken,
   });
 
+  const { checkBalance } = useCheckBnbBalance(
+    offer.marketplace.chain,
+    offerChainInfo,
+  );
+
   function handleBidClose() {
     if (isBidClosing) return;
     reportEvent("click", { value: "closeBidOffer" });
+    if (!checkBalance(0)) {
+      return;
+    }
     bidCloseAction?.(undefined);
   }
 
   function handleClose() {
     if (isClosing) return;
     reportEvent("click", { value: "closeOffer" });
+    if (!checkBalance(0)) {
+      return;
+    }
     closeAction?.({ offerId: offer.offer_id });
   }
 
   function handleRelist() {
     if (isRelisting) return;
     reportEvent("click", { value: "relistOffer" });
+    if (!checkBalance(0)) {
+      return;
+    }
     relistAction?.(undefined);
   }
 

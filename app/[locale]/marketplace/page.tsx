@@ -1,6 +1,5 @@
 "use client";
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import PageFooter from "../_page-layout/_page-footer";
 import PointMarket from "./point-market";

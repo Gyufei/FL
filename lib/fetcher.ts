@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 "use client";
 
-import { withSecure } from "acclism-manifest";
+import { withSecure } from "acclism-manifest-v2";
 import { WithDataApiHost } from "./PathMap";
 
 const access_key = "aK15X6c9";

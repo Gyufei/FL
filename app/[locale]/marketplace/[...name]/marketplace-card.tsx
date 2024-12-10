@@ -24,6 +24,7 @@ import { ChainType } from "@/lib/types/chain";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import Drawer from "react-modern-drawer";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export default function MarketplaceCard({
   marketplace,
@@ -47,6 +48,8 @@ export default function MarketplaceCard({
 
     return projectInfo;
   }, [marketplace, marketInfos]);
+
+  const chainInfo = marketplace ? ChainConfigs[marketplace?.chain] : null;
 
   function handleStar() {
     if (isStar) {
@@ -76,16 +79,28 @@ export default function MarketplaceCard({
       )}
     >
       {isLoadingFlag ? (
-        <Skeleton className="absolute -top-4 h-[73px] w-[73px] rounded-3xl bg-[#fafafa]" />
+        <Skeleton className="absolute -top-4 h-[73px] w-[73px] rounded-full bg-[#fafafa]" />
       ) : (
-        <Image
-          src={marketplace.projectLogo}
-          width={73}
-          height={73}
-          className="absolute -top-4 rounded-3xl"
-          alt="marketplace"
-          loading="lazy"
-        />
+        <div className="absolute -top-4 h-fit">
+          <Image
+            src={marketplace?.projectLogo}
+            width={72}
+            height={72}
+            alt="token1"
+            className="rounded-full"
+          />
+          {chainInfo?.logo && (
+            <div className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full border border-white bg-white">
+              <Image
+                src={chainInfo?.logo}
+                width={24}
+                height={24}
+                alt="token2"
+                className="rounded-full"
+              />
+            </div>
+          )}
+        </div>
       )}
 
       <div className="flex items-start justify-between pl-[84px]">

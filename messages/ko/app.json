@@ -44,19 +44,23 @@
     "txt-UnsupportedRPC": "Unsupported RPC Endpoint for Solana Mainnet/Testnet"
   },
   "card-Marketplace": {
+    "lb-InitialListing": "Initial Listing",
+    "lb-AllTimeHigh": "All-time High",
+    "lb-24hChange": "24h Change",
+    "lb-FilledOrders": "Filled Orders",
+    "lb-ListedSupply": "Listed Supply",
+    "lb-ActiveWallets": "Active Wallets",
+
     "lb-FloorPrice": "Floor Price",
     "lb-TotalVol": "Total Vol",
-    "lb-FilledOrders": "Filled Orders",
-    "lb-24hChange": "24h Change",
     "lb-24hVol": "24h Vol.",
-    "lb-ListedSupply": "Listed Supply",
     "lb-AvgBid": "Avg. Bid"
   },
   "tb-Leaderboard": {
     "cap-Leaderboard": "Leaderboard",
-    "sl-BonusIncome": "Bonus Income",
+    "sl-MakerBonus": "Maker Bonus",
     "sl-MakerOrders": "Maker Orders",
-    "sl-TradingVol": "Trading Vol",
+    "sl-TradingVol": "Trading Vol.",
     "th-Wallet": "Wallet",
     "th-Amount": "Amount",
     "th-Count": "Count"
@@ -73,11 +77,11 @@
     "sl-Bids": "Bids"
   },
   "sl-OrderSort": {
-    "sl-Created": "创建时间",
-    "sl-Price": "价格",
-    "sl-Collateral": "抵押数量",
-    "sl-Ascending": "升序",
-    "sl-Descending": "降序"
+    "sl-Created": "Created",
+    "sl-Price": "Price",
+    "sl-Collateral": "Collateral",
+    "sl-Ascending": "Ascending",
+    "sl-Descending": "Descending"
   },
   "cd-Order": {
     "lb-Offer": "Offer",
@@ -123,7 +127,10 @@
     "pl-AnythingYouWantToInformTheSeller": "Anything you want to inform the seller...",
     "lb-MinimumOrderAmount": "Minimum Order Amount",
     "lb-PlatformTradingFee": "Platform Trading Fee",
-    "btn-ConfirmMakerOrder": "Confirm Maker Order"
+    "btn-ConfirmMakerOrder": "Confirm Maker Order",
+    "cap-RegisterAccount": "Register Account",
+    "text-RegisterAccount": "It is detected that the wallet you are currently connected to has not been registered in <symbol>marketSymbol</symbol> . Please go to  <symbol>marketSymbol</symbol> to register for transactions. After the transaction, you will be able to check the points information at any time",
+    "text-Go": "Go"
   },
   "drawer-OfferDetail": {
     "cap-OfferDetail": "Offer Detail",
@@ -149,34 +156,34 @@
     "btn-CloseBidOffer": "Close Bid Offer",
     "btn-AwaitingSettlement": "Awaiting Settlement...",
 
-    "lb-Filled/SellingAmount": "Filled / Selling Amount",
-    "lb-Filled/BuyingAmount": "Filled / Buying Amount",
+    "lb-Filled/SellingAmount": "Filled / Selling amount",
+    "lb-Filled/BuyingAmount": "Filled / Buying amount",
     "tip-Filled": "",
-    "lb-BuyerAmount": "Buyer Amount",
+    "lb-BuyerAmount": "Buyer amount",
     "tip-BuyerAmount": "",
-    "lb-SellerAmount": "Seller Amount",
+    "lb-SellerAmount": "Seller amount",
     "tip-SellerAmount": "",
     "lb-Seller": "Seller",
     "tip-Seller": "",
     "lb-Buyer": "Buyer",
     "tip-Buyer": "",
-    "lb-BonusForMaker": "Bonus for Maker",
+    "lb-BonusForMaker": "Bonus for maker",
     "tip-BonusForMaker": "",
-    "lb-CollateralRate": "Collateral Rate",
+    "lb-CollateralRate": "Collateral rate",
     "tip-CollateralRate": "",
     "lb-Previous": "Previous",
     "lb-TotalCollateral": "Total collateral",
     "tip-TotalCollateral": "",
-    "lb-TotalDeposit": "Total Deposit",
+    "lb-TotalDeposit": "Total deposit",
     "tip-TotalDeposit": "",
     "lb-EstSettlingOn": "Est. Settling On",
     "tip-EstSettlingOn": "",
     "txt-NotStarted": "Not Start",
-    "lb-InitialOfferMaker": "Initial Offer Maker",
+    "lb-InitialOfferMaker": "Maker",
     "tip-InitialOfferMaker": "",
-    "lb-InitialOfferMakerBonus": "Initial Offer Maker Bonus",
+    "lb-InitialOfferMakerBonus": "Maker bonus",
     "tip-InitialOfferMakerBonus": "",
-    "lb-TaxForSubTrade": "Tax for Sub Trade",
+    "lb-TaxForSubTrade": "Tax for sub trade",
     "tip-TaxForSubTrade": "",
     "lb-TrendingEndsAt": "Trending ends at",
     "tip-TrendingEndsAt": "",
@@ -194,6 +201,13 @@
     "th-TxHash": "Tx Hash",
     "th-Time": "Time"
   },
+  "menu-Dashboard": {
+    "cap-Orders": "Orders",
+    "cap-Holdings": "Holdings",
+    "cap-Balances": "Balance",
+    "cap-Referral": "Referral",
+    "cap-Overview": "Overview"
+  },
   "cd-AccountOverview": {
     "pl-Username": "username",
     "txt-PickADate": "Pick a Date",
@@ -209,13 +223,6 @@
   "ct-Rank": {
     "txt-YourRank": "Your Rank",
     "txt-UpdatedOn": "Updated On"
-  },
-  "dashboard-module": {
-    "menu-Orders": "Orders",
-    "menu-Holdings": "Holdings",
-    "menu-Balances": "Balance",
-    "menu-Referral": "Referral",
-    "menu-Overview": "Overview"
   },
   "page-MyOrders": {
     "cap-MyOrders": "My Orders",
@@ -298,6 +305,10 @@
   },
   "page-MarketList": {
     "cap-PointMarket": "Point Market",
+    "menu-Transaction": "Transaction",
+    "menu-Items": "Items",
+    "menu-MarketTrades": "Market Trades",
+    "menu-Charts": "Charts",
     "th-Asset": "Asset",
     "th-LastPrice": "Last Price",
     "th-Vol24h": "Vol 24h",

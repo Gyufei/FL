@@ -9,7 +9,7 @@ export function TokenPairImg({
   height2 = 14,
 }: {
   src1: string;
-  src2: string;
+  src2: string | undefined;
   width1?: number;
   height1?: number;
   width2?: number;
@@ -24,15 +24,17 @@ export function TokenPairImg({
         alt="token1"
         className="rounded-full"
       />
-      <div className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
-        <Image
-          src={src2 || "/icons/solana.svg"}
-          width={width2}
-          height={height2}
-          alt="token2"
-          className="rounded-full"
-        />
-      </div>
+      {src2 && (
+        <div className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-white">
+          <Image
+            src={src2}
+            width={width2}
+            height={height2}
+            alt="token2"
+            className="rounded-full"
+          />
+        </div>
+      )}
     </div>
   );
 }

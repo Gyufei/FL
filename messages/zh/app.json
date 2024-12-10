@@ -44,17 +44,21 @@
     "txt-UnsupportedRPC": "不支持的 Solana RPC 端点"
   },
   "card-Marketplace": {
+    "lb-InitialListing": "发行价",
+    "lb-AllTimeHigh": "最高成交价",
+    "lb-FilledOrders": "已成交",
+    "lb-24hChange": "变化率/24h",
+    "lb-ListedSupply": "挂单量",
+    "lb-ActiveWallets": "活跃钱包",
+
     "lb-FloorPrice": "地板价",
     "lb-TotalVol": "总量",
-    "lb-FilledOrders": "订单数",
-    "lb-24hChange": "变化率/24h",
     "lb-24hVol": "总量/24h",
-    "lb-ListedSupply": "挂单量",
     "lb-AvgBid": "平均价"
   },
   "tb-Leaderboard": {
     "cap-Leaderboard": "排行榜",
-    "sl-BonusIncome": "收入",
+    "sl-MakerBonus": "Maker奖励",
     "sl-MakerOrders": "Maker订单",
     "sl-TradingVol": "交易量",
     "th-Wallet": "钱包",

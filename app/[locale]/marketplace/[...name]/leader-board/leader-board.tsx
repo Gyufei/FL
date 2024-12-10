@@ -29,7 +29,7 @@ export default function LeaderBoard({
   className?: string;
 }) {
   const t = useTranslations("tb-Leaderboard");
-  const [leaderType, setLeaderType] = useState<ILeaderType>("Bonus Income");
+  const [leaderType, setLeaderType] = useState<ILeaderType>("Maker Orders");
   const [timeRange, setTimeRange] = useState<IRangeType>("month");
 
   const {
@@ -37,11 +37,13 @@ export default function LeaderBoard({
     isLoading: taxIncomeLoading,
     mutate: taxIncomeMutate,
   } = useTaxIncome(chain, timeRange);
+
   const {
     data: makerOrdersData,
     isLoading: makerOrdersLoading,
     mutate: makerOrdersMutate,
   } = useMakerOrders(chain, timeRange);
+
   const {
     data: tradingVolData,
     isLoading: tradingVolLoading,
@@ -62,6 +64,7 @@ export default function LeaderBoard({
       }
     }
   }, [msgEvents]);
+
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
   }
@@ -72,12 +75,12 @@ export default function LeaderBoard({
 
   const data = useMemo(() => {
     switch (leaderType) {
-      case "Bonus Income":
-        return sortBy(taxIncomeData, [(o) => Number(o.amount)]).reverse();
       case "Maker Orders":
         return sortBy(makerOrdersData, [(o) => Number(o.count)]).reverse();
-      case "Trading Vol":
+      case "Trading Vol.":
         return sortBy(tradingVolData, [(o) => Number(o.amount)]).reverse();
+      case "Maker Bonus":
+        return sortBy(taxIncomeData, [(o) => Number(o.amount)]).reverse();
     }
   }, [leaderType, taxIncomeData, makerOrdersData, tradingVolData]);
 

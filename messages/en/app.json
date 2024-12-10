@@ -44,19 +44,23 @@
     "txt-UnsupportedRPC": "Unsupported RPC Endpoint for Solana Mainnet/Testnet"
   },
   "card-Marketplace": {
+    "lb-InitialListing": "Initial Listing",
+    "lb-AllTimeHigh": "All-time High",
+    "lb-24hChange": "24h Change",
+    "lb-FilledOrders": "Filled Orders",
+    "lb-ListedSupply": "Listed Supply",
+    "lb-ActiveWallets": "Active Wallets",
+
     "lb-FloorPrice": "Floor Price",
     "lb-TotalVol": "Total Vol",
-    "lb-FilledOrders": "Filled Orders",
-    "lb-24hChange": "24h Change",
     "lb-24hVol": "24h Vol.",
-    "lb-ListedSupply": "Listed Supply",
     "lb-AvgBid": "Avg. Bid"
   },
   "tb-Leaderboard": {
     "cap-Leaderboard": "Leaderboard",
-    "sl-BonusIncome": "Bonus Income",
+    "sl-MakerBonus": "Maker Bonus",
     "sl-MakerOrders": "Maker Orders",
-    "sl-TradingVol": "Trading Vol",
+    "sl-TradingVol": "Trading Vol.",
     "th-Wallet": "Wallet",
     "th-Amount": "Amount",
     "th-Count": "Count"

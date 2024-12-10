@@ -29,7 +29,9 @@ export default function MarketplaceOverview({
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>{t("lb-FloorPrice")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>
+            {t("lb-InitialListing")}
+          </LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -39,6 +41,37 @@ export default function MarketplaceOverview({
                 NP.times(marketplace!.floor_price, pointDecimalNum),
                 6,
               )}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col items-end">
+          <LabelText isLoading={isLoadingFlag}>{t("lb-AllTimeHigh")}</LabelText>
+          {isLoadingFlag ? (
+            <ValueSkeleton />
+          ) : (
+            <div className="flex items-center text-sm leading-5 text-black">
+              {formatNum(marketplace!.filled_orders || 0)}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-24hChange")}</LabelText>
+          {isLoadingFlag ? (
+            <ValueSkeleton />
+          ) : (
+            <div
+              data-up={
+                Number(marketplace!.change_rate_24h) === 0
+                  ? "zero"
+                  : Number(marketplace!.change_rate_24h) > 0
+              }
+              className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
+            >
+              {marketplace!.change_rate_24h}%
             </div>
           )}
         </div>
@@ -74,7 +107,9 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("lb-AvgBid")}</LabelText>
+          <LabelText isLoading={isLoadingFlag}>
+            {t("lb-ActiveWallets")}
+          </LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function AdBanner({ className }: { className?: string }) {
   const images = [
-    "/img/ad-placeholder-1.png",
+    "/img/ad-placeholder-3.png",
     "/img/ad-placeholder-3.png",
     "/img/ad-placeholder-3.png",
   ];
@@ -22,7 +22,7 @@ export default function AdBanner({ className }: { className?: string }) {
         width={280}
         height={160}
         alt="ad1"
-        className="h-[120px] w-full rounded-2xl sm:h-auto sm:w-[280px]"
+        className="w-full rounded-2xl sm:h-auto sm:w-[300px]"
       />
       <div className="absolute bottom-0 right-3 top-0 my-3 flex flex-col items-center justify-center gap-2 sm:justify-between">
         {images.map((src, index) => (

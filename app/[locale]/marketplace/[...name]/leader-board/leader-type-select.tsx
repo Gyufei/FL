@@ -8,11 +8,11 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { kebabCase } from "lodash";
 
-export type ILeaderType = "Bonus Income" | "Maker Orders" | "Trading Vol";
+export type ILeaderType = "Maker Orders" | "Maker Bonus" | "Trading Vol.";
 const TradeTypes: ILeaderType[] = [
-  "Bonus Income",
   "Maker Orders",
-  "Trading Vol",
+  "Trading Vol.",
+  "Maker Bonus",
 ];
 
 export function LeaderTypeSelect({
@@ -31,7 +31,7 @@ export function LeaderTypeSelect({
   }
 
   function getI18nText(t: ILeaderType) {
-    return "sl-" + t.replace(" ", "");
+    return "sl-" + t.replace(" ", "").replace(".", "");
   }
 
   return (
@@ -39,7 +39,6 @@ export function LeaderTypeSelect({
       <PopoverTrigger asChild>
         <div className="flex cursor-pointer items-center justify-end space-x-1 rounded-full py-[5px] outline-none">
           <div className="text-xs leading-5 text-gray">
-            {/* {mt(getI18nText(type))} */}
             <OptionIcon type={type} active={false} />
           </div>
           <Image
@@ -68,7 +67,7 @@ export function LeaderTypeSelect({
             <OptionIcon type={t} active={type === t} />
             <div
               data-checked={type === t}
-              className="ml-[5px] text-xs leading-[18px] data-[checked=true]:text-black data-[checked=false]:text-gray"
+              className="ml-[5px] text-xs leading-[18px] data-[checked=false]:text-gray data-[checked=true]:text-black"
             >
               {mt(getI18nText(t))}
             </div>
@@ -82,7 +81,7 @@ export function LeaderTypeSelect({
 function OptionIcon({ type, active }: { type: ILeaderType; active: boolean }) {
   const imageName = useMemo(() => {
     let imageName = kebabCase(type);
-    if (imageName === "bonus-income") {
+    if (imageName === "maker-bonus") {
       imageName = "bonus";
     }
     if (!active) {

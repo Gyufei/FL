@@ -20,7 +20,7 @@ export function useWeb3Wallet() {
           type: "warning",
           message: T("btn-ConnectWalletConfirmWarning"),
           bottom: "30%",
-          duration: 3000000,
+          duration: 60000,
           zIndex: 999999999999,
         });
         reportEvent("connectWalletFail", { value: "longTime" });
@@ -28,7 +28,10 @@ export function useWeb3Wallet() {
     } else {
       setGlobalMessage(null);
     }
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      setGlobalMessage(null);
+    };
   }, [connectModalOpen]);
 
   const toConnectWallet = useCallback(

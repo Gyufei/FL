@@ -19,6 +19,7 @@ import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-veri
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
 import { reportEvent } from "@/lib/utils/analytics";
+import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 
 export function BuyContent({
   marketplace,
@@ -72,6 +73,8 @@ export function BuyContent({
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
     useAccountVerifyDialog(currentMarket);
 
+  const { checkBalance } = useCheckBnbBalance(currentMarket.chain, payToken);
+
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
@@ -81,6 +84,10 @@ export function BuyContent({
 
     if (!isAccountVerify) {
       setVerifyDialogOpen(true);
+      return;
+    }
+
+    if (!checkBalance(payTokenAmount)) {
       return;
     }
 

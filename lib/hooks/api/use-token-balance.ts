@@ -1,9 +1,14 @@
 import { useReadContract, useAccount } from "wagmi";
-import { ChainConfigs } from "../../const/chain-configs";
 import { erc20Abi } from "viem";
+import NP from "number-precision";
 
-export function useBalanceDataOf(chain?: string) {
-  const abiAddress = ChainConfigs[chain || "eth"].contracts.mdin;
+export function useTokenBalance({
+  abiAddress,
+  decimals,
+}: {
+  abiAddress: string;
+  decimals: number;
+}) {
   const { address } = useAccount();
   const result = useReadContract({
     abi: erc20Abi,
@@ -12,5 +17,5 @@ export function useBalanceDataOf(chain?: string) {
     args: [address as any],
   });
 
-  return result;
+  return result ? NP.divide(String(result.data), String(10 ** decimals)) : 0;
 }

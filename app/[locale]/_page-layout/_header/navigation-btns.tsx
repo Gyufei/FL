@@ -62,19 +62,6 @@ export default function NavigationBtns() {
           />
           {isMarketPlace && <div>{t("btn-Marketplace")}</div>}
         </div>
-        {isMarketDetailPage && (
-          <div className="z-1 absolute -right-[100px] flex h-12 cursor-pointer items-center justify-center rounded-full border border-yellow bg-yellow pl-[64px] pr-6">
-            <div className="flex items-center space-x-1 text-gray">
-              <div>Point</div>
-              <Image
-                src="/icons/arrow-down-gray.svg"
-                width={16}
-                height={16}
-                alt="arrow"
-              />
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

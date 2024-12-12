@@ -111,7 +111,7 @@ export function TradesTable({
   const theme = useTheme({
     Table: `
       grid-template-rows: 40px repeat(auto-fit, 40px);
-      grid-template-columns:  50px repeat(4, minmax(0, 1fr));
+      grid-template-columns:  50px repeat(2, minmax(0, max-content)) 1fr minmax(0, max-content);
       font-weight: 400;
 
       &::-webkit-scrollbar {
@@ -138,12 +138,17 @@ export function TradesTable({
     HeaderCell: `
       color: #c0c4cc;
       border-bottom: 1px solid #eee;
+
+      &:nth-of-type(4) {
+        text-align: center;
+      }
     `,
     Cell: `
       color: #2d2e33;
       height: 40px;
 
-      &:nth-of-type(3) {
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
         text-align: center;
       }
     `,
@@ -165,17 +170,27 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[80px]" />
         ) : (
-          <div>#{trade.item_id}</div>
+          <div className="px-[4px]">#{trade.item_id}</div>
         ),
     },
     {
-      label: t("th-Value"),
+      label: t("th-Price"),
       renderCell: (trade: any) =>
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[100px]" />
         ) : (
-          <div className="flex w-full items-center justify-end pr-4">
+          <div className="flex w-full items-center justify-end px-[4px] pr-4">
             <span>{formatNum(trade.token_amount)}</span>
+            {/* <span>
+              {formatNum(
+                NP.divide(
+                  NP.divide(trade.amount, trade.token_amount),
+                  pointDecimalNum,
+                ),
+                2,
+                true,
+              )}
+            </span> */}
             {trade.token && (
               <Image
                 className="ml-1 rounded-full"
@@ -194,7 +209,7 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
         ) : (
-          <div>
+          <div className="px-[4px] text-center">
             {formatNum(NP.divide(trade.amount, pointDecimalNum), 2, true)}
           </div>
         ),
@@ -205,7 +220,7 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[60px]" />
         ) : (
-          <div>{truncateAddr(trade.buyer)}</div>
+          <div className="px-[4px]">{truncateAddr(trade.buyer)}</div>
         ),
     },
   ];

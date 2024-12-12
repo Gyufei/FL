@@ -193,7 +193,11 @@ export default function BidDetail({
               onClick={handleDeposit}
             >
               <button
-                disabled={isDepositLoading || !sellPointAmount || isApproving}
+                disabled={
+                  isDepositLoading ||
+                  (!isShouldApprove && !sellPointAmount) ||
+                  isApproving
+                }
                 // onClick={handleDeposit}
                 className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
               >

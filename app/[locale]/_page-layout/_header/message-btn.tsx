@@ -30,7 +30,7 @@ export default function MessageBtn() {
 
   const pathname = usePathname();
 
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   if (pathname === "/") return null;
 
@@ -42,8 +42,8 @@ export default function MessageBtn() {
       >
         <Image
           src="/icons/bell.svg"
-          width={isMobile ? 20 : 24}
-          height={isMobile ? 20 : 24}
+          width={isMobileSize ? 20 : 24}
+          height={isMobileSize ? 20 : 24}
           alt="bell"
         />
         {(data || []).length > 0 && (
@@ -59,12 +59,12 @@ export default function MessageBtn() {
       <Drawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        direction={isMobile ? "top" : "right"}
-        size={isMobile ? "99%" : 500}
+        direction={isMobileSize ? "top" : "right"}
+        size={isMobileSize ? "99%" : 500}
         className="overflow-y-auto rounded-b-2xl p-6 sm:rounded-l-2xl"
         customIdSuffix="msg-drawer"
       >
-        {isMobile ? (
+        {isMobileSize ? (
           <MobileDrawerTitle
             title={t("cap-Notifications")}
             onClose={() => setDrawerOpen(false)}

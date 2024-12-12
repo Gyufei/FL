@@ -12,7 +12,7 @@ import { OKXWalletAdapter } from "./okx-wallet-adapter";
 import { useRpc } from "@/lib/hooks/web3/use-rpc";
 import { ChainType } from "@/lib/types/chain";
 
-export default function SolanaWalletProviders({
+export default function SolanaWalletsProviders({
   children,
 }: {
   children?: ReactNode;

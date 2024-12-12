@@ -33,11 +33,11 @@ export default function MarketplaceContent({
   const pt = useTranslations("page-MarketList");
   const mt = useTranslations("pn-Marketplace");
 
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
   const [activePanel, setActivePanel] = useState("Transaction");
 
   function checkIsActive(name: string) {
-    if (!isMobile) return true;
+    if (!isMobileSize) return true;
 
     return activePanel === name;
   }
@@ -134,10 +134,10 @@ export default function MarketplaceContent({
           <div
             className="flex-1"
             style={{
-              minHeight: isMobile
+              minHeight: isMobileSize
                 ? "calc(100vh - 175px)"
                 : "min(calc(100vh - 156px), 691px)",
-              maxHeight: isMobile
+              maxHeight: isMobileSize
                 ? "calc(100vh - 175px)"
                 : "max(calc(100vh - 156px), 691px)",
             }}

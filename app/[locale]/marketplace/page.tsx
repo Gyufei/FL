@@ -10,7 +10,7 @@ import MobilePageFooter, {
 } from "../_page-layout/_page-footer/page-footer-mobile";
 
 export default function Marketplace() {
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   const pt = useTranslations("page-MarketList");
 
@@ -33,7 +33,7 @@ export default function Marketplace() {
   const [activePanel, setActivePanel] = useState(mobilePanels[0].name);
 
   function checkIsActive(name: string) {
-    if (!isMobile) return true;
+    if (!isMobileSize) return true;
 
     return activePanel === name;
   }

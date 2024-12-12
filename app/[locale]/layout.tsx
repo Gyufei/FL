@@ -2,18 +2,14 @@ import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import {
-  GoogleAnalytics,
-  // GoogleTagManager
-} from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
 import MainLayout from "@/app/[locale]/_page-layout/main-layout";
-import SolanaWalletProviders from "@/components/provider/solana-wallets";
-import Web3ModalProvider from "@/components/provider/wallet-context";
 import "react-modern-drawer/dist/index.css";
 import { isProduction } from "@/lib/PathMap";
+import WalletModalProvider from "@/components/provider/wallet-modal-provider";
 
 export const metadata = {
   title: {
@@ -72,15 +68,13 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={cn(VideoFont.variable)}>
         <JotaiProvider>
-          <Web3ModalProvider>
-            <SolanaWalletProviders>
-              <SWRConfigProvider>
-                <NextIntlClientProvider messages={messages}>
-                  <MainLayout>{children}</MainLayout>
-                </NextIntlClientProvider>
-              </SWRConfigProvider>
-            </SolanaWalletProviders>
-          </Web3ModalProvider>
+          <WalletModalProvider>
+            <SWRConfigProvider>
+              <NextIntlClientProvider messages={messages}>
+                <MainLayout>{children}</MainLayout>
+              </NextIntlClientProvider>
+            </SWRConfigProvider>
+          </WalletModalProvider>
         </JotaiProvider>
       </body>
       <GoogleAnalytics gaId={isProduction ? "G-FN03SV9KCF" : "G-1PQBDX806E"} />

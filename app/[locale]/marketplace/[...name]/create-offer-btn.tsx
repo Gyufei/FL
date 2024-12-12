@@ -22,7 +22,7 @@ export default function CreateOfferBtn({
   onSuccess: () => void;
 }) {
   const T = useTranslations("drawer-CreateOffer");
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("sell");
   const hasReportedSuccessRef = useRef(false);
@@ -71,11 +71,11 @@ export default function CreateOfferBtn({
         <Drawer
           open={drawerOpen}
           onClose={handleCloseDrawer}
-          direction={isMobile ? "bottom" : "right"}
-          size={isMobile ? "calc(100vh - 44px)" : 500}
+          direction={isMobileSize ? "bottom" : "right"}
+          size={isMobileSize ? "calc(100vh - 44px)" : 500}
           className="flex flex-col overflow-y-auto rounded-none p-4 sm:rounded-l-2xl sm:p-6"
         >
-          {isMobile ? (
+          {isMobileSize ? (
             <MobileDrawerTitle
               title={T("cap-CreateMakerOffer")}
               onClose={handleCloseDrawer}

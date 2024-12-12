@@ -24,7 +24,7 @@ export default function OfferList({
   const [orderTypes, setOrderTypes] = useState<Array<IOfferType>>(["sell"]);
   const [searchText, setSearchText] = useState("");
 
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
   const {
     sortField,
     sortDir,
@@ -83,7 +83,7 @@ export default function OfferList({
         </div>
         <div
           style={{
-            background: isMobile
+            background: isMobileSize
               ? "linear-gradient(270deg, #FAFAFA 0%, #FAFAFA 71%, rgba(250, 250, 250, 0) 107%)"
               : "none",
           }}

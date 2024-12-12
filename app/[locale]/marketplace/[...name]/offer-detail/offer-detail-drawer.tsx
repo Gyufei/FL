@@ -23,7 +23,7 @@ export default function OfferDetailDrawer({
 }) {
   const ct = useTranslations("Common");
   const ot = useTranslations("drawer-OfferDetail");
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
   const { anchor: offerId, setAnchorValue } = useAnchor();
 
   const offer = useMemo(() => {
@@ -76,11 +76,11 @@ export default function OfferDetailDrawer({
       <Drawer
         open={drawerOpen}
         onClose={handleDrawerClose}
-        direction={isMobile ? "bottom" : "right"}
-        size={isMobile ? "calc(100vh - 44px)" : 952}
+        direction={isMobileSize ? "bottom" : "right"}
+        size={isMobileSize ? "calc(100vh - 44px)" : 952}
         className="overflow-y-auto rounded-none p-4 sm:rounded-l-2xl sm:p-6"
       >
-        {isMobile ? (
+        {isMobileSize ? (
           <MobileDrawerTitle
             title={isAsk ? ot("cap-AskOfferDetail") : ot("cap-BidOfferDetail")}
             onClose={handleDrawerClose}

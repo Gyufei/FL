@@ -34,7 +34,7 @@ export default function ListAskHoldingBtn({
 }) {
   const cot = useTranslations("drawer-CreateOffer");
   const T = useTranslations("page-MyStocks");
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -107,11 +107,11 @@ export default function ListAskHoldingBtn({
       <Drawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        direction={isMobile ? "bottom" : "right"}
-        size={isMobile ? "calc(100vh - 44px)" : 952}
+        direction={isMobileSize ? "bottom" : "right"}
+        size={isMobileSize ? "calc(100vh - 44px)" : 952}
         className="overflow-y-auto rounded-none p-4 sm:flex sm:flex-col sm:rounded-l-2xl sm:p-6 "
       >
-        {isMobile ? (
+        {isMobileSize ? (
           <MobileDrawerTitle
             title={T("cap-ListStockAsAskOffer")}
             onClose={() => setDrawerOpen(false)}

@@ -79,6 +79,7 @@ export function SellContent({
       receiveToken,
       sellPoint || undefined,
       "sell",
+      sellPointAmount,
     );
 
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =

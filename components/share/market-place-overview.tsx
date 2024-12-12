@@ -29,9 +29,10 @@ export default function MarketplaceOverview({
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-FloorPrice")}</LabelText>
+          {/* <LabelText isLoading={isLoadingFlag}>
             {t("lb-InitialListing")}
-          </LabelText>
+          </LabelText> */}
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
@@ -45,7 +46,7 @@ export default function MarketplaceOverview({
           )}
         </div>
 
-        <div className="flex flex-col items-end">
+        {/* <div className="flex flex-col items-end">
           <LabelText isLoading={isLoadingFlag}>{t("lb-AllTimeHigh")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
@@ -74,7 +75,7 @@ export default function MarketplaceOverview({
               {marketplace!.change_rate_24h}%
             </div>
           )}
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-end">
           <LabelText isLoading={isLoadingFlag}>
@@ -107,9 +108,10 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>
+          <LabelText isLoading={isLoadingFlag}>{t("lb-AvgBid")}</LabelText>
+          {/* <LabelText isLoading={isLoadingFlag}>
             {t("lb-ActiveWallets")}
-          </LabelText>
+          </LabelText> */}
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (

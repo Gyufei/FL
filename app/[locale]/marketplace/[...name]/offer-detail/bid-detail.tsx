@@ -48,6 +48,7 @@ export default function BidDetail({
   } = useOfferFormat({
     offer: offer,
   });
+  const [sellPointAmount, setSellPointAmount] = useState(0);
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     usePairApprove(
@@ -55,12 +56,11 @@ export default function BidDetail({
       offerTokenInfo,
       offerPointInfo,
       "sellToBid",
+      NP.divide(sellPointAmount, pointDecimalNum),
     );
 
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
     useAccountVerifyDialog(offer.marketplace);
-
-  const [sellPointAmount, setSellPointAmount] = useState(0);
 
   const sliderCanMax = useMemo(() => {
     return +bigIntOrNpMinus(offer.item_amount, offer.taken_item_amount);
@@ -193,7 +193,11 @@ export default function BidDetail({
               onClick={handleDeposit}
             >
               <button
-                disabled={isDepositLoading || !sellPointAmount || isApproving}
+                disabled={
+                  isDepositLoading ||
+                  (!isShouldApprove && !sellPointAmount) ||
+                  isApproving
+                }
                 // onClick={handleDeposit}
                 className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
               >

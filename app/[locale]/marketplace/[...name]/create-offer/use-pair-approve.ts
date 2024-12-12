@@ -8,6 +8,7 @@ export function usePairApprove(
   token: IToken | undefined,
   point: IPoint | undefined,
   type?: "sell" | "buy" | "sellToBid" | "buyFromAsk",
+  allowAmount: string | number = 0,
 ) {
   const isMarketPointToken =
     point?.marketplace?.market_catagory === "point_token";
@@ -41,6 +42,7 @@ export function usePairApprove(
     token?.address || "",
     token?.symbol || "",
     skipToken,
+    allowAmount,
   );
 
   const {
@@ -53,6 +55,7 @@ export function usePairApprove(
     point?.marketplace.project_token_addr || "",
     point?.marketplace.item_name || "",
     skipPoint,
+    allowAmount,
   );
 
   const isShouldApprove = isShouldApprovePoint || isShouldApproveToken;

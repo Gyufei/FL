@@ -29,7 +29,7 @@ export default function WithWalletConnectBtn({
       if (chain === ChainType.SOLANA) {
         setSolWalletSelectDialogVisible(true);
       } else {
-        toConnectWallet(chain);
+        toConnectWallet();
       }
     } else {
       onClick();

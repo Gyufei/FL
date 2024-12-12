@@ -15,7 +15,6 @@ import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
 import { useEffect, useState, useRef } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import * as Sentry from "@sentry/nextjs";
-import { reportEvent } from "@/lib/utils/analytics";
 import { EIP6963AnnounceProviderEvent } from "@/lib/types/wallet";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -74,7 +73,6 @@ export default function ConnectBtn() {
 
   const handleDisconnect = () => {
     setShowSignIn(false);
-    reportEvent("disconnectWalletSuccess", { value: address.slice(-8) });
     disconnect();
   };
 

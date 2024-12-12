@@ -78,14 +78,6 @@ export default function AskDetail({
     isNativeToken,
   });
 
-  const { isShouldApprove, approveAction, isApproving, approveBtnText } =
-    usePairApprove(
-      offer.marketplace.chain,
-      offerTokenInfo,
-      offerPointInfo,
-      "buyFromAsk",
-    );
-
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
     useAccountVerifyDialog(offer.marketplace);
 
@@ -114,6 +106,15 @@ export default function AskDetail({
     offer.marketplace.chain,
     offerTokenInfo,
   );
+
+  const { isShouldApprove, approveAction, isApproving, approveBtnText } =
+    usePairApprove(
+      offer.marketplace.chain,
+      offerTokenInfo,
+      offerPointInfo,
+      "buyFromAsk",
+      payTokenAmount,
+    );
 
   function handleSliderChange(v: number) {
     setReceivePointAmount(v);

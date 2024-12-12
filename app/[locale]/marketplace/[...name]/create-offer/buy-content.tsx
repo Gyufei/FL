@@ -68,6 +68,7 @@ export function BuyContent({
       payToken,
       receivePoint || undefined,
       "buy",
+      payTokenAmount,
     );
 
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =

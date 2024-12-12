@@ -19,9 +19,8 @@ export function useApprove(
   tokenAddr: string,
   tokenSymbol: string,
   skipApprove: boolean = false,
+  allowAmount: any = 0,
 ) {
-  const allowAmount: number = 0;
-
   const config = useConfig();
   const chainConf = ChainConfigs[chain];
   const isEvm = chainConf.isEvm;
@@ -129,13 +128,12 @@ export function useApprove(
       const isUSDT = tokenSymbol === "USDT";
       const amountMax =
         "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-      const amount = isUSDT ? (allowAmount == 0 ? amountMax : "0") : amountMax;
 
       const callParams = {
         abi: isUSDT ? USDTAbi : erc20Abi,
         address: tokenAddr as any,
         functionName: "approve",
-        args: [spender, amount],
+        args: [spender, amountMax],
       };
 
       writeContract(

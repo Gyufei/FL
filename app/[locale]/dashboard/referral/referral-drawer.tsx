@@ -34,7 +34,7 @@ export function ReferralDrawer({
     () => (extraRateData?.data || 0) / 10 ** 4,
     [extraRateData],
   );
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   const { referralBaseRate } = useGlobalConfig();
 
@@ -110,12 +110,12 @@ export function ReferralDrawer({
     <Drawer
       open={drawerOpen}
       onClose={handleDrawerClose}
-      direction={isMobile ? "bottom" : "right"}
-      size={isMobile ? "calc(100vh - 44px)" : 952}
+      direction={isMobileSize ? "bottom" : "right"}
+      size={isMobileSize ? "calc(100vh - 44px)" : 952}
       className="overflow-y-auto rounded-none p-4 sm:flex sm:flex-col sm:rounded-l-2xl sm:p-6 "
       customIdSuffix="referral-drawer"
     >
-      {isMobile ? (
+      {isMobileSize ? (
         <MobileDrawerTitle
           title={rt("th-CommissionRates")}
           onClose={handleDrawerClose}

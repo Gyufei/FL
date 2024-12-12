@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils/common";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useWeb3Wallet } from "@/lib/hooks/web3/use-web3-wallet";
 import { ChainType } from "@/lib/types/chain";
+import { useWalletModalContext } from "../provider/wallet-modal-provider";
 
 export default function WithWalletConnectBtn({
   chain,
@@ -14,13 +14,12 @@ export default function WithWalletConnectBtn({
   children: React.ReactNode;
   className?: string;
 }) {
+  const { openWalletModal } = useWalletModalContext();
   const { connected } = useChainWallet(chain);
-
-  const { toConnectWallet } = useWeb3Wallet();
 
   function handleClick() {
     if (!connected) {
-      toConnectWallet(chain);
+      openWalletModal(true, chain);
     } else {
       onClick();
     }

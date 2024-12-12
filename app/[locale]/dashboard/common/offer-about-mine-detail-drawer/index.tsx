@@ -27,7 +27,7 @@ export default function OfferAboutMineDetailDrawer({
   const ot = useTranslations("drawer-OfferDetail");
 
   const settleMode = upperFirst(offer?.origin_settle_mode);
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   const isAsk = useMemo(() => {
     return offer?.entry.direction === "sell";
@@ -49,12 +49,12 @@ export default function OfferAboutMineDetailDrawer({
     <Drawer
       open={drawerOpen}
       onClose={handleDrawerClose}
-      direction={isMobile ? "bottom" : "right"}
-      size={isMobile ? "calc(100vh - 44px)" : 952}
+      direction={isMobileSize ? "bottom" : "right"}
+      size={isMobileSize ? "calc(100vh - 44px)" : 952}
       className="overflow-y-auto rounded-none p-4 sm:rounded-l-2xl sm:p-6"
       customIdSuffix="detail-drawer"
     >
-      {isMobile ? (
+      {isMobileSize ? (
         <MobileDrawerTitle
           title={
             isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")

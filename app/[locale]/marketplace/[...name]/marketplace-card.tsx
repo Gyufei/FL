@@ -228,7 +228,7 @@ function FoldPop() {
 
   const router = useRouter();
 
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   const [popOpen, setPopOpen] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -297,7 +297,7 @@ function FoldPop() {
             key={cate.name}
             style={{
               marginTop: i === 0 ? 0 : 12,
-              boxShadow: isMobile ? "inset 0px -1px 0px 0px #EEEEEE" : "",
+              boxShadow: isMobileSize ? "inset 0px -1px 0px 0px #EEEEEE" : "",
             }}
           >
             <Image
@@ -326,7 +326,7 @@ function FoldPop() {
     );
   }
 
-  if (isMobile) {
+  if (isMobileSize) {
     return (
       <div>
         <button

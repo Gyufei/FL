@@ -49,7 +49,7 @@ export default function MyBalances() {
   const { data: solanaTokens } = useTokens(ChainType.SOLANA);
   const { data: allMarketPoint } = useMarketPoints();
 
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
   const allTokens = useMemo(() => {
     function addChainToToken(chain: ChainType, tokens: IToken[]) {
@@ -232,7 +232,7 @@ export default function MyBalances() {
     setOpenPanel(panelIndex);
   }
 
-  if (isMobile) {
+  if (isMobileSize) {
     return (
       <MobileBalances dataArray={dataArray} updateData={refetchTokenBlcData} />
     );

@@ -1,16 +1,14 @@
 "use client";
-import "@rainbow-me/rainbowkit/styles.css";
-
 import React, { ReactNode } from "react";
-import { State } from "wagmi";
+import { createConfig, State } from "wagmi";
 
-import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider, cookieStorage, createStorage, http } from "wagmi";
 import { mainnet, bsc, bscTestnet, sepolia } from "wagmi/chains";
 import { useAtomValue } from "jotai";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
 import { isProduction } from "@/lib/PathMap";
+import { injected, metaMask, walletConnect } from "wagmi/connectors";
 
 // Setup queryClient
 const queryClient = new QueryClient();
@@ -20,7 +18,7 @@ export const supportedChains = isProduction
   : // : ([mainnet, bsc, sepolia, testnet, bscTestnet] as const);
     ([mainnet, bsc, sepolia, bscTestnet] as const);
 
-export default function Web3ModalProvider({
+export default function EthWalletsProvider({
   children,
   initialState,
 }: {
@@ -46,9 +44,14 @@ export default function Web3ModalProvider({
         // [testnet.id]: http(),
       };
 
-  const wagmiConfig = getDefaultConfig({
-    appName: "Tadle",
-    projectId: "8e507d09486ed2283f0d0922c0a02261",
+  const wagmiConfig = createConfig({
+    connectors: [
+      metaMask(),
+      injected(),
+      walletConnect({
+        projectId: "8e507d09486ed2283f0d0922c0a02261",
+      }),
+    ],
     chains: supportedChains,
     ssr: true,
     storage: createStorage({
@@ -59,9 +62,7 @@ export default function Web3ModalProvider({
 
   return (
     <WagmiProvider config={wagmiConfig} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   );
 }

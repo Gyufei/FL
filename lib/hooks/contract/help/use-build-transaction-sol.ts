@@ -26,8 +26,8 @@ export function useBuildTransactionSol() {
     const versionedMessage = VersionedMessage.deserialize(
       Uint8Array.from(Buffer.from(callParams.data, "hex")),
     );
-
-    let versionedTransaction = new VersionedTransaction(versionedMessage);
+    console.log(JSON.stringify(versionedMessage, null, 2));
+    const versionedTransaction = new VersionedTransaction(versionedMessage);
     // transaction.add(instruction);
     // versionedTransaction.feePayer = authority;
 
@@ -56,13 +56,9 @@ export function useBuildTransactionSol() {
 
     // versionedTransaction.add(modifyComputeUnits).add(addPriorityFee);
 
-    const txHash = await sendTransaction(
-      versionedTransaction,
-      connection,
-      //   {
-      //   signers: [seedAccount],
-      // }
-    );
+    const txHash = await sendTransaction(versionedTransaction, connection, {
+      signers: callParams.accounts,
+    });
 
     return txHash;
   };

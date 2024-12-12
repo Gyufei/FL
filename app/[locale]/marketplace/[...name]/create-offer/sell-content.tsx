@@ -102,7 +102,10 @@ export function SellContent({
       return;
     }
 
-    if (!checkBalance(sellPointAmount)) {
+    if (
+      (isOffChainFungiblePoint || isPointToken) &&
+      !checkBalance(sellPointAmount)
+    ) {
       return;
     }
 

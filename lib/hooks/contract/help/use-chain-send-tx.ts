@@ -1,11 +1,11 @@
 import { ChainType } from "@/lib/types/chain";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 import { useMemo } from "react";
 import { useSendTransaction } from "wagmi";
 
 export function useChainSendTx(chain: ChainType) {
   const { sendTransactionAsync } = useSendTransaction();
-  const { sendTransaction } = useWallet();
+  const { buildTransaction } = useBuildTransactionSol();
 
   const sendTx: any = useMemo(() => {
     if (chain === ChainType.ETH || chain === ChainType.BNB) {
@@ -13,11 +13,11 @@ export function useChainSendTx(chain: ChainType) {
     }
 
     if (chain === ChainType.SOLANA) {
-      return sendTransaction;
+      return buildTransaction;
     }
 
     return sendTransactionAsync;
-  }, [chain, sendTransaction, sendTransactionAsync]);
+  }, [chain, buildTransaction, sendTransactionAsync]);
 
   return {
     sendTx,

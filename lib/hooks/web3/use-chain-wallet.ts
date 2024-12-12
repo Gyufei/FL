@@ -106,10 +106,16 @@ export function useChainWallet(chain?: ChainType) {
       connecting: solConnecting,
       disconnect: solDisconnect,
       currentChain: ChainType.SOLANA,
-      switchToTargetChain: () => {},
+      switchToTargetChain,
       connector: {},
     }),
-    [solAddress, solConnected, solConnecting, solDisconnect],
+    [
+      solAddress,
+      solConnected,
+      solConnecting,
+      solDisconnect,
+      switchToTargetChain,
+    ],
   );
 
   if (!chain) {

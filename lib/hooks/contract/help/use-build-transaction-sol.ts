@@ -1,64 +1,30 @@
-import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
-  ComputeBudgetProgram,
-  Transaction,
   VersionedMessage,
   VersionedTransaction,
+  Keypair,
 } from "@solana/web3.js";
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-
 export function useBuildTransactionSol() {
-  const { sendTransaction } = useWallet();
+  const { publicKey, wallet, sendTransaction } = useWallet();
   const { connection } = useConnection();
-  const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol(program.programId);
-  const buildTransaction = async (callParams: any) => {
-    const { authority, seedAccount } = await getAccounts();
-    console.log(
-      "🚀 ~ buildTransaction ~ authority, seedAccount:",
-      authority,
-      seedAccount,
-    );
 
-    const transaction = new Transaction();
+  const buildTransaction = async (callParams: any) => {
     const versionedMessage = VersionedMessage.deserialize(
       Uint8Array.from(Buffer.from(callParams.data, "hex")),
     );
-    console.log(JSON.stringify(versionedMessage, null, 2));
+    const recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+    versionedMessage.recentBlockhash = recentBlockhash;
+
     const versionedTransaction = new VersionedTransaction(versionedMessage);
-    // transaction.add(instruction);
-    // versionedTransaction.feePayer = authority;
+    // versionedTransaction.feePayer = publicKey;
 
-    // const simulate_transaction_result =
-    //   await program.provider.connection.simulateTransaction(transaction);
-    // const units = Math.trunc(
-    //   Number(simulate_transaction_result.value.unitsConsumed) * 1.2,
-    // );
-    // const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
-    //   units,
-    // });
+    const seed_account = Keypair.fromSecretKey(
+      new Uint8Array(callParams.accounts[0]),
+    );
+    versionedTransaction.sign([seed_account]);
 
-    // const prioritization_fee_list =
-    //   await program.provider.connection.getRecentPrioritizationFees();
-    // const fees = prioritization_fee_list
-    //   .map((fee) => fee.prioritizationFee)
-    //   .sort();
-    // const microLamports =
-    //   fees.length > 0
-    //     ? Math.ceil(fees.reduce((acc, cur) => acc + cur) / fees.length)
-    //     : 1000;
-
-    // const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
-    //   microLamports,
-    // });
-
-    // versionedTransaction.add(modifyComputeUnits).add(addPriorityFee);
-
-    const txHash = await sendTransaction(versionedTransaction, connection, {
-      signers: callParams.accounts,
-    });
+    // await connection.simulateTransaction(versionedTransaction);
+    const txHash = await sendTransaction(versionedTransaction, connection);
 
     return txHash;
   };

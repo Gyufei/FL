@@ -38,10 +38,10 @@
     "drawer-SocialMedia": "Social Media"
   },
   "pop-Setting": {
-    "cap-Setting": "Setting",
+    "cap-NetworkSetting": "Network Settings",
     "cap-Networks": "Networks",
     "pl-InputYourCustomRPC": "Input your custom RPC URL here...",
-    "txt-UnsupportedRPC": "Unsupported RPC Endpoint for Solana Mainnet/Testnet"
+    "txt-UnsupportedRPC": "Unsupported RPC Endpoint"
   },
   "card-Marketplace": {
     "lb-InitialListing": "Initial Listing",

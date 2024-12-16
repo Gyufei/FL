@@ -1,5 +1,6 @@
 "use client";
 
+import { isProduction } from "@/lib/PathMap";
 import { SWRConfig } from "swr";
 
 export default function SWRConfigProvider({
@@ -10,6 +11,7 @@ export default function SWRConfigProvider({
   return (
     <SWRConfig
       value={{
+        revalidateOnFocus: !!isProduction,
         shouldRetryOnError: false,
         onError: (error, key) => {
           console.info({

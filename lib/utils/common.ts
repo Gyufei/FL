@@ -56,3 +56,8 @@ export function getOrderArr(arr: any[], order: string[]) {
     return indexA - indexB;
   });
 }
+
+export const isValidRpcUrl = (url: string) => {
+  const rpcUrlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/; // Simple regex for URL validation
+  return rpcUrlPattern.test(url);
+};

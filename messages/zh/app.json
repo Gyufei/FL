@@ -38,10 +38,10 @@
     "drawer-SocialMedia": "社交媒体"
   },
   "pop-Setting": {
-    "cap-Setting": "设置",
+    "cap-NetworkSetting": "网络设置",
     "cap-Networks": "网络",
     "pl-InputYourCustomRPC": "在此输入你的自定义RPC",
-    "txt-UnsupportedRPC": "不支持的 Solana RPC 端点"
+    "txt-UnsupportedRPC": "不支持的 RPC 端点"
   },
   "card-Marketplace": {
     "lb-InitialListing": "发行价",

@@ -30,8 +30,7 @@ interface RPC {
 
 export default function RpcManage() {
   const ct = useTranslations("pop-Setting");
-  const { globalRpcs, customRpcs, setCustomRpcAction, testRpcLatency } =
-    useRpc();
+  const { globalRpcs, setCustomRpcAction, testRpcLatency } = useRpc();
   const [networks, setNetworks] = useState<Network[]>(() => {
     const storedNetworks = localStorage.getItem(
       isProduction ? "networks" : "networks_dev",
@@ -146,6 +145,7 @@ export default function RpcManage() {
       setAddingRpcTo(null);
       setEditingRpc(null);
       setNewRpcUrl("");
+      return latency;
     } catch (e) {
       setInputRpcError(true);
     }

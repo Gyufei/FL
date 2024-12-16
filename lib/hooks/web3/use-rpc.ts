@@ -8,6 +8,7 @@ import { isProduction } from "@/lib/PathMap";
 // import { testnet } from "@/components/provider/wallet-context/testnet";
 import { ChainType } from "@/lib/types/chain";
 import { isEvmChain } from "@/lib/utils/web3";
+import { isValidRpcUrl } from "@/lib/utils/common";
 
 export function useRpc() {
   const [globalRpcs, setGlobalRpc] = useAtom(GlobalRpcsAtom);
@@ -40,6 +41,10 @@ export function useRpc() {
   async function testRpcLatency(chain: ChainType, testRpc: string) {
     let startTimestamp: number;
     let endTimestamp: number;
+
+    if (!isValidRpcUrl(testRpc)) {
+      throw new Error("Invalid RPC URL");
+    }
 
     if (isEvmChain(chain)) {
       const publicClient = createPublicClient({

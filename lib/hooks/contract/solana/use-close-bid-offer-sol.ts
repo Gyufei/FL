@@ -1,9 +1,9 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { useWriteContract } from "wagmi";
+import { useChainWallet } from "../../web3/use-chain-wallet";
+import { DeliveryPlaceABI } from "@/lib/abi/eth/DeliveryPlace";
+import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useCloseBidOfferSol({
@@ -11,58 +11,32 @@ export function useCloseBidOfferSol({
   marketplaceStr,
   makerStr,
   offerStr,
-  isNativeToken,
 }: {
   chain: ChainType;
   marketplaceStr: string;
   makerStr: string;
   offerStr: string;
-  isNativeToken: boolean;
 }) {
-  const { program } = useTadleProgram();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
-    program.programId,
-  );
+  const evmConfig = ChainConfigs[chain];
 
-  const { buildTransaction } = useBuildTransactionSol();
+  const { address } = useChainWallet(chain);
+
   const { recordTransaction } = useTransactionRecord(chain);
+  const { writeContractAsync } = useWriteContract();
 
-  const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts();
+  const txAction = async () => {
+    const abiAddress = evmConfig.contracts.deliveryPlace;
 
-    const marketplace = new PublicKey(marketplaceStr);
-    const maker = new PublicKey(makerStr);
-    const offerD = new PublicKey(offerStr);
+    const callParams = {
+      abi: DeliveryPlaceABI,
+      address: abiAddress as any,
+      functionName: "closeBidOffer",
+      args: [marketplaceStr, makerStr, offerStr, address],
+    };
 
-    const { walletCollateralTokenBalance: walletDCollateralTokenBalance } =
-      await getWalletBalanceAccount(authority!, marketplace, isNativeToken);
-
-    const methodTransaction = await program.methods
-      .closeBidOffer()
-      .accounts({
-        authority,
-        userCollateralTokenBalance: walletDCollateralTokenBalance,
-        systemConfig,
-        maker,
-        marketplace,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: offerD,
-          isSigner: false,
-          isWritable: true,
-        },
-      ])
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
-
+    const txHash = await writeContractAsync({
+      ...callParams,
+    });
     await recordTransaction({
       txHash,
       note: "",
@@ -71,7 +45,7 @@ export function useCloseBidOfferSol({
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

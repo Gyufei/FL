@@ -1,88 +1,37 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { PreMarketABI } from "@/lib/abi/eth/PreMarkets";
+import { useWriteContract } from "wagmi";
+import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
 import { ChainType } from "@/lib/types/chain";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export function useRelistSol({
   chain,
-  marketplaceStr,
-  makerStr,
   offerStr,
   holdingStr,
-  isNativeToken,
 }: {
   chain: ChainType;
-  marketplaceStr: string;
-  makerStr: string;
   offerStr: string;
   holdingStr: string;
-  isNativeToken: boolean;
 }) {
-  const { program } = useTadleProgram();
-  const { buildTransaction } = useBuildTransactionSol();
+  const evmConfig = ChainConfigs[chain];
+
   const { recordTransaction } = useTransactionRecord(chain);
-  const { getAccounts } = useAccountsSol(program.programId);
+  const { writeContractAsync } = useWriteContract();
 
-  const writeAction = async () => {
-    const {
-      tokenProgram,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      userUsdcTokenAccount,
-      poolUsdcTokenAccount,
-      poolSolTokenAccount,
-      usdcTokenMint,
-      wsolTokenMint,
-      userSolTokenAccount,
-    } = await getAccounts();
+  const txAction = async () => {
+    const abiAddress = evmConfig.contracts.preMarkets;
 
-    const marketplace = new PublicKey(marketplaceStr);
-    const offerD = new PublicKey(offerStr);
-    const maker = new PublicKey(makerStr);
-    const holdingD = new PublicKey(holdingStr);
+    const callParams = {
+      abi: PreMarketABI,
+      address: abiAddress as any,
+      functionName: "relistHolding",
+      args: [holdingStr as any, offerStr as any],
+    };
 
-    const methodTransaction = await program.methods
-      .relist()
-      .accounts({
-        authority: authority,
-        systemConfig,
-        holding: holdingD,
-        poolTokenAccount: isNativeToken
-          ? poolSolTokenAccount
-          : poolUsdcTokenAccount,
-        maker,
-        marketplace,
-        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: offerD,
-          isSigner: false,
-          isWritable: true,
-        },
-        {
-          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
-          isSigner: false,
-          isWritable: true,
-        },
-      ])
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
-
+    const txHash = await writeContractAsync({
+      ...callParams,
+    });
     await recordTransaction({
       txHash,
       note: "",
@@ -91,7 +40,7 @@ export function useRelistSol({
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

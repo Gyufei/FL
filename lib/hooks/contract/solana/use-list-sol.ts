@@ -1,118 +1,58 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { BN } from "bn.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { useChainSendTx } from "../help/use-chain-send-tx";
+import { useEndPoint } from "../../api/use-endpoint";
+import { dataApiFetcher } from "@/lib/fetcher";
+import { useDataApiTransactionRecord } from "../../api/use-transactionRecord";
+import useTxStatus from "../help/use-tx-status";
 import { ChainType } from "@/lib/types/chain";
 
-export function useListSol({
-  marketplaceStr,
-  makerStr,
-  holdingStr,
-  preOfferStr,
-  originOfferStr,
-  isNativeToken,
-}: {
-  marketplaceStr: string;
-  makerStr: string;
-  holdingStr: string;
-  preOfferStr: string;
-  originOfferStr: string;
-  isNativeToken: boolean;
-}) {
-  const { program } = useTadleProgram();
-  const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord(ChainType.SOLANA);
-  const { getAccounts } = useAccountsSol(program.programId);
+export function useListSol({ chain }: { chain: ChainType }) {
+  const { submitTransaction } = useDataApiTransactionRecord();
+  const { dataApiEndPoint } = useEndPoint();
+  const { sendTx } = useChainSendTx(chain);
 
-  const writeAction = async ({
-    receiveTokenAmount,
-    collateralRate,
-  }: {
-    receiveTokenAmount: number;
-    collateralRate: number;
+  const txAction = async (args: {
+    price: string;
+    totalItemAmount: string;
+    entryIds: Array<string>;
   }) => {
-    const {
-      tokenProgram,
-      seedAccount,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      userUsdcTokenAccount,
-      poolUsdcTokenAccount,
-      poolSolTokenAccount,
-      usdcTokenMint,
-      wsolTokenMint,
-      userSolTokenAccount,
-    } = await getAccounts();
+    const { price, totalItemAmount, entryIds } = args;
+    const reqData = {
+      price,
+      total_item_amount: totalItemAmount,
+      entry_ids: entryIds,
+    };
+    const res = await dataApiFetcher(`${dataApiEndPoint}/holding/list`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reqData),
+    });
 
-    const marketplace = new PublicKey(marketplaceStr);
-    const holdingD = new PublicKey(holdingStr);
-    const maker = new PublicKey(makerStr);
-    const preOffer = new PublicKey(preOfferStr);
-    const originOffer = new PublicKey(originOfferStr);
+    if (!res.tx_data) {
+      throw new Error("Invalid transaction data");
+      return null;
+    }
 
-    const offerD = PublicKey.findProgramAddressSync(
-      [Buffer.from("offer"), seedAccount.publicKey.toBuffer()],
-      program.programId,
-    )[0];
+    const callParams = {
+      ...res.tx_data,
+    };
 
-    const methodTransaction = await program.methods
-      .list(new BN(receiveTokenAmount), new BN(collateralRate))
-      .accounts({
-        authority: authority,
-        seedAccount: seedAccount.publicKey,
-        systemConfig,
-        holding: holdingD,
-        offer: offerD,
-        poolTokenAccount: isNativeToken
-          ? poolSolTokenAccount
-          : poolUsdcTokenAccount,
-        maker,
-        marketplace,
-        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: originOffer,
-          isSigner: false,
-          isWritable: true,
-        },
-        {
-          pubkey: preOffer,
-          isSigner: false,
-          isWritable: true,
-        },
-        {
-          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
-          isSigner: false,
-          isWritable: true,
-        },
-      ])
-      .transaction();
+    const txHash = await sendTx({
+      ...callParams,
+    });
 
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [seedAccount],
-      authority!,
-    );
-
-    await recordTransaction({
+    await submitTransaction({
+      chain,
       txHash,
-      note: "",
+      txType: "list",
+      txData: null,
     });
 
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

@@ -1,99 +1,64 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 import { ChainType } from "@/lib/types/chain";
+import { useDataApiTransactionRecord } from "../../api/use-transactionRecord";
+import { useEndPoint } from "../../api/use-endpoint";
+import { useChainSendTx } from "../help/use-chain-send-tx";
+import { useChainWallet } from "../../web3/use-chain-wallet";
+import { dataApiFetcher } from "@/lib/fetcher";
+import { DataApiPaths } from "@/lib/PathMap";
+import useTxStatus from "../help/use-tx-status";
+import { IBalanceType } from "../use-withdraw-token";
 
-export type IBalanceType =
-  | "taxIncome"
-  | "referralBonus"
-  | "salesRevenue"
-  | "remainingCash"
-  | "makerRefund";
+export function useWithdrawTokenSol({ chain }: { chain: ChainType }) {
+  const { submitTransaction } = useDataApiTransactionRecord();
+  const { dataApiEndPoint } = useEndPoint();
+  const { sendTx } = useChainSendTx(chain);
 
-export function useWithdrawTokenSol() {
-  const { program } = useTadleProgram();
-  const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord(ChainType.SOLANA);
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
-    program.programId,
-  );
+  const { address } = useChainWallet(chain);
 
-  const writeAction = async ({
-    mode,
-    isNativeToken,
-  }: {
-    isNativeToken: boolean;
-    mode: IBalanceType;
+  const txAction = async (args: {
+    token_symbol: string;
+    token_balance_type: IBalanceType;
   }) => {
-    const {
-      tokenProgram,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      usdcTokenMint,
-      poolTokenAuthority,
-      userUsdcTokenAccount,
-      poolSolTokenAccount,
-      poolUsdcTokenAccount,
-      wsolTokenMint,
-      userSolTokenAccount,
-    } = await getAccounts();
+    const reqData = {
+      wallet: address,
+      ...args,
+    };
 
-    const wsolTmpTokenAccount = PublicKey.findProgramAddressSync(
-      [Buffer.from("wsol_tmp_token_account"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    const { walletCollateralTokenBalance: userCollateralTokenBalance } =
-      await getWalletBalanceAccount(authority!, authority!, isNativeToken);
-
-    const methodTransaction = await program.methods
-      .withdrawBaseToken({
-        [mode]: {},
-      })
-      .accounts({
-        authority,
-        poolTokenAuthority,
-        wsolTmpTokenAccount,
-        userCollateralTokenBalance,
-        systemConfig,
-        poolTokenAccount: isNativeToken
-          ? poolSolTokenAccount
-          : poolUsdcTokenAccount,
-        collateralTokenMint: isNativeToken ? wsolTokenMint : usdcTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: isNativeToken ? userSolTokenAccount : userUsdcTokenAccount,
-          isSigner: false,
-          isWritable: true,
+    const res = await dataApiFetcher(
+      `${dataApiEndPoint}${DataApiPaths.accountWithdraw}?chain=${chain}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ])
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
+        body: JSON.stringify(reqData),
+      },
     );
 
-    await recordTransaction({
+    if (!res.tx_data) {
+      throw new Error("Invalid transaction data");
+      return null;
+    }
+
+    const callParams = {
+      ...res.tx_data,
+    };
+
+    const txHash = await sendTx({
+      ...callParams,
+    });
+
+    await submitTransaction({
+      chain,
       txHash,
-      note: "",
+      txType: "withdraw",
+      txData: null,
     });
 
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

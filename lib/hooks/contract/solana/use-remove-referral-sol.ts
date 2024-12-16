@@ -1,45 +1,29 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { useWriteContract } from "wagmi";
+import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
+import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useRemoveReferralSol({ chain }: { chain: ChainType }) {
-  const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol(program.programId);
+  const evmConfig = ChainConfigs[chain];
 
-  const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord(chain);
+  const { writeContractAsync } = useWriteContract();
 
-  const writeAction = async ({ referralCode }: { referralCode: string }) => {
-    const { authority, systemProgram } = await getAccounts();
+  const txAction = async ({ referralCode }: { referralCode: string }) => {
+    const abiAddress = evmConfig.contracts.systemConfig;
 
-    const referralCodeData = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("create_referral_code"),
-        Buffer.from(referralCode),
-        authority!.toBuffer(),
-      ],
-      program.programId,
-    )[0];
+    const callParams = {
+      abi: SystemConfigABI,
+      address: abiAddress as any,
+      functionName: "removeReferralCode",
+      args: [referralCode],
+    };
 
-    const methodTransaction = await program.methods
-      .removeReferralCode(referralCode)
-      .accounts({
-        authority: authority!,
-        referralCodeData,
-        systemProgram,
-      })
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
+    const txHash = await writeContractAsync({
+      ...callParams,
+    });
 
     await recordTransaction({
       txHash,
@@ -49,7 +33,7 @@ export function useRemoveReferralSol({ chain }: { chain: ChainType }) {
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

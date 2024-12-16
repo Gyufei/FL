@@ -1,77 +1,52 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
 import { ChainType } from "@/lib/types/chain";
+import { useEndPoint } from "@/lib/hooks/api/use-endpoint";
+import { useDataApiTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
+import { useChainSendTx } from "@/lib/hooks/contract/help/use-chain-send-tx";
+import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
+import { dataApiFetcher } from "@/lib/fetcher";
 
-export function useAbortOrderAsTakerSol({
-  marketplaceStr,
-  makerStr,
-  offerStr,
-  holdingStr,
-  isNativeToken,
-}: {
-  marketplaceStr: string;
-  makerStr: string;
-  offerStr: string;
-  holdingStr: string;
-  isNativeToken: boolean;
-}) {
-  const { program } = useTadleProgram();
-  const { getAccounts, getWalletBalanceAccount } = useAccountsSol(
-    program.programId,
-  );
+export function useAbortOrderAsTakerSol({ chain }: { chain: ChainType }) {
+  const { submitTransaction } = useDataApiTransactionRecord();
+  const { dataApiEndPoint } = useEndPoint();
+  const { sendTx } = useChainSendTx(chain);
 
-  const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord(ChainType.SOLANA);
-
-  const writeAction = async () => {
-    const { authority, systemProgram } = await getAccounts();
-
-    const marketplace = new PublicKey(marketplaceStr);
-    const maker = new PublicKey(makerStr);
-    const offerD = new PublicKey(offerStr);
-    const holdingD = new PublicKey(holdingStr);
-
-    const { walletCollateralTokenBalance: walletDCollateralTokenBalance } =
-      await getWalletBalanceAccount(authority!, marketplace, isNativeToken);
-
-    const methodTransaction = await program.methods
-      .abortAskOffer()
-      .accounts({
-        authority,
-        holding: holdingD,
-        userCollateralTokenBalance: walletDCollateralTokenBalance,
-        maker,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: offerD,
-          isSigner: false,
-          isWritable: true,
+  const txAction = async (args: { offerId: string }) => {
+    const { offerId } = args;
+    const res = await dataApiFetcher(
+      `${dataApiEndPoint}/offer/${offerId}/confirm_abort?chain=${chain}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ])
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
+        body: null,
+      },
     );
 
-    await recordTransaction({
+    if (!res.tx_data) {
+      throw new Error("Invalid transaction data");
+      return null;
+    }
+
+    const callParams = {
+      ...res.tx_data,
+    };
+
+    const txHash = await sendTx({
+      ...callParams,
+    });
+
+    await submitTransaction({
+      chain,
       txHash,
-      note: "",
+      txType: "abortOrderAsTaker",
+      txData: null,
     });
 
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

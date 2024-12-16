@@ -1,64 +1,36 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { BN } from "bn.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { useWriteContract } from "wagmi";
 import { generateRandomCode } from "@/lib/utils/common";
+import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
+import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useCreateReferralSol({ chain }: { chain: ChainType }) {
-  const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol(program.programId);
+  const evmConfig = ChainConfigs["eth"];
 
-  const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord(chain);
+  const { writeContractAsync } = useWriteContract();
 
-  const writeAction = async (args?: {
+  const txAction = async (args?: {
     firstAmount?: number;
     secondAmount?: number;
   }) => {
-    const RandomCode = generateRandomCode(8);
     const { firstAmount = 300000, secondAmount = 0 } = args || {};
-    const { authority, systemProgram } = await getAccounts();
 
-    const referralCodeData = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("create_referral_code"),
-        Buffer.from(RandomCode),
-        authority!.toBuffer(),
-      ],
-      program.programId,
-    )[0];
+    const abiAddress = evmConfig.contracts.systemConfig;
+    const RandomCode = generateRandomCode(8);
 
-    const referralBaseRateConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("base_referral_rate")],
-      program.programId,
-    )[0];
+    const callParams = {
+      abi: SystemConfigABI,
+      address: abiAddress as any,
+      functionName: "createReferralCode",
+      args: [RandomCode, BigInt(firstAmount || 0), BigInt(secondAmount || 0)],
+    };
 
-    const referralExtraRateConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("extra_referral_rate"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    const methodTransaction = await program.methods
-      .createReferralCode(RandomCode, new BN(firstAmount), new BN(secondAmount))
-      .accounts({
-        authority: authority!,
-        referralBaseRateConfig,
-        referralExtraRateConfig,
-        referralCodeData,
-        systemProgram,
-      })
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
+    const txHash = await writeContractAsync({
+      ...callParams,
+    });
 
     await recordTransaction({
       txHash,
@@ -68,7 +40,7 @@ export function useCreateReferralSol({ chain }: { chain: ChainType }) {
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

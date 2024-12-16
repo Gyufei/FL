@@ -1,63 +1,35 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { useWriteContract } from "wagmi";
+import { SystemConfigABI } from "@/lib/abi/eth/SystemConfig";
+import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useUpdateReferralSol({
   chain,
-  referrerStr,
   referralCode,
 }: {
   chain: ChainType;
-  referrerStr: string;
   referralCode: string;
 }) {
-  const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol(program.programId);
+  const evmConfig = ChainConfigs[chain];
 
-  const { buildTransaction } = useBuildTransactionSol();
   const { recordTransaction } = useTransactionRecord(chain);
+  const { writeContractAsync } = useWriteContract();
 
-  const writeAction = async () => {
-    const { authority, systemProgram, systemConfig } = await getAccounts();
+  const txAction = async () => {
+    const abiAddress = evmConfig.contracts.systemConfig;
 
-    const referrer = new PublicKey(referrerStr);
+    const callParams = {
+      abi: SystemConfigABI,
+      address: abiAddress as any,
+      functionName: "updateReferrerInfo",
+      args: [referralCode],
+    };
 
-    const referralCodeData = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("create_referral_code"),
-        Buffer.from(referralCode),
-        referrer.toBuffer(),
-      ],
-      program.programId,
-    )[0];
-
-    const referralConfig = PublicKey.findProgramAddressSync(
-      [Buffer.from("referral_config"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    const methodTransaction = await program.methods
-      .updateReferralConfig(referrer, referralCode)
-      .accounts({
-        authority: authority!,
-        systemConfig,
-        referralCodeData,
-        referralConfig,
-        systemProgram,
-      })
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
-
+    const txHash = await writeContractAsync({
+      ...callParams,
+    });
     await recordTransaction({
       txHash,
       note: "",
@@ -66,7 +38,7 @@ export function useUpdateReferralSol({
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

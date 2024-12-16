@@ -1,74 +1,32 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
+import { useWriteContract } from "wagmi";
+import { useChainWallet } from "../../web3/use-chain-wallet";
+import { TokenManagerABI } from "@/lib/abi/eth/TokenManager";
+import useTxStatus from "../help/use-tx-status";
+import { useTransactionRecord } from "../../api/use-transactionRecord";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 
 export function useWithdrawItemSol({ chain }: { chain: ChainType }) {
-  const { program } = useTadleProgram();
-  const { buildTransaction } = useBuildTransactionSol();
+  const evmConfig = ChainConfigs[chain];
+
+  const { address: userAddress } = useChainWallet(chain);
+
   const { recordTransaction } = useTransactionRecord(chain);
-  const { getAccounts } = useAccountsSol(program.programId);
+  const { writeContractAsync } = useWriteContract();
 
-  const writeAction = async ({
-    marketplaceStr,
-  }: {
-    marketplaceStr: string;
-  }) => {
-    const {
-      tokenProgram,
-      tokenProgram2022,
-      authority,
-      systemProgram,
-      systemConfig,
-      poolTokenAuthority,
-      projectTokenMint,
-      userPointsTokenAccount,
-      poolPointsTokenAccount,
-    } = await getAccounts();
+  const txAction = async ({ tokenAddress }: { tokenAddress: string }) => {
+    const abiAddress = evmConfig.contracts.tokenManager;
 
-    const marketplace = new PublicKey(marketplaceStr);
+    const callParams = {
+      abi: TokenManagerABI,
+      address: abiAddress as any,
+      functionName: "withdrawPlatformFee",
+      args: [tokenAddress as any, userAddress],
+    };
 
-    const userProjectTokenBalance = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("point_token_balance"),
-        marketplace.toBuffer(),
-        authority!.toBuffer(),
-      ],
-      program.programId,
-    )[0];
-
-    const methodTransaction = await program.methods
-      .withdrawPointToken()
-      .accounts({
-        authority,
-        userProjectTokenBalance,
-        poolTokenAuthority,
-        marketplace,
-        systemConfig,
-        poolTokenAccount: poolPointsTokenAccount,
-        projectTokenMint,
-        tokenProgram,
-        tokenProgram2022,
-        systemProgram,
-      })
-      .remainingAccounts([
-        {
-          pubkey: userPointsTokenAccount,
-          isSigner: false,
-          isWritable: true,
-        },
-      ])
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
+    const txHash = await writeContractAsync({
+      ...callParams,
+    });
 
     await recordTransaction({
       txHash,
@@ -78,7 +36,7 @@ export function useWithdrawItemSol({ chain }: { chain: ChainType }) {
     return txHash;
   };
 
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return wrapRes;
 }

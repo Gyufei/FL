@@ -1,73 +1,19 @@
-import useTadleProgram from "@/lib/hooks/web3/solana/use-tadle-program";
-import useTxStatus from "@/lib/hooks/contract/help/use-tx-status";
-import { PublicKey } from "@solana/web3.js";
-import { useTransactionRecord } from "@/lib/hooks/api/use-transactionRecord";
-import { useAccountsSol } from "@/lib/hooks/contract/help/use-accounts-sol";
-import { useBuildTransactionSol } from "@/lib/hooks/contract/help/use-build-transaction-sol";
-import { ChainType } from "@/lib/types/chain";
+// import { useSolConfig } from "../../web3/use-eth-config";
+// import { useWriteContract } from "wagmi";
+// import { useCallback } from "react";
+import useTxStatus from "../help/use-tx-status";
+// import { useGasSol } from "../help/use-gas-eth";
 
-export function useRollinSol({ chain }: { chain: ChainType }) {
-  const { program } = useTadleProgram();
-  const { getAccounts } = useAccountsSol(program.programId);
-
-  const { buildTransaction } = useBuildTransactionSol();
-  const { recordTransaction } = useTransactionRecord(chain);
-
+export function useRollinSol() {
   const getRollingData = async () => {
-    const { authority } = await getAccounts();
-    const rollinState = PublicKey.findProgramAddressSync(
-      [Buffer.from("rollin_state"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    try {
-      const rollinStateData = (await program.account.rollinStateData.fetch(
-        rollinState,
-      )) as any;
-
-      return {
-        rollinAt: rollinStateData.rollinAt.toString(),
-      };
-    } catch (e) {
-      return {
-        rollinAt: "0",
-      };
-    }
+    return {
+      rollinAt: new Date().getTime(),
+    };
   };
 
-  const writeAction = async () => {
-    const { authority, systemProgram } = await getAccounts();
+  const txAction = async () => {};
 
-    const rollinState = PublicKey.findProgramAddressSync(
-      [Buffer.from("rollin_state"), authority!.toBuffer()],
-      program.programId,
-    )[0];
-
-    const methodTransaction = await program.methods
-      .rollin()
-      .accounts({
-        authority: authority!,
-        rollinState,
-        systemProgram,
-      })
-      .transaction();
-
-    const txHash = await buildTransaction(
-      methodTransaction,
-      program,
-      [],
-      authority!,
-    );
-
-    await recordTransaction({
-      txHash,
-      note: "",
-    });
-
-    return txHash;
-  };
-
-  const wrapRes = useTxStatus(writeAction);
+  const wrapRes = useTxStatus(txAction);
 
   return {
     ...wrapRes,

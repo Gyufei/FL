@@ -28,6 +28,7 @@ import { sortBy } from "lodash";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
 import { reportEvent } from "@/lib/utils/analytics";
+import { formatNum } from "@/lib/utils/number";
 
 export function OrderTable({
   chain,
@@ -320,7 +321,9 @@ function OfferFromTo({ offer }: { offer: IOffer }) {
           alt="token"
           className="rounded-full"
         />
-        <span className="text-sm leading-5 text-black">{offerValue}</span>
+        <span className="text-sm leading-5 text-black">
+          {formatNum(offerValue, 2, true)}
+        </span>
       </div>
       <div className="flex items-center space-x-2">
         <Image
@@ -330,7 +333,9 @@ function OfferFromTo({ offer }: { offer: IOffer }) {
           alt="token"
           className="rounded-full"
         />
-        <span className="text-sm leading-5 text-black">{forValue}</span>
+        <span className="text-sm leading-5 text-black">
+          {formatNum(forValue, 2, true)}
+        </span>
       </div>
     </div>
   );
@@ -383,7 +388,7 @@ function DetailBtn({
       className="flex w-fit"
       onClick={onClick}
     >
-      <div className="boffer boffer-[#eee] hover:boffer-black flex h-7 w-full cursor-pointer items-center rounded-full px-[14px] text-sm leading-5 text-black">
+      <div className="flex h-7 w-full cursor-pointer items-center rounded-full border border-[#eee] px-[14px] text-sm leading-5 text-black hover:border-black">
         {ct("Detail")}
       </div>
     </WithWalletConnectBtn>

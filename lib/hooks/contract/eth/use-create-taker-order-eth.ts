@@ -42,7 +42,6 @@ export function useCreateTakerOrderEth({ chain }: { chain: ChainType }) {
       from: address,
     };
 
-    console.log("callParams", callParams);
     const txHash = await sendTx({
       ...callParams,
     });

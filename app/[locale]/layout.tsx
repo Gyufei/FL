@@ -10,6 +10,8 @@ import MainLayout from "@/app/[locale]/_page-layout/main-layout";
 import "react-modern-drawer/dist/index.css";
 import { isProduction } from "@/lib/PathMap";
 import WalletModalProvider from "@/components/provider/wallet-modal-provider";
+import { redirect } from "next/navigation";
+import { locales } from "../../i18n";
 
 export const metadata = {
   title: {
@@ -62,6 +64,10 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  if (locale && !locales.includes(locale as any)) {
+    redirect("/en/not-found");
+  }
+
   const messages = await getMessages();
 
   return (

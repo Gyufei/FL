@@ -150,7 +150,7 @@ export default function BidDetail({
     <>
       <div className="flex flex-col justify-between gap-y-4 sm:flex-row sm:gap-y-0">
         {/* left card */}
-        <div className="flex-1 rounded-[20px] bg-[#fafafa] p-4">
+        <div className="flex flex-1 flex-col rounded-[20px] bg-[#fafafa] p-4">
           <OfferInfo
             img1={offer.marketplace.projectLogo}
             img2={ChainConfigs[offer.marketplace.chain].logo}

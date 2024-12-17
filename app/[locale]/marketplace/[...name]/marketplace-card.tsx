@@ -162,7 +162,7 @@ function OverviewIcons({
   };
 
   const handleGoDiscord = () => {
-    if (discord) return;
+    if (!discord) return;
     window.open(discord, "_blank");
   };
 

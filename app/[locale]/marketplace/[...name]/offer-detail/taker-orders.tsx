@@ -3,7 +3,6 @@ import Image from "next/image";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
-import { IToken } from "@/lib/types/token";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useMemo } from "react";
 import { Pagination } from "@/components/ui/pagination/pagination";
@@ -12,19 +11,21 @@ import { formatNum } from "@/lib/utils/number";
 import { useTranslations } from "next-intl";
 import { ITakerOrder } from "@/lib/hooks/api/use-taker-orders-of-offer";
 import { IOffer } from "@/lib/types/offer";
+import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 
 export function TakerOrders({
   orders,
   offer,
-  offerLogo,
-  orderTokenInfo,
 }: {
   orders: Array<ITakerOrder>;
   offer: IOffer;
-  offerLogo: string;
-  orderTokenInfo: IToken;
 }) {
   const T = useTranslations("drawer-OfferDetail");
+
+  const { offerValue, offerTokenInfo, offerPointInfo, forValue } =
+    useOfferFormat({
+      offer: offer,
+    });
 
   const data = useMemo(() => {
     const orderData = orders.map((o, index) => {
@@ -86,18 +87,62 @@ export function TakerOrders({
   };
 
   const COLUMNS = [
-    { label: T("th-SubNo"), renderCell: (o: any) => `#${o.sub_no}` },
+    {
+      label: T("th-SubNo"),
+      renderCell: (o: any) => {
+        return truncateAddr(o.order_id || "");
+      },
+    },
     {
       label: T("th-FillAmount"),
-      renderCell: (o: any) => (
-        <PointsCell order={o} offer={offer} offerLogo={offerLogo} />
-      ),
+      renderCell: (o: any) => {
+        const points = o.item_amount;
+        const totalPoints = offer.item_amount;
+        const percent = formatNum(NP.divide(points, totalPoints) * 100);
+
+        return (
+          <div className="flex items-center justify-end space-x-1">
+            <div>
+              {formatNum(
+                NP.divide(points, 10 ** (offerTokenInfo?.decimals || 18)),
+                2,
+                true,
+              )}{" "}
+              ({percent}%)
+            </div>
+            <Image
+              src={offerPointInfo.logoURI}
+              width={16}
+              height={16}
+              alt="token"
+              className="rounded-full"
+            />
+          </div>
+        );
+      },
     },
     {
       label: T("th-Deposits"),
-      renderCell: (o: ITakerOrder) => (
-        <AmountCell order={o} tokenInfo={orderTokenInfo} />
-      ),
+      renderCell: (o: ITakerOrder) => {
+        const points = o.item_amount;
+        const totalPoints = offer.item_amount;
+        const percent = formatNum(NP.divide(points, totalPoints));
+        const amount = NP.times(
+          offer.entry.direction === "sell" ? forValue : offerValue,
+          percent,
+        );
+        return (
+          <div className="flex items-center justify-end space-x-1">
+            <span>{formatNum(amount)}</span>
+            <Image
+              src={offerTokenInfo?.logoURI || ""}
+              width={16}
+              height={16}
+              alt="token"
+            />
+          </div>
+        );
+      },
     },
     {
       label: T("th-TxHash"),
@@ -159,53 +204,5 @@ export function TakerOrders({
         </Pagination>
       )}
     </>
-  );
-}
-
-function PointsCell({
-  order,
-  offer,
-  offerLogo,
-}: {
-  order: ITakerOrder;
-  offer: IOffer;
-  offerLogo: string;
-}) {
-  const points = order.item_amount;
-  const totalPoints = offer.item_amount;
-  const percent = formatNum(NP.divide(points, totalPoints) * 100);
-
-  return (
-    <div className="flex items-center justify-end space-x-1">
-      <div>
-        #{points} ({percent}%)
-      </div>
-      <Image
-        src={offerLogo}
-        width={16}
-        height={16}
-        alt="token"
-        className="rounded-full"
-      />
-    </div>
-  );
-}
-
-function AmountCell({
-  order,
-  tokenInfo,
-}: {
-  order: ITakerOrder;
-  tokenInfo: IToken;
-}) {
-  const amount = useMemo(() => {
-    return NP.divide(order.notional_value, 10 ** tokenInfo.decimals);
-  }, [order.notional_value, tokenInfo]);
-
-  return (
-    <div className="flex items-center justify-end space-x-1">
-      <span>{formatNum(amount)}</span>
-      <Image src={tokenInfo.logoURI} width={16} height={16} alt="token" />
-    </div>
   );
 }

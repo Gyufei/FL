@@ -1,7 +1,7 @@
 import { EVM_WALLETS } from "@/lib/const/evm-wallets";
 import { openWalletUrl } from "@/lib/const/evm-wallets";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Connector, useConnect } from "wagmi";
 
 export function EvmWallets({ onSelected }: { onSelected: () => void }) {
@@ -43,22 +43,18 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
     return wagmiWallets;
   }, [connectors]);
 
-  const [hoverWallet, setHoverWallet] = useState<string | null>(null);
-
-  const handleMouseEnter = (conn: Connector) => {
-    setHoverWallet(conn.id);
-  };
-
-  const handleMouseLeave = () => {
-    setHoverWallet(null);
-  };
-
   function goToWallet(conn: Connector) {
     if (!conn?.downloadUrls) return;
     openWalletUrl((conn as any)?.downloadUrls);
   }
 
   function handleConnect(conn: Connector) {
+    if (
+      conn?.installed &&
+      typeof conn.installed === "function" &&
+      !conn.installed()
+    )
+      return;
     if (conn) {
       connect({ connector: conn });
       onSelected();
@@ -71,8 +67,6 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
       {showWallets.map((conn) => (
         <div
           onClick={() => handleConnect(conn)}
-          onMouseEnter={() => handleMouseEnter(conn)}
-          onMouseLeave={handleMouseLeave}
           className="flex cursor-pointer items-center justify-between rounded-2xl p-4 hover:bg-[#fafafa]"
           key={conn.name}
         >
@@ -91,8 +85,7 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
 
           {!conn?.installed() && (
             <div
-              data-state={hoverWallet === conn.id}
-              className="flex cursor-pointer items-center justify-center rounded-full border border-black px-[12px] py-[2px] text-black data-[state=true]:border-yellow data-[state=true]:bg-yellow"
+              className="flex cursor-pointer items-center justify-center rounded-full border border-black px-[12px] py-[2px] text-black hover:border-yellow hover:bg-yellow"
               onClick={() => goToWallet(conn)}
             >
               <div className="text-sm leading-5 text-black">Install</div>

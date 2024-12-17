@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMemo, useState } from "react";
 import { TakerOrders } from "./taker-orders";
 import { IOffer } from "@/lib/types/offer";
-import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useTakerOrderOfOffers } from "@/lib/hooks/api/use-taker-orders-of-offer";
@@ -14,12 +13,9 @@ export default function OfferTabs({ offer }: { offer: IOffer }) {
 
   const { address } = useChainWallet(offer.marketplace.chain);
 
-  const { offerLogo, offerTokenInfo } = useOfferFormat({
-    offer: offer,
-  });
-
   const { data: takerOrders } = useTakerOrderOfOffers({
     offerId: offer.offer_id,
+    chain: offer.marketplace.chain,
   });
 
   const [onlyMe, setOnlyMe] = useState(false);
@@ -70,14 +66,7 @@ export default function OfferTabs({ offer }: { offer: IOffer }) {
             </div>
           </TabsList>
           <TabsContent value="orders" className="h-fit">
-            {offerTokenInfo && (
-              <TakerOrders
-                orders={showOrders || []}
-                offer={offer}
-                offerLogo={offerLogo}
-                orderTokenInfo={offerTokenInfo}
-              />
-            )}
+            {<TakerOrders orders={showOrders || []} offer={offer} />}
           </TabsContent>
           <TabsContent value="history" className="flex-1"></TabsContent>
         </Tabs>

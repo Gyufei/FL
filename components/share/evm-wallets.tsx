@@ -59,6 +59,7 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
   }
 
   function handleConnect(conn: Connector) {
+    console.log("🚀 ~ handleConnect ~ conn:", conn);
     if (conn) {
       connect({ connector: conn });
       onSelected();

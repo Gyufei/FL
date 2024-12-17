@@ -59,16 +59,6 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
   }
 
   function handleConnect(conn: Connector) {
-    if (
-      conn?.installed &&
-      typeof conn.installed === "function" &&
-      !conn.installed() &&
-      conn?.downloadUrls
-    ) {
-      openWalletUrl((conn as any)?.downloadUrls);
-      return;
-    }
-
     if (conn) {
       connect({ connector: conn });
       onSelected();

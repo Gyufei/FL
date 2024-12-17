@@ -23,7 +23,7 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
   const balance = userBalance?.data?.value || "0";
 
   function checkBalance(value: any) {
-    const gas = 0.0009;
+    const gas = 0.0005;
     const nativeBalance = NP.divide(String(balance), 10 ** 18);
 
     if (isNativeToken) {

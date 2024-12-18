@@ -53,7 +53,7 @@ export default function EthWalletsProvider({
       }),
     ],
     chains: supportedChains,
-    ssr: true,
+    ssr: !!isProduction,
     storage: createStorage({
       storage: cookieStorage,
     }),

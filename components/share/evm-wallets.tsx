@@ -6,7 +6,6 @@ import { Connector, useConnect } from "wagmi";
 
 export function EvmWallets({ onSelected }: { onSelected: () => void }) {
   const { connectors, connect } = useConnect();
-  console.log(connectors, EVM_WALLETS);
 
   const showWallets = useMemo(() => {
     const wagmiWallets = connectors
@@ -53,7 +52,13 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
   }
 
   function handleConnect(conn: Connector) {
-    console.log("🚀 ~ handleConnect ~ conn:", conn);
+    if (
+      conn?.installed &&
+      typeof conn.installed === "function" &&
+      !conn?.installed()
+    ) {
+      return;
+    }
     if (conn) {
       connect({ connector: conn });
       onSelected();

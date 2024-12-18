@@ -6,7 +6,7 @@ import { Connector, useConnect } from "wagmi";
 
 export function EvmWallets({ onSelected }: { onSelected: () => void }) {
   const { connectors, connect } = useConnect();
-  console.log(connectors);
+  console.log(connectors, EVM_WALLETS);
 
   const showWallets = useMemo(() => {
     const wagmiWallets = connectors
@@ -19,6 +19,7 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
       })
       .reverse()
       .map((conn: Connector) => {
+        console.log("🚀 ~ .map ~ conn:", conn);
         const wallet = EVM_WALLETS.find(
           (w) => w.name === conn.name || (w as any)?.rdns === conn.id,
         );
@@ -36,10 +37,12 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
         wagmiWallets.some((wl) => wl.name === wallet.name),
       );
       if (!w) {
+        console.log("🚀 ~ showWallets ~ w:", wallet);
         wagmiWallets.push(wallet as any);
       }
     }
 
+    console.log("🚀 ~ showWallets ~ wagmiWallets:", wagmiWallets);
     return wagmiWallets;
   }, [connectors]);
 

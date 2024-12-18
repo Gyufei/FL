@@ -13,16 +13,13 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
       .filter((conn: Connector) => {
         return (
           conn.name !== "Phantom" &&
-          conn.id !== "metaMaskSDK" &&
+          conn.id !== "io.metamask" &&
           conn.id !== "injected"
         );
       })
       .reverse()
       .map((conn: Connector) => {
-        console.log("🚀 ~ .map ~ conn:", conn);
-        const wallet = EVM_WALLETS.find(
-          (w) => w.name === conn.name || (w as any)?.rdns === conn.id,
-        );
+        const wallet = EVM_WALLETS.find((w) => w.name === conn.name);
         return {
           ...conn,
           icon: conn?.icon || wallet?.icon,
@@ -32,17 +29,11 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
 
     for (const wallet of EVM_WALLETS) {
       const w = wagmiWallets.some((wl) => wl.name === wallet.name);
-      console.log(
-        wallet,
-        wagmiWallets.some((wl) => wl.name === wallet.name),
-      );
       if (!w) {
-        console.log("🚀 ~ showWallets ~ w:", wallet);
         wagmiWallets.push(wallet as any);
       }
     }
 
-    console.log("🚀 ~ showWallets ~ wagmiWallets:", wagmiWallets);
     return wagmiWallets;
   }, [connectors]);
 

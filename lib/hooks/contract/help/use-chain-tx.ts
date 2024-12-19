@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ChainType } from "@/lib/types/chain";
 import { isEvmChain } from "@/lib/utils/web3";
-import { useChainWallet } from "../../web3/use-chain-wallet";
+import { useCheckSwitchChain } from "../../web3/use-check-switch-chain";
 
 interface BaseHookResult {
   isLoading: boolean;
@@ -21,7 +21,7 @@ export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
 ): BaseHookResult {
   const isEvm = isEvmChain(chain);
   const isSolana = chain === ChainType.SOLANA;
-  const { switchToTargetChain } = useChainWallet(chain);
+  const { checkAndSwitchChain } = useCheckSwitchChain(chain);
 
   const actionResEvm = hookEth(args);
   const actionResSol = hookSolana(args);
@@ -47,7 +47,7 @@ export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
 
   const write = async (args: any) => {
     try {
-      const res = await switchToTargetChain();
+      const res = await checkAndSwitchChain();
 
       if (res) {
         return chainActionRes.write(args);

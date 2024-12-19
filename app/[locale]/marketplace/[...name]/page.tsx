@@ -12,9 +12,9 @@ import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 export default function Marketplace({ params }: { params: { name: string } }) {
   const marketplaceName = decodeURIComponent(params.name[0]);
   const { data: markets, mutate } = useMarketplaces();
-  const { isMobile } = useDeviceSize();
+  const { isMobileSize } = useDeviceSize();
 
-  if (!isProduction && isMobile) {
+  if (!isProduction && isMobileSize) {
     new VConsole();
   }
 

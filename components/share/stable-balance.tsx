@@ -13,7 +13,7 @@ export function StableBalance({
 }: {
   chain: ChainType;
   token: IToken;
-  className: string;
+  className?: string;
 }) {
   const isNativeToken = checkIsNativeToken(chain, token || null);
   const { address } = useAccount();

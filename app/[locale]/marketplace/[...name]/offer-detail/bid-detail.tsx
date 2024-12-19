@@ -20,8 +20,6 @@ import { usePairApprove } from "../create-offer/use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
-import { ProjectDecimalsMap } from "@/lib/const/constant";
 import ArrowBetween from "../create-offer/arrow-between";
 import PointBalance from "@/components/share/point-balance";
 import { IPoint } from "@/lib/types/token";
@@ -101,15 +99,6 @@ export default function BidDetail({
     referrerStr: "",
     isNativeToken,
   });
-
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
-    offer.marketplace.chain,
-    {
-      address: offer.marketplace.project_token_addr,
-      decimals: ProjectDecimalsMap[offer.marketplace.market_symbol],
-      symbol: offer.marketplace.item_name,
-    },
-  );
 
   function handleSliderChange(v: number) {
     setSellPointAmount(v);

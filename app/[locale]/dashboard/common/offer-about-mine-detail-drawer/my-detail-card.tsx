@@ -10,6 +10,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
+import { checkIsNeedCollateral } from "@/lib/helper/market";
+import { format } from "date-fns";
 
 export default function MyDetailCard({ offer }: { offer: IOffer }) {
   const ot = useTranslations("drawer-OfferDetail");
@@ -20,6 +22,9 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
     useOfferFormat({
       offer: offer,
     });
+  const isNeedCollateral = checkIsNeedCollateral(
+    offer.marketplace.market_catagory,
+  );
 
   const { data: entryInfo } = useEntryById(offer.entry.id);
 
@@ -102,18 +107,18 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
           </div>
         </div>
       </DetailRow>
-
-      <DetailRow>
-        <DetailLabel tipText={ot("tip-CollateralRate")}>
-          {ot("lb-CollateralRate")}
-        </DetailLabel>
-        <div className="flex items-center space-x-1">
-          <div className="text-sm leading-5 text-[#FFA95B]">
-            {Number(offer.collateral_ratio) / 100}%
+      {isNeedCollateral && (
+        <DetailRow>
+          <DetailLabel tipText={ot("tip-CollateralRate")}>
+            {ot("lb-CollateralRate")}
+          </DetailLabel>
+          <div className="flex items-center space-x-1">
+            <div className="text-sm leading-5 text-[#FFA95B]">
+              {Number(offer.collateral_ratio) / 100}%
+            </div>
           </div>
-        </div>
-      </DetailRow>
-
+        </DetailRow>
+      )}
       <DetailRow>
         <DetailLabel tipText="">{ot("lb-Previous")} Maker / Taker</DetailLabel>
         <div className="flex items-center space-x-1">
@@ -138,8 +143,28 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
           />
         </div>
       </DetailRow>
-
-      {isAsk && (
+      {offer?.marketplace?.trading_ends_at !== "0" && (
+        <DetailRow>
+          <DetailLabel tipText={""}>{ot("lb-TradingEndsAt")}</DetailLabel>
+          <div className="flex items-center space-x-1">
+            <div className="text-sm leading-5 text-green">
+              <div className="text-sm leading-5 text-black">
+                {format(
+                  Number(offer?.marketplace?.trading_ends_at) * 1000,
+                  "dd/MM/yyyy",
+                )}
+              </div>
+              <div className="text-[10px] leading-4 text-gray">
+                {format(
+                  Number(offer?.marketplace?.trading_ends_at) * 1000,
+                  "HH:mm a",
+                )}
+              </div>
+            </div>
+          </div>
+        </DetailRow>
+      )}
+      {isAsk && isNeedCollateral && (
         <DetailRow>
           <DetailLabel tipText={ot("tip-EstSettlingOn")}>
             {ot("lb-EstSettlingOn")}
@@ -234,7 +259,7 @@ function DetailLabel({
   return (
     <div className="flex items-center space-x-1 text-sm leading-5 text-gray">
       {children}
-      <WithTip>{tipText}</WithTip>
+      {tipText && <WithTip>{tipText}</WithTip>}
     </div>
   );
 }

@@ -68,28 +68,28 @@ function SignOutBtn({ logout }: { logout: () => void }) {
   );
 }
 
-function WalletItem({
-  wallet,
-  onDisconnect,
-}: {
-  wallet: any;
-  onDisconnect: (address: string) => void;
-}) {
-  return (
-    <div className="mb-4 w-full">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <img src={wallet.icon} alt={wallet.name} className="mr-2" />
-          <span className="text-black">{wallet.name}</span>
-        </div>
-        <button
-          onClick={() => onDisconnect(wallet.address)}
-          className="text-red hover:text-black"
-        >
-          断开连接
-        </button>
-      </div>
-      <div className="text-gray-500 text-sm">{wallet.address}</div>
-    </div>
-  );
-}
+// function WalletItem({
+//   wallet,
+//   onDisconnect,
+// }: {
+//   wallet: any;
+//   onDisconnect: (address: string) => void;
+// }) {
+//   return (
+//     <div className="mb-4 w-full">
+//       <div className="flex items-center justify-between">
+//         <div className="flex items-center">
+//           <img src={wallet.icon} alt={wallet.name} className="mr-2" />
+//           <span className="text-black">{wallet.name}</span>
+//         </div>
+//         <button
+//           onClick={() => onDisconnect(wallet.address)}
+//           className="text-red hover:text-black"
+//         >
+//           断开连接
+//         </button>
+//       </div>
+//       <div className="text-gray-500 text-sm">{wallet.address}</div>
+//     </div>
+//   );
+// }

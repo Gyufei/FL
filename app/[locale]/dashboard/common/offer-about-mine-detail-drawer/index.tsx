@@ -9,6 +9,7 @@ import { useMemo } from "react";
 import { upperFirst } from "lodash";
 import { useTranslations } from "next-intl";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import { checkIsNeedCollateral } from "@/lib/helper/market";
 
 export default function OfferAboutMineDetailDrawer({
   holdingId,
@@ -32,7 +33,9 @@ export default function OfferAboutMineDetailDrawer({
   const isAsk = useMemo(() => {
     return offer?.entry.direction === "sell";
   }, [offer]);
-
+  const isNeedCollateral = checkIsNeedCollateral(
+    offer?.marketplace.market_catagory,
+  );
   function handleDrawerClose() {
     setDrawerOpen(false);
   }
@@ -67,7 +70,7 @@ export default function OfferAboutMineDetailDrawer({
             isAsk ? ot("cap-MyAskOfferDetail") : ot("cap-MyBidOfferDetail")
           }
           onClose={handleDrawerClose}
-          tag={ct(settleMode)}
+          tag={isNeedCollateral ? ct(settleMode) : ""}
           tagClassName={settleMode === "Protected" ? "bg-green" : "bg-red"}
         />
       )}

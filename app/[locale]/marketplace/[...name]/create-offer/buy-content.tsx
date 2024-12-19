@@ -119,6 +119,7 @@ export function BuyContent({
               chain={currentMarket.chain}
               token={payToken}
               setToken={setPayToken}
+              showBalance
             />
           }
         />

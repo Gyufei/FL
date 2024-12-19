@@ -7,7 +7,7 @@ import { useRouter } from "@/app/navigation";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import useTge from "@/lib/hooks/marketplace/useTge";
-import { formatNum } from "@/lib/utils/number";
+import { formatNum, toPercent } from "@/lib/utils/number";
 import { Skeleton } from "@/components/ui/skeleton";
 import NP from "number-precision";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
@@ -60,6 +60,13 @@ function ItemCard({
     return 1;
   }, [marketplace]);
 
+  const change_24h = useMemo(() => {
+    if (marketplace && marketplace.vol_24h && marketplace.total_vol) {
+      return NP.divide(marketplace.vol_24h, marketplace.total_vol);
+    }
+    return 0;
+  }, [marketplace]);
+
   function handleGo() {
     router.push(`/marketplace/${marketplace.market_symbol}`);
   }
@@ -85,7 +92,7 @@ function ItemCard({
         <div className="flex space-x-3">
           <div className="flex flex-col">
             <div className="w-[140px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
-              {marketplace.market_name}
+              {marketplace.item_name}
             </div>
             <div className="h-[18px] text-xs leading-[18px] text-gray"></div>
           </div>
@@ -96,28 +103,62 @@ function ItemCard({
         <div className="flex items-center justify-between">
           <div>
             <LabelText isLoading={isLoadingFlag}>
-              {t("lb-FloorPrice")}
+              {t("lb-InitialListing")}
             </LabelText>
             {isLoadingFlag ? (
               <ValueSkeleton />
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
                 $
-                {formatNum(
-                  NP.times(marketplace!.floor_price, pointDecimalNum),
-                  6,
+                {Number(
+                  NP.times(marketplace.initial_listing_price, pointDecimalNum),
                 )}
               </div>
             )}
           </div>
 
           <div className="flex flex-col items-end">
-            <LabelText isLoading={isLoadingFlag}>{t("lb-TotalVol")}</LabelText>
+            <LabelText isLoading={isLoadingFlag}>
+              {t("lb-AllTimeHigh")}
+            </LabelText>
             {isLoadingFlag ? (
               <ValueSkeleton />
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
-                {formatNum(marketplace!.total_vol || 0)}
+                $
+                {Number(
+                  NP.times(marketplace.all_time_high_price, pointDecimalNum),
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <LabelText isLoading={isLoadingFlag}>{t("lb-24hChange")}</LabelText>
+            {isLoadingFlag ? (
+              <ValueSkeleton />
+            ) : (
+              <div
+                data-up={change_24h === 0 ? "zero" : change_24h > 0}
+                className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
+              >
+                {change_24h === 0 ? null : change_24h > 0 ? "+ " : "- "}
+                {change_24h === 0 ? 0 : toPercent(change_24h * 100)}%
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col items-end">
+            <LabelText isLoading={isLoadingFlag}>
+              {t("lb-FilledOrders")}
+            </LabelText>
+            {isLoadingFlag ? (
+              <ValueSkeleton />
+            ) : (
+              <div className="flex items-center text-sm leading-5 text-black">
+                {formatNum(marketplace!.filled_orders || 0)}
               </div>
             )}
           </div>
@@ -140,12 +181,14 @@ function ItemCard({
           </div>
 
           <div className="flex flex-col items-end">
-            <LabelText isLoading={isLoadingFlag}>{t("lb-AvgBid")}</LabelText>
+            <LabelText isLoading={isLoadingFlag}>
+              {t("lb-ActiveWallets")}
+            </LabelText>
             {isLoadingFlag ? (
               <ValueSkeleton />
             ) : (
               <div className="flex items-center leading-6 text-black">
-                ${formatNum(NP.times(marketplace!.avg_bid, pointDecimalNum))}
+                {formatNum(marketplace!.active_wallets)}
               </div>
             )}
           </div>

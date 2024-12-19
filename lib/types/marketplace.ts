@@ -15,6 +15,10 @@ export interface IMarketplace {
   avg_bid: string;
   tge: string;
   settlement_period: string;
+  trading_ends_at: string;
+  all_time_high_price: string;
+  initial_listing_price: string;
+  active_wallets: string;
   status: string;
   market_symbol: string;
   market_catagory:

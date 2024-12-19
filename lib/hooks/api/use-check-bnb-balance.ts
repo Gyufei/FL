@@ -19,6 +19,7 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
 
   const userBalance = useBalance({
     address: address as `0x${string}`,
+    token: isNativeToken ? undefined : (token?.address as `0x${string}`),
   });
   const balance = userBalance?.data?.value || "0";
 

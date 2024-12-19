@@ -95,7 +95,7 @@ export function toAmount(num: NumberType, unit = true) {
 export function toPercent(percent: number) {
   percent = Math.abs(percent);
   if (percent * 1 === 0) return "0";
-  if (percent * 1 < 0.01) return "< 0.01";
+  if (percent * 1 < 0.01) return "<0.01";
   return formatNum(percent * 1);
 }
 

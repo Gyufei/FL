@@ -12,19 +12,19 @@ import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { formatNum } from "@/lib/utils/number";
 import { format } from "date-fns";
-import useTge from "@/lib/hooks/marketplace/useTge";
 import { useRouter } from "@/app/navigation";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
+import Sparkline from "@/components/share/snapshot";
+import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
+
 export default function PointMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
 
   const router = useRouter();
 
   const { data, isLoading: isLoadingFlag } = useMarketplaces();
-
-  const { checkIsDuringTge } = useTge();
 
   const theme = useTheme({
     Table: `
@@ -118,7 +118,7 @@ export default function PointMarket({ className }: { className?: string }) {
           </div>
         ) : (
           <div
-            className="flex cursor-pointer items-center pl-2"
+            className="flex w-[120px] cursor-pointer items-center pl-2"
             onClick={() => handleGo(item.market_symbol)}
           >
             <TokenPairImg
@@ -133,14 +133,14 @@ export default function PointMarket({ className }: { className?: string }) {
               <div className="text-sm leading-5 text-black">
                 {item.market_name}
               </div>
-              <div className="text-[10px] leading-4 text-gray">#{item.id}</div>
+              {/* <div className="text-[10px] leading-4 text-gray">#{item.id}</div> */}
             </div>
           </div>
         );
       },
     },
     {
-      label: t("th-LastPrice"),
+      label: t("th-InitialListing"),
       renderCell: (item: IMarketplace) => {
         const pointDecimalNum = ProjectDecimalsMap[item.market_symbol]
           ? 10 ** ProjectDecimalsMap[item.market_symbol]
@@ -151,15 +151,49 @@ export default function PointMarket({ className }: { className?: string }) {
         ) : (
           <div className="flex flex-col items-end">
             <PriceText
-              num={Number(NP.times(item.last_price, pointDecimalNum))}
+              num={Number(
+                NP.times(item.initial_listing_price, pointDecimalNum),
+              )}
             />
-            <PercentText num={Number(item.change_rate_24h)} />
+          </div>
+        );
+      },
+    },
+    {
+      label: t("th-AllTimeHigh"),
+      renderCell: (item: IMarketplace) => {
+        const pointDecimalNum = ProjectDecimalsMap[item.market_symbol]
+          ? 10 ** ProjectDecimalsMap[item.market_symbol]
+          : 1;
+        return isLoadingFlag ? (
+          <div className="flex justify-end">
+            <Skeleton className="h-[16px] w-[60px]" />
+          </div>
+        ) : (
+          <div className="flex flex-col items-end">
+            <PriceText
+              num={Number(NP.times(item.all_time_high_price, pointDecimalNum))}
+            />
           </div>
         );
       },
     },
     {
       label: t("th-Vol24h"),
+      renderCell: (item: IMarketplace) => {
+        return isLoadingFlag ? (
+          <div className="flex justify-end">
+            <Skeleton className="h-[16px] w-[60px]" />
+          </div>
+        ) : (
+          <div className="flex flex-col items-end">
+            <PriceText num={Number(item.vol_24h)} />
+          </div>
+        );
+      },
+    },
+    {
+      label: t("th-24hChange"),
       renderCell: (item: IMarketplace) => {
         const vol24h = item.vol_24h || 0;
         const TotalVol = item.total_vol || 0;
@@ -170,9 +204,11 @@ export default function PointMarket({ className }: { className?: string }) {
             <Skeleton className="h-[16px] w-[60px]" />
           </div>
         ) : (
-          <div className="flex flex-col items-end">
-            <PriceText num={Number(item.vol_24h)} />
-            <PercentText num={lastPricePercent * 100} />
+          <div className="flex items-center justify-end">
+            <ChangeText
+              vol={Number(item.vol_24h)}
+              percent={lastPricePercent * 100}
+            />
           </div>
         );
       },
@@ -180,15 +216,6 @@ export default function PointMarket({ className }: { className?: string }) {
     {
       label: t("th-TotalVol"),
       renderCell: (item: IMarketplace) => {
-        // const total = Number(item.total_vol);
-        // const h24Change = Number(item.vol_24h);
-        // const totalPercent =
-        //   total === 0
-        //     ? 0
-        //     : total === h24Change
-        //     ? 1
-        //     : NP.divide(h24Change || 0, total - h24Change);
-
         return isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
@@ -196,14 +223,12 @@ export default function PointMarket({ className }: { className?: string }) {
         ) : (
           <div className="flex flex-col items-end">
             <PriceText num={Number(item.total_vol)} />
-            <div className="h-4 leading-4"></div>
-            {/* <PercentText num={totalPercent * 100} /> */}
           </div>
         );
       },
     },
     {
-      label: t("th-SetterStarts"),
+      label: t("th-TradingEnds"),
       renderCell: (item: IMarketplace) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
@@ -211,15 +236,15 @@ export default function PointMarket({ className }: { className?: string }) {
           </div>
         ) : (
           <div className="flex flex-col items-end">
-            {item.tge === "0" ? (
-              <div>TBA</div>
+            {item.trading_ends_at === "0" ? (
+              <div>N/A</div>
             ) : (
               <>
                 <div className="text-sm leading-5 text-black">
-                  {format(Number(item.tge) * 1000, "dd/MM/yyyy")}
+                  {format(Number(item.trading_ends_at) * 1000, "dd/MM/yyyy")}
                 </div>
                 <div className="text-[10px] leading-4 text-gray">
-                  {format(Number(item.tge) * 1000, "HH:mm a")}
+                  {format(Number(item.trading_ends_at) * 1000, "HH:mm a")}
                 </div>
               </>
             )}
@@ -227,49 +252,8 @@ export default function PointMarket({ className }: { className?: string }) {
         ),
     },
     {
-      label: t("th-SetterEnds"),
-      renderCell: (item: IMarketplace) =>
-        isLoadingFlag ? (
-          <div className="flex justify-end">
-            <Skeleton className="h-[16px] w-[60px]" />
-          </div>
-        ) : (
-          <div className="flex flex-col items-end">
-            {item.tge === "0" ? (
-              <div>TBA</div>
-            ) : (
-              <>
-                <div className="text-sm leading-5 text-black">
-                  {format(
-                    (Number(item.tge) + Number(item.settlement_period)) * 1000,
-                    "dd/MM/yyyy",
-                  )}
-                </div>
-                <div className="text-[10px] leading-4 text-gray">
-                  {format(
-                    (Number(item.tge) + Number(item.settlement_period)) * 1000,
-                    "HH:mm a",
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        ),
-    },
-    {
-      label: t("th-Countdown"),
-      renderCell: (item: IMarketplace) =>
-        isLoadingFlag ? (
-          <div className="flex justify-end">
-            <Skeleton className="h-[16px] w-[60px]" />
-          </div>
-        ) : (
-          <div className="text-sm leading-5 text-black">
-            {checkIsDuringTge(item.tge, Number(item.settlement_period))
-              ? ""
-              : t("txt-NotStarted")}
-          </div>
-        ),
+      label: t("th-Snapshot"),
+      renderCell: (item: IMarketplace) => <Snapshot marketplace={item} />,
     },
   ];
 
@@ -285,7 +269,7 @@ export default function PointMarket({ className }: { className?: string }) {
     <div
       className={cn(
         className,
-        "flex max-w-[100vw] flex-1 flex-col overflow-x-scroll pr-6 sm:max-w-none sm:overflow-x-hidden sm:pr-0",
+        "flex max-w-[100vw] flex-1 flex-col overflow-x-scroll pr-6 sm:min-w-[900px] sm:max-w-none sm:overflow-x-hidden sm:pr-0",
       )}
     >
       <div className="hidden items-center justify-between sm:flex">
@@ -314,17 +298,37 @@ function PriceText({ num }: { num: number }) {
   );
 }
 
-function PercentText({ num }: { num: number }) {
-  const isGreater = num > 0;
+function ChangeText({ vol, percent }: { vol: number; percent: number }) {
+  const isGreater = vol > 0;
+  const prev = isGreater ? "+" : "-";
   return (
     <div
-      data-greater={Number(num) === 0 ? "zero" : isGreater}
-      className="text-[10px] leading-4 data-[greater=false]:text-red data-[greater=true]:text-green data-[greater=zero]:text-black"
+      data-greater={Number(vol) === 0 ? "zero" : isGreater}
+      className="text-sm leading-4 data-[greater=false]:text-red data-[greater=true]:text-green data-[greater=zero]:text-black"
     >
-      {Number(num) === 0
-        ? "0"
-        : `${isGreater ? "+" : "-"}${Math.abs(num).toFixed(2)}`}
-      %
+      {Number(vol) === 0 ? "$0" : `${prev}$${formatNum(vol, 3)}`}/
+      {Number(percent) === 0 ? "0" : `${prev}${Math.abs(percent).toFixed(2)}`}%
+    </div>
+  );
+}
+
+function Snapshot({ marketplace }: { marketplace: IMarketplace }) {
+  const { data: offers, isLoading: isOffersLoading } = useMarketOffers({
+    marketSymbol: marketplace?.market_symbol || "",
+    marketChain: marketplace.chain,
+  });
+  const data = useMemo(() => {
+    return offers?.map((o) => Number(o.price));
+  }, [offers]);
+  return isOffersLoading ? (
+    <div className="flex justify-end">
+      <Skeleton className="h-[16px] w-[60px]" />
+    </div>
+  ) : (
+    <div className="flex justify-end">
+      <div className="flex items-center justify-end">
+        <Sparkline data={data || []} />
+      </div>
     </div>
   );
 }

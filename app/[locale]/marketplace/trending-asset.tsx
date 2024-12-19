@@ -97,9 +97,9 @@ export default function TrendingAsset({ className }: { className?: string }) {
           no: index + 1,
           asset: {
             logoURI: item.pointLogo,
-            symbol: item.item_name,
+            symbol: item.market_name,
           },
-          floorPrice: NP.times(item.floor_price, pointDecimalNum),
+          lastPrice: NP.times(item.last_price, pointDecimalNum),
           change24h: lastPricePercent,
         };
       });
@@ -135,14 +135,14 @@ export default function TrendingAsset({ className }: { className?: string }) {
         ),
     },
     {
-      label: t("th-FloorPrice"),
+      label: t("th-LastPrice"),
       renderCell: (item: any) =>
         isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
           </div>
         ) : (
-          <div>${formatNum(item.floorPrice)}</div>
+          <div>${formatNum(item.lastPrice)}</div>
         ),
     },
     {

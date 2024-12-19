@@ -1,5 +1,5 @@
 import { IMarketplace } from "@/lib/types/marketplace";
-import { formatNum } from "@/lib/utils/number";
+import { formatNum, toPercent } from "@/lib/utils/number";
 import { Skeleton } from "../ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
@@ -25,34 +25,42 @@ export default function MarketplaceOverview({
     return 1;
   }, [marketplace]);
 
+  const change_24h = useMemo(() => {
+    if (marketplace && marketplace.vol_24h && marketplace.total_vol) {
+      return NP.divide(marketplace.vol_24h, marketplace.total_vol);
+    }
+    return 0;
+  }, [marketplace]);
+
   return (
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">
         <div>
-          <LabelText isLoading={isLoadingFlag}>{t("lb-FloorPrice")}</LabelText>
-          {/* <LabelText isLoading={isLoadingFlag}>
+          <LabelText isLoading={isLoadingFlag}>
             {t("lb-InitialListing")}
-          </LabelText> */}
+          </LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
               $
-              {formatNum(
-                NP.times(marketplace!.floor_price, pointDecimalNum),
-                6,
+              {Number(
+                NP.times(marketplace.initial_listing_price, pointDecimalNum),
               )}
             </div>
           )}
         </div>
 
-        {/* <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end">
           <LabelText isLoading={isLoadingFlag}>{t("lb-AllTimeHigh")}</LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
             <div className="flex items-center text-sm leading-5 text-black">
-              {formatNum(marketplace!.filled_orders || 0)}
+              $
+              {Number(
+                NP.times(marketplace.all_time_high_price, pointDecimalNum),
+              )}
             </div>
           )}
         </div>
@@ -66,16 +74,17 @@ export default function MarketplaceOverview({
           ) : (
             <div
               data-up={
-                Number(marketplace!.change_rate_24h) === 0
+                NP.divide(marketplace.vol_24h, marketplace.total_vol) === 0
                   ? "zero"
-                  : Number(marketplace!.change_rate_24h) > 0
+                  : NP.divide(marketplace.vol_24h, marketplace.total_vol) > 0
               }
               className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
             >
-              {marketplace!.change_rate_24h}%
+              {change_24h === 0 ? null : change_24h > 0 ? "+ " : "- "}
+              {change_24h === 0 ? 0 : toPercent(change_24h * 100)}%
             </div>
           )}
-        </div> */}
+        </div>
 
         <div className="flex flex-col items-end">
           <LabelText isLoading={isLoadingFlag}>
@@ -108,15 +117,14 @@ export default function MarketplaceOverview({
         </div>
 
         <div className="flex flex-col items-end">
-          <LabelText isLoading={isLoadingFlag}>{t("lb-AvgBid")}</LabelText>
-          {/* <LabelText isLoading={isLoadingFlag}>
+          <LabelText isLoading={isLoadingFlag}>
             {t("lb-ActiveWallets")}
-          </LabelText> */}
+          </LabelText>
           {isLoadingFlag ? (
             <ValueSkeleton />
           ) : (
             <div className="flex items-center leading-6 text-black">
-              ${formatNum(NP.times(marketplace!.avg_bid, pointDecimalNum))}
+              {formatNum(marketplace!.active_wallets)}
             </div>
           )}
         </div>

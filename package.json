@@ -13,6 +13,7 @@
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
     "@emotion/react": "^11.13.3",
+    "@fnando/sparkline": "^0.3.10",
     "@next/third-parties": "^15.0.3",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-checkbox": "^1.1.2",

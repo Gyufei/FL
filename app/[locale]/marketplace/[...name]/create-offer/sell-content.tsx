@@ -130,7 +130,7 @@ export function SellContent({
               1 {currentMarket.item_name} = ${formatNum(pointPrice)}
             </>
           }
-          tokenSelect={<PointTokenDisplay point={sellPoint} />}
+          tokenSelect={<PointTokenDisplay point={sellPoint} showBalance />}
         />
 
         <ArrowBetween className="-my-4 self-center" />

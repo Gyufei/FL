@@ -180,8 +180,7 @@ export function TradesTable({
           <Skeleton className="h-[16px] w-[100px]" />
         ) : (
           <div className="flex w-full items-center justify-end px-[4px] pr-4">
-            <span>{formatNum(trade.token_amount)}</span>
-            {/* <span>
+            <span>
               {formatNum(
                 NP.divide(
                   NP.divide(trade.amount, trade.token_amount),
@@ -190,7 +189,7 @@ export function TradesTable({
                 2,
                 true,
               )}
-            </span> */}
+            </span>
             {trade.token && (
               <Image
                 className="ml-1 rounded-full"

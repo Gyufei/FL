@@ -21,9 +21,10 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
     address: address as `0x${string}`,
     token: isNativeToken ? undefined : (token?.address as `0x${string}`),
   });
-  const balance = userBalance?.data?.value || "0";
+  const balance = userBalance?.data?.value;
 
-  function checkBalance(value: any) {
+  function checkBalanceInsufficient(value: any, showTip = false) {
+    if (balance === undefined) return "";
     const gas = 0.0005;
     const nativeBalance = NP.divide(String(balance), 10 ** 18);
 
@@ -34,50 +35,59 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
         reportEvent("InsufficientBalance", {
           value: `${balance}-${total}`,
         });
-        setGlobalMessage({
-          type: "error",
-          message: `Insufficient Balance: ${total} ${
-            token.symbol
-          } is needed but only ${formatLeadingZeros(nativeBalance, 6)} ${
-            token.symbol
-          } in the wallet`,
-        });
+
+        if (showTip) {
+          setGlobalMessage({
+            type: "error",
+            message: `Insufficient Balance: ${total} ${
+              token.symbol
+            } is needed but only ${formatLeadingZeros(nativeBalance, 6)} ${
+              token.symbol
+            } in the wallet`,
+          });
+        }
+        return `Insufficient ${token.symbol} to pay`;
       }
-      return result;
+      return "";
     } else {
       const gasResult = NP.minus(nativeBalance, gas) >= 0;
       if (!gasResult) {
         reportEvent("InsufficientBalance-gas", {
           value: `${nativeBalance}-${gas}`,
         });
-        setGlobalMessage({
-          type: "error",
-          message: `Insufficient Balance: ${gas.toFixed(9)} ${
-            token.symbol
-          } is needed but only ${formatLeadingZeros(nativeBalance, 6)} ${
-            token.symbol
-          } in the wallet`,
-        });
-        return false;
+        if (showTip) {
+          setGlobalMessage({
+            type: "error",
+            message: `Insufficient Balance: ${gas.toFixed(9)} ${
+              token.symbol
+            } is needed but only ${formatLeadingZeros(nativeBalance, 6)} ${
+              token.symbol
+            } in the wallet`,
+          });
+        }
+
+        return `No enough ${token.symbol} to send transaction`;
       }
       const valueResult = NP.minus(tokenBalance, value) >= 0;
       if (!valueResult) {
         reportEvent("InsufficientBalance-value", {
           value: `${nativeBalance}-${value}`,
         });
-        setGlobalMessage({
-          type: "error",
-          message: `Insufficient Balance: ${value} ${
-            token.symbol
-          } is needed but only ${formatLeadingZeros(tokenBalance, 6)} ${
-            token.symbol
-          } in the wallet`,
-        });
-        return false;
+        if (showTip) {
+          setGlobalMessage({
+            type: "error",
+            message: `Insufficient Balance: ${value} ${
+              token.symbol
+            } is needed but only ${formatLeadingZeros(tokenBalance, 6)} ${
+              token.symbol
+            } in the wallet`,
+          });
+        }
+        return `Insufficient ${token.symbol} to pay`;
       }
-      return true;
+      return "";
     }
   }
 
-  return { checkBalance };
+  return { checkBalanceInsufficient };
 }

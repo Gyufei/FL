@@ -8,10 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { useStableToken } from "@/lib/hooks/api/token/use-stable-token";
 import { ChainType } from "@/lib/types/chain";
-import { formatNum } from "@/lib/utils/number";
-import { useAccount, useBalance } from "wagmi";
-import NP from "number-precision";
-import { checkIsNativeToken } from "@/lib/utils/web3";
+import { StableBalance } from "@/components/share/stable-balance";
 
 export function StableTokenSelectDisplay({
   token,
@@ -34,7 +31,7 @@ export function StableTokenSelectDisplay({
 
   return (
     <div className="flex flex-col items-end">
-      {showBalance && <Balance chain={chain} token={token} />}
+      {showBalance && <StableBalance chain={chain} token={token} />}
       <Popover open={popOpen} onOpenChange={(isOpen) => setPopOpen(isOpen)}>
         <PopoverTrigger>
           <div className="flex w-fit cursor-pointer items-center rounded-full bg-[#F0F1F5] p-2">
@@ -84,23 +81,6 @@ export function StableTokenSelectDisplay({
           ))}
         </PopoverContent>
       </Popover>
-    </div>
-  );
-}
-
-function Balance({ chain, token }: { chain: ChainType; token: IToken }) {
-  const isNativeToken = checkIsNativeToken(chain, token || null);
-  const { address } = useAccount();
-  const userBalance = useBalance({
-    address: address as `0x${string}`,
-    token: isNativeToken ? undefined : (token?.address as `0x${string}`),
-  });
-  const balance = userBalance?.data?.value || "0";
-  const nativeBalance = NP.divide(String(balance), 10 ** 18);
-
-  return (
-    <div className="mb-6 text-[12px] text-[#99A0AF]">
-      Balance: {formatNum(nativeBalance)}
     </div>
   );
 }

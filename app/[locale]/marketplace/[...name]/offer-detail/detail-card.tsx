@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { formatTimestamp } from "@/lib/utils/time";
 import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 import { checkIsNeedCollateral } from "@/lib/helper/market";
+import { format } from "date-fns";
 
 export default function DetailCard({ offer }: { offer: IOffer }) {
   const T = useTranslations("drawer-OfferDetail");
@@ -111,6 +112,27 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
           </div>
         </div>
       </DetailRow>
+      {offer?.marketplace?.trading_ends_at !== "0" && (
+        <DetailRow>
+          <DetailLabel tipText={""}>{T("lb-TradingEndsAt")}</DetailLabel>
+          <div className="flex items-center space-x-1">
+            <div className="text-sm leading-5 text-green">
+              <div className="text-sm leading-5 text-black">
+                {format(
+                  Number(offer?.marketplace?.trading_ends_at) * 1000,
+                  "dd/MM/yyyy",
+                )}
+              </div>
+              <div className="text-[10px] leading-4 text-gray">
+                {format(
+                  Number(offer?.marketplace?.trading_ends_at) * 1000,
+                  "HH:mm a",
+                )}
+              </div>
+            </div>
+          </div>
+        </DetailRow>
+      )}
 
       {isNeedCollateral ? (
         <>
@@ -262,7 +284,7 @@ function DetailLabel({
   return (
     <div className="flex items-center space-x-1 text-sm leading-5 text-gray">
       {children}
-      <WithTip>{tipText}</WithTip>
+      {tipText && <WithTip>{tipText}</WithTip>}
     </div>
   );
 }

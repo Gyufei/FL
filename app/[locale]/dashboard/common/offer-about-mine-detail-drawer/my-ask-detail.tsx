@@ -94,14 +94,14 @@ export default function MyAskDetail({
     isNativeToken,
   });
 
-  const { checkBalance } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBnbBalance(
     offer.marketplace.chain,
     offerChainInfo,
   );
   function handleClose() {
     if (isClosing) return;
     reportEvent("click", { value: "closeOffer" });
-    if (!checkBalance(0)) {
+    if (checkBalanceInsufficient(0, true)) {
       return;
     }
     closeAction?.({
@@ -112,7 +112,7 @@ export default function MyAskDetail({
   function handleAbort() {
     if (isAborting) return;
     reportEvent("click", { value: "abortOffer" });
-    if (!checkBalance(0)) {
+    if (checkBalanceInsufficient(0, true)) {
       return;
     }
     abortAction?.({
@@ -123,7 +123,7 @@ export default function MyAskDetail({
   function handleRelist() {
     if (isRelisting) return;
     reportEvent("click", { value: "relistOffer" });
-    if (!checkBalance(0)) {
+    if (checkBalanceInsufficient(0, true)) {
       return;
     }
     relistAction?.({

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
@@ -85,11 +85,19 @@ export function SellContent({
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
     useAccountVerifyDialog(currentMarket);
 
-  const { checkBalance } = useCheckBnbBalance(currentMarket.chain, {
+  const { checkBalanceInsufficient } = useCheckBnbBalance(currentMarket.chain, {
     address: currentMarket.project_token_addr,
     decimals: ProjectDecimalsMap[currentMarket.market_symbol],
     symbol: currentMarket.item_name,
   });
+  const [errorText, setErrorText] = useState("");
+  useEffect(() => {
+    if (isOffChainFungiblePoint || isPointToken) {
+      const result = checkBalanceInsufficient(sellPointAmount);
+
+      setErrorText(result);
+    }
+  }, [sellPointAmount]);
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
@@ -100,13 +108,6 @@ export function SellContent({
 
     if (!isAccountVerify) {
       setVerifyDialogOpen(true);
-      return;
-    }
-
-    if (
-      (isOffChainFungiblePoint || isPointToken) &&
-      !checkBalance(sellPointAmount)
-    ) {
       return;
     }
 
@@ -124,6 +125,7 @@ export function SellContent({
         <InputPanel
           value={sellPointAmount}
           onValueChange={setSellPointAmount}
+          hasError={!!errorText}
           topText={<>{T("txt-YouWillSell")}</>}
           bottomText={
             <>
@@ -191,14 +193,18 @@ export function SellContent({
 
         <OrderNoteAndFee value={note} onValueChange={setNote} type={"sell"} />
       </div>
-
-      <button
-        onClick={handleConfirmBtnClick}
-        disabled={isCreating || isApproving}
-        className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white sm:mt-[140px]"
-      >
-        {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
-      </button>
+      <div className="sm:mt-[140px]">
+        <div className="mt-3 text-center text-[12px] text-[#FF6262]">
+          {errorText}
+        </div>
+        <button
+          onClick={handleConfirmBtnClick}
+          disabled={isCreating || isApproving || !!errorText}
+          className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+        >
+          {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
+        </button>
+      </div>
 
       <AccountVerifyDialog
         open={verifyDialogOpen}

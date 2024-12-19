@@ -27,7 +27,7 @@ export function WithTip({
 
   return (
     <TooltipProvider>
-      <Tooltip open={isOpen} onOpenChange={setIsOpen}>
+      <Tooltip open={!!children && isOpen} onOpenChange={setIsOpen}>
         <TooltipTrigger onClick={handleToggle}>
           <Image
             src="/icons/help.svg"

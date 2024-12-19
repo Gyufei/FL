@@ -1,9 +1,7 @@
 import Image from "next/image";
 import { IPoint } from "@/lib/types/token";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTokenBalance } from "@/lib/hooks/api/use-token-balance";
-import { ProjectDecimalsMap } from "@/lib/const/constant";
-import { formatNum } from "@/lib/utils/number";
+import PointBalance from "@/components/share/point-balance";
 
 export function PointTokenDisplay({
   point,
@@ -16,7 +14,7 @@ export function PointTokenDisplay({
 }) {
   return (
     <div className="flex flex-col items-end">
-      {showBalance && <Balance point={point as IPoint} />}
+      {showBalance && <PointBalance point={point as IPoint} />}
       <div className="flex w-fit cursor-pointer items-center rounded-full bg-[#F0F1F5] p-2">
         {point ? (
           <>
@@ -43,18 +41,6 @@ export function PointTokenDisplay({
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-function Balance({ point }: { point: IPoint }) {
-  const tokenBalance = useTokenBalance({
-    abiAddress: point?.marketplace?.project_token_addr,
-    decimals: ProjectDecimalsMap[point?.marketplace?.market_symbol],
-  });
-  return (
-    <div className="mb-6 text-[12px] text-[#99A0AF]">
-      Balance: {formatNum(tokenBalance)}
     </div>
   );
 }

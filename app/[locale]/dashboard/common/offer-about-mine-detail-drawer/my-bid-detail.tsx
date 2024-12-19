@@ -93,7 +93,7 @@ export default function MyBidDetail({
     isNativeToken,
   });
 
-  const { checkBalance } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBnbBalance(
     offer.marketplace.chain,
     offerChainInfo,
   );
@@ -101,7 +101,7 @@ export default function MyBidDetail({
   function handleBidClose() {
     if (isBidClosing) return;
     reportEvent("click", { value: "closeBidOffer" });
-    if (!checkBalance(0)) {
+    if (checkBalanceInsufficient(0, true)) {
       return;
     }
     bidCloseAction?.(undefined);
@@ -110,7 +110,7 @@ export default function MyBidDetail({
   function handleClose() {
     if (isClosing) return;
     reportEvent("click", { value: "closeOffer" });
-    if (!checkBalance(0)) {
+    if (checkBalanceInsufficient(0, true)) {
       return;
     }
     closeAction?.({ offerId: offer.offer_id });
@@ -119,7 +119,7 @@ export default function MyBidDetail({
   function handleRelist() {
     if (isRelisting) return;
     reportEvent("click", { value: "relistOffer" });
-    if (!checkBalance(0)) {
+    if (checkBalanceInsufficient(0, true)) {
       return;
     }
     relistAction?.(undefined);

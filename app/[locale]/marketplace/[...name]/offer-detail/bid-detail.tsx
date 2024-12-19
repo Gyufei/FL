@@ -23,6 +23,8 @@ import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import ArrowBetween from "../create-offer/arrow-between";
+import PointBalance from "@/components/share/point-balance";
+import { IPoint } from "@/lib/types/token";
 
 export default function BidDetail({
   offer,
@@ -100,11 +102,14 @@ export default function BidDetail({
     isNativeToken,
   });
 
-  const { checkBalance } = useCheckBnbBalance(offer.marketplace.chain, {
-    address: offer.marketplace.project_token_addr,
-    decimals: ProjectDecimalsMap[offer.marketplace.market_symbol],
-    symbol: offer.marketplace.item_name,
-  });
+  const { checkBalanceInsufficient } = useCheckBnbBalance(
+    offer.marketplace.chain,
+    {
+      address: offer.marketplace.project_token_addr,
+      decimals: ProjectDecimalsMap[offer.marketplace.market_symbol],
+      symbol: offer.marketplace.item_name,
+    },
+  );
 
   function handleSliderChange(v: number) {
     setSellPointAmount(v);
@@ -123,10 +128,6 @@ export default function BidDetail({
     }
 
     if (isDepositLoading || !sellPointAmount) return;
-
-    if (!checkBalance(NP.divide(sellPointAmount, pointDecimalNum))) {
-      return;
-    }
 
     reportEvent("click", { value: "confirmOffer-bid" });
     await writeAction({
@@ -160,7 +161,15 @@ export default function BidDetail({
           />
 
           <SliderCard
-            topText={<>{T("txt-YouWillSell")}</>}
+            topText={
+              <>
+                {T("txt-YouWillSell")}
+                <PointBalance
+                  className="mb-0"
+                  point={offerPointInfo as IPoint}
+                />
+              </>
+            }
             bottomText={
               <>
                 1 {offer.marketplace.item_name} = ${formatNum(pointPerPrice)}

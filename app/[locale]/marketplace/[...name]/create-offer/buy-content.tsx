@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
@@ -74,7 +74,12 @@ export function BuyContent({
   const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
     useAccountVerifyDialog(currentMarket);
 
-  const { checkBalance } = useCheckBnbBalance(currentMarket.chain, payToken);
+  const { checkBalanceInsufficient } = useCheckBnbBalance(
+    currentMarket.chain,
+    payToken,
+  );
+
+  const [errorText, setErrorText] = useState("");
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
@@ -88,10 +93,6 @@ export function BuyContent({
       return;
     }
 
-    if (!checkBalance(payTokenAmount)) {
-      return;
-    }
-
     handleCreate({
       collateralRate: String(Number(collateralRate || 100) * 100),
       settleMode,
@@ -99,6 +100,11 @@ export function BuyContent({
     });
     reportEvent("click", { value: "confirmOffer-buy" });
   }
+
+  useEffect(() => {
+    const result = checkBalanceInsufficient(payTokenAmount);
+    setErrorText(result);
+  }, [payTokenAmount, payToken]);
 
   useEffect(() => {
     if (isCreateSuccess) {
@@ -112,6 +118,7 @@ export function BuyContent({
         <InputPanel
           value={payTokenAmount}
           onValueChange={setPayTokenAmount}
+          hasError={!!errorText}
           topText={<>{cot("txt-YouPay")}</>}
           bottomText={<>${payTokenAmountValue}</>}
           tokenSelect={
@@ -165,21 +172,25 @@ export function BuyContent({
 
         <OrderNoteAndFee value={note} onValueChange={setNote} type={"buy"} />
       </div>
+      <div className=" sm:mt-[140px]">
+        <div className="mt-3 text-center text-[12px] text-[#FF6262]">
+          {errorText}
+        </div>
+        <button
+          onClick={handleConfirmBtnClick}
+          disabled={isCreating || isApproving || !!errorText}
+          className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+        >
+          {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
+        </button>
 
-      <button
-        onClick={handleConfirmBtnClick}
-        disabled={isCreating || isApproving}
-        className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white sm:mt-[140px]"
-      >
-        {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
-      </button>
-
-      <AccountVerifyDialog
-        open={verifyDialogOpen}
-        setOpen={setVerifyDialogOpen}
-        marketName={currentMarket.market_name}
-        targetUrl={targetUrl || ""}
-      />
+        <AccountVerifyDialog
+          open={verifyDialogOpen}
+          setOpen={setVerifyDialogOpen}
+          marketName={currentMarket.market_name}
+          targetUrl={targetUrl || ""}
+        />
+      </div>
     </div>
   );
 }

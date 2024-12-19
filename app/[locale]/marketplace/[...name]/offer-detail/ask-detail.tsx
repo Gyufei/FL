@@ -21,9 +21,10 @@ import { usePairApprove } from "../create-offer/use-pair-approve";
 import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
 import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
-import AskDetailBtnTip from "./ask-detail-btn-tip";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import ArrowBetween from "../create-offer/arrow-between";
+import { IToken } from "@/lib/types/token";
+import { StableBalance } from "@/components/share/stable-balance";
 
 export default function AskDetail({
   offer,
@@ -83,6 +84,8 @@ export default function AskDetail({
 
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
+  const [errorText, setErrorText] = useState("");
+
   const sliderCanMax = useMemo(() => {
     return +bigIntOrNpMinus(offer.item_amount, offer.taken_item_amount);
   }, [offer]);
@@ -102,10 +105,15 @@ export default function AskDetail({
     return NP.times(payTokenAmount || 0, tokenPrice);
   }, [payTokenAmount, tokenPrice]);
 
-  const { checkBalance } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBnbBalance(
     offer.marketplace.chain,
     offerTokenInfo,
   );
+
+  useEffect(() => {
+    const result = checkBalanceInsufficient(payTokenAmount);
+    setErrorText(result);
+  }, [payTokenAmount]);
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     usePairApprove(
@@ -133,10 +141,6 @@ export default function AskDetail({
     }
 
     if (isDepositLoading || !receivePointAmount) return;
-
-    if (!checkBalance(payTokenAmount)) {
-      return;
-    }
 
     reportEvent("click", { value: "confirmOffer-ask" });
     await writeAction({
@@ -170,7 +174,16 @@ export default function AskDetail({
           />
 
           <SliderCard
-            topText={<>{T("txt-YouPay")}</>}
+            topText={
+              <>
+                {T("txt-YouPay")}
+                <StableBalance
+                  className="mb-0"
+                  chain={offer.marketplace.chain}
+                  token={offerTokenInfo as IToken}
+                />
+              </>
+            }
             bottomText={<>~${formatNum(payTokenTotalPrice)} </>}
             value={payTokenAmount}
             tokenLogo={forLogo}
@@ -178,6 +191,7 @@ export default function AskDetail({
             sliderMax={Number(offer.item_amount)}
             sliderValue={receivePointAmount}
             setSliderValue={handleSliderChange}
+            hasError={!!errorText}
           />
 
           <ArrowBetween className="-my-4 self-center" />
@@ -201,23 +215,27 @@ export default function AskDetail({
             </>
           ) : (
             <>
+              <div className="mt-3 text-center text-[12px] text-[#FF6262]">
+                {errorText}
+              </div>
               <WithWalletConnectBtn
                 chain={offer.marketplace.chain}
                 onClick={handleConfirmTakerOrder}
               >
                 <button
                   disabled={
-                    isDepositLoading || !receivePointAmount || isApproving
+                    isDepositLoading ||
+                    !receivePointAmount ||
+                    isApproving ||
+                    !!errorText
                   }
-                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:bg-gray"
+                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
                 >
                   {isShouldApprove
                     ? approveBtnText
                     : T("btn-ConfirmTakerOrder")}
                 </button>
               </WithWalletConnectBtn>
-
-              <AskDetailBtnTip />
             </>
           )}
         </div>

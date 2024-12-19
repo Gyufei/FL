@@ -13,7 +13,6 @@ export default function SliderCard({
   bottomText,
   setSliderValue,
   hasError = false,
-  showBalance = false,
 }: {
   topText: ReactElement;
   value: string;
@@ -24,7 +23,6 @@ export default function SliderCard({
   bottomText: ReactElement;
   setSliderValue: (_v: number) => void;
   hasError?: boolean;
-  showBalance?: boolean;
 }) {
   function handleSlider(val: number) {
     if (val > canGoMax) {

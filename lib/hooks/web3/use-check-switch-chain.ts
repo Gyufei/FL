@@ -1,7 +1,7 @@
 import { useChainId, useSwitchChain } from "wagmi";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ChainType } from "@/lib/types/chain";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 export function useCheckSwitchChain(chain: ChainType) {
   const chainId = useChainId();
@@ -27,11 +27,18 @@ export function useCheckSwitchChain(chain: ChainType) {
     return null;
   }, [chainId, isEvm, chain]);
 
-  function checkAndSwitchChain() {
+  const checkAndSwitchChain = useCallback(() => {
+    if (!chain || !isEvm) {
+      return true;
+    }
+
     if (chain !== currentWalletChain) {
       const shouldChainId = Number(ChainConfigs[chain].network);
-      switchChainAsync({ chainId: shouldChainId });
+      return switchChainAsync({ chainId: shouldChainId });
     }
-  }
-  return { checkAndSwitchChain };
+
+    return true;
+  }, [chain, isEvm, currentWalletChain, switchChainAsync]);
+
+  return { currentWalletChain, checkAndSwitchChain };
 }

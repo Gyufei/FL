@@ -1,8 +1,7 @@
 import { truncateAddr } from "@/lib/utils/web3";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useMemo } from "react";
-import { useAccount, useChainId, useDisconnect, useSwitchChain } from "wagmi";
-import { ChainConfigs } from "@/lib/const/chain-configs";
+import { useMemo } from "react";
+import { useAccount, useDisconnect } from "wagmi";
 import { ChainType } from "@/lib/types/chain";
 
 const EmptyWallet = {
@@ -11,8 +10,6 @@ const EmptyWallet = {
   connected: false,
   connecting: false,
   disconnect: () => {},
-  currentChain: ChainType.ETH,
-  switchToTargetChain: () => {},
   connector: {},
 };
 
@@ -25,8 +22,6 @@ export function useChainWallet(chain?: ChainType) {
     connector: evmConnector,
   } = useAccount();
 
-  const chainId = useChainId();
-  const { switchChainAsync } = useSwitchChain();
   const { disconnect: evmDisconnect } = useDisconnect();
 
   const isEvm = [ChainType.ETH, ChainType.BNB].includes(chain as ChainType);
@@ -38,40 +33,6 @@ export function useChainWallet(chain?: ChainType) {
     disconnect: solDisconnect,
   } = useWallet();
 
-  const currentWalletChain = useMemo(() => {
-    if (isEvm) {
-      if (ChainConfigs[ChainType.ETH].network === chainId) {
-        return ChainType.ETH;
-      }
-
-      if (ChainConfigs[ChainType.BNB].network === chainId) {
-        return ChainType.BNB;
-      }
-    }
-
-    if (chain === ChainType.SOLANA) {
-      return chain;
-    }
-
-    return null;
-  }, [chainId, isEvm, chain]);
-
-  const switchToTargetChain = useCallback(
-    async function () {
-      if (!chain || chain === ChainType.SOLANA) {
-        return true;
-      }
-
-      if (chain !== currentWalletChain) {
-        const shouldChainId = Number(ChainConfigs[chain].network);
-        return switchChainAsync({ chainId: shouldChainId });
-      }
-
-      return true;
-    },
-    [chain, currentWalletChain, switchChainAsync],
-  );
-
   const evmWallet = useMemo(
     () => ({
       address: evmAddress || "",
@@ -81,19 +42,9 @@ export function useChainWallet(chain?: ChainType) {
       connected: evmConnected,
       connecting: evmConnecting,
       disconnect: evmDisconnect,
-      currentChain: currentWalletChain,
-      switchToTargetChain,
       connector: evmConnector,
     }),
-    [
-      evmAddress,
-      evmConnected,
-      evmConnecting,
-      evmDisconnect,
-      currentWalletChain,
-      switchToTargetChain,
-      evmConnector,
-    ],
+    [evmAddress, evmConnected, evmConnecting, evmDisconnect, evmConnector],
   );
 
   const solanaWallet = useMemo(
@@ -105,17 +56,9 @@ export function useChainWallet(chain?: ChainType) {
       connected: solConnected,
       connecting: solConnecting,
       disconnect: solDisconnect,
-      currentChain: ChainType.SOLANA,
-      switchToTargetChain,
       connector: {},
     }),
-    [
-      solAddress,
-      solConnected,
-      solConnecting,
-      solDisconnect,
-      switchToTargetChain,
-    ],
+    [solAddress, solConnected, solConnecting, solDisconnect],
   );
 
   if (!chain) {

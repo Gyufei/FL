@@ -20,20 +20,29 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
   const userBalance = useBalance({
     address: address as `0x${string}`,
     token: isNativeToken ? undefined : (token?.address as `0x${string}`),
+    // chainId: 56,
+    query: {
+      enabled: !!address,
+    },
   });
   const balance = userBalance?.data?.value;
+  // console.log("🚀 ~ useCheckBnbBalance ~ balance:", balance);
 
   function checkBalanceInsufficient(value: any, showTip = false) {
     if (balance === undefined) return "";
     const gas = 0.0005;
     const nativeBalance = NP.divide(String(balance), 10 ** 18);
+    console.log(
+      "🚀 ~ checkBalanceInsufficient ~ nativeBalance:",
+      formatLeadingZeros(nativeBalance, 10),
+    );
 
     if (isNativeToken) {
       const total = NP.plus(gas, value);
       const result = NP.minus(nativeBalance, total) >= 0;
       if (!result) {
         reportEvent("InsufficientBalance", {
-          value: `${balance}-${total}`,
+          value: `${nativeBalance}-${total}`,
         });
 
         if (showTip) {

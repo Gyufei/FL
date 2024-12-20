@@ -102,8 +102,10 @@ export function BuyContent({
   }
 
   useEffect(() => {
-    const result = checkBalanceInsufficient(payTokenAmount);
-    setErrorText(result);
+    if (!isShouldApprove) {
+      const result = checkBalanceInsufficient(payTokenAmount);
+      setErrorText(result);
+    }
   }, [payTokenAmount, payToken]);
 
   useEffect(() => {
@@ -154,7 +156,7 @@ export function BuyContent({
           tokenSelect={<PointTokenDisplay point={receivePoint} />}
         />
 
-        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
+        <div className="mt-4 flex flex-wrap items-start justify-between space-y-4 sm:space-y-0">
           {!(isOffChainFungiblePoint || isPointToken) && (
             <>
               <SettleModeSelect

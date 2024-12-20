@@ -15,7 +15,7 @@ export default function OtherHoldingCard({ holding }: { holding: any }) {
   return (
     <div className="rounded-[20px] bg-white p-5">
       <div className="flex items-start justify-between">
-        <div className="flex cursor-pointer items-start space-x-3">
+        <div className="flex items-start space-x-3">
           <div className="mt-2">
             <TokenPairImg
               src1={holding.marketplace?.projectLogo}

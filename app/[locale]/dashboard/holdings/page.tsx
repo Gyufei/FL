@@ -82,7 +82,7 @@ export default function MyHoldings() {
       {sortOffers.length ? (
         <div className="no-scroll-bar mt-5 grid max-h-[calc(100vh-248px)] flex-1 auto-rows-min grid-cols-1 gap-5 overflow-y-auto border-t border-[#eee] pt-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {(sortOffers || []).map((holding) => {
-            if (!holding.offer) {
+            if (!holding?.offer?.offer_id) {
               return (
                 <OtherHoldingCard key={holding.holding_id} holding={holding} />
               );

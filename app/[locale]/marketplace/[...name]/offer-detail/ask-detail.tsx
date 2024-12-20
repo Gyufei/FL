@@ -110,11 +110,6 @@ export default function AskDetail({
     offerTokenInfo,
   );
 
-  useEffect(() => {
-    const result = checkBalanceInsufficient(payTokenAmount);
-    setErrorText(result);
-  }, [payTokenAmount]);
-
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     usePairApprove(
       offer.marketplace.chain,
@@ -124,6 +119,12 @@ export default function AskDetail({
       payTokenAmount,
     );
 
+  useEffect(() => {
+    if (!isShouldApprove) {
+      const result = checkBalanceInsufficient(payTokenAmount);
+      setErrorText(result);
+    }
+  }, [payTokenAmount, isShouldApprove]);
   function handleSliderChange(v: number) {
     setReceivePointAmount(v);
   }

@@ -92,12 +92,12 @@ export function SellContent({
   });
   const [errorText, setErrorText] = useState("");
   useEffect(() => {
-    if (isOffChainFungiblePoint || isPointToken) {
+    if ((isOffChainFungiblePoint || isPointToken) && !isShouldApprove) {
       const result = checkBalanceInsufficient(sellPointAmount);
 
       setErrorText(result);
     }
-  }, [sellPointAmount]);
+  }, [sellPointAmount, isShouldApprove]);
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
@@ -175,7 +175,7 @@ export function SellContent({
           }
         />
 
-        <div className="mt-4 flex flex-wrap items-center justify-between space-y-4 sm:space-y-0">
+        <div className="mt-4 flex flex-wrap items-start justify-between space-y-4 sm:space-y-0">
           {!(isOffChainFungiblePoint || isPointToken) && (
             <>
               <SettleModeSelect

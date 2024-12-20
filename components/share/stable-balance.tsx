@@ -5,7 +5,7 @@ import { formatNum } from "@/lib/utils/number";
 import { IToken } from "@/lib/types/token";
 import { ChainType } from "@/lib/types/chain";
 import { cn } from "@/lib/utils/common";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState, useCallback } from "react";
 export function StableBalance({
@@ -28,7 +28,7 @@ export function StableBalance({
     },
   });
   const nativeBalance = userBalance?.data?.value || "0";
-  let evmBalance = NP.divide(String(nativeBalance), 10 ** 18);
+  const evmBalance = NP.divide(String(nativeBalance), 10 ** 18);
 
   const { connection } = useConnection();
   const { publicKey: solAddress } = useWallet();

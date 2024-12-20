@@ -184,7 +184,12 @@ export function BuyContent({
         </div>
         <button
           onClick={handleConfirmBtnClick}
-          disabled={isCreating || isApproving || !!errorText}
+          disabled={
+            isCreating ||
+            isApproving ||
+            !!errorText ||
+            (!receivePointAmount && !isShouldApprove)
+          }
           className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
         >
           {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}

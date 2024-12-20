@@ -226,7 +226,7 @@ export default function AskDetail({
                 <button
                   disabled={
                     isDepositLoading ||
-                    !receivePointAmount ||
+                    (!receivePointAmount && !isShouldApprove) ||
                     isApproving ||
                     !!errorText
                   }

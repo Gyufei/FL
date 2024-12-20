@@ -22,7 +22,7 @@ export function useCreateAction(
     logoURI: "/icons/empty.svg",
     decimals: 9,
   } as IToken);
-  const [tokenAmount, setTokenAmount] = useState("0");
+  const [tokenAmount, setTokenAmount] = useState("");
   const point = useMemo<IPoint | null>(
     () => ({
       logoURI: marketplace.pointLogo,

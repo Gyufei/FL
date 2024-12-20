@@ -110,8 +110,9 @@ function ItemCard({
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
                 $
-                {Number(
+                {formatNum(
                   NP.times(marketplace.initial_listing_price, pointDecimalNum),
+                  3,
                 )}
               </div>
             )}
@@ -126,8 +127,9 @@ function ItemCard({
             ) : (
               <div className="flex items-center text-sm leading-5 text-black">
                 $
-                {Number(
+                {formatNum(
                   NP.times(marketplace.all_time_high_price, pointDecimalNum),
+                  3,
                 )}
               </div>
             )}

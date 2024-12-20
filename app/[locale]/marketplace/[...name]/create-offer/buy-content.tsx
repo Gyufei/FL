@@ -102,11 +102,15 @@ export function BuyContent({
   }
 
   useEffect(() => {
+    setPayTokenAmount("");
+  }, [payToken]);
+
+  useEffect(() => {
     if (!isShouldApprove) {
       const result = checkBalanceInsufficient(payTokenAmount);
       setErrorText(result);
     }
-  }, [payTokenAmount, payToken]);
+  }, [payTokenAmount, payToken, isShouldApprove]);
 
   useEffect(() => {
     if (isCreateSuccess) {

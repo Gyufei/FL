@@ -78,14 +78,21 @@ export default function MarketplaceOverview({
           ) : (
             <div
               data-up={
-                NP.divide(marketplace.vol_24h, marketplace.total_vol) === 0
+                +marketplace.change_rate_24h === 0
                   ? "zero"
-                  : NP.divide(marketplace.vol_24h, marketplace.total_vol) > 0
+                  : +marketplace.change_rate_24h > 0
               }
               className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
             >
-              {change_24h === 0 ? null : change_24h > 0 ? "+ " : "- "}
-              {change_24h === 0 ? 0 : toPercent(change_24h * 100)}%
+              {+marketplace.change_rate_24h === 0
+                ? null
+                : +marketplace.change_rate_24h > 0
+                ? "+ "
+                : "- "}
+              {+marketplace.change_rate_24h === 0
+                ? 0
+                : toPercent(+marketplace.change_rate_24h)}
+              %
             </div>
           )}
         </div>

@@ -7,7 +7,7 @@ import { useTokenBalance } from "@/lib/hooks/api/use-token-balance";
 import { checkIsNativeToken } from "@/lib/utils/web3";
 import { ChainType } from "@/lib/types/chain";
 import { formatLeadingZeros } from "@/lib/utils/number";
-import { useChainId } from "wagmi";
+import { ChainConfigs } from "@/lib/const/chain-configs";
 
 export function useCheckBnbBalance(chain: ChainType, token: any) {
   const { address } = useAccount();
@@ -16,28 +16,22 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
     abiAddress: token?.address,
     decimals: token?.decimals,
   });
-  const chainId = useChainId();
   const isNativeToken = checkIsNativeToken(chain, token || null);
 
   const userBalance = useBalance({
     address: address as `0x${string}`,
     token: isNativeToken ? undefined : (token?.address as `0x${string}`),
-    chainId: chainId,
+    chainId: ChainConfigs[chain].network as number,
     query: {
       enabled: !!address,
     },
   });
   const balance = userBalance?.data?.value;
-  // console.log("🚀 ~ useCheckBnbBalance ~ balance:", balance);
 
   function checkBalanceInsufficient(value: any, showTip = false) {
     if (balance === undefined) return "";
     const gas = 0.0005;
     const nativeBalance = NP.divide(String(balance), 10 ** 18);
-    console.log(
-      "🚀 ~ checkBalanceInsufficient ~ nativeBalance:",
-      formatLeadingZeros(nativeBalance, 10),
-    );
 
     if (isNativeToken) {
       const total = NP.plus(gas, value);

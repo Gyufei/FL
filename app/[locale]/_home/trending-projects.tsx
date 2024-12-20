@@ -60,13 +60,6 @@ function ItemCard({
     return 1;
   }, [marketplace]);
 
-  const change_24h = useMemo(() => {
-    if (marketplace && marketplace.vol_24h && marketplace.total_vol) {
-      return NP.divide(marketplace.vol_24h, marketplace.total_vol);
-    }
-    return 0;
-  }, [marketplace]);
-
   function handleGo() {
     router.push(`/marketplace/${marketplace.market_symbol}`);
   }
@@ -143,11 +136,22 @@ function ItemCard({
               <ValueSkeleton />
             ) : (
               <div
-                data-up={change_24h === 0 ? "zero" : change_24h > 0}
+                data-up={
+                  +marketplace.change_rate_24h === 0
+                    ? "zero"
+                    : +marketplace.change_rate_24h > 0
+                }
                 className="text-sm leading-5 data-[up=false]:text-red data-[up=true]:text-green data-[up=zero]:text-black"
               >
-                {change_24h === 0 ? null : change_24h > 0 ? "+ " : "- "}
-                {change_24h === 0 ? 0 : toPercent(change_24h * 100)}%
+                {+marketplace.change_rate_24h === 0
+                  ? null
+                  : +marketplace.change_rate_24h > 0
+                  ? "+ "
+                  : "- "}
+                {+marketplace.change_rate_24h === 0
+                  ? 0
+                  : toPercent(+marketplace.change_rate_24h)}
+                %
               </div>
             )}
           </div>

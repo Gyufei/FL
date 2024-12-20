@@ -18,6 +18,7 @@ import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import Sparkline from "@/components/share/snapshot";
 import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
+import { useSalesVolume } from "@/lib/hooks/api/use-sales-volume";
 
 export default function PointMarket({ className }: { className?: string }) {
   const t = useTranslations("page-MarketList");
@@ -195,10 +196,9 @@ export default function PointMarket({ className }: { className?: string }) {
     {
       label: t("th-24hChange"),
       renderCell: (item: IMarketplace) => {
-        const vol24h = item.vol_24h || 0;
-        const TotalVol = item.total_vol || 0;
-        const lastPricePercent =
-          Number(TotalVol) === 0 ? 0 : NP.divide(vol24h, TotalVol);
+        const pointDecimalNum = ProjectDecimalsMap[item.market_symbol]
+          ? 10 ** ProjectDecimalsMap[item.market_symbol]
+          : 1;
         return isLoadingFlag ? (
           <div className="flex justify-end">
             <Skeleton className="h-[16px] w-[60px]" />
@@ -206,8 +206,8 @@ export default function PointMarket({ className }: { className?: string }) {
         ) : (
           <div className="flex items-center justify-end">
             <ChangeText
-              vol={Number(item.vol_24h)}
-              percent={lastPricePercent * 100}
+              vol={NP.times(item.last_price, pointDecimalNum)}
+              percent={+item.change_rate_24h}
             />
           </div>
         );
@@ -299,28 +299,38 @@ function PriceText({ num }: { num: number }) {
 }
 
 function ChangeText({ vol, percent }: { vol: number; percent: number }) {
-  const isGreater = vol > 0;
+  const isGreater = percent > 0;
   const prev = isGreater ? "+" : "-";
   return (
     <div
-      data-greater={Number(vol) === 0 ? "zero" : isGreater}
+      data-greater={percent === 0 ? "zero" : isGreater}
       className="text-sm leading-4 data-[greater=false]:text-red data-[greater=true]:text-green data-[greater=zero]:text-black"
     >
-      {Number(vol) === 0 ? "$0" : `${prev}$${formatNum(vol, 3)}`}/
-      {Number(percent) === 0 ? "0" : `${prev}${Math.abs(percent).toFixed(2)}`}%
+      {Number(vol) === 0
+        ? "$0"
+        : `${percent === 0 ? "" : prev}$${formatNum(vol, 3)}`}
+      /{Number(percent) === 0 ? "0" : `${prev}${Math.abs(percent).toFixed(2)}`}%
     </div>
   );
 }
 
 function Snapshot({ marketplace }: { marketplace: IMarketplace }) {
-  const { data: offers, isLoading: isOffersLoading } = useMarketOffers({
-    marketSymbol: marketplace?.market_symbol || "",
-    marketChain: marketplace.chain,
-  });
+  const { data: salesData, isLoading } = useSalesVolume(
+    marketplace.chain,
+    marketplace?.market_place_account,
+  );
   const data = useMemo(() => {
-    return offers?.map((o) => Number(o.price));
-  }, [offers]);
-  return isOffersLoading ? (
+    const showData = (salesData || [])
+      ?.filter((item) => {
+        return item.create_at > new Date().getTime() - 3600 * 1000 * 24;
+      })
+      ?.map((o) => Number(o.sales_price));
+    if (showData?.length < 2) {
+      return [10, 10];
+    }
+    return showData;
+  }, [salesData]);
+  return isLoading ? (
     <div className="flex justify-end">
       <Skeleton className="h-[16px] w-[60px]" />
     </div>

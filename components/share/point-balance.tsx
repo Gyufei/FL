@@ -16,7 +16,6 @@ export default function PointBalance({
   point: IPoint;
   className?: string;
 }) {
-  console.log("🚀 ~ point:", point);
   const [balance, setBalance] = useState(0);
   const chain = point?.marketplace?.chain;
 

@@ -17,7 +17,6 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import Sparkline from "@/components/share/snapshot";
-import { useMarketOffers } from "@/lib/hooks/api/use-market-offers";
 import { useSalesVolume } from "@/lib/hooks/api/use-sales-volume";
 
 export default function PointMarket({ className }: { className?: string }) {

@@ -25,13 +25,6 @@ export default function MarketplaceOverview({
     return 1;
   }, [marketplace]);
 
-  const change_24h = useMemo(() => {
-    if (marketplace && marketplace.vol_24h && marketplace.total_vol) {
-      return NP.divide(marketplace.vol_24h, marketplace.total_vol);
-    }
-    return 0;
-  }, [marketplace]);
-
   return (
     <div className="mt-3 flex-col space-y-2">
       <div className="flex items-center justify-between">

@@ -57,7 +57,7 @@ export default function useTxStatus(
         e?.message.includes("An internal error was received") ||
         e?.message.includes("Execution reverted for an unknown reason")
       ) {
-        eMsg = "Insufficient Balance.";
+        eMsg = "No enough BNB to send transaction.";
       }
       if (eMsg) {
         setGlobalMessage({

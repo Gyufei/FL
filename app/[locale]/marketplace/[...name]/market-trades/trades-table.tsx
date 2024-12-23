@@ -111,7 +111,7 @@ export function TradesTable({
   const theme = useTheme({
     Table: `
       grid-template-rows: 40px repeat(auto-fit, 40px);
-      grid-template-columns:  50px repeat(2, minmax(0, max-content)) 1fr minmax(0, max-content);
+      grid-template-columns: 30px 60px minmax(0, max-content) minmax(0, max-content) 1fr;
       font-weight: 400;
 
       &::-webkit-scrollbar {
@@ -131,7 +131,8 @@ export function TradesTable({
       font-weight: 400;
       line-height: 18px;
 
-      &:nth-of-type(3) {
+      &:nth-of-type(3),
+      &:nth-of-type(5) {
         text-align: center;
       }
     `,
@@ -139,7 +140,8 @@ export function TradesTable({
       color: #c0c4cc;
       border-bottom: 1px solid #eee;
 
-      &:nth-of-type(4) {
+      &:nth-of-type(4),
+      &:nth-of-type(5) {
         text-align: center;
       }
     `,
@@ -159,7 +161,7 @@ export function TradesTable({
       label: "",
       renderCell: (trade: any) =>
         isLoadingFlag ? (
-          <Skeleton className="h-[16px] w-[50px]" />
+          <Skeleton className="h-[16px] w-[30px]" />
         ) : (
           <TimeDisplay time={trade.time} />
         ),
@@ -183,8 +185,8 @@ export function TradesTable({
             <span>
               {formatNum(
                 NP.divide(
-                  NP.divide(trade.amount, trade.token_amount),
-                  pointDecimalNum,
+                  trade.token_amount,
+                  NP.divide(trade.amount, pointDecimalNum),
                 ),
                 2,
                 true,
@@ -208,7 +210,10 @@ export function TradesTable({
         isLoadingFlag ? (
           <Skeleton className="h-[16px] w-[50px]" />
         ) : (
-          <div className="px-[4px] text-center">
+          <div
+            className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap px-[4px] text-center"
+            title={formatNum(NP.divide(trade.amount, pointDecimalNum), 2, true)}
+          >
             {formatNum(NP.divide(trade.amount, pointDecimalNum), 2, true)}
           </div>
         ),

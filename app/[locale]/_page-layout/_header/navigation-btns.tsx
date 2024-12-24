@@ -11,6 +11,7 @@ export default function NavigationBtns() {
   const isHome = pathname === "/";
   const isDashboard = pathname.startsWith(`/dashboard`);
   const isMarketPlace = pathname.startsWith(`/marketplace`);
+  const isBounty = pathname.startsWith(`/bounty`);
   const pointPattern = /\/marketplace\/[a-zA-Z]+/;
   const isMarketDetailPage = pointPattern.test(pathname);
 
@@ -61,6 +62,27 @@ export default function NavigationBtns() {
             className="cursor-pointer data-[active=true]:mr-1"
           />
           {isMarketPlace && <div>{t("btn-Marketplace")}</div>}
+        </div>
+      </div>
+
+      <div className="relative flex items-center">
+        <div
+          onClick={() => handleClick(`/bounty`)}
+          data-active={isBounty}
+          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-yellow data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
+          style={{
+            borderRight: isMarketDetailPage ? "2px solid #fff" : "",
+          }}
+        >
+          <Image
+            src="/icons/task.svg"
+            width={24}
+            height={24}
+            alt="bounty"
+            data-active={isBounty}
+            className="cursor-pointer data-[active=true]:mr-1"
+          />
+          {isBounty && <div>{t("btn-Bounty")}</div>}
         </div>
       </div>
     </div>

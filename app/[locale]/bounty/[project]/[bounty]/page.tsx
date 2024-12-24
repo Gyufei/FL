@@ -16,7 +16,10 @@ export default function ProjectContent() {
     <div className="flex h-[calc(100vh-100px)] w-full flex-col overflow-auto sm:h-[calc(100vh-96px)]">
       <div className="flex flex-1 items-stretch pt-4 sm:pt-0">
         <div className="flex w-full flex-col space-y-6 px-6 sm:w-[368px]">
-          <ProjectInfoCard className="h-[218px] w-[320px] shrink-0 grow-0" />
+          <ProjectInfoCard
+            className="h-[218px] w-[320px] shrink-0 grow-0"
+            closeDetail={() => router.back()}
+          />
           <ProjectOptions />
         </div>
         <div

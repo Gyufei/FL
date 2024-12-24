@@ -13,10 +13,8 @@ import { ChainType } from "@/lib/types/chain";
 export default function ProjectInfoCard({
   //   marketplace,
   className,
-}: {
-  //   marketplace: IMarketplace | undefined;
-  className?: string;
-}) {
+  closeDetail,
+}: any) {
   const isLoadingFlag = false;
   const marketplace = useMemo(
     () => ({
@@ -100,7 +98,8 @@ export default function ProjectInfoCard({
             width={72}
             height={72}
             alt="token1"
-            className="rounded-full"
+            className="cursor-pointer rounded-full"
+            onClick={closeDetail}
           />
         </div>
       )}

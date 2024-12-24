@@ -35,11 +35,12 @@ export default function ProjectContent() {
             <h1 className="text-[20px]">Bounties</h1>
           </div>
           <div
-            className="no-scroll-bar mt-5 grid flex-1 auto-rows-min grid-cols-2 gap-5 overflow-y-auto sm:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+            className="no-scroll-bar mt-5 grid flex-1 auto-rows-min gap-4 overflow-y-auto sm:gap-5"
             style={{
               gridTemplateColumns: isMobileSize
-                ? "repeat(auto-fill, minmax(160px, 1fr))"
+                ? "repeat(2, minmax(0, 160px))"
                 : "repeat(auto-fill, minmax(320px, 1fr))",
+              justifyContent: isMobileSize ? "center" : "start",
             }}
           >
             <ProjectItemCard openDetail={() => router.push("/bounty/1/1")} />

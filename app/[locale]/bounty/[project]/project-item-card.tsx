@@ -25,7 +25,7 @@ export default function ProjectItemCard({ openDetail }: any) {
       <div
         className={cn(
           isMobileSize
-            ? "backdrop-filter-[blur(10px)] -mt-[40px] mb-[20px] flex w-fit items-center gap-2 rounded-3xl bg-[#ffffff33] px-2 py-1 text-[#FFFFFF]"
+            ? "backdrop-filter-[blur(10px)] -mt-[40px] mb-[20px] ml-2 flex w-fit items-center gap-2 rounded-3xl bg-[#ffffff33] px-2 py-1 text-[#FFFFFF]"
             : "mt-5 flex w-fit items-center gap-2 rounded-3xl bg-[#EFEFEF] px-2 py-1",
         )}
         style={

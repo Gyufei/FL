@@ -6,10 +6,10 @@ import PageFooter from "../_page-layout/_page-footer";
 
 export default function Home() {
   return (
-    <div className="sm:h-[calc(100vh-96px) mx-auto h-[calc(100vh-100px)] w-full min-w-[1000px] space-y-8 overflow-auto p-6">
+    <div className="sm:h-[calc(100vh-96px)  mx-auto flex h-[calc(100vh-100px)] w-full min-w-[1000px] flex-col space-y-8 overflow-auto p-6">
       <ProjectBanner />
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid flex-1 gap-8 md:grid-cols-2">
         <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5 ">
           <h2 className="mb-4 flex items-center gap-2">
             <span className="h-6 w-6 rounded-lg bg-yellow"></span>

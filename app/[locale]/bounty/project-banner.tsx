@@ -31,7 +31,7 @@ export default function FeaturedCard() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
-    <div className="mx-auto w-full p-4">
+    <div className="w-full p-4">
       <div className="relative flex overflow-hidden rounded-xl bg-[#FAFAFA]">
         <div className="absolute left-5 top-5 flex items-center gap-2">
           <div className="h-6 w-6 rounded-lg bg-yellow" />
@@ -49,8 +49,8 @@ export default function FeaturedCard() {
           ))}
         </div>
 
-        <div className="grid flex-1 gap-6 p-6 md:grid-cols-2">
-          <div className="flex max-w-xl flex-col justify-center space-y-6">
+        <div className="grid h-[360px] flex-1 gap-6 p-6 md:grid-cols-2">
+          <div className="flex h-[360px] max-w-xl flex-col justify-center space-y-6">
             {/* Title Section */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -116,10 +116,10 @@ export default function FeaturedCard() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
               <Image
                 src={slides[currentSlide].image}
-                width={800}
-                height={600}
+                width={600}
+                height={300}
                 alt="Featured image"
-                className="h-full w-full object-contain"
+                className="object-contain"
               />
             </div>
           </div>

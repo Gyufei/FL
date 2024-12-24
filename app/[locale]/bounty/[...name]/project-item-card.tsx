@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function ProjectItemCard({ openDetail }: any) {
   return (
     <div
-      className="min-w-80 rounded-lg bg-white p-5 shadow-md"
+      className=" min-w-80 cursor-pointer rounded-lg bg-white p-5"
       onClick={openDetail}
     >
       <div className="relative">

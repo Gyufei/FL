@@ -47,7 +47,7 @@ export default function SliderCard({
       </div>
       <div className="mt-2 flex items-center justify-between">
         <div className="h-[36px] text-2xl leading-[36px]">
-          {formatNum(value)}
+          {formatNum(value, 6)}
         </div>
         <Image
           src={tokenLogo}

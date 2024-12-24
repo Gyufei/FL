@@ -20,16 +20,19 @@ export default function Home() {
               name="Winter Wonderland: Backpack"
               participants={156}
               logo="/img/mock/矩形 1321@1x (1).png"
+              showParticipants
             />
             <ProjectCard
               name="Layer3"
               participants={89}
               logo="/img/mock/矩形 1321@1x (1).png"
+              showParticipants
             />
             <ProjectCard
               name="Metacora"
               participants={234}
               logo="/img/mock/矩形 1321@1x (1).png"
+              showParticipants
             />
           </div>
         </div>
@@ -43,7 +46,7 @@ export default function Home() {
             <ProjectCard
               name="Jito"
               participants={412}
-              logo="/img/mock/矩形 1321@1x (3).png"
+              logo="/img/mock/矩形 1321@1x (1).png"
               bgColor="bg-[#FAFAFA]"
             />
             <ProjectCard
@@ -55,7 +58,7 @@ export default function Home() {
             <ProjectCard
               name="Metacora"
               participants={289}
-              logo="/img/mock/矩形 1321@1x (1).png"
+              logo="/img/mock/矩形 1321@1x (3).png"
               bgColor="bg-[#FAFAFA]"
             />
           </div>

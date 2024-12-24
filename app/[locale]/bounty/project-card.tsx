@@ -4,7 +4,11 @@ import Image from "next/image";
 import { cn } from "@/lib/utils/common";
 import { useRouter } from "@/app/navigation";
 
-export default function BackpackHeader({ bgColor, logo }: any) {
+export default function BackpackHeader({
+  bgColor,
+  logo,
+  showParticipants,
+}: any) {
   const router = useRouter();
   function handleGo(projectId: string) {
     const path = `/bounty/${projectId}`;
@@ -31,29 +35,35 @@ export default function BackpackHeader({ bgColor, logo }: any) {
           </div>
           <div className="flex flex-col">
             <h2 className="text-[18px]">Winter Wonderland: Backpack</h2>
-            <div className="text-muted-foreground flex items-center gap-2">
-              <div className="flex -space-x-2">
-                <div className="relative h-5 w-5 overflow-hidden rounded-full border-2 border-white">
-                  <Image
-                    src="/img/mock/矩形 1321@1x (1).png"
-                    alt="Participant 1"
-                    width={80}
-                    height={80}
-                    className="object-cover"
-                  />
+            {showParticipants ? (
+              <div className="text-muted-foreground flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  <div className="relative h-5 w-5 overflow-hidden rounded-full border-2 border-white">
+                    <Image
+                      src="/img/mock/矩形 1321@1x (1).png"
+                      alt="Participant 1"
+                      width={80}
+                      height={80}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative h-5 w-5 overflow-hidden rounded-full border-2 border-white">
+                    <Image
+                      src="/img/mock/矩形 1321@1x.png"
+                      alt="Participant 2"
+                      width={80}
+                      height={80}
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
-                <div className="relative h-5 w-5 overflow-hidden rounded-full border-2 border-white">
-                  <Image
-                    src="/img/mock/矩形 1321@1x.png"
-                    alt="Participant 2"
-                    width={80}
-                    height={80}
-                    className="object-cover"
-                  />
-                </div>
+                <span className="text-sm text-[#99A0AF]">10K Participants</span>
               </div>
-              <span className="text-sm text-[#99A0AF]">10K Participants</span>
-            </div>
+            ) : (
+              <div className="flex items-center text-sm text-[#99A0AF]">
+                7 Bounties
+              </div>
+            )}
           </div>
         </div>
       </div>

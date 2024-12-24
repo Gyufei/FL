@@ -130,7 +130,7 @@ export default function ProjectInfoCard({
           </div>
         </div>
       </div>
-      <div className="mt-5 flex items-center gap-2 rounded-lg bg-white px-2 py-1 shadow">
+      <div className="mt-5 flex items-center gap-2 rounded-lg bg-white px-2 py-1">
         <Image
           src="/icons/winter.svg"
           alt="Winter"
@@ -156,7 +156,7 @@ export default function ProjectInfoCard({
         </div>
       </div> */}
       <div className="mt-6 flex gap-2">
-        <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1 shadow">
+        <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1">
           <Image
             src="/icons/solana-black.svg"
             alt="Solana Icon"
@@ -166,7 +166,7 @@ export default function ProjectInfoCard({
           />
           <span className="text-sm font-medium">Solana</span>
         </div>
-        <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1 shadow">
+        <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1">
           <Image
             src="/icons/level.svg"
             alt="Base Icon"

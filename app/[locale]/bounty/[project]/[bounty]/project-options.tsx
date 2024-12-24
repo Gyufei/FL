@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function ProjectOptions() {
   return (
-    <div className="mx-auto max-w-md space-y-6 text-[14px]">
+    <div className="mx-auto w-full max-w-md space-y-6 text-[14px]">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#E8FF81] text-[16px]" />
@@ -35,11 +35,17 @@ export default function ProjectOptions() {
           className="flex items-center gap-3 rounded-xl bg-[#fafafa] p-3 shadow-sm"
           style={{ opacity: 0.6 }}
         >
-          <div className="bg-gray-100 flex h-8 w-8 items-center justify-center rounded-full">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F0F1F5]">
             <span className="font-medium">3</span>
           </div>
-          <span className="flex-grow font-medium">Transact using Backpack</span>
-          <Lock className="h-5 w-5 text-[#7C66FF]" />
+          <span className="flex-grow">Transact using Backpack</span>
+          <Image
+            src="/icons/locks-close.svg"
+            alt="locks"
+            width={28}
+            height={28}
+            className="h-[28px] w-[28px]"
+          />
         </div>
 
         {/* Step 4 - Locked */}
@@ -47,12 +53,18 @@ export default function ProjectOptions() {
           className="flex items-center gap-3 rounded-xl bg-[#fafafa] p-3 shadow-sm"
           style={{ opacity: 0.6 }}
         >
-          <div className="bg-gray-100 flex h-8 w-8 items-center justify-center rounded-full">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F0F1F5]">
             <Gift className="h-5 w-5" />
           </div>
           <span className="flex-grow font-medium">Claim Credits</span>
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg border-2 border-dashed border-[#7C66FF]">
-            <Lock className="h-4 w-4 text-[#7C66FF]" />
+          <div className="flex items-center justify-center rounded-lg">
+            <Image
+              src="/icons/locks-close.svg"
+              alt="locks"
+              width={28}
+              height={28}
+              className="h-[28px] w-[28px]"
+            />
           </div>
         </div>
       </div>

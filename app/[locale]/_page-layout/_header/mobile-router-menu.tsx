@@ -42,6 +42,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
 
   const isDashboardActive = currentRoute.includes(routePath[0]);
   const isMarketplaceActive = currentRoute.includes(routePath[1]);
+  const isBountyActive = currentRoute.includes(routePath[1]);
 
   const handleClick = (r: string) => {
     if (currentRoute === r) {
@@ -95,6 +96,24 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           <div className="text-lg leading-5 text-black">
             {t("btn-Marketplace")}
           </div>
+        </div>
+      </div>
+      <div
+        data-active={isBountyActive}
+        className="mb-2 flex items-center justify-between py-3 data-[active=true]:opacity-50"
+        style={{
+          boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
+        }}
+        onClick={() => handleClick("/bounty")}
+      >
+        <div className="flex items-center justify-start space-x-3">
+          <Image
+            src={isBountyActive ? "/icons/task.svg" : "/icons/task.svg"}
+            width={40}
+            height={40}
+            alt="governance"
+          />
+          <div className="text-lg leading-5 text-black">{t("btn-Bounty")}</div>
         </div>
       </div>
       <PageFooter className="fixed bottom-0 left-0 w-screen" />

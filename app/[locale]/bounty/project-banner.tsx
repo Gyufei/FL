@@ -112,8 +112,8 @@ export default function FeaturedCard() {
           </div>
 
           {/* Image Section */}
-          <div className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+          <div className="relative flex items-center justify-center">
+            <div className="relative overflow-hidden rounded-lg">
               <Image
                 src={slides[currentSlide].image}
                 width={600}

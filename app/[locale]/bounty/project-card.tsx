@@ -16,7 +16,7 @@ export default function BackpackHeader({
     router.push(path);
   }
   return (
-    <div className="bg-gray-100 cursor-pointer">
+    <div className="cursor-pointer text-[#2D2E33]">
       <div
         className={cn(
           "rounded-lg bg-white p-4 transition-shadow hover:shadow-lg",
@@ -34,7 +34,9 @@ export default function BackpackHeader({
             />
           </div>
           <div className="flex flex-col">
-            <h2 className="text-[18px]">Winter Wonderland: Backpack</h2>
+            <h2 className="text-[14px] text-[#2D2E33] sm:text-[18px]">
+              Winter Wonderland: Backpack
+            </h2>
             {showParticipants ? (
               <div className="text-muted-foreground flex items-center gap-2">
                 <div className="flex -space-x-2">
@@ -57,10 +59,12 @@ export default function BackpackHeader({
                     />
                   </div>
                 </div>
-                <span className="text-sm text-[#99A0AF]">10K Participants</span>
+                <span className="text-[12px] text-[#99A0AF] sm:text-[14px]">
+                  10K Participants
+                </span>
               </div>
             ) : (
-              <div className="flex items-center text-sm text-[#99A0AF]">
+              <div className="flex items-center text-[12px] text-[#99A0AF] sm:text-[14px]">
                 7 Bounties
               </div>
             )}

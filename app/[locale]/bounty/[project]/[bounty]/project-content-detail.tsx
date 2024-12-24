@@ -5,12 +5,12 @@ import Image from "next/image";
 
 function ProjectContentDetail({ closeDetail }: any) {
   return (
-    <div className="flex flex-col items-center justify-center bg-[#fafafa]  text-white ">
+    <div className="flex flex-col items-center justify-center  bg-[#fafafa] text-white">
       <div className="mb-5 flex items-center justify-center">
         <Image
           src="/img/mock/image@2x (3).png"
           alt="Icon"
-          className="max-w-[800px] cursor-pointer "
+          className="cursor-pointer rounded-lg sm:max-w-[800px]"
           width={800}
           height={800}
           onClick={closeDetail}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Gift, Lock } from "lucide-react";
+import { Check, Gift } from "lucide-react";
 import Image from "next/image";
 
 export default function ProjectOptions() {

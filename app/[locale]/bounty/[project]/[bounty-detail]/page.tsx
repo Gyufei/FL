@@ -1,8 +1,8 @@
 "use client";
 
-import ProjectInfoCard from "./project-info-card";
-import ProjectContentDetail from "./project-content-detail";
-import ProjectOptions from "./project-options";
+import ProjectInfoCard from "./info-card";
+import ProjectContentDetail from "./content-detail";
+import ProjectOptions from "./options";
 import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";

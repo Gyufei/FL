@@ -12,6 +12,11 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
+  ignoreErrors: [
+    "WebSocket connection failed",
+    "has not been authorized yet",
+    "this.provider.disconnect is not a function",
+  ],
 
   replaysOnErrorSampleRate: 1.0,
 

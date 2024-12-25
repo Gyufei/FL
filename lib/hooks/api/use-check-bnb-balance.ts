@@ -37,9 +37,9 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
       const total = NP.plus(gas, value);
       const result = NP.minus(nativeBalance, total) >= 0;
       if (!result) {
-        reportEvent("InsufficientBalance", {
-          value: `${nativeBalance}-${total}`,
-        });
+        // reportEvent("InsufficientBalance", {
+        //   value: `${nativeBalance}-${total}`,
+        // });
 
         if (showTip) {
           setGlobalMessage({

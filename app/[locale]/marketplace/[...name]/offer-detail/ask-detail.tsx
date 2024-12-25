@@ -96,16 +96,10 @@ export default function AskDetail({
       NP.divide(receivePointAmount, offer.item_amount),
       forValue,
     );
-    console.log("🚀 ~ payTokenAmount ~ pay:", pay, platformFee, tradeFee);
     const payWithFee = NP.times(pay, 1 + platformFee + tradeFee);
     return formatNum(payWithFee, 6);
   }, [receivePointAmount, forValue, offer.item_amount, tradeFee, platformFee]);
 
-  console.log(
-    "🚀 ~ payTokenAmount ~ payTokenAmount:",
-    payTokenAmount,
-    tokenPrice,
-  );
   const payTokenTotalPrice = useMemo(() => {
     if (!payTokenAmount) return "0";
     return NP.times(payTokenAmount || 0, tokenPrice);

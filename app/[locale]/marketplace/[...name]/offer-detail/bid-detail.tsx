@@ -23,6 +23,8 @@ import { reportEvent } from "@/lib/utils/analytics";
 import ArrowBetween from "../create-offer/arrow-between";
 import PointBalance from "@/components/share/point-balance";
 import { IPoint } from "@/lib/types/token";
+import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 
 export default function BidDetail({
   offer,
@@ -78,6 +80,16 @@ export default function BidDetail({
     return NP.times(receiveTokenAmount || 0, tokenPrice);
   }, [receiveTokenAmount, tokenPrice]);
 
+  const { checkBalanceInsufficient } = useCheckBnbBalance(
+    offer.marketplace.chain,
+    {
+      address: offerPointInfo.marketplace.project_token_addr,
+      decimals: ProjectDecimalsMap[offerPointInfo.marketplace.market_symbol],
+      symbol: offerPointInfo.marketplace.item_name,
+    },
+  );
+  const [errorText, setErrorText] = useState("");
+
   const {
     data: txHash,
     isLoading: isDepositLoading,
@@ -99,6 +111,15 @@ export default function BidDetail({
     referrerStr: "",
     isNativeToken,
   });
+
+  useEffect(() => {
+    if (!isShouldApprove) {
+      const result = checkBalanceInsufficient(
+        NP.divide(sellPointAmount, pointDecimalNum),
+      );
+      setErrorText(result);
+    }
+  }, [sellPointAmount, isShouldApprove]);
 
   function handleSliderChange(v: number) {
     setSellPointAmount(v);
@@ -170,6 +191,7 @@ export default function BidDetail({
             sliderValue={sellPointAmount}
             tokenLogo={forLogo}
             setSliderValue={handleSliderChange}
+            hasError={!!errorText}
           />
 
           <ArrowBetween className="-my-4 self-center" />
@@ -186,22 +208,29 @@ export default function BidDetail({
               {T("btn-Offer100%Filled")}
             </button>
           ) : (
-            <WithWalletConnectBtn
-              chain={offer.marketplace.chain}
-              onClick={handleDeposit}
-            >
-              <button
-                disabled={
-                  isDepositLoading ||
-                  (!isShouldApprove && !sellPointAmount) ||
-                  isApproving
-                }
-                // onClick={handleDeposit}
-                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white"
+            <>
+              <div className="mt-3 text-center text-[12px] text-[#FF6262]">
+                {errorText}
+              </div>
+              <WithWalletConnectBtn
+                chain={offer.marketplace.chain}
+                onClick={handleDeposit}
               >
-                {isShouldApprove ? approveBtnText : T("btn-ConfirmTakerOrder")}
-              </button>
-            </WithWalletConnectBtn>
+                <button
+                  disabled={
+                    isDepositLoading ||
+                    (!isShouldApprove && !sellPointAmount) ||
+                    isApproving ||
+                    !!errorText
+                  }
+                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+                >
+                  {isShouldApprove
+                    ? approveBtnText
+                    : T("btn-ConfirmTakerOrder")}
+                </button>
+              </WithWalletConnectBtn>
+            </>
           )}
         </div>
 

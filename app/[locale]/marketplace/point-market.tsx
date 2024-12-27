@@ -334,9 +334,12 @@ function Snapshot({ marketplace }: { marketplace: IMarketplace }) {
       <Skeleton className="h-[16px] w-[60px]" />
     </div>
   ) : (
-    <div className="flex justify-end">
-      <div className="flex items-center justify-end">
-        <Sparkline data={data || []} />
+    <div className="flex h-[64px] items-center justify-end ">
+      <div className="mt-[10px] flex items-center justify-end">
+        <Sparkline
+          data={data || []}
+          isRedColor={+marketplace.change_rate_24h < 0}
+        />
       </div>
     </div>
   );

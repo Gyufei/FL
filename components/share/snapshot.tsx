@@ -13,8 +13,8 @@ interface SparklineProps {
 const Sparkline: React.FC<SparklineProps> = ({
   data,
   width = 100,
-  height = 40,
-  strokeWidth = 3,
+  height = 30,
+  strokeWidth = 2,
   className = "",
   isRedColor = false,
 }) => {

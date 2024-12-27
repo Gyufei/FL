@@ -34,6 +34,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
     forLogo,
     pointPerPrice,
     tokenTotalPrice,
+    orderDuration,
   } = useOfferFormat({
     offer: offer,
   });
@@ -153,7 +154,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
 
       <div className="flex items-center justify-between pt-3">
         <div className="text-xs leading-[18px] text-lightgray">
-          {/* {orderDuration} */}
+          {orderDuration}
         </div>
         <div className="flex items-center">
           {offer.note && (

@@ -24,7 +24,7 @@ export function StableBalance({
     address: address as `0x${string}`,
     token: isNativeToken ? undefined : (token?.address as `0x${string}`),
     query: {
-      enabled: !!address && chain === ChainType.SOLANA,
+      enabled: !!address && chain !== ChainType.SOLANA,
     },
   });
   const nativeBalance = userBalance?.data?.value || "0";

@@ -16,6 +16,7 @@ import ReferralLink from "./referral-link";
 import RollInBtn from "./roll-in-btn";
 import { ChainType } from "@/lib/types/chain";
 import { useCheckSwitchChain } from "@/lib/hooks/web3/use-check-switch-chain";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
 export default function OverviewInfo() {
   const T = useTranslations("cd-AccountOverview");
@@ -28,6 +29,7 @@ export default function OverviewInfo() {
     from: subDays(new Date(), 5),
     to: undefined,
   });
+  const { address } = useChainWallet();
 
   const { data: accountInfo, mutate: refetchAccountInfo } = useAccountStats(
     currentChain!,
@@ -39,6 +41,7 @@ export default function OverviewInfo() {
 
   const [nameInputValue, setNameInputValue] = useState("");
   const [showNameInput, setShowNameInput] = useState(false);
+  const [rateError, setRateError] = useState(false);
 
   useEffect(() => {
     if (accountInfo) {
@@ -81,16 +84,24 @@ export default function OverviewInfo() {
         <div className="flex justify-between">
           <div className="flex flex-col">
             <div className="text-xs leading-6 text-gray">
-              UID {accountInfo?.uid}
+              UID {accountInfo?.uid || address?.slice(-6)}
             </div>
             {showNameInput ? (
               <Input
                 ref={inputRef}
-                placeholder={T("pl-Username")}
+                placeholder={rateError ? "≥3" : T("pl-Username")}
+                data-error={rateError}
                 value={nameInputValue}
                 onChange={(e) => setNameInputValue(e.target.value)}
-                className="h-6 w-40 rounded-none border-x-0 border-b border-t-0 border-[#f0f1f5] bg-white pl-0  text-black"
-                onBlur={handleNameInputBlur}
+                className="h-6 w-40 rounded-none border-x-0 border-b border-t-0 border-[#f0f1f5] bg-white pl-0  text-black data-[error=true]:!border-red"
+                onBlur={() => {
+                  if (nameInputValue.length < 3 && nameInputValue.length > 0) {
+                    setNameInputValue("");
+                    setRateError(true);
+                  } else {
+                    handleNameInputBlur();
+                  }
+                }}
               />
             ) : (
               <div className="flex items-center gap-1">

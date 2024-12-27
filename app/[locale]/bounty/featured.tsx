@@ -64,7 +64,7 @@ export default function FeaturedCard() {
           }}
           className="featured-swiper h-[360px] w-full  [&_.swiper-pagination-bullet-active]:!size-[10px] [&_.swiper-pagination-bullet-active]:!bg-[#121214] [&_.swiper-pagination-bullet]:!size-[6px] [&_.swiper-pagination-bullet]:!bg-[#828181] [&_.swiper-pagination-vertical]:!w-fit  [&_.swiper-pagination]:!left-6"
         >
-          {slides.map((slide, index) => (
+          {slides.map((slide) => (
             <SwiperSlide key={slide.id}>
               <div
                 className="grid h-[360px] cursor-pointer gap-6 px-6 md:grid-cols-2"

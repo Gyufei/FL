@@ -35,7 +35,7 @@ export default function Marketplace({ params }: { params: { name: string } }) {
 
   if (!markets || !marketplaceName) return null;
 
-  if (!marketplace) {
+  if (!marketplace || marketplace.status === "offline") {
     return (
       <div className="flex h-[calc(100vh-96px)] w-full items-center justify-center">
         <Image src="/img/404.png" width={480} height={360} alt="404" />

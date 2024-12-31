@@ -24,6 +24,7 @@ export function useMarketplaces(chain?: string) {
         projectLogo: WithProjectImgCDN(m.market_symbol, chain),
         pointLogo: WithPointImgCDN(m.market_symbol, chain),
         chain,
+        status: m.market_symbol === "spherex" ? "offline" : m.status,
       };
     });
 

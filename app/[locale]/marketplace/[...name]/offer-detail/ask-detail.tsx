@@ -18,8 +18,6 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
-import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
-import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import ArrowBetween from "../create-offer/arrow-between";
@@ -79,9 +77,6 @@ export default function AskDetail({
     isNativeToken,
   });
 
-  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
-    useAccountVerifyDialog(offer.marketplace);
-
   const [receivePointAmount, setReceivePointAmount] = useState(0);
 
   const [errorText, setErrorText] = useState("");
@@ -133,11 +128,6 @@ export default function AskDetail({
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
       await approveAction();
-      return;
-    }
-
-    if (!isAccountVerify) {
-      setVerifyDialogOpen(true);
       return;
     }
 
@@ -246,13 +236,6 @@ export default function AskDetail({
       </div>
 
       <OfferTabs offer={offer} />
-
-      <AccountVerifyDialog
-        open={verifyDialogOpen}
-        setOpen={setVerifyDialogOpen}
-        marketName={offer.marketplace.market_name}
-        targetUrl={targetUrl || ""}
-      />
     </>
   );
 }

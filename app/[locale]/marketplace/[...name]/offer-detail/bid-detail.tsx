@@ -17,8 +17,6 @@ import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
-import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
-import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { reportEvent } from "@/lib/utils/analytics";
 import ArrowBetween from "../create-offer/arrow-between";
 import PointBalance from "@/components/share/point-balance";
@@ -60,9 +58,6 @@ export default function BidDetail({
       "sellToBid",
       NP.divide(sellPointAmount, pointDecimalNum),
     );
-
-  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
-    useAccountVerifyDialog(offer.marketplace);
 
   const sliderCanMax = useMemo(() => {
     return +bigIntOrNpMinus(offer.item_amount, offer.taken_item_amount);
@@ -129,11 +124,6 @@ export default function BidDetail({
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
       await approveAction();
-      return;
-    }
-
-    if (!isAccountVerify) {
-      setVerifyDialogOpen(true);
       return;
     }
 
@@ -239,13 +229,6 @@ export default function BidDetail({
       </div>
 
       <OfferTabs offer={offer} />
-
-      <AccountVerifyDialog
-        open={verifyDialogOpen}
-        setOpen={setVerifyDialogOpen}
-        marketName={offer.marketplace.market_name}
-        targetUrl={targetUrl || ""}
-      />
     </>
   );
 }

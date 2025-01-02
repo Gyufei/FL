@@ -3,7 +3,6 @@ import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
 import { useState, useRef } from "react";
 import { useCheckSwitchChain } from "@/lib/hooks/web3/use-check-switch-chain";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SellContent } from "./create-offer/sell-content";
 import { BuyContent } from "./create-offer/buy-content";
@@ -13,6 +12,8 @@ import { useTranslations } from "next-intl";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import { reportEvent } from "@/lib/utils/analytics";
+import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
+import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 
 export default function CreateOfferBtn({
   marketplace,
@@ -27,6 +28,9 @@ export default function CreateOfferBtn({
   const [currentTab, setCurrentTab] = useState("sell");
   const hasReportedSuccessRef = useRef(false);
   const { checkAndSwitchChain } = useCheckSwitchChain(marketplace.chain);
+
+  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
+    useAccountVerifyDialog(marketplace);
 
   function handleCloseDrawer() {
     setDrawerOpen(false);
@@ -50,6 +54,10 @@ export default function CreateOfferBtn({
         className="w-full"
         onClick={() => {
           checkAndSwitchChain();
+          if (!isAccountVerify) {
+            setVerifyDialogOpen(true);
+            return;
+          }
           setDrawerOpen(true);
           hasReportedSuccessRef.current = false;
           reportEvent("click", { value: "createOffer" });
@@ -134,6 +142,12 @@ export default function CreateOfferBtn({
           </Tabs>
         </Drawer>
       )}
+      <AccountVerifyDialog
+        open={verifyDialogOpen}
+        setOpen={setVerifyDialogOpen}
+        marketName={marketplace.market_name}
+        targetUrl={targetUrl || ""}
+      />
     </>
   );
 }

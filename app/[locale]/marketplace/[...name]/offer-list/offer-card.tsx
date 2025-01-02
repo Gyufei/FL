@@ -22,7 +22,8 @@ import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckSwitchChain } from "@/lib/hooks/web3/use-check-switch-chain";
-
+import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
+import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 export function OfferCard({ offer }: { offer: IOffer }) {
   const t = useTranslations("cd-Order");
   const { setAnchorValue } = useAnchor();
@@ -40,6 +41,9 @@ export function OfferCard({ offer }: { offer: IOffer }) {
   });
 
   const { checkAndSwitchChain } = useCheckSwitchChain(offer.marketplace.chain);
+
+  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
+    useAccountVerifyDialog(offer.marketplace);
 
   const orderType = offer.entry.direction;
 
@@ -184,17 +188,29 @@ export function OfferCard({ offer }: { offer: IOffer }) {
             </div>
           )}
           {showBuy && (
-            <WithWalletConnectBtn
-              chain={offer.marketplace.chain}
-              onClick={() => {
-                checkAndSwitchChain();
-                handleShowOffer(String(offer.entry.id));
-              }}
-            >
-              <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
-                {orderType === "sell" ? t("btn-Buy") : t("btn-Sell")}
-              </button>
-            </WithWalletConnectBtn>
+            <>
+              <WithWalletConnectBtn
+                chain={offer.marketplace.chain}
+                onClick={() => {
+                  checkAndSwitchChain();
+                  if (!isAccountVerify) {
+                    setVerifyDialogOpen(true);
+                    return;
+                  }
+                  handleShowOffer(String(offer.entry.id));
+                }}
+              >
+                <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-yellow">
+                  {orderType === "sell" ? t("btn-Buy") : t("btn-Sell")}
+                </button>
+              </WithWalletConnectBtn>
+              <AccountVerifyDialog
+                open={verifyDialogOpen}
+                setOpen={setVerifyDialogOpen}
+                marketName={offer.marketplace.market_name}
+                targetUrl={targetUrl || ""}
+              />
+            </>
           )}
           {done && (
             <WithWalletConnectBtn

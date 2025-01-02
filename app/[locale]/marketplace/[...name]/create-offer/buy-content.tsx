@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
-
 import ArrowBetween from "./arrow-between";
 import { WithTip } from "../../../../../components/share/with-tip";
 import CollateralRateInput from "./collateral-rate-input";
@@ -15,8 +13,6 @@ import { formatNum } from "@/lib/utils/number";
 import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
-import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
-import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
@@ -71,9 +67,6 @@ export function BuyContent({
       payTokenAmount,
     );
 
-  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
-    useAccountVerifyDialog(currentMarket);
-
   const { checkBalanceInsufficient } = useCheckBnbBalance(
     currentMarket.chain,
     payToken,
@@ -85,11 +78,6 @@ export function BuyContent({
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
       await approveAction();
-      return;
-    }
-
-    if (!isAccountVerify) {
-      setVerifyDialogOpen(true);
       return;
     }
 
@@ -194,13 +182,6 @@ export function BuyContent({
         >
           {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
         </button>
-
-        <AccountVerifyDialog
-          open={verifyDialogOpen}
-          setOpen={setVerifyDialogOpen}
-          marketName={currentMarket.market_name}
-          targetUrl={targetUrl || ""}
-        />
       </div>
     </div>
   );

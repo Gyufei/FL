@@ -16,8 +16,6 @@ import { formatNum } from "@/lib/utils/number";
 import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
-import { useAccountVerifyDialog } from "@/lib/hooks/marketplace/use-account-verify-dialog";
-import AccountVerifyDialog from "@/components/share/account-verify-dialog";
 import { PointTokenDisplay } from "./point-token-display";
 import { cn } from "@/lib/utils/common";
 import { reportEvent } from "@/lib/utils/analytics";
@@ -82,9 +80,6 @@ export function SellContent({
       sellPointAmount,
     );
 
-  const { verifyDialogOpen, setVerifyDialogOpen, isAccountVerify, targetUrl } =
-    useAccountVerifyDialog(currentMarket);
-
   const { checkBalanceInsufficient } = useCheckBnbBalance(currentMarket.chain, {
     address: currentMarket.project_token_addr,
     decimals: ProjectDecimalsMap[currentMarket.market_symbol],
@@ -103,11 +98,6 @@ export function SellContent({
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
       await approveAction();
-      return;
-    }
-
-    if (!isAccountVerify) {
-      setVerifyDialogOpen(true);
       return;
     }
 
@@ -210,13 +200,6 @@ export function SellContent({
           {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
         </button>
       </div>
-
-      <AccountVerifyDialog
-        open={verifyDialogOpen}
-        setOpen={setVerifyDialogOpen}
-        marketName={currentMarket.market_name}
-        targetUrl={targetUrl || ""}
-      />
     </div>
   );
 }

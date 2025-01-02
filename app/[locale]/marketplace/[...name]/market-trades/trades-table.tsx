@@ -182,7 +182,17 @@ export function TradesTable({
           <Skeleton className="h-[16px] w-[100px]" />
         ) : (
           <div className="flex w-full items-center justify-end px-[4px] pr-4">
-            <span>
+            <span
+              className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap"
+              title={formatNum(
+                NP.divide(
+                  trade.token_amount,
+                  NP.divide(trade.amount, pointDecimalNum),
+                ),
+                2,
+                true,
+              )}
+            >
               {formatNum(
                 NP.divide(
                   trade.token_amount,

@@ -57,7 +57,7 @@ export default function PointBalance({
 
   return (
     <div className={cn("mb-6 text-[12px] text-[#99A0AF]", className)}>
-      Balance: {formatNum(balance)}
+      Balance: {+formatNum(balance || 0) || ""}
     </div>
   );
 }

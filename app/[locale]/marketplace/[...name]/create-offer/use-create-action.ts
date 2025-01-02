@@ -68,7 +68,7 @@ export function useCreateAction(
   }, [tokenAmount, tokenPrice]);
 
   const pointPrice = useMemo(() => {
-    if (!pointAmount) {
+    if (!pointAmount || +pointAmount === 0) {
       return 0;
     }
 

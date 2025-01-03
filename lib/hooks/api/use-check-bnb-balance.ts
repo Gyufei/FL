@@ -1,17 +1,15 @@
 import { useAccount, useBalance } from "wagmi";
 import NP from "number-precision";
 import { reportEvent } from "@/lib/utils/analytics";
-import { GlobalMessageAtom } from "@/lib/states/global-message";
-import { useSetAtom } from "jotai";
 import { useTokenBalance } from "@/lib/hooks/api/use-token-balance";
 import { checkIsNativeToken } from "@/lib/utils/web3";
 import { ChainType } from "@/lib/types/chain";
 import { formatLeadingZeros } from "@/lib/utils/number";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import toast from "react-hot-toast";
 
 export function useCheckBnbBalance(chain: ChainType, token: any) {
   const { address } = useAccount();
-  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
   const tokenBalance = useTokenBalance({
     abiAddress: token?.address,
     decimals: token?.decimals,
@@ -42,14 +40,13 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
         // });
 
         if (showTip) {
-          setGlobalMessage({
-            type: "error",
-            message: `Insufficient Balance: ${total} ${
+          toast.error(
+            `Insufficient Balance: ${total} ${
               token.symbol
             } is needed but only ${formatLeadingZeros(nativeBalance, 6)} ${
               token.symbol
             } in the wallet`,
-          });
+          );
         }
         return `Insufficient ${token.symbol} to pay`;
       }
@@ -61,14 +58,13 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
           value: `${nativeBalance}-${gas}`,
         });
         if (showTip) {
-          setGlobalMessage({
-            type: "error",
-            message: `Insufficient Balance: ${gas.toFixed(9)} ${
+          toast.error(
+            `Insufficient Balance: ${gas.toFixed(9)} ${
               token.symbol
             } is needed but only ${formatLeadingZeros(nativeBalance, 6)} ${
               token.symbol
             } in the wallet`,
-          });
+          );
         }
 
         return `No enough ${token.symbol} to send transaction`;
@@ -79,14 +75,13 @@ export function useCheckBnbBalance(chain: ChainType, token: any) {
           value: `${nativeBalance}-${value}`,
         });
         if (showTip) {
-          setGlobalMessage({
-            type: "error",
-            message: `Insufficient Balance: ${value} ${
+          toast.error(
+            `Insufficient Balance: ${value} ${
               token.symbol
             } is needed but only ${formatLeadingZeros(tokenBalance, 6)} ${
               token.symbol
             } in the wallet`,
-          });
+          );
         }
         return `Insufficient ${token.symbol} to pay`;
       }

@@ -4,13 +4,11 @@ import { useRollin } from "@/lib/hooks/contract/use-rollin";
 // import { differenceInMinutes } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { GlobalMessageAtom } from "@/lib/states/global-message";
-import { useSetAtom } from "jotai";
 import { ChainType } from "@/lib/types/chain";
+import toast from "react-hot-toast";
+import { AlertCircle } from "lucide-react";
 
 export default function RollInBtn() {
-  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
-
   const T = useTranslations("cd-AccountOverview");
   const { connected } = useChainWallet(ChainType.ETH);
 
@@ -25,9 +23,15 @@ export default function RollInBtn() {
 
   function handleSign() {
     if (isSign) {
-      setGlobalMessage({
-        type: "warning",
-        message: "Already rollin",
+      toast("Already rollin", {
+        icon: (
+          <AlertCircle
+            style={{
+              color: "#B38828",
+            }}
+            className="h-6 w-6"
+          />
+        ),
       });
     }
     if (isLoading || isSign) return;

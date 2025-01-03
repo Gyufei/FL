@@ -42,7 +42,6 @@ export default function MyAskDetail({
     isSettled,
     afterTGE,
     afterTGEPeriod,
-    isFilled,
     isCanceled,
     isClosed,
     isCanAbort,
@@ -67,6 +66,7 @@ export default function MyAskDetail({
     holdingStr: holdingId,
     isNativeToken,
   });
+  console.log("🚀 ~ isClosing:", isClosing);
 
   const {
     isLoading: isAborting,
@@ -190,10 +190,10 @@ export default function MyAskDetail({
             tokenLogo={offerTokenInfo?.logoURI || "/icons/empty.png"}
           />
 
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-2">
             {isCanSettle ? (
               <WithWalletConnectBtn
-                className="flex-1"
+                className="w-full flex-1"
                 chain={offer?.marketplace.chain}
                 onClick={handleSettle}
               >
@@ -221,8 +221,9 @@ export default function MyAskDetail({
                         <WithWalletConnectBtn
                           chain={offer?.marketplace.chain}
                           onClick={handleRelist}
+                          className="w-full flex-1"
                         >
-                          <button className="mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                          <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
                             {ot("btn-RelistThisOffer")}
                           </button>
                         </WithWalletConnectBtn>
@@ -230,28 +231,33 @@ export default function MyAskDetail({
                     ) : (
                       <>
                         {(isClosed || afterTGE) && !isOfferNoNeedSettle ? (
-                          <button className="pointer-events-none mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                          <button className="pointer-events-none mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
                             {ot("btn-AwaitingSettlement")}
                           </button>
                         ) : (
                           <>
-                            <WithWalletConnectBtn
-                              className="flex-1"
-                              chain={offer?.marketplace.chain}
-                              onClick={handleClose}
-                            >
-                              <button
-                                disabled={isClosing}
-                                className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
-                              >
-                                {ot("btn-CloseThisOffer")}
+                            {!isClosed ? (
+                              <>
+                                <WithWalletConnectBtn
+                                  className="w-full flex-1"
+                                  chain={offer?.marketplace.chain}
+                                  onClick={handleClose}
+                                >
+                                  <button
+                                    disabled={isClosing}
+                                    className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
+                                  >
+                                    {ot("btn-CloseThisOffer")}
+                                  </button>
+                                </WithWalletConnectBtn>
+                                <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
+                                  {ot("txt-YouHaveTheOptionToClose")}
+                                </div>
+                              </>
+                            ) : (
+                              <button className="pointer-events-none mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
+                                {ot("btn-OfferCompleted")}
                               </button>
-                            </WithWalletConnectBtn>
-
-                            {isFilled && (
-                              <div className="mt-3 rounded-2xl bg-[#FBF2EA] px-4 py-3 leading-5 text-[#FFA95B]">
-                                {ot("txt-YouHaveTheOptionToClose")}
-                              </div>
                             )}
                           </>
                         )}
@@ -265,7 +271,7 @@ export default function MyAskDetail({
             {isCanAbort && (
               <WithWalletConnectBtn
                 chain={offer?.marketplace.chain}
-                className="flex-1"
+                className="w-full flex-1"
                 onClick={handleAbort}
               >
                 <button

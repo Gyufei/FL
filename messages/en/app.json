@@ -149,6 +149,7 @@
     "btn-ConfirmTakerOrder": "Confirm Taker Order",
     "btn-SettleThisOffer": "Settle this offer",
     "btn-SettlementCompleted": "Settlement Completed",
+    "btn-OfferCompleted": "Offer Completed",
     "btn-RelistThisOffer": "Relist this offer",
     "btn-OfferClosed": "Offer Closed",
     "btn-CloseThisOffer": "Close this offer",

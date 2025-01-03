@@ -149,6 +149,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   }, [offer.status]);
 
   const isCanAbort = useMemo(() => {
+    if (isClosed) return false;
     if (["offchain_fungible_point"].includes(offer.marketplace.market_catagory))
       return false;
 

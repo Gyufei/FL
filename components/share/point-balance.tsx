@@ -23,6 +23,7 @@ export default function PointBalance({
     abiAddress: point?.marketplace?.project_token_addr,
     decimals: ProjectDecimalsMap[point?.marketplace?.market_symbol],
   });
+  console.log("🚀 ~ evmTokenBalance:", evmTokenBalance, balance);
 
   useEffect(() => {
     if (chain !== ChainType.SOLANA) {
@@ -57,7 +58,7 @@ export default function PointBalance({
 
   return (
     <div className={cn("mb-6 text-[12px] text-[#99A0AF]", className)}>
-      Balance: {+formatNum(balance || 0) || ""}
+      Balance: {!balance || isNaN(balance) ? "" : formatNum(balance)}
     </div>
   );
 }

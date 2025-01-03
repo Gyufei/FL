@@ -3,12 +3,11 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import HoverIcon from "@/components/share/hover-icon";
 
-import { useSetAtom } from "jotai";
-import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
 import { ChainType } from "@/lib/types/chain";
+import toast from "react-hot-toast";
 
 export default function ProjectInfoCard({
   //   marketplace,
@@ -51,7 +50,6 @@ export default function ProjectInfoCard({
     [],
   );
   const [isStar, setIsStar] = useState(false);
-  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
   const { data: marketInfos } = useMarketInfo("solana" as ChainType);
 
@@ -76,10 +74,7 @@ export default function ProjectInfoCard({
 
     navigator.clipboard.writeText(marketplace.market_name);
 
-    setGlobalMessage({
-      type: "success",
-      message: "Copied to clipboard",
-    });
+    toast.success("Copied to clipboard");
   };
 
   return (

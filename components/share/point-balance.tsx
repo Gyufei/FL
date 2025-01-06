@@ -23,7 +23,6 @@ export default function PointBalance({
     abiAddress: point?.marketplace?.project_token_addr,
     decimals: ProjectDecimalsMap[point?.marketplace?.market_symbol],
   });
-  console.log("🚀 ~ evmTokenBalance:", evmTokenBalance, balance);
 
   useEffect(() => {
     if (chain !== ChainType.SOLANA) {

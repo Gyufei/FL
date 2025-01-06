@@ -10,12 +10,22 @@ import PageFooter from "../_page-layout/_page-footer";
 import MenuCol from "./menu-col";
 import OverviewInfo from "./overview-info";
 import { usePathname } from "@/app/navigation";
+import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
+import { useEffect } from "react";
+import { isProduction } from "@/lib/PathMap";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { isMobileSize } = useDeviceSize();
   const pt = useTranslations("menu-Dashboard");
   const router = useRouter();
   const pathname = usePathname();
+
+  const { address } = useChainWallet();
+  useEffect(() => {
+    if (!address && isProduction) {
+      router.push(`/marketplace`);
+    }
+  }, [address]);
 
   const mobilePanels: Array<IMobilePanel> = useMemo(
     () => [

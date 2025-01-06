@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
+import NP from "number-precision";
 
 import ArrowBetween from "./arrow-between";
 import { WithTip } from "../../../../../components/share/with-tip";
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils/common";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
+import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
 export function SellContent({
   marketplace,
@@ -32,6 +34,7 @@ export function SellContent({
   className?: string;
 }) {
   const T = useTranslations("drawer-CreateOffer");
+  const { checkMinPrice } = useCreateOfferMinPrice();
 
   const isOffChainFungiblePoint =
     marketplace?.market_catagory === "offchain_fungible_point";
@@ -52,6 +55,7 @@ export function SellContent({
     isCreating,
     handleCreate,
     isCreateSuccess,
+    pointDecimalNum,
   } = useCreateAction(marketplace, "sell");
 
   useEffect(() => {
@@ -87,12 +91,23 @@ export function SellContent({
   });
   const [errorText, setErrorText] = useState("");
   useEffect(() => {
+    let curErrorText = "";
     if ((isOffChainFungiblePoint || isPointToken) && !isShouldApprove) {
-      const result = checkBalanceInsufficient(sellPointAmount);
-
-      setErrorText(result);
+      curErrorText = checkBalanceInsufficient(sellPointAmount);
     }
-  }, [sellPointAmount, isShouldApprove]);
+    if (
+      +pointPrice &&
+      checkMinPrice(
+        pointPrice,
+        NP.times(currentMarket.last_price, pointDecimalNum),
+        true,
+      )
+    ) {
+      curErrorText = "Too big price shift";
+    }
+
+    setErrorText(curErrorText);
+  }, [sellPointAmount, isShouldApprove, pointPrice]);
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
@@ -193,9 +208,12 @@ export function SellContent({
             isCreating ||
             isApproving ||
             !!errorText ||
-            (!receiveTokenAmount && !isShouldApprove)
+            (!pointPrice && !isShouldApprove)
           }
-          className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+          className={cn(
+            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+            isCreating || isApproving ? "dot-loading" : "",
+          )}
         >
           {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
         </button>

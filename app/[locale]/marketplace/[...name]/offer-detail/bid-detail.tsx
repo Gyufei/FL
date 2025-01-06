@@ -23,6 +23,7 @@ import PointBalance from "@/components/share/point-balance";
 import { IPoint } from "@/lib/types/token";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
+import { cn } from "@/lib/utils/common";
 
 export default function BidDetail({
   offer,
@@ -213,7 +214,10 @@ export default function BidDetail({
                     isApproving ||
                     !!errorText
                   }
-                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+                  className={cn(
+                    "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+                    isDepositLoading || isApproving ? "dot-loading" : "",
+                  )}
                 >
                   {isShouldApprove
                     ? approveBtnText

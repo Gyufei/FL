@@ -22,6 +22,7 @@ import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import NP from "number-precision";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { cn } from "@/lib/utils/common";
 
 export default function MyBidDetail({
   holdingId,
@@ -197,7 +198,13 @@ export default function MyBidDetail({
                     chain={offer?.marketplace.chain}
                     onClick={handleRelist}
                   >
-                    <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                    <button
+                      disabled={isRelisting}
+                      className={cn(
+                        "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                        isRelisting ? "dot-loading" : "",
+                      )}
+                    >
                       {ot("btn-RelistThisOffer")}
                     </button>
                   </WithWalletConnectBtn>
@@ -217,7 +224,10 @@ export default function MyBidDetail({
                         >
                           <button
                             disabled={isBidClosing}
-                            className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
+                            className={cn(
+                              "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+                              isBidClosing ? "dot-loading" : "",
+                            )}
                           >
                             {ot("btn-CloseBidOffer")}
                           </button>
@@ -230,7 +240,10 @@ export default function MyBidDetail({
                           >
                             <button
                               disabled={isClosing}
-                              className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
+                              className={cn(
+                                "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                                isClosing ? "dot-loading" : "",
+                              )}
                             >
                               {ot("btn-CloseThisOffer")}
                             </button>
@@ -248,7 +261,7 @@ export default function MyBidDetail({
                           disabled={true}
                           className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#99A0AF] leading-6 text-white"
                         >
-                          {ot("btn-OfferCompleted")}
+                          {ot("btn-TradingEnded")}
                         </button>
                       )}
                     </>

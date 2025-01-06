@@ -16,6 +16,9 @@ import { usePairApprove } from "./use-pair-approve";
 import { PointTokenDisplay } from "./point-token-display";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { cn } from "@/lib/utils/common";
+import NP from "number-precision";
+import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
 export function BuyContent({
   marketplace,
@@ -25,6 +28,7 @@ export function BuyContent({
   onSuccess: () => void;
 }) {
   const cot = useTranslations("drawer-CreateOffer");
+  const { checkMinPrice } = useCreateOfferMinPrice();
 
   const isOffChainFungiblePoint =
     marketplace?.market_catagory === "offchain_fungible_point";
@@ -45,6 +49,7 @@ export function BuyContent({
     isCreating,
     handleCreate,
     isCreateSuccess,
+    pointDecimalNum,
   } = useCreateAction(marketplace, "buy");
 
   const {
@@ -94,11 +99,23 @@ export function BuyContent({
   }, [payToken]);
 
   useEffect(() => {
+    let curErrorText = "";
     if (!isShouldApprove) {
-      const result = checkBalanceInsufficient(payTokenAmount);
-      setErrorText(result);
+      curErrorText = checkBalanceInsufficient(payTokenAmount);
     }
-  }, [payTokenAmount, payToken, isShouldApprove]);
+    if (
+      +pointPrice &&
+      checkMinPrice(
+        pointPrice,
+        NP.times(currentMarket.last_price, pointDecimalNum),
+        false,
+      )
+    ) {
+      curErrorText = "Too big price shift";
+    }
+
+    setErrorText(curErrorText);
+  }, [payTokenAmount, payToken, isShouldApprove, pointPrice]);
 
   useEffect(() => {
     if (isCreateSuccess) {
@@ -176,9 +193,12 @@ export function BuyContent({
             isCreating ||
             isApproving ||
             !!errorText ||
-            (!receivePointAmount && !isShouldApprove)
+            (!pointPrice && !isShouldApprove)
           }
-          className="mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+          className={cn(
+            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+            isCreating || isApproving ? "dot-loading" : "",
+          )}
         >
           {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
         </button>

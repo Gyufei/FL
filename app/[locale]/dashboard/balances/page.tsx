@@ -254,7 +254,7 @@ export default function MyBalances() {
             onValueChange={(v) => handleOpenPanel(v)}
           >
             {dataArray
-              .filter((i) => i.total > 0)
+              .filter((i) => i.data?.length > 0 && i.total > 0)
               ?.map((item, index) => (
                 <AccordionItem key={index} value={item.panelName}>
                   <AccordionTrigger showIcon={false}>

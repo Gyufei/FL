@@ -23,6 +23,7 @@ import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
 import ArrowBetween from "../create-offer/arrow-between";
 import { IToken } from "@/lib/types/token";
 import { StableBalance } from "@/components/share/stable-balance";
+import { cn } from "@/lib/utils/common";
 
 export default function AskDetail({
   offer,
@@ -220,7 +221,10 @@ export default function AskDetail({
                     isApproving ||
                     !!errorText
                   }
-                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray"
+                  className={cn(
+                    "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+                    isDepositLoading || isApproving ? "dot-loading" : "",
+                  )}
                 >
                   {isShouldApprove
                     ? approveBtnText

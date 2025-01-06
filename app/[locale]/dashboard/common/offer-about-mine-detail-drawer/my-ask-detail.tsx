@@ -19,6 +19,7 @@ import { ChainConfigs } from "@/lib/const/chain-configs";
 import NP from "number-precision";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { cn } from "@/lib/utils/common";
 
 export default function MyAskDetail({
   holdingId,
@@ -66,7 +67,6 @@ export default function MyAskDetail({
     holdingStr: holdingId,
     isNativeToken,
   });
-  console.log("🚀 ~ isClosing:", isClosing);
 
   const {
     isLoading: isAborting,
@@ -223,7 +223,13 @@ export default function MyAskDetail({
                           onClick={handleRelist}
                           className="w-full flex-1"
                         >
-                          <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                          <button
+                            disabled={isRelisting}
+                            className={cn(
+                              "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                              isRelisting ? "dot-loading" : "",
+                            )}
+                          >
                             {ot("btn-RelistThisOffer")}
                           </button>
                         </WithWalletConnectBtn>
@@ -245,7 +251,10 @@ export default function MyAskDetail({
                                 >
                                   <button
                                     disabled={isClosing}
-                                    className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black"
+                                    className={cn(
+                                      "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-[#f0f1f5] leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                                      isClosing ? "dot-loading" : "",
+                                    )}
                                   >
                                     {ot("btn-CloseThisOffer")}
                                   </button>
@@ -256,7 +265,7 @@ export default function MyAskDetail({
                               </>
                             ) : (
                               <button className="pointer-events-none mt-4 flex h-12 w-full flex-1 items-center justify-center rounded-2xl bg-[#999999] leading-6 text-white">
-                                {ot("btn-OfferCompleted")}
+                                {ot("btn-TradingEnded")}
                               </button>
                             )}
                           </>
@@ -276,7 +285,10 @@ export default function MyAskDetail({
               >
                 <button
                   disabled={isAborting}
-                  className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black"
+                  className={cn(
+                    "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                    isAborting ? "dot-loading" : "",
+                  )}
                 >
                   {ot("btn-AbortThisOffer")}
                 </button>

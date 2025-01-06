@@ -6,7 +6,6 @@ import { IPoint, IToken } from "@/lib/types/token";
 import { useTokenPrice } from "@/lib/hooks/api/token/use-token-price";
 import { useCreateOffer } from "@/lib/hooks/contract/use-create-offer";
 import { ISettleMode } from "@/lib/types/offer";
-import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { toNonExponential } from "@/lib/utils/number";
 
@@ -15,7 +14,6 @@ export function useCreateAction(
   direction: "buy" | "sell",
 ) {
   const { data: stableTokens } = useStableToken(marketplace.chain);
-  const { checkMinPrice } = useCreateOfferMinPrice();
 
   const [token, setToken] = useState<IToken>({
     symbol: "",
@@ -96,12 +94,7 @@ export function useCreateAction(
     taxForSub: string;
   }) {
     try {
-      const isPriceValid = checkMinPrice(
-        pointPrice,
-        Number(currentMarket.minimum_price),
-      );
-
-      if (!pointAmount || !tokenAmount || !isPriceValid) {
+      if (!pointAmount || !tokenAmount) {
         return;
       }
 
@@ -139,5 +132,6 @@ export function useCreateAction(
     isCreating,
     handleCreate,
     isCreateSuccess,
+    pointDecimalNum,
   };
 }

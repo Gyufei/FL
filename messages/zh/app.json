@@ -149,7 +149,7 @@
     "btn-ConfirmTakerOrder": "确认订单",
     "btn-SettleThisOffer": "清算订单",
     "btn-SettlementCompleted": "清算完成",
-    "btn-OfferCompleted": "订单完成",
+    "btn-TradingEnded": "交易结束",
     "btn-RelistThisOffer": "重新上架",
     "btn-OfferClosed": "已关闭",
     "btn-CloseThisOffer": "关闭",

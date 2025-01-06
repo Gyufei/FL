@@ -1,7 +1,7 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 
 import Image from "next/image";
-
+import { cn } from "@/lib/utils/common";
 import { formatNum } from "@/lib/utils/number";
 import { useTranslations } from "next-intl";
 import { useWithdrawToken } from "@/lib/hooks/contract/use-withdraw-token";
@@ -70,6 +70,8 @@ export function TokenGetCard({
     }
   }, [isWdTokenSuccess, isWdItemSuccess, onSuccess]);
 
+  const isLoading = withdrawerName ? isWdTokenLoading : isWdItemLoading;
+
   return (
     <div className="flex w-full flex-col items-stretch justify-between rounded-xl bg-white px-4 py-3 sm:w-[220px]">
       <div className="flex flex-col">
@@ -102,12 +104,15 @@ export function TokenGetCard({
         <WithWalletConnectBtn
           onClick={withdrawerName ? handleWithdrawToken : handleWithdrawItem}
         >
-          <div
-            data-active={amount > 0}
-            className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg border border-[#d3d4d6] hover:border-0 hover:bg-yellow data-[active=false]:pointer-events-none data-[active=false]:opacity-70 sm:h-7 sm:w-14 sm:rounded-full"
+          <button
+            disabled={isLoading || amount <= 0}
+            className={cn(
+              "flex h-12 w-full cursor-pointer items-center justify-center rounded-lg border border-[#d3d4d6] hover:border-0 hover:bg-yellow disabled:cursor-not-allowed disabled:opacity-70 sm:h-7 sm:w-14 sm:rounded-full",
+              isLoading ? "dot-loading" : "",
+            )}
           >
             {mbt("btn-Get")}
-          </div>
+          </button>
         </WithWalletConnectBtn>
       </div>
     </div>

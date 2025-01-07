@@ -13,6 +13,7 @@ import { USDTAbi } from "@/lib/abi/eth/USDT";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
 import { ChainConfigs } from "@/lib/const/chain-configs";
+import toast from "react-hot-toast";
 
 export function useApprove(
   chain: ChainType,
@@ -88,10 +89,16 @@ export function useApprove(
   useEffect(() => {
     if (txReceipt) {
       setIsApproving(false);
+      toast.success(`Approving Successful`, {
+        position: "bottom-right",
+      });
       readAllowance();
     }
     if (txError) {
       setIsApproving(false);
+      toast.error(`Approving Failed`, {
+        position: "bottom-right",
+      });
     }
   }, [txReceipt, txError, readAllowance]);
 
@@ -109,7 +116,7 @@ export function useApprove(
     if (!shouldWithApprove) return "";
 
     if (isApproving) {
-      return `${CT("btn-Approving")} ${tokenSymbol}...`;
+      return `${CT("btn-Approving")} ${tokenSymbol}`;
     }
 
     if (isShouldApprove) {

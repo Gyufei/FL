@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { reportError, reportEvent } from "@/lib/utils/analytics";
 import toast from "react-hot-toast";
-import { useWaitForTransactionReceipt } from "wagmi";
+import { useWaitReceipt } from "./use-wait-receipt";
 export default function useTxStatus(
   txFn: (_args: any) => Promise<any>,
   successTip?: string,
@@ -24,6 +24,8 @@ export default function useTxStatus(
       }, 2000);
     }
   }, [isSuccess, isError]);
+
+  useWaitReceipt(data);
 
   const txAction = async (...args: Parameters<typeof txFn>) => {
     setIsLoading(true);
@@ -60,27 +62,6 @@ export default function useTxStatus(
       setIsLoading(false);
     }
   };
-
-  const { data: txReceipt, error: txError } = useWaitForTransactionReceipt({
-    hash: data as `0x${string}`,
-    query: {
-      enabled: Boolean(data),
-    },
-    confirmations: 2,
-  });
-
-  useEffect(() => {
-    if (txReceipt) {
-      toast.success("transaction success", {
-        position: "bottom-right",
-      });
-    }
-    if (txError) {
-      toast.error("transaction fail", {
-        position: "bottom-right",
-      });
-    }
-  }, [txReceipt, txError]);
 
   return {
     data,

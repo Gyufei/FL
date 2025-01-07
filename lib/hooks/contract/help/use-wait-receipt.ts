@@ -17,7 +17,7 @@ export function useWaitReceipt(hash?: `0x${string}`) {
 
     const watchTransaction = async () => {
       try {
-        const receipt = await publicClient.waitForTransactionReceipt({
+        await publicClient.waitForTransactionReceipt({
           hash,
           timeout: 60_000,
         });

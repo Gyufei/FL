@@ -57,7 +57,7 @@ export default function PointBalance({
 
   return (
     <div className={cn("mb-6 text-[12px] text-[#99A0AF]", className)}>
-      Balance: {!balance || isNaN(balance) ? "" : formatNum(balance)}
+      Balance: {isNaN(balance) ? "" : formatNum(balance)}
     </div>
   );
 }

@@ -63,7 +63,7 @@ export function StableBalance({
 
   return (
     <div className={cn("mb-6 text-[12px] text-[#99A0AF]", className)}>
-      Balance: {+formatNum(balance || 0) || ""}
+      Balance: {isNaN(balance) ? "" : formatNum(balance)}
     </div>
   );
 }

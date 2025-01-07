@@ -6,6 +6,8 @@ import ReferralDialog from "../dashboard/referral/referral-dialog";
 import NP from "number-precision";
 import WalletsModal from "@/components/share/wallets-modal";
 import WalletDisconnectModal from "@/components/share/wallet-disconnect-modal";
+import { Toaster } from "react-hot-toast";
+import { usePathname } from "next/navigation";
 
 export default function MainLayout({
   children,
@@ -21,11 +23,17 @@ export default function MainLayout({
     localStorage.removeItem("access_token");
     localStorage.removeItem("privy:token");
   }, []);
-
+  const pathname = usePathname();
   NP.enableBoundaryChecking(false);
 
+  const isOverflowHidden = pathname.includes("/marketplace");
+
   return (
-    <div className="h-screen w-screen overflow-y-auto overflow-x-hidden bg-white">
+    <div
+      className={`h-screen w-screen ${
+        isOverflowHidden ? "overflow-y-hidden" : "overflow-y-auto"
+      } overflow-x-hidden bg-white`}
+    >
       <div className="flex w-full flex-col justify-between">
         <div className="relative mx-auto w-full">
           <Header />
@@ -37,6 +45,7 @@ export default function MainLayout({
       <ReferralDialog />
       <WalletsModal />
       <WalletDisconnectModal />
+      <Toaster position="bottom-center" />
     </div>
   );
 }

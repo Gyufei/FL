@@ -12,7 +12,6 @@ import { isProduction } from "@/lib/PathMap";
 import WalletModalProvider from "@/components/provider/wallet-modal-provider";
 import { redirect } from "next/navigation";
 import { locales } from "../../i18n";
-import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: {
@@ -83,7 +82,6 @@ export default async function RootLayout({
             </SWRConfigProvider>
           </WalletModalProvider>
         </JotaiProvider>
-        <Toaster position="bottom-center" />
       </body>
       <GoogleAnalytics gaId={isProduction ? "G-FN03SV9KCF" : "G-1PQBDX806E"} />
       {/* <GoogleTagManager

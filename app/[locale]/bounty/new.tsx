@@ -1,7 +1,14 @@
 "use client";
 
-import ProjectCard from "./item-card";
-export default function New() {
+import TaskCard from "./item-card";
+import { TaskItem } from "@/lib/types/bounty";
+import { useRouter } from "@/app/navigation";
+export default function New({ data }: { data: TaskItem[] }) {
+  const router = useRouter();
+  function handleGo(task: TaskItem) {
+    const path = `/bounty/${task.projectId}/${task.id}`;
+    router.push(path);
+  }
   return (
     <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5">
       <h2 className="mb-4 flex items-center gap-2">
@@ -9,24 +16,16 @@ export default function New() {
         <span className="">New</span>
       </h2>
       <div className="space-y-4">
-        <ProjectCard
-          name="Winter Wonderland: Backpack"
-          participants={156}
-          logo="/img/mock/矩形 1321@1x (1).png"
-          showParticipants
-        />
-        <ProjectCard
-          name="Layer3"
-          participants={89}
-          logo="/img/mock/矩形 1321@1x (1).png"
-          showParticipants
-        />
-        <ProjectCard
-          name="Metacora"
-          participants={234}
-          logo="/img/mock/矩形 1321@1x (1).png"
-          showParticipants
-        />
+        {(data || []).map((item, index) => (
+          <TaskCard
+            key={index}
+            name={item.name}
+            participants={item.participants}
+            logo={item.projectLogo}
+            click={() => handleGo(item)}
+            showParticipants
+          />
+        ))}
       </div>
     </div>
   );

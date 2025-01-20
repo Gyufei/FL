@@ -3,16 +3,18 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import HoverIcon from "@/components/share/hover-icon";
 
+import { useSetAtom } from "jotai";
+import { GlobalMessageAtom } from "@/lib/states/global-message";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
 import { ChainType } from "@/lib/types/chain";
-import toast from "react-hot-toast";
 
 export default function ProjectInfoCard({
-  //   marketplace,
+  data,
   className,
   closeDetail,
+  clickChain,
 }: any) {
   const isLoadingFlag = false;
   const marketplace = useMemo(
@@ -50,6 +52,7 @@ export default function ProjectInfoCard({
     [],
   );
   const [isStar, setIsStar] = useState(false);
+  const setGlobalMessage = useSetAtom(GlobalMessageAtom);
 
   const { data: marketInfos } = useMarketInfo("solana" as ChainType);
 
@@ -74,7 +77,10 @@ export default function ProjectInfoCard({
 
     navigator.clipboard.writeText(marketplace.market_name);
 
-    toast.success("Copied to clipboard");
+    setGlobalMessage({
+      type: "success",
+      message: "Copied to clipboard",
+    });
   };
 
   return (
@@ -87,19 +93,19 @@ export default function ProjectInfoCard({
       {isLoadingFlag ? (
         <Skeleton className="absolute -top-5 h-[73px] w-[73px] rounded-full bg-[#fafafa]" />
       ) : (
-        <div className="absolute -top-3 h-fit">
+        <div className="absolute -top-3">
           <Image
-            src={marketplace?.projectLogo}
-            width={72}
-            height={72}
-            alt="token1"
-            className="cursor-pointer rounded-full"
+            src={data.projectLogo}
+            width={64}
+            height={64}
+            alt="logo"
+            className=" h-[64px] w-[64px] rounded-full object-contain"
             onClick={closeDetail}
           />
         </div>
       )}
 
-      <div className="flex items-start justify-between pl-[84px]">
+      <div className="flex items-start justify-between pl-[74px]">
         <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
             {isLoadingFlag ? (
@@ -110,7 +116,7 @@ export default function ProjectInfoCard({
             ) : (
               <>
                 <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
-                  {marketplace.item_name}
+                  {data.projectName}
                 </div>
                 <OverviewIcons
                   isStar={isStar}
@@ -132,44 +138,28 @@ export default function ProjectInfoCard({
           width={16}
           height={16}
         />
-        <span className="text-sm font-medium">Winter Wonderland - Solana</span>
+        <span className="text-sm font-medium">{data.name}</span>
       </div>
-      <p className="mt-4 text-[#99A0AF]">
-        Navigate Solana assets, NFTs, and dapps effortlessly using Backpack
-        Wallet.
-      </p>
-
-      {/* <div className="mt-6 flex gap-12">
-        <div className="space-y-1">
-          <p className="text-2xl font-semibold">5</p>
-          <p className="text-gray-500 font-light tracking-wide">Quests</p>
-        </div>
-        <div className="space-y-1">
-          <p className="text-2xl font-semibold">5k</p>
-          <p className="text-gray-500 font-light tracking-wide">Finished</p>
-        </div>
-      </div> */}
+      <p className="mt-4 text-[#99A0AF]">{data.desc}</p>
       <div className="mt-6 flex gap-2">
-        <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1">
-          <Image
-            src="/icons/solana-black.svg"
-            alt="Solana Icon"
-            className="h-4 w-4"
-            width={16}
-            height={16}
-          />
-          <span className="text-sm font-medium">Solana</span>
-        </div>
-        <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1">
-          <Image
-            src="/icons/level.svg"
-            alt="Base Icon"
-            className="h-4 w-4"
-            width={16}
-            height={16}
-          />
-          <span className="text-sm font-medium">Base</span>
-        </div>
+        {data.steps.map((chain: { chain: string; icon: string }) => (
+          <div
+            key={chain.chain}
+            className="flex cursor-pointer items-center gap-2 rounded-lg bg-white px-2 py-1"
+            onClick={() => {
+              clickChain(chain.chain);
+            }}
+          >
+            <Image
+              src={chain.icon}
+              alt="Solana Icon"
+              className="h-4 w-4"
+              width={16}
+              height={16}
+            />
+            <span className="text-sm font-medium">{chain.chain}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

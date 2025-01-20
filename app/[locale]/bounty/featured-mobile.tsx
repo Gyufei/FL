@@ -4,40 +4,18 @@ import { useRouter } from "@/app/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
+import { TaskItem } from "@/lib/types/bounty";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 
-const slides = [
-  {
-    id: 1,
-    image: "/img/mock/image@2x (2).png",
-    title: "Winter Wonderland - Solana",
-    subtitle: "A winter wonderland in Solana Awaits",
-    participants: 10000,
-  },
-  {
-    id: 2,
-    image: "/img/mock/image@2x (2).png",
-    title: "Snow Quest",
-    subtitle: "Explore the frozen peaks",
-    participants: 8500,
-  },
-  {
-    id: 3,
-    image: "/img/mock/image@2x (2).png",
-    title: "Winter Challenge",
-    subtitle: "Race through the ice valleys",
-    participants: 12000,
-  },
-];
-
-export default function ProjectBannerMobile() {
+export default function FeaturedMobile({ data }: { data: TaskItem[] }) {
   const router = useRouter();
 
-  function handleGo(projectId: string) {
-    router.push(`/bounty/${projectId}`);
+  function handleGo(task: TaskItem) {
+    const path = `/bounty/${task.projectId}/${task.id}`;
+    router.push(path);
   }
 
   return (
@@ -68,16 +46,13 @@ export default function ProjectBannerMobile() {
           } as React.CSSProperties
         }
       >
-        {slides.map((slide) => (
-          <SwiperSlide
-            key={slide.id}
-            onClick={() => handleGo(slide.id.toString())}
-          >
+        {(data || []).map((item: any, index) => (
+          <SwiperSlide key={index} onClick={() => handleGo(item)}>
             <div className="relative overflow-hidden rounded-xl bg-[#FAFAFA]">
               <div className="relative">
                 <div className="relative h-[180px] w-full">
                   <Image
-                    src={slide.image}
+                    src={item.projectImage}
                     fill
                     alt="Featured image"
                     className="object-cover"
@@ -90,14 +65,14 @@ export default function ProjectBannerMobile() {
                       <div className="item-center flex justify-center space-x-3">
                         <div className="flex w-fit items-center gap-2 rounded-3xl bg-[#F0F1F5] p-2">
                           <Image
-                            src="/img/mock/矩形 1321@1x (2).png"
+                            src={item.projectLogo}
                             alt="icon"
                             className="rounded-lg"
                             width={18}
                             height={18}
                           />
                           <span className="text-[12px] text-[#2D2E33]">
-                            Layer3
+                            {item.projectName}
                           </span>
                         </div>
                         <div className="flex w-fit items-center gap-2 rounded-3xl bg-[#F0F1F5] p-2">
@@ -114,9 +89,9 @@ export default function ProjectBannerMobile() {
                         </div>
                       </div>
 
-                      <h2 className="text-[20px]">{slide.title}</h2>
+                      <h2 className="text-[20px]">{item.name}</h2>
                       <p className="text-center text-[12px] text-[#99A0AF]">
-                        {slide.subtitle}
+                        {item.desc}
                       </p>
                     </div>
 
@@ -124,9 +99,9 @@ export default function ProjectBannerMobile() {
                       <div className="flex items-center gap-2">
                         <div className="h-8 w-8 rounded bg-[#fafafa]"></div>
                         <div>
-                          <div className="text-[14px]">Dec 5, 6:30 AM</div>
+                          <div className="text-[14px]">{item.start}</div>
                           <div className="text-[12px] text-[#99A0AF]">
-                            to Jan 15, 6:30 AM
+                            {item.end}
                           </div>
                         </div>
                       </div>

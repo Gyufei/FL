@@ -3,64 +3,29 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import HoverIcon from "@/components/share/hover-icon";
 
-import toast from "react-hot-toast";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMarketInfo } from "@/lib/hooks/api/use-market-info";
 import { ChainType } from "@/lib/types/chain";
+import { getFormatUnit } from "@/lib/utils/number";
 
 export default function ProjectInfoCard({
-  //   marketplace,
+  data,
   className,
 }: {
-  //   marketplace: IMarketplace | undefined;
+  data: any;
   className?: string;
 }) {
   const isLoadingFlag = false;
-  const marketplace = useMemo(
-    () => ({
-      active_wallets: "33193",
-      all_time_high_price: "18.58272729131",
-      avg_bid: "0.0521540509368",
-      chain: "solana",
-      change_rate_24h: "833.8",
-      filled_orders: "3",
-      floor_price: "0.00001",
-      id: 9,
-      initial_listing_price: "0.0000704545",
-      is_fungible: false,
-      item_name: "Backpack",
-      last_price: "0.185827272727272727272727272727272727",
-      last_price_24h_ago: "0.0199",
-      listed_supply: "1013",
-      market_catagory: "onchain_nonfungible_point",
-      market_name: "Backpack",
-      market_place_account: "5pPmxTnLhEjkZCnHLrwwDkjXc3mFvrriKeikzA7PwxfH",
-      market_symbol: "backpack",
-      minimum_price: "0.734893281234782608695652173913043477",
-      project_token_addr: "11111111111111111111111111111111",
-      require_collateral: false,
-      settlement_period: "0",
-      status: "online",
-      tge: "0",
-      token_per_item: "0",
-      total_vol: "34.75387274594",
-      trading_ends_at: "0",
-      vol_24h: "22.77407274594",
-      projectLogo: "/img/mock/矩形 1321@1x.png",
-    }),
-    [],
-  );
   const [isStar, setIsStar] = useState(false);
-
   const { data: marketInfos } = useMarketInfo("solana" as ChainType);
 
   const projectInfo = useMemo(() => {
-    if (!marketplace || !marketInfos) return;
-    const projectInfo = marketInfos[marketplace.market_symbol];
+    if (!data || !marketInfos) return;
+    const projectInfo = marketInfos[data.market_symbol];
 
     return projectInfo;
-  }, [marketplace, marketInfos]);
+  }, [data, marketInfos]);
 
   function handleStar() {
     if (isStar) {
@@ -69,15 +34,6 @@ export default function ProjectInfoCard({
       setIsStar(true);
     }
   }
-
-  const handleCopy = () => {
-    if (isLoadingFlag) return;
-    if (!marketplace.market_name) return;
-
-    navigator.clipboard.writeText(marketplace.market_name);
-
-    toast.success("Copied to clipboard");
-  };
 
   return (
     <div
@@ -89,18 +45,18 @@ export default function ProjectInfoCard({
       {isLoadingFlag ? (
         <Skeleton className="absolute -top-5 h-[73px] w-[73px] rounded-full bg-[#fafafa]" />
       ) : (
-        <div className="absolute -top-3 h-fit">
+        <div className="absolute -top-3">
           <Image
-            src={marketplace?.projectLogo}
-            width={72}
-            height={72}
-            alt="token1"
-            className="rounded-full"
+            src={data.projectLogo}
+            width={64}
+            height={64}
+            alt="logo"
+            className=" h-[64px] w-[64px] rounded-full object-contain"
           />
         </div>
       )}
 
-      <div className="flex items-start justify-between pl-[84px]">
+      <div className="flex items-start justify-between pl-[74px]">
         <div className="relative flex items-center space-x-3 ">
           <div className="flex flex-col">
             {isLoadingFlag ? (
@@ -111,12 +67,11 @@ export default function ProjectInfoCard({
             ) : (
               <>
                 <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
-                  {marketplace.item_name}
+                  {data.projectName}
                 </div>
                 <OverviewIcons
                   isStar={isStar}
                   handleStar={handleStar}
-                  handleCopy={handleCopy}
                   twitter={projectInfo?.twitter}
                   discord={projectInfo?.discord}
                 />
@@ -125,18 +80,18 @@ export default function ProjectInfoCard({
           </div>
         </div>
       </div>
-      <p className="mt-4 text-[#99A0AF]">
-        Navigate Solana assets, NFTs, and dapps effortlessly using Backpack
-        Wallet.
-      </p>
+      <p className="mt-5 text-[#99A0AF]">{data.desc}</p>
 
       <div className="mt-6 flex gap-12">
         <div className="space-y-1">
-          <p className="text-[16px] text-[#2D2E33]">5</p>
+          <p className="text-[16px] text-[#2D2E33]">{data.taskNum}</p>
           <p className="text-[12px] text-[#99A0AF]">Quests</p>
         </div>
         <div className="space-y-1">
-          <p className="text-[16px] text-[#2D2E33]">5k</p>
+          <p className="text-[16px] text-[#2D2E33]">
+            {getFormatUnit(data.finished).number +
+              getFormatUnit(data.finished).unit}{" "}
+          </p>
           <p className="text-[12px] text-[#99A0AF]">Finished</p>
         </div>
       </div>
@@ -145,15 +100,9 @@ export default function ProjectInfoCard({
 }
 
 function OverviewIcons({
-  // isStar,
-  // handleStar,
-  // handleCopy,
   twitter,
   discord,
 }: {
-  // isStar: boolean;
-  // handleStar: () => void;
-  // handleCopy: () => void;
   twitter: string | undefined;
   discord: string | undefined;
   [key: string]: any;

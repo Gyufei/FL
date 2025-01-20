@@ -2,19 +2,17 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils/common";
-import { useRouter } from "@/app/navigation";
+import { getFormatUnit } from "@/lib/utils/number";
 
 export default function BackpackHeader({
   bgColor,
+  participants,
   logo,
   showParticipants,
+  taskNum,
+  name,
+  click,
 }: any) {
-  const router = useRouter();
-  function handleGo(projectId: string) {
-    const path = `/bounty/${projectId}`;
-
-    router.push(path);
-  }
   return (
     <div className="cursor-pointer text-[#2D2E33]">
       <div
@@ -22,20 +20,20 @@ export default function BackpackHeader({
           "rounded-lg bg-white p-4 transition-shadow hover:shadow-lg",
           bgColor,
         )}
-        onClick={() => handleGo("1")}
+        onClick={click}
       >
         <div className="flex items-start gap-3">
           <div className="relative h-12 w-12">
             <Image
               src={logo}
               alt="Backpack icon"
-              className="rounded-lg object-cover"
+              className="rounded-lg object-contain"
               fill
             />
           </div>
           <div className="flex flex-col">
             <h2 className="text-[14px] text-[#2D2E33] sm:text-[18px]">
-              Winter Wonderland: Backpack
+              {name}
             </h2>
             {showParticipants ? (
               <div className="text-muted-foreground flex items-center gap-2">
@@ -60,12 +58,14 @@ export default function BackpackHeader({
                   </div>
                 </div>
                 <span className="text-[12px] text-[#99A0AF] sm:text-[14px]">
-                  10K Participants
+                  {getFormatUnit(participants).number +
+                    getFormatUnit(participants).unit}{" "}
+                  Participants
                 </span>
               </div>
             ) : (
               <div className="flex items-center text-[12px] text-[#99A0AF] sm:text-[14px]">
-                7 Bounties
+                {taskNum} Bounties
               </div>
             )}
           </div>

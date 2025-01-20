@@ -1,32 +1,31 @@
 "use client";
 
 import ProjectCard from "./item-card";
-export default function Trending() {
+import { Project } from "@/lib/types/bounty";
+import { useRouter } from "@/app/navigation";
+
+export default function Trending({ data }: { data: Project[] }) {
+  const router = useRouter();
+  function handleGo(project: Project) {
+    const path = `/bounty/${project.projectId}/`;
+    router.push(path);
+  }
   return (
     <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5">
       <h2 className="mb-4 flex items-center gap-2">
         <span className="h-6 w-6 rounded-lg bg-yellow"></span>
-        <span className="">New</span>
+        <span className="">Trending Projects</span>
       </h2>
       <div className="space-y-4">
-        <ProjectCard
-          name="Winter Wonderland: Backpack"
-          participants={156}
-          logo="/img/mock/矩形 1321@1x (1).png"
-          showParticipants
-        />
-        <ProjectCard
-          name="Layer3"
-          participants={89}
-          logo="/img/mock/矩形 1321@1x (1).png"
-          showParticipants
-        />
-        <ProjectCard
-          name="Metacora"
-          participants={234}
-          logo="/img/mock/矩形 1321@1x (1).png"
-          showParticipants
-        />
+        {(data || []).map((item, index) => (
+          <ProjectCard
+            key={index}
+            name={item.projectName}
+            taskNum={item.taskNum}
+            logo={item.projectLogo}
+            click={() => handleGo(item)}
+          />
+        ))}
       </div>
     </div>
   );

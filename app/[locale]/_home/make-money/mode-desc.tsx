@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils/common";
 
 export default function ModeDesc() {
   const t = useTranslations("Home");
-  const [mode, setMode] = useState("turbo");
+  const [mode, setMode] = useState("trading");
 
   return (
     <div
@@ -22,41 +22,40 @@ export default function ModeDesc() {
     >
       <div className="mb-7 flex items-center justify-center space-x-5 text-lg leading-6 sm:justify-start">
         <div
-          data-active={mode === "turbo"}
-          onClick={() => setMode("turbo")}
+          data-active={mode === "trading"}
+          onClick={() => setMode("trading")}
           className="flex h-12 cursor-pointer items-center justify-center rounded-xl px-[20px] text-[#c0c4cc] data-[active=true]:bg-yellow data-[active=true]:text-black md:px-[30px]"
         >
-          {t("btn-TurboMode")}
+          {t("btn-TradingPoints")}
         </div>
         <div
-          data-active={mode === "protected"}
-          onClick={() => setMode("protected")}
+          data-active={mode === "completing"}
+          onClick={() => setMode("completing")}
           className="flex h-12 cursor-pointer items-center justify-center rounded-xl px-[30px] text-[#c0c4cc] data-[active=true]:bg-yellow data-[active=true]:text-black"
         >
-          {t("btn-ProtectedMode")}
+          {t("btn-CompletingMissions")}
         </div>
       </div>
       <div className="flex flex-1 flex-col justify-between">
-        {mode === "turbo" && (
+        {mode === "trading" && (
           <div
             className={cn(
               "flex flex-col space-y-4 text-base leading-[30px] text-gray",
               inter.className,
             )}
           >
-            <div>{t("p-TurboMode1")}</div>
-            <div>{t("p-TurboMode2")}</div>
+            <div>{t("p-TradingPoints1")}</div>
+            <div>{t("p-TradingPoints2")}</div>
           </div>
         )}
-        {mode === "protected" && (
+        {mode === "completing" && (
           <div
             className={cn(
               "flex flex-col space-y-4 text-base leading-[30px] text-gray",
               inter.className,
             )}
           >
-            <div>{t("p-ProtectedMode1")}</div>
-            <div>{t("p-ProtectedMode2")}</div>
+            <div>{t("p-CompletingMissions")}</div>
           </div>
         )}
 
@@ -65,7 +64,9 @@ export default function ModeDesc() {
           className="mt-[50px] flex cursor-pointer items-center space-x-1 sm:mt-0"
         >
           <div className="text-lg leading-6 text-black">
-            {t("btn-StartTrading")}
+            {mode === "completing"
+              ? t("btn-CompletingMissions")
+              : t("btn-StartTrading")}
           </div>
           <Image src="/icons/right-arrow.svg" width={24} height={24} alt="go" />
         </Link>

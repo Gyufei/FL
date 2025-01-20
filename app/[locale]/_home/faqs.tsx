@@ -49,11 +49,11 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 0}>
-            {t("cap-WhatIsPoint")}
+            {t("cap-WhatExactlyArePoints")}
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CollContent>{t("p-WhatIsPoint")}</CollContent>
+          <CollContent>{t("p-WhatExactlyArePoints")}</CollContent>
         </CollapsibleContent>
       </Collapsible>
 
@@ -67,11 +67,11 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 1}>
-            {t("cap-WhatIsPointMarket")}
+            {t("cap-WhatIsTheTadlePointsMarketplace")}
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CollContent>{t("p-WhatIsPointMarket")}</CollContent>
+          <CollContent>{t("p-WhatIsTheTadlePointsMarketplace")}</CollContent>
         </CollapsibleContent>
       </Collapsible>
 
@@ -85,20 +85,28 @@ export default function Faqs() {
       >
         <CollapsibleTrigger asChild>
           <CollTrigger isOpen={openIdx === 2}>
-            {t("cap-HowDoIStartToTrade")}
+            {t("cap-WhatIsTheMissionMarketplace")}
           </CollTrigger>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CollContent>
-            1. {t("p-HowDoIStartToTrade1")}
-            <br />
-            2. {t("p-HowDoIStartToTrade2")}
-            <br />
-            3. {t("p-HowDoIStartToTrade3")}
-            <br />
-            4. {t("p-HowDoIStartToTrade4")}
-            <br />
-          </CollContent>
+          <CollContent>{t("p-WhatIsTheMissionMarketplace")}</CollContent>
+        </CollapsibleContent>
+      </Collapsible>
+      <Collapsible
+        open={openIdx === 3}
+        onOpenChange={(open) => setOpenIdx(open ? 3 : -1)}
+        className="py-6"
+        style={{
+          boxShadow: "inset 0px -2px 0px 0px #F0F1F5",
+        }}
+      >
+        <CollapsibleTrigger asChild>
+          <CollTrigger isOpen={openIdx === 2}>
+            {t("cap-WhatExactlyAreTadleGems")}
+          </CollTrigger>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <CollContent>{t("p-WhatExactlyAreTadleGems")}</CollContent>
         </CollapsibleContent>
       </Collapsible>
     </div>

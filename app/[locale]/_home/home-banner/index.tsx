@@ -29,22 +29,27 @@ export default function HomeBanner() {
         {t("cap-TheFirstPreSuperMarket")}
       </div>
 
-      <div className="mt-10 hidden text-xl leading-[30px] text-lightgray text-center sm:flex">
+      <div className="mt-10 hidden text-center text-xl leading-[30px] text-lightgray sm:flex">
         {t("cap-BridgingLiquidityBetweenPrimaryAndSecondaryMarkets")}
       </div>
-      <div className="mt-[10px] block text-sm leading-[20px] text-lightgray text-center sm:hidden">
+      <div className="mt-[10px] block text-center text-sm leading-[20px] text-lightgray sm:hidden">
         {t("cap-BridgingLiquidityBetweenPrimaryAndSecondaryMarkets")}
       </div>
 
       <div className="mt-10 flex w-full flex-col items-center px-4 sm:w-fit sm:flex-row sm:space-x-10 sm:px-0">
         <Link href="/marketplace">
           <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow px-5 text-lg leading-6">
-            {t("btn-GetStarted")}
+            {t("btn-LaunchPointsMarketplace")}
+          </div>
+        </Link>
+        <Link href="/marketplace">
+          <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow px-5 text-lg leading-6">
+            {t("btn-LaunchMissionMarketplace")}
           </div>
         </Link>
         <Link
           href="https://tadle.gitbook.io/tadle"
-          className="mt-[22px] ml-1 flex cursor-pointer items-center space-x-1 sm:ml-0 sm:mt-0"
+          className="ml-1 mt-[22px] flex cursor-pointer items-center space-x-1 sm:ml-0 sm:mt-0"
         >
           <div className="text-lg leading-6 text-black">
             {t("btn-ReadTheDocs")}

@@ -6,7 +6,8 @@
     "th-ItemId": "项目 ID",
     "th-Asset": "资产",
     "th-Value": "价值",
-    "btn-GetStarted": "立即开始",
+    "btn-LaunchPointsMarketplace": "前往积分市场",
+    "btn-LaunchMissionMarketplace": "前往任务市场",
     "btn-ReadTheDocs": "阅读文档",
 
     "cap-TradePointsToMakeMoney": "交易 Point 来赚钱",

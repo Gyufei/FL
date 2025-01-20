@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils/common";
 export default function MakeMoney() {
   const t = useTranslations("Home");
   return (
-    <div className="mx-4 mt-6 flex flex-col items-center pt-6 pb-[72px] sm:mx-[120px]">
+    <div className="mx-4 mt-6 flex flex-col items-center pb-[72px] pt-6 sm:mx-[120px]">
       <div className="text-[24px] leading-[36px] text-black sm:text-[40px] sm:leading-[60px]">
-        {t("cap-TradePointsToMakeMoney")}
+        {t("cap-TheFutureOfOradingStartsHere")}
       </div>
       <div className="flex flex-1 flex-col items-stretch justify-between space-x-0 sm:flex-row sm:space-x-[80px]">
         <div className="flex-1 pt-[40px] sm:pt-[60px]">
@@ -21,9 +21,7 @@ export default function MakeMoney() {
               inter.className,
             )}
           >
-            <div>{t("p-SpecialPointMarket1")}</div>
-            <div>{t("p-SpecialPointMarket2")}</div>
-            <div>{t("p-SpecialPointMarket3")}</div>
+            <div>{t("p-SpecialPointMarket")}</div>
           </div>
         </div>
         <ModeDesc />

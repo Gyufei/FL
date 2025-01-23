@@ -119,7 +119,7 @@ export default function ProjectContent({ params }: any) {
               setSelectedChain(chain);
             }}
           />
-          <div className="no-scroll-bar flex-1 overflow-y-auto">
+          <div className="no-scroll-bar flex-1 sm:overflow-y-auto">
             <ProjectOptions
               needRegister={!projectData || projectData?.status === "init"}
               steps={showSteps}

@@ -225,7 +225,7 @@ const data: any = [
 
         id: "2",
         name: "How to Manage a Pool ",
-        desc: "You can manage and maintain your pool by accessing the settings function on the pool details page",
+        desc: "You can manage and maintain your pool by accessing the settings",
         logo: "/img/mock/矩形 1321@1x (1).png",
         image: "/img/mock/image@2x (3).png",
 

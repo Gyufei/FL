@@ -22,7 +22,7 @@ export default function HomeBanner() {
           width={220}
           height={160}
           alt="home title path"
-          className="absolute left-[90px] top-[66px]"
+          className="absolute -left-[120px] top-[66px]"
         />
       </div>
       <div className="flex justify-center text-center text-[40px] leading-[60px] text-black sm:hidden">

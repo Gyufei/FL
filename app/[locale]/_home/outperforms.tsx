@@ -12,6 +12,14 @@ export default function OutPerforms() {
       <div className="text-[24px] leading-9 text-black sm:text-[40px] sm:leading-10">
         {t("cap-WhyTadleOutperformsOthers")}
       </div>
+      <div
+        className={cn(
+          "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+          inter.className,
+        )}
+      >
+        {t("cap-WhyTadleOutperformsOthersDesc")}
+      </div>
       <div className="mt-[60px] flex flex-col items-stretch">
         <div className="flex flex-1 flex-col items-center justify-between sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch justify-center">
@@ -25,7 +33,7 @@ export default function OutPerforms() {
           <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
             <div>
               <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-                {t("cap-OptimalCapitalEfficiency")}
+                {t("cap-MaximizedCapitalEfficiency")}
               </div>
               <div
                 className={cn(
@@ -33,7 +41,7 @@ export default function OutPerforms() {
                   inter.className,
                 )}
               >
-                {t("p-OptimalCapitalEfficiency")}
+                {t("p-MaximizedCapitalEfficiency")}
               </div>
             </div>
             <ReadMore onClick={() => {}} />
@@ -44,7 +52,7 @@ export default function OutPerforms() {
           <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
             <div>
               <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-                {t("cap-SuperiorLiquidity")}
+                {t("cap-HighLiquidityForSeamlessTrading")}
               </div>
               <div
                 className={cn(
@@ -52,7 +60,7 @@ export default function OutPerforms() {
                   inter.className,
                 )}
               >
-                {t("p-SuperiorLiquidity")}
+                {t("p-HighLiquidityForSeamlessTrading")}
               </div>
             </div>
             <ReadMore onClick={() => {}} />
@@ -98,7 +106,7 @@ export default function OutPerforms() {
           <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
             <div>
               <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-                {t("cap-AdvancedTradingSystem")}
+                {t("cap-AdvancedTradingInsights")}
               </div>
               <div
                 className={cn(
@@ -106,7 +114,7 @@ export default function OutPerforms() {
                   inter.className,
                 )}
               >
-                {t("p-AdvancedTradingSystem")}
+                {t("p-AdvancedTradingInsights")}
               </div>
             </div>
             <ReadMore onClick={() => {}} />
@@ -152,7 +160,7 @@ export default function OutPerforms() {
           <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
             <div>
               <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
-                {t("cap-DecentralizedArbitrationForSettlements")}
+                {t("cap-InstantRewards")}
               </div>
               <div
                 className={cn(
@@ -160,7 +168,7 @@ export default function OutPerforms() {
                   inter.className,
                 )}
               >
-                {t("p-DecentralizedArbitrationForSettlements")}
+                {t("p-InstantRewards")}
               </div>
             </div>
             <ReadMore onClick={() => {}} />
@@ -172,6 +180,33 @@ export default function OutPerforms() {
               height={372}
               alt="rocket"
             />
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-1 flex-col items-center justify-between sm:mt-[87px] sm:flex-row sm:items-stretch">
+          <div className="flex flex-1 items-stretch justify-center">
+            <Image
+              src="/img/home/instant-rewards.png"
+              width={560}
+              height={372}
+              alt="rocket"
+            />
+          </div>
+          <div className="flex flex-1 flex-col items-center pt-10 sm:items-start sm:justify-between">
+            <div>
+              <div className="text-center text-base leading-6 text-black sm:text-left sm:text-[30px] sm:leading-[42px]">
+                {t("cap-RobustSecurity")}
+              </div>
+              <div
+                className={cn(
+                  "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
+                  inter.className,
+                )}
+              >
+                {t("p-RobustSecurity")}
+              </div>
+            </div>
+            <ReadMore onClick={() => {}} />
           </div>
         </div>
       </div>

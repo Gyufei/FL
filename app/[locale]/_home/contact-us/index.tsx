@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import {
-  DocLink,
   handleGoDiscord,
   handleGoGithub,
   handleGoTg,
@@ -94,22 +93,22 @@ export default function ContactUs() {
   );
 }
 
-function LinkItem({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <a
-      className="text-sm leading-5 text-lightgray hover:text-black"
-      href={href}
-    >
-      {children}
-    </a>
-  );
-}
+// function LinkItem({
+//   href,
+//   children,
+// }: {
+//   href: string;
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <a
+//       className="text-sm leading-5 text-lightgray hover:text-black"
+//       href={href}
+//     >
+//       {children}
+//     </a>
+//   );
+// }
 
 function HoverSocialIcon({
   src,

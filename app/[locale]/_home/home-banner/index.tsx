@@ -42,7 +42,7 @@ export default function HomeBanner() {
             {t("btn-LaunchPointsMarketplace")}
           </div>
         </Link>
-        <Link href="/marketplace">
+        <Link href="/bounty">
           <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow px-5 text-lg leading-6">
             {t("btn-LaunchMissionMarketplace")}
           </div>

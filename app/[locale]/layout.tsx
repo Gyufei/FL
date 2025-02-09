@@ -1,3 +1,4 @@
+import "react-modern-drawer/dist/index.css";
 import "@/app/globals.css";
 import { VideoFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
@@ -7,7 +8,6 @@ import { cn } from "@/lib/utils/common";
 import JotaiProvider from "@/components/provider/jotai-provider";
 import SWRConfigProvider from "@/components/provider/swr-config-provider";
 import MainLayout from "@/app/[locale]/_page-layout/main-layout";
-import "react-modern-drawer/dist/index.css";
 import { isProduction } from "@/lib/PathMap";
 import WalletModalProvider from "@/components/provider/wallet-modal-provider";
 import { redirect } from "next/navigation";

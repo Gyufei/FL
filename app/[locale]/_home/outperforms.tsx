@@ -14,7 +14,6 @@ export default function OutPerforms() {
       <div
         className={cn(
           "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-          inter.className,
         )}
       >
         {t("cap-WhyTadleOutperformsOthersDesc")}
@@ -193,7 +192,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-RobustSecurity")}

@@ -18,11 +18,11 @@ export const metadata = {
     template: "%s | Tadle Market",
     default: "Tadle Market",
   },
-  description: "Decentralized Pre-market Infrastructure",
+  description: "To predict. To trade. To own.",
   metadataBase: new URL(`https://${process.env.VERCEL_DOMAIN}`),
   openGraph: {
     title: "Tadle Market",
-    description: "Decentralized Pre-market Infrastructure",
+    description: "To predict. To trade. To own.",
     url: `https://${process.env.VERCEL_DOMAIN}`,
     siteName: "Tadle Market",
     images: "/img/GGzCP6QaAAAm9YG.png",
@@ -51,7 +51,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Tadle Market",
-    description: "Decentralized Pre-market Infrastructure",
+    description: "To predict. To trade. To own.",
     creator: "@tadle_com",
     images: ["/img/GGzCP6QaAAAm9YG.png"],
   },

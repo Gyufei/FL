@@ -29,11 +29,11 @@ export default function LanguageSetting() {
       value: "zh",
       logo: "/icons/china.svg",
     },
-    {
-      label: "한국어(KR)",
-      value: "ko",
-      logo: "/icons/korea.svg",
-    },
+    // {
+    //   label: "한국어(KR)",
+    //   value: "ko",
+    //   logo: "/icons/korea.svg",
+    // },
   ];
 
   function handleSelectLang(t: string) {

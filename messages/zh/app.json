@@ -1,7 +1,7 @@
 {
   "Common": {
-    "Protected": "受保护",
-    "Turbo": "涡轮增压",
+    "Protected": "保护模式",
+    "Turbo": "涡轮模式",
     "pl-EnterAmount": "输入数量",
     "btn-Confirm": "确认",
     "Max": "最大",
@@ -12,8 +12,8 @@
     "Hours": "小时",
     "Minutes": "分钟",
     "Seconds": "秒",
-    "btn-Approve": "Approve",
-    "btn-Approving": "Approving",
+    "btn-Approve": "授权",
+    "btn-Approving": "授权中",
     "txt-NoData": "无数据"
   },
   "Header": {
@@ -51,7 +51,6 @@
     "lb-24hChange": "变化率/24h",
     "lb-ListedSupply": "挂单量",
     "lb-ActiveWallets": "活跃钱包",
-
     "lb-TotalVol": "总量",
     "lb-24hVol": "总量/24h",
     "lb-AvgBid": "平均价"
@@ -144,7 +143,6 @@
     "tip-YouGet": "",
     "txt-YouHaveToSell": " 你要卖",
     "txt-YouHaveTheOptionToClose": "在 100% 完成前可关闭订单",
-
     "btn-Offer100%Filled": "订单完成",
     "btn-ConfirmTakerOrder": "确认订单",
     "btn-SettleThisOffer": "清算订单",
@@ -156,7 +154,6 @@
     "btn-AbortThisOffer": "中止",
     "btn-CloseBidOffer": "关闭竞价订单",
     "btn-AwaitingSettlement": "等待清算...",
-
     "lb-Filled/SellingAmount": "已售 / 总销售",
     "lb-Filled/BuyingAmount": "已购 / 总需求",
     "tip-Filled": "",
@@ -194,7 +191,6 @@
     "lb-YourBonus": "你的奖励",
     "tip-YourBonus": "",
     "lb-You": "你",
-
     "cap-TakerOrders": "子订单",
     "cap-OrderHistory": "订单历史",
     "tg-OnlyMe": "仅我",

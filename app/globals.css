@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-video);
+  font-family: var(--font-aeonik);
 }
 
 :root {
@@ -73,6 +73,7 @@ img {
 .error-blink {
   animation: blink 0.3s ease-in-out 2 forwards;
 }
+
 @keyframes blink {
   0%,
   100% {

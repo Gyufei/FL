@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import { VideoFont } from "@/app/fonts";
+import { AeonikFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -72,7 +72,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={cn(VideoFont.variable)}>
+      <body className={cn(AeonikFont.variable)}>
         <JotaiProvider>
           <WalletModalProvider>
             <SWRConfigProvider>

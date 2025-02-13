@@ -1,30 +1,24 @@
-import { Inter } from 'next/font/google'
 import localFont from "next/font/local";
 
-export const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-export const VideoFont = localFont({
+export const AeonikFont = localFont({
   src: [
     {
-      path: "../public/fonts/Video.ttf",
+      path: "../public/fonts/AeonikTRIAL-Light.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/AeonikTRIAL-Regular.otf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../public/fonts/Video-Medium.ttf",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Video-Bold.ttf",
+      path: "../public/fonts/AeonikTRIAL-Bold.otf",
       weight: "700",
       style: "normal",
     },
   ],
-  variable: "--font-video",
+  variable: "--font-aeonik",
   fallback: [
     "system-ui",
     "-apple-system",

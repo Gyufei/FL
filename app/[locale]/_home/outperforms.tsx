@@ -1,5 +1,4 @@
 "use client";
-import { inter } from "@/app/fonts";
 import { cn } from "@/lib/utils/common";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -30,7 +29,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-OptimalCapitalEfficiency")}
@@ -49,7 +47,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-SuperiorLiquidity")}
@@ -84,7 +81,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-LowTradingFee")}
@@ -103,7 +99,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-AdvancedTradingSystem")}
@@ -138,7 +133,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-RobustSecurity")}
@@ -157,7 +151,6 @@ export default function OutPerforms() {
               <div
                 className={cn(
                   "mt-6 text-center text-sm leading-6 text-gray sm:text-left sm:text-xl sm:leading-[30px]",
-                  inter.className,
                 )}
               >
                 {t("p-DecentralizedArbitrationForSettlements")}

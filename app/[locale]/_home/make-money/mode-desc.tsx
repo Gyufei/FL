@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import { Link } from "@/app/navigation";
-import { inter } from "@/app/fonts";
 import { cn } from "@/lib/utils/common";
 
 export default function ModeDesc() {
@@ -41,7 +40,6 @@ export default function ModeDesc() {
           <div
             className={cn(
               "flex flex-col space-y-4 text-base leading-[30px] text-gray",
-              inter.className,
             )}
           >
             <div>{t("p-TradingPoints1")}</div>
@@ -52,7 +50,6 @@ export default function ModeDesc() {
           <div
             className={cn(
               "flex flex-col space-y-4 text-base leading-[30px] text-gray",
-              inter.className,
             )}
           >
             <div>{t("p-CompletingMissions")}</div>

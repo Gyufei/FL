@@ -9,7 +9,6 @@ import {
 import React, { forwardRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/navigation";
-import { inter } from "@/app/fonts";
 import { cn } from "@/lib/utils/common";
 
 export default function Faqs() {
@@ -164,7 +163,6 @@ function CollContent({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "mt-[10px] pl-[26px] text-sm leading-5 text-gray sm:text-base sm:leading-6",
-        inter.className,
       )}
     >
       {children}

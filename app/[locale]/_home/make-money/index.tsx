@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import ModeDesc from "./mode-desc";
-import { inter } from "@/app/fonts";
 import { cn } from "@/lib/utils/common";
 
 export default function MakeMoney() {
@@ -18,7 +17,6 @@ export default function MakeMoney() {
           <div
             className={cn(
               "flex flex-col space-y-4 text-base leading-[30px] text-gray",
-              inter.className,
             )}
           >
             <div>{t("p-SpecialPointMarket")}</div>

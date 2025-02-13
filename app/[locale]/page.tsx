@@ -1,5 +1,4 @@
-import Home from "@/app/[locale]/_home";
-
+import { redirect } from "@/app/navigation";
 export default async function MainPage() {
-  return <Home />;
+  return redirect("/marketplace");
 }

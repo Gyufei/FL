@@ -8,7 +8,6 @@ export default function NavigationBtns() {
   const t = useTranslations("Header");
   const pathname = usePathname();
 
-  const isHome = pathname === "/";
   const isDashboard = pathname.startsWith(`/dashboard`);
   const isMarketPlace = pathname.startsWith(`/marketplace`);
   const isBounty = pathname.startsWith(`/bounty`);
@@ -23,7 +22,6 @@ export default function NavigationBtns() {
 
   return (
     <div className="hidden flex-1 items-center space-x-5 sm:flex">
-      {!isHome && (
         <WithWalletConnectBtn onClick={() => handleClick(`/dashboard`)}>
           <div>
             <div
@@ -42,8 +40,6 @@ export default function NavigationBtns() {
             </div>
           </div>
         </WithWalletConnectBtn>
-      )}
-
       <div className="relative flex items-center">
         <div
           onClick={() => handleClick(`/marketplace`)}

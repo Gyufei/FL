@@ -1,7 +1,6 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { usePathname } from "@/app/navigation";
 import Drawer from "react-modern-drawer";
 
 import { useMemo, useState } from "react";
@@ -28,11 +27,7 @@ export default function MessageBtn() {
     return "99+";
   }, [data]);
 
-  const pathname = usePathname();
-
   const { isMobileSize } = useDeviceSize();
-
-  if (pathname === "/") return null;
 
   return (
     <>

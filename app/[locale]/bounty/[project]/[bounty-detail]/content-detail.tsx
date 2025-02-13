@@ -1,28 +1,33 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 
-function ProjectContentDetail({ closeDetail }: any) {
+function ProjectContentDetail({
+  needRegister,
+  goRegister,
+  htmlStr,
+}: {
+  needRegister: boolean;
+  goRegister: () => void;
+  htmlStr: string;
+}) {
+  if (needRegister) {
+    return (
+      <div className="m-auto flex h-full items-center justify-center bg-[#fafafa] sm:max-w-[768px]">
+        <button
+          onClick={goRegister}
+          className="flex w-[320px] items-center justify-center space-x-2 rounded-full bg-[#E0FF62] px-4 py-3 text-[16px]"
+        >
+          <span>Please register first</span>
+        </button>
+      </div>
+    );
+  }
   return (
-    <div className="flex flex-col items-center justify-center  bg-[#fafafa] text-white">
-      <div className="mb-5 flex items-center justify-center">
-        <Image
-          src="/img/mock/image@2x (3).png"
-          alt="Icon"
-          className="cursor-pointer rounded-lg sm:max-w-[800px]"
-          width={800}
-          height={800}
-          onClick={closeDetail}
-        />
-      </div>
-      <div className="max-w-[800px] text-[16px] text-[#2D2E33] ">
-        Transact Using Backpack Transact Using Backpack Transact Using Backpack
-        Transact Using Backpack Transact Using Backpack Transact Using Backpack
-        Transact Using Backpack Transact Using Backpack Transact Using Backpack
-        Transact Using Backpack{" "}
-      </div>
-    </div>
+    <div
+      className="m-auto flex flex-col items-center justify-center bg-[#fafafa] sm:max-w-[768px]"
+      dangerouslySetInnerHTML={{ __html: htmlStr }}
+    />
   );
 }
 

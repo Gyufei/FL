@@ -57,8 +57,8 @@ export default function ModeDesc() {
         )}
 
         <Link
-          href="/marketplace"
-          className="mt-[50px] flex cursor-pointer items-center space-x-1 sm:mt-0"
+          href={mode === "completing" ? "/bounty" : "/marketplace"}
+          className="mt-[50px] flex cursor-pointer items-center space-x-1 sm:mt-[20px]"
         >
           <div className="text-lg leading-6 text-black">
             {mode === "completing"

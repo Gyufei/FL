@@ -22,7 +22,7 @@ export default function HomeBanner() {
           width={220}
           height={160}
           alt="home title path"
-          className="absolute left-[90px] top-[66px]"
+          className="absolute -left-[120px] top-[66px]"
         />
       </div>
       <div className="flex justify-center text-center text-[40px] leading-[60px] text-black sm:hidden">
@@ -36,13 +36,13 @@ export default function HomeBanner() {
         {t("cap-BridgingLiquidityBetweenPrimaryAndSecondaryMarkets")}
       </div>
 
-      <div className="mt-10 flex w-full flex-col items-center px-4 sm:w-fit sm:flex-row sm:space-x-10 sm:px-0">
+      <div className="mt-10 flex w-full flex-col items-center space-y-3 px-4 sm:w-fit sm:flex-row sm:space-x-10 sm:space-y-0 sm:px-0">
         <Link href="/marketplace">
           <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow px-5 text-lg leading-6">
             {t("btn-LaunchPointsMarketplace")}
           </div>
         </Link>
-        <Link href="/marketplace">
+        <Link href="/bounty">
           <div className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow px-5 text-lg leading-6">
             {t("btn-LaunchMissionMarketplace")}
           </div>

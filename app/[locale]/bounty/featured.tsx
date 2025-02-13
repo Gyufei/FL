@@ -4,40 +4,19 @@ import Image from "next/image";
 import { useRouter } from "@/app/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { TaskItem } from "@/lib/types/bounty";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-const slides = [
-  {
-    id: 1,
-    image: "/img/mock/image@2x (2).png",
-    title: "Winter Wonderland - Solana",
-    subtitle: "A winter wonderland in Solana Awaits",
-    participants: 10000,
-  },
-  {
-    id: 2,
-    image: "/img/mock/image@2x (2).png",
-    title: "Snow Quest",
-    subtitle: "Explore the frozen peaks",
-    participants: 8500,
-  },
-  {
-    id: 3,
-    image: "/img/mock/image@2x (2).png",
-    title: "Winter Challenge",
-    subtitle: "Race through the ice valleys",
-    participants: 12000,
-  },
-];
-
-export default function FeaturedCard() {
+export default function FeaturedCard({ data }: { data: TaskItem[] }) {
+  console.log("🚀 ~ FeaturedCard ~ data:", data);
   const router = useRouter();
 
-  function handleGo(projectId: string) {
-    router.push(`/bounty/${projectId}`);
+  function handleGo(task: TaskItem) {
+    const path = `/bounty/${task.projectId}/${task.id}`;
+    router.push(path);
   }
 
   return (
@@ -64,27 +43,42 @@ export default function FeaturedCard() {
           }}
           className="featured-swiper h-[360px] w-full  [&_.swiper-pagination-bullet-active]:!size-[10px] [&_.swiper-pagination-bullet-active]:!bg-[#121214] [&_.swiper-pagination-bullet]:!size-[6px] [&_.swiper-pagination-bullet]:!bg-[#828181] [&_.swiper-pagination-vertical]:!w-fit  [&_.swiper-pagination]:!left-6"
         >
-          {slides.map((slide) => (
-            <SwiperSlide key={slide.id}>
+          {(data || []).map((item: any, index) => (
+            <SwiperSlide key={index}>
               <div
                 className="grid h-[360px] cursor-pointer gap-6 px-6 md:grid-cols-2"
-                onClick={() => handleGo(slide.id.toString())}
+                onClick={() => handleGo(item)}
               >
                 <div className="ml-5 flex h-[360px] w-full max-w-xl flex-col items-center justify-center space-y-8">
-                  {/* Title Section */}
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src="/img/mock/矩形 1321@1x (2).png"
-                        alt="icon"
-                        className="rounded-lg object-cover"
-                        width={18}
-                        height={18}
-                      />
-                      <span className="text-[12px] text-[#2D2E33]">Solana</span>
+                    <div className="item-center flex justify-between space-x-3">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={item.projectLogo}
+                          alt="icon"
+                          className="rounded-lg object-cover"
+                          width={18}
+                          height={18}
+                        />
+                        <span className="text-[12px] text-[#2D2E33]">
+                          {item.projectName}
+                        </span>
+                      </div>
+                      <div className="flex w-fit items-center gap-2 rounded-3xl bg-[#FFFFFF] px-3 py-1">
+                        <Image
+                          src="/icons/ava.svg"
+                          alt="icon"
+                          className="rounded-lg"
+                          width={18}
+                          height={18}
+                        />
+                        <span className="text-[12px] text-[#2D2E33]">
+                          5,757
+                        </span>
+                      </div>
                     </div>
-                    <h2 className="text-[36px]">{slide.title}</h2>
-                    <p className="text-[#99A0AF]">{slide.subtitle}</p>
+                    <h2 className="text-[36px]">{item.name}</h2>
+                    <p className="text-[#99A0AF]">{item.desc}</p>
                   </div>
 
                   {/* Time and Status Section */}
@@ -92,9 +86,9 @@ export default function FeaturedCard() {
                     <div className="flex items-center gap-2">
                       <div className="h-8 w-8 rounded bg-[#fafafa]"></div>
                       <div>
-                        <div className="text-[16px]">Dec 5, 6:30 AM</div>
+                        <div className="text-[16px]">{item.start}</div>
                         <div className="text-[12px] text-[#99A0AF]">
-                          to Jan 15, 6:30 AM
+                          {item.end}
                         </div>
                       </div>
                     </div>
@@ -111,7 +105,7 @@ export default function FeaturedCard() {
                 <div className="relative flex items-center justify-center">
                   <div className="relative overflow-hidden rounded-lg">
                     <Image
-                      src={slide.image}
+                      src={item.projectImage}
                       width={600}
                       height={300}
                       alt="Featured image"

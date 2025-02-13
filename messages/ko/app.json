@@ -47,12 +47,11 @@
   "card-Marketplace": {
     "lb-InitialListing": "Initial Listing",
     "lb-AllTimeHigh": "All-time High",
+    "lb-24hChange": "24h Change",
+    "lb-FilledOrders": "Filled Orders",
     "lb-ListedSupply": "Listed Supply",
     "lb-ActiveWallets": "Active Wallets",
-
     "lb-TotalVol": "Total Vol.",
-    "lb-FilledOrders": "Filled Orders",
-    "lb-24hChange": "24h Change",
     "lb-24hVol": "24h Vol.",
     "lb-AvgBid": "Avg. Bid"
   },
@@ -144,7 +143,6 @@
     "tip-YouGet": "",
     "txt-YouHaveToSell": "You have to sell",
     "txt-YouHaveTheOptionToClose": "You have the option to close the offer before it is 100% filled.",
-
     "btn-Offer100%Filled": "Offer 100% Filled",
     "btn-ConfirmTakerOrder": "Confirm Taker Order",
     "btn-SettleThisOffer": "Settle this offer",
@@ -156,7 +154,6 @@
     "btn-AbortThisOffer": "Abort this offer",
     "btn-CloseBidOffer": "Close Bid Offer",
     "btn-AwaitingSettlement": "Awaiting Settlement...",
-
     "lb-Filled/SellingAmount": "Filled / Selling amount",
     "lb-Filled/BuyingAmount": "Filled / Buying amount",
     "tip-Filled": "",
@@ -192,7 +189,6 @@
     "lb-YourBonus": "Your Bonus",
     "tip-YourBonus": "",
     "lb-You": "You",
-
     "cap-TakerOrders": "Taker Orders",
     "cap-OrderHistory": "Order History",
     "tg-OnlyMe": "Only Me",
@@ -306,7 +302,7 @@
     "txt-RateError": "Your And Your friend's commission rate can't be greater than {rate}%"
   },
   "page-MarketList": {
-    "cap-PointMarket": "Point Market",
+    "cap-PointMarket": "Gems Market",
     "menu-Transaction": "Transaction",
     "menu-Items": "Items",
     "menu-MarketTrades": "Market Trades",

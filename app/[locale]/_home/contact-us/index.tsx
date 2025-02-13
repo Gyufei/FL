@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import {
-  DocLink,
   handleGoDiscord,
   handleGoGithub,
   handleGoTg,
@@ -19,7 +18,7 @@ export default function ContactUs() {
       <div className="flex flex-col items-end justify-between sm:flex-row">
         <div className="flex w-full flex-col items-center sm:w-fit sm:items-start">
           <div className="text-center text-2xl leading-9 text-black sm:text-4xl sm:text-[40px] sm:leading-[54px]">
-            {t("cap-StayInTheLoopWithUs")}
+            {t("cap-UnlockEarlyAccess")}
           </div>
           <SubscribeInput />
         </div>
@@ -70,8 +69,8 @@ export default function ContactUs() {
         <div className="flex flex-wrap items-center justify-between gap-x-10 sm:flex-nowrap">
           {/* <LinkItem href={DiscordLink}>{t("lb-SubmitTicket")}</LinkItem>
           <LinkItem href="">{t("lb-ListingProposal")}</LinkItem> */}
-          <LinkItem href="">{t("lb-ContactUs")}</LinkItem>
-          <LinkItem href={DocLink}>{t("lb-Docs")}</LinkItem>
+          {/* <LinkItem href="">{t("lb-ContactUs")}</LinkItem>
+          <LinkItem href={DocLink}>{t("lb-Docs")}</LinkItem> */}
         </div>
       </div>
 
@@ -94,22 +93,22 @@ export default function ContactUs() {
   );
 }
 
-function LinkItem({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <a
-      className="text-sm leading-5 text-lightgray hover:text-black"
-      href={href}
-    >
-      {children}
-    </a>
-  );
-}
+// function LinkItem({
+//   href,
+//   children,
+// }: {
+//   href: string;
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <a
+//       className="text-sm leading-5 text-lightgray hover:text-black"
+//       href={href}
+//     >
+//       {children}
+//     </a>
+//   );
+// }
 
 function HoverSocialIcon({
   src,

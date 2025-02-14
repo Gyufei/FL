@@ -64,15 +64,15 @@ export default function Marketplace() {
   );
 }
 
-function MobileMarketBreadcrumb() {
-  const ht = useTranslations("Header");
+// function MobileMarketBreadcrumb() {
+//   const ht = useTranslations("Header");
 
-  return (
-    <div className="mb-[10px] mt-4 flex items-center pl-4 sm:hidden">
-      <div className="text-base leading-6 text-[#99a0af] font-medium">
-        {ht("btn-Marketplace")}
-        <span className="inline-block px-1">&gt;</span>
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="mb-[10px] mt-4 flex items-center pl-4 sm:hidden">
+//       <div className="text-base leading-6 text-[#99a0af] font-medium">
+//         {ht("btn-Marketplace")}
+//         <span className="inline-block px-1">&gt;</span>
+//       </div>
+//     </div>
+//   );
+// }

@@ -116,7 +116,7 @@ export default function MarketplaceContent({
       </div>
       <div className="flex flex-1 items-stretch pt-4 sm:pt-0">
         {checkIsActive("Transaction") && (
-          <div className="flex w-full flex-col space-y-6 px-6 sm:w-[348px]">
+          <div className="flex w-full flex-col space-y-4 sm:space-y-6 px-6 sm:w-[348px]">
             <MarketplaceCard
               className="basic-[218px] h-[218px] shrink-0 grow-0"
               marketplace={marketplace}

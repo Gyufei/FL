@@ -97,7 +97,7 @@ export default function PointMarket({ className }: { className?: string }) {
   }, [data, isLoadingFlag]);
 
   function handleGo(marketId: string) {
-    const path = `/marketplace/${marketId}`;
+    const path = `/market/gems/${marketId}`;
 
     router.push(path);
   }

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { formatNum } from "@/lib/utils/number";
-import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
-import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-tabs";
-import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
+import OfferInfo from "@/app/[locale]/market/gems/[...name]/offer-detail/offer-info";
+import OfferTabs from "@/app/[locale]/market/gems/[...name]/offer-detail/offer-tabs";
+import ArrowBetween from "@/app/[locale]/market/gems/[...name]/create-offer/arrow-between";
 import { WithTip } from "@/components/share/with-tip";
 import { SwapItemPanel } from "./swap-item-panel";
 import MyDetailCard from "./my-detail-card";

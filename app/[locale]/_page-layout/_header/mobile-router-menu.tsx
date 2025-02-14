@@ -37,7 +37,7 @@ export default function MobileRouterMenu() {
 function MenuList({ onEnd }: { onEnd: () => void }) {
   const t = useTranslations("Header");
   const router = useRouter();
-  const routePath = [`/dashboard`, `/marketplace`];
+  const routePath = [`/dashboard`, `/market/gems`];
   const currentRoute = usePathname();
 
   const isDashboardActive = currentRoute.includes(routePath[0]);
@@ -80,7 +80,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
         style={{
           boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
         }}
-        onClick={() => handleClick("/marketplace")}
+        onClick={() => handleClick("/market/gems")}
       >
         <div className="flex items-center justify-start space-x-3">
           <Image

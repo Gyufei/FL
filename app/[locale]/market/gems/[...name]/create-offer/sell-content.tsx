@@ -1,8 +1,12 @@
+import Image from "next/image";
 import { useEffect, useState } from "react";
+
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
+import NP from "number-precision";
+
 import ArrowBetween from "./arrow-between";
-import { WithTip } from "../../../../../components/share/with-tip";
+import { WithTip } from "../../../../../../components/share/with-tip";
 import CollateralRateInput from "./collateral-rate-input";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
@@ -14,20 +18,22 @@ import { useCreateAction } from "./use-create-action";
 import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
 import { PointTokenDisplay } from "./point-token-display";
+import { cn } from "@/lib/utils/common";
 import { reportEvent } from "@/lib/utils/analytics";
 import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
-import { cn } from "@/lib/utils/common";
-import NP from "number-precision";
+import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
-export function BuyContent({
+export function SellContent({
   marketplace,
   onSuccess,
+  className,
 }: {
   marketplace: IMarketplace;
   onSuccess: () => void;
+  className?: string;
 }) {
-  const cot = useTranslations("drawer-CreateOffer");
+  const T = useTranslations("drawer-CreateOffer");
   const { checkMinPrice } = useCreateOfferMinPrice();
 
   const isOffChainFungiblePoint =
@@ -35,14 +41,14 @@ export function BuyContent({
   const isPointToken = marketplace?.market_catagory === "point_token";
 
   const {
-    token: payToken,
-    setToken: setPayToken,
-    point: receivePoint,
-    tokenAmount: payTokenAmount,
-    setTokenAmount: setPayTokenAmount,
-    pointAmount: receivePointAmount,
-    setPointAmount: setReceivePointAmount,
-    tokenAmountValue: payTokenAmountValue,
+    token: receiveToken,
+    setToken: setReceiveToken,
+    point: sellPoint,
+    tokenAmount: receiveTokenAmount,
+    setTokenAmount: setReceiveAmount,
+    pointAmount: sellPointAmount,
+    setPointAmount: setSellPointAmount,
+    tokenAmountValue: sellPrice,
     currentMarket,
     pointPrice,
 
@@ -50,7 +56,13 @@ export function BuyContent({
     handleCreate,
     isCreateSuccess,
     pointDecimalNum,
-  } = useCreateAction(marketplace, "buy");
+  } = useCreateAction(marketplace, "sell");
+
+  useEffect(() => {
+    if (isCreateSuccess) {
+      onSuccess();
+    }
+  }, [isCreateSuccess, onSuccess]);
 
   const {
     collateralRate,
@@ -65,19 +77,37 @@ export function BuyContent({
 
   const { isShouldApprove, approveAction, isApproving, approveBtnText } =
     usePairApprove(
-      currentMarket.chain,
-      payToken,
-      receivePoint || undefined,
-      "buy",
-      payTokenAmount,
+      currentMarket?.chain || "",
+      receiveToken,
+      sellPoint || undefined,
+      "sell",
+      sellPointAmount,
     );
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
-    currentMarket.chain,
-    payToken,
-  );
-
+  const { checkBalanceInsufficient } = useCheckBnbBalance(currentMarket.chain, {
+    address: currentMarket.project_token_addr,
+    decimals: ProjectDecimalsMap[currentMarket.market_symbol],
+    symbol: currentMarket.item_name,
+  });
   const [errorText, setErrorText] = useState("");
+  useEffect(() => {
+    let curErrorText = "";
+    if ((isOffChainFungiblePoint || isPointToken) && !isShouldApprove) {
+      curErrorText = checkBalanceInsufficient(sellPointAmount);
+    }
+    if (
+      +pointPrice &&
+      checkMinPrice(
+        pointPrice,
+        NP.times(currentMarket.last_price, pointDecimalNum),
+        true,
+      )
+    ) {
+      curErrorText = "Too big price shift";
+    }
+
+    setErrorText(curErrorText);
+  }, [sellPointAmount, isShouldApprove, pointPrice]);
 
   async function handleConfirmBtnClick() {
     if (isShouldApprove) {
@@ -91,78 +121,63 @@ export function BuyContent({
       settleMode,
       taxForSub: String(Number(taxForSub || 0) * 100),
     });
-    reportEvent("click", { value: "confirmOffer-buy" });
+    reportEvent("click", { value: "confirmOffer-sell" });
   }
 
-  useEffect(() => {
-    setPayTokenAmount("");
-  }, [payToken]);
-
-  useEffect(() => {
-    let curErrorText = "";
-    if (!isShouldApprove) {
-      curErrorText = checkBalanceInsufficient(payTokenAmount);
-    }
-    if (
-      +pointPrice &&
-      checkMinPrice(
-        pointPrice,
-        NP.times(currentMarket.last_price, pointDecimalNum),
-        false,
-      )
-    ) {
-      curErrorText = "Too big price shift";
-    }
-
-    setErrorText(curErrorText);
-  }, [payTokenAmount, payToken, isShouldApprove, pointPrice]);
-
-  useEffect(() => {
-    if (isCreateSuccess) {
-      onSuccess();
-    }
-  }, [isCreateSuccess, onSuccess]);
-
   return (
-    <div className="mt-6 flex flex-1 flex-col justify-between">
+    <div className={cn("mt-6 flex flex-1 flex-col justify-between", className)}>
       <div className="flex flex-1 flex-col">
         <InputPanel
-          value={payTokenAmount}
-          onValueChange={setPayTokenAmount}
+          value={sellPointAmount}
+          onValueChange={setSellPointAmount}
           hasError={!!errorText}
-          topText={<>{cot("txt-YouPay")}</>}
-          bottomText={<>${payTokenAmountValue}</>}
-          tokenSelect={
-            <StableTokenSelectDisplay
-              chain={currentMarket.chain}
-              token={payToken}
-              setToken={setPayToken}
-              showBalance
-            />
-          }
-        />
-
-        <ArrowBetween className="-my-4 self-center" />
-
-        <InputPanel
-          value={receivePointAmount}
-          onValueChange={setReceivePointAmount}
-          topText={
-            <div className="flex items-center">
-              {cot("txt-YouDLikeToReceive")}
-              <WithTip align="start">
-                {cot("tip-YouDLikeToReceive", {
-                  pointName: marketplace.item_name,
-                })}
-              </WithTip>
-            </div>
-          }
+          topText={<>{T("txt-YouWillSell")}</>}
           bottomText={
             <>
               1 {currentMarket.item_name} = ${formatNum(pointPrice)}
             </>
           }
-          tokenSelect={<PointTokenDisplay point={receivePoint} />}
+          tokenSelect={<PointTokenDisplay point={sellPoint} showBalance />}
+        />
+
+        <ArrowBetween className="-my-4 self-center" />
+
+        <InputPanel
+          value={receiveTokenAmount}
+          onValueChange={setReceiveAmount}
+          topText={
+            <div className="flex items-center">
+              {T("txt-YouDLikeToReceive")}
+              <WithTip align="start">
+                <div className="relative">
+                  {T("tip-YouDLikeToReceive", {
+                    pointName: currentMarket.item_name,
+                  })}
+                  <Image
+                    src="/icons/info-tip.svg"
+                    height={30}
+                    width={30}
+                    alt="info"
+                    className="absolute -bottom-[14px] -right-[18px] !text-[#E0FF62]"
+                  />
+                </div>
+              </WithTip>
+            </div>
+          }
+          bottomText={
+            <>
+              {!(isOffChainFungiblePoint || isPointToken)
+                ? `${T("txt-RequiredCollateral")} ${sellPrice}`
+                : null}
+            </>
+          }
+          tokenSelect={
+            <StableTokenSelectDisplay
+              chain={currentMarket.chain}
+              token={receiveToken}
+              setToken={setReceiveToken}
+            />
+          }
         />
 
         <div className="mt-4 flex flex-wrap items-start justify-between space-y-4 sm:space-y-0">
@@ -181,9 +196,9 @@ export function BuyContent({
           <TaxForSubTrades value={taxForSub} onValueChange={setTaxForSub} />
         </div>
 
-        <OrderNoteAndFee value={note} onValueChange={setNote} type={"buy"} />
+        <OrderNoteAndFee value={note} onValueChange={setNote} type={"sell"} />
       </div>
-      <div className=" sm:mt-[140px]">
+      <div className="sm:mt-[140px]">
         <div className="mt-3 text-center text-[12px] text-[#FF6262]">
           {errorText}
         </div>
@@ -196,11 +211,11 @@ export function BuyContent({
             (!pointPrice && !isShouldApprove)
           }
           className={cn(
-            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-red leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
             isCreating || isApproving ? "dot-loading" : "",
           )}
         >
-          {!isShouldApprove ? cot("btn-ConfirmMakerOrder") : approveBtnText}
+          {!isShouldApprove ? T("btn-ConfirmMakerOrder") : approveBtnText}
         </button>
       </div>
     </div>

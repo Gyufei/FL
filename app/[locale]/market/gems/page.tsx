@@ -1,13 +1,14 @@
 "use client";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import PageFooter from "../_page-layout/_page-footer";
-import PointMarket from "./point-market";
-import TrendingAsset from "./trending-asset";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 import MobilePageFooter, {
   IMobilePanel,
-} from "../_page-layout/_page-footer/page-footer-mobile";
+} from "@/app/[locale]/_page-layout/_page-footer/page-footer-mobile";
+
+import PointMarket from "./point-market";
+import TrendingAsset from "./trending-asset";
 
 export default function Marketplace() {
   const { isMobileSize } = useDeviceSize();

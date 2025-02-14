@@ -1,5 +1,5 @@
 import { redirect } from "@/app/navigation";
 
-export default async function MainPage() {
+export default function Market() {
   return redirect("/market/gems");
 }

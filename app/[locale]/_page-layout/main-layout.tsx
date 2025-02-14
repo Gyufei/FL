@@ -26,7 +26,7 @@ export default function MainLayout({
   const pathname = usePathname();
   NP.enableBoundaryChecking(false);
 
-  const isOverflowHidden = pathname.includes("/marketplace");
+  const isOverflowHidden = pathname.includes("/market/gems");
 
   return (
     <div

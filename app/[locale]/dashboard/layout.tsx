@@ -23,7 +23,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { address } = useChainWallet();
   useEffect(() => {
     if (!address && isProduction) {
-      router.push(`/marketplace`);
+      router.push(`/market/gems`);
     }
   }, [address]);
 

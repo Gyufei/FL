@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Drawer from "react-modern-drawer";
 import DrawerTitle from "@/components/share/drawer-title";
-import AskDetail from "../offer-detail/ask-detail";
-import BidDetail from "../offer-detail/bid-detail";
+import AskDetail from "./ask-detail";
+import BidDetail from "./bid-detail";
 import OfferFillDialog from "./offer-fill-dialog";
 import { useAnchor } from "@/lib/hooks/common/use-anchor";
 import { IOffer } from "@/lib/types/offer";

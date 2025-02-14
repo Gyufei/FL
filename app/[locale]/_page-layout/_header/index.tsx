@@ -10,7 +10,7 @@ import WalletSelectDialog from "@/components/share/wallet-select-dialog";
 
 export default function Header() {
   const pathname = usePathname();
-  const isMarketItemPage = /\/marketplace\/[a-zA-Z]+/.test(pathname);
+  const isMarketItemPage = /\/market\/gems\/[a-zA-Z]+/.test(pathname);
 
   return (
     <>

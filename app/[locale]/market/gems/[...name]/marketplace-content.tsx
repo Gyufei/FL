@@ -4,14 +4,14 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
 
-import LeaderBoard from "@/app/[locale]/marketplace/[...name]/leader-board/leader-board";
+import LeaderBoard from "@/app/[locale]/market/gems/[...name]/leader-board/leader-board";
 import AdBanner from "./ad-banner";
-import OfferList from "@/app/[locale]/marketplace/[...name]/offer-list/offer-list";
+import OfferList from "@/app/[locale]/market/gems/[...name]/offer-list/offer-list";
 import MarketplaceCard from "./marketplace-card";
 import OfferDetailDrawer from "./offer-detail/offer-detail-drawer";
 import CreateOfferBtn from "./create-offer-btn";
 import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
-import MarketTrades from "@/app/[locale]/marketplace/[...name]/market-trades/market-trades";
+import MarketTrades from "@/app/[locale]/market/gems/[...name]/market-trades/market-trades";
 import MarketCharts from "./chart/market-charts";
 
 import useTge from "@/lib/hooks/marketplace/useTge";
@@ -23,7 +23,7 @@ import { IMarketplace } from "@/lib/types/marketplace";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobilePageFooter, {
   IMobilePanel,
-} from "../../_page-layout/_page-footer/page-footer-mobile";
+} from "../../../_page-layout/_page-footer/page-footer-mobile";
 
 export default function MarketplaceContent({
   marketplace,

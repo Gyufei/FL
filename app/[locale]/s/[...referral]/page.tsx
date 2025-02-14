@@ -31,7 +31,7 @@ export default function ReferralPage({ params }: { params: any }) {
 
   useEffect(() => {
     if (!isLoading && !noReferralData && !sameUser) {
-      router.replace(`/marketplace?s=${referral}`);
+      router.replace(`/market/gems?s=${referral}`);
     }
   }, [isLoading, referral, router, noReferralData, sameUser]);
 

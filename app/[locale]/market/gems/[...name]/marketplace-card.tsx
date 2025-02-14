@@ -261,7 +261,7 @@ function FoldPop() {
   );
 
   function handleGo(id: string) {
-    router.push(`/marketplace/${id}`);
+    router.push(`/market/gems/${id}`);
   }
 
   function renderContent() {

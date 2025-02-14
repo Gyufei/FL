@@ -4,8 +4,6 @@ import { useTranslations } from "next-intl";
 import { IOffer } from "@/lib/types/offer";
 import { formatNum } from "@/lib/utils/number";
 
-import OfferInfo from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-info";
-import ArrowBetween from "@/app/[locale]/marketplace/[...name]/create-offer/arrow-between";
 import { WithTip } from "@/components/share/with-tip";
 
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
@@ -13,7 +11,9 @@ import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import OfferTabs from "@/app/[locale]/marketplace/[...name]/offer-detail/offer-tabs";
+import OfferInfo from "@/app/[locale]/market/gems/[...name]/offer-detail/offer-info";
+import ArrowBetween from "@/app/[locale]/market/gems/[...name]/create-offer/arrow-between";
+import OfferTabs from "@/app/[locale]/market/gems/[...name]/offer-detail/offer-tabs";
 
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";

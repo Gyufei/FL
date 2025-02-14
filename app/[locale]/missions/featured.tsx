@@ -4,18 +4,17 @@ import Image from "next/image";
 import { useRouter } from "@/app/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { TaskItem } from "@/lib/types/bounty";
+import { TaskItem } from "@/lib/types/missions";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 export default function FeaturedCard({ data }: { data: TaskItem[] }) {
-  console.log("🚀 ~ FeaturedCard ~ data:", data);
   const router = useRouter();
 
   function handleGo(task: TaskItem) {
-    const path = `/bounty/${task.projectId}/${task.id}`;
+    const path = `/missions/${task.projectId}/${task.id}`;
     router.push(path);
   }
 

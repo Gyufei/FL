@@ -7,7 +7,7 @@ import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import { useRouter } from "@/app/navigation";
-import { TaskItem } from "@/lib/types/bounty";
+import { TaskItem } from "@/lib/types/missions";
 import { Key, useEffect, useState } from "react";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 
@@ -104,7 +104,7 @@ export default function ProjectContent({
                   key={index}
                   data={item}
                   click={() => {
-                    router.push(`/bounty/${projectId}/${item.id}`);
+                    router.push(`/missions/${projectId}/${item.id}`);
                   }}
                 />
               ),

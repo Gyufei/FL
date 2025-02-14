@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import { cn } from "@/lib/utils/common";
-import { TaskItem } from "@/lib/types/bounty";
+import { TaskItem } from "@/lib/types/missions";
 import { getFormatUnit } from "@/lib/utils/number";
 export default function ProjectItemCard({
   data,

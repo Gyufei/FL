@@ -1,29 +1,29 @@
 "use client";
 
-import TaskCard from "./item-card";
-import { TaskItem } from "@/lib/types/bounty";
+import ProjectCard from "./item-card";
+import { Project } from "@/lib/types/missions";
 import { useRouter } from "@/app/navigation";
-export default function New({ data }: { data: TaskItem[] }) {
+
+export default function Trending({ data }: { data: Project[] }) {
   const router = useRouter();
-  function handleGo(task: TaskItem) {
-    const path = `/bounty/${task.projectId}/${task.id}`;
+  function handleGo(project: Project) {
+    const path = `/missions/${project.projectId}/`;
     router.push(path);
   }
   return (
     <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5">
       <h2 className="mb-4 flex items-center gap-2">
         <span className="h-6 w-6 rounded-lg bg-yellow"></span>
-        <span className="">New</span>
+        <span className="">Trending Projects</span>
       </h2>
       <div className="space-y-4">
         {(data || []).map((item, index) => (
-          <TaskCard
+          <ProjectCard
             key={index}
-            name={item.name}
-            participants={item.participants}
+            name={item.projectName}
+            taskNum={item.taskNum}
             logo={item.projectLogo}
             click={() => handleGo(item)}
-            showParticipants
           />
         ))}
       </div>

@@ -4,7 +4,7 @@ import { useRouter } from "@/app/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { TaskItem } from "@/lib/types/bounty";
+import { TaskItem } from "@/lib/types/missions";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,7 +14,7 @@ export default function FeaturedMobile({ data }: { data: TaskItem[] }) {
   const router = useRouter();
 
   function handleGo(task: TaskItem) {
-    const path = `/bounty/${task.projectId}/${task.id}`;
+    const path = `/missions/${task.projectId}/${task.id}`;
     router.push(path);
   }
 

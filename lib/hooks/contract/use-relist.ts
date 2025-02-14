@@ -1,7 +1,6 @@
 import { ChainType } from "@/lib/types/chain";
 import { useRelistEth } from "./eth/use-relist-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useRelistSol } from "./solana/use-relist-sol";
 
 export function useRelist({
   chain,
@@ -18,7 +17,7 @@ export function useRelist({
   holdingStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(chain, useRelistEth, useRelistSol, {
+  const chainActionRes = useChainTx(chain, useRelistEth, {
     chain,
     marketplaceStr,
     makerStr,

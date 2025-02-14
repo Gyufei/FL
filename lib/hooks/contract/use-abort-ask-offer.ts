@@ -1,6 +1,5 @@
 import { useChainTx } from "./help/use-chain-tx";
 import { useAbortAskOfferEth } from "./eth/use-abort-ask-offer-eth";
-import { useAbortAskOfferSol } from "./solana/use-abort-ask-offer-sol";
 import { ChainType } from "@/lib/types/chain";
 
 export function useAbortAskOffer({
@@ -21,7 +20,6 @@ export function useAbortAskOffer({
   const chainActionRes = useChainTx(
     chain,
     useAbortAskOfferEth,
-    useAbortAskOfferSol,
     {
       chain,
       marketplaceStr,

@@ -1,7 +1,6 @@
 "use client";
 
 import EthWalletsProvider from "@/components/provider/eth-wallets";
-import SolanaWalletsProviders from "@/components/provider/solana-wallets";
 import { ChainType } from "@/lib/types/chain";
 import { createContext, useContext, useState } from "react";
 
@@ -60,9 +59,7 @@ export default function WalletModalProvider({
 }) {
   return (
     <EthWalletsProvider>
-      <SolanaWalletsProviders>
         <WalletModalProviderPrimitive>{children}</WalletModalProviderPrimitive>
-      </SolanaWalletsProviders>
     </EthWalletsProvider>
   );
 }

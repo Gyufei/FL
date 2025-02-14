@@ -1,7 +1,6 @@
 import { ChainType } from "@/lib/types/chain";
 import { useListEth } from "./eth/use-list-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useListSol } from "./solana/use-list-sol";
 
 export function useList({
   chain,
@@ -20,7 +19,7 @@ export function useList({
   originOfferStr: string;
   isNativeToken: boolean;
 }) {
-  const chainActionRes = useChainTx(chain, useListEth, useListSol, {
+  const chainActionRes = useChainTx(chain, useListEth, {
     chain,
     marketplaceStr,
     makerStr,

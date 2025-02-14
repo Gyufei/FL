@@ -16,23 +16,16 @@ interface BaseHookResult {
 export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
   chain: ChainType,
   hookEth: (args: T) => K,
-  hookSolana: (args: T) => K,
   args: T,
 ): BaseHookResult {
   const isEvm = isEvmChain(chain);
-  const isSolana = chain === ChainType.SOLANA;
   const { checkAndSwitchChain } = useCheckSwitchChain(chain);
 
   const actionResEvm = hookEth(args);
-  const actionResSol = hookSolana(args);
 
   const chainActionRes = useMemo(() => {
     if (isEvm) {
       return actionResEvm;
-    }
-
-    if (isSolana) {
-      return actionResSol;
     }
 
     return {
@@ -43,7 +36,7 @@ export function useChainTx<T = any, K extends BaseHookResult = BaseHookResult>(
       data: null,
       write: () => {},
     };
-  }, [actionResEvm, actionResSol, isEvm, isSolana]);
+  }, [actionResEvm, isEvm]);
 
   const write = async (args: any) => {
     try {

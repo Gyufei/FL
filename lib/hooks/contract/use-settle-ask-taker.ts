@@ -1,7 +1,6 @@
 import { ChainType } from "@/lib/types/chain";
 import { useSettleAskTakerEth } from "./eth/use-settle-ask-taker-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useSettleAskTakerSol } from "./solana/use-settle-ask-taker-sol";
 
 export function useSettleAskTaker({
   chain,
@@ -23,7 +22,6 @@ export function useSettleAskTaker({
   const actionRes = useChainTx(
     chain,
     useSettleAskTakerEth,
-    useSettleAskTakerSol,
     {
       chain,
       marketplaceStr,

@@ -1,7 +1,6 @@
 import { ChainType } from "@/lib/types/chain";
 import { useCloseBidOfferEth } from "./eth/use-close-bid-offer-eth";
 import { useChainTx } from "./help/use-chain-tx";
-import { useCloseBidOfferSol } from "./solana/use-close-bid-offer-sol";
 
 export function useCloseBidOffer({
   chain,
@@ -19,7 +18,6 @@ export function useCloseBidOffer({
   const chainActionRes = useChainTx(
     chain,
     useCloseBidOfferEth,
-    useCloseBidOfferSol,
     {
       chain,
       marketplaceStr,

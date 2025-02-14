@@ -1,4 +1,3 @@
-import { isProduction } from "../PathMap";
 import { IToken } from "@/lib/types/token";
 import { ChainType } from "@/lib/types/chain";
 
@@ -34,10 +33,6 @@ export const checkIsNativeToken = (chain: ChainType, token: IToken | null) => {
     return token.symbol === "BNB";
   }
 
-  if (chain === ChainType.SOLANA) {
-    return token.symbol === "SOL";
-  }
-
   return false;
 };
 
@@ -59,14 +54,5 @@ export function handleGoScan(
 
   if (chain === ChainType.BNB) {
     window.open(`https://bscscan.com/${goType}/${addr}`, "_blank");
-  }
-
-  if (chain === ChainType.SOLANA) {
-    window.open(
-      `https://solscan.io/${type}/${addr}${
-        isProduction ? "" : "?cluster=devnet"
-      }`,
-      "_blank",
-    );
   }
 }

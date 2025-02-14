@@ -21,8 +21,6 @@ import {
 } from "@/lib/hooks/api/use-user-token-balance";
 import { TokenGetCard } from "./token-get-card";
 import { ChainType } from "@/lib/types/chain";
-import { useMarketPoints } from "@/lib/hooks/api/use-market-points";
-import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { compact } from "lodash";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobileBalances from "./mobile-balances";
@@ -46,8 +44,6 @@ export default function MyBalances() {
 
   const { data: ethTokens } = useTokens(ChainType.ETH);
   const { data: bnbTokens } = useTokens(ChainType.BNB);
-  const { data: solanaTokens } = useTokens(ChainType.SOLANA);
-  const { data: allMarketPoint } = useMarketPoints();
 
   const { isMobileSize } = useDeviceSize();
 
@@ -58,26 +54,11 @@ export default function MyBalances() {
         chain,
       }));
     }
-
-    const marketToken = (allMarketPoint || [])
-      .filter((t) => t.marketplace.market_catagory === "point_token")
-      .map(
-        (t) =>
-          ({
-            symbol: t.symbol,
-            logoURI: t.logoURI,
-            decimals: ProjectDecimalsMap[t.marketplace.market_symbol],
-            chain: ChainType.SOLANA,
-          } as IToken),
-      );
-
     return [
       ...addChainToToken(ChainType.ETH, ethTokens || []),
       ...addChainToToken(ChainType.BNB, bnbTokens || []),
-      ...addChainToToken(ChainType.SOLANA, solanaTokens || []),
-      ...marketToken,
     ];
-  }, [ethTokens, bnbTokens, solanaTokens, allMarketPoint]);
+  }, [ethTokens, bnbTokens]);
 
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);

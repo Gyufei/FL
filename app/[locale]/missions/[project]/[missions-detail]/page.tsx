@@ -36,7 +36,7 @@ export default function ProjectContent({ params }: any) {
   const router = useRouter();
 
   const { shortAddr } = useChainWallet();
-  const { project: projectId, "bounty-detail": taskId } = params;
+  const { project: projectId, "missions-detail": taskId } = params;
   const STORAGE_KEY = shortAddr
     ? `BOUNTY_2_DATA-${shortAddr}`
     : "BOUNTY_2_INIT_DATA";
@@ -46,10 +46,8 @@ export default function ProjectContent({ params }: any) {
   );
 
   useEffect(() => {
-    if (STORAGE_KEY) {
       const stored = getTaskData(STORAGE_KEY, projectId, taskId);
       if (stored) setData(stored);
-    }
   }, [STORAGE_KEY]);
 
   const bountyData = getStoredData(STORAGE_KEY);
@@ -140,7 +138,7 @@ export default function ProjectContent({ params }: any) {
         >
           <ProjectContentDetail
             goRegister={() => {
-              router.push(`/bounty/${projectId}/`);
+              router.push(`/missions/${projectId}/`);
             }}
             needRegister={!projectData || projectData?.status === "init"}
             htmlStr={selectedStep?.htmlStr || ""}

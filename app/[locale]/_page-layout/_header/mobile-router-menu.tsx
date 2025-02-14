@@ -104,7 +104,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
         style={{
           boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
         }}
-        onClick={() => handleClick("/bounty")}
+        onClick={() => handleClick("/missions")}
       >
         <div className="flex items-center justify-start space-x-3">
           <Image
@@ -113,7 +113,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
             height={40}
             alt="governance"
           />
-          <div className="text-lg leading-5 text-black">{t("btn-Bounty")}</div>
+          <div className="text-lg leading-5 text-black">{t("btn-missions")}</div>
         </div>
       </div>
       <PageFooter className="fixed bottom-0 left-0 w-screen" />

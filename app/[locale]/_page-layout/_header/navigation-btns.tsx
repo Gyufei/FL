@@ -10,7 +10,7 @@ export default function NavigationBtns() {
 
   const isDashboard = pathname.startsWith(`/dashboard`);
   const isMarketPlace = pathname.startsWith(`/marketplace`);
-  const isBounty = pathname.startsWith(`/bounty`);
+  const isBounty = pathname.startsWith(`/missions`);
   const pointPattern = /\/marketplace\/[a-zA-Z]+/;
   const isMarketDetailPage = pointPattern.test(pathname);
 
@@ -63,7 +63,7 @@ export default function NavigationBtns() {
 
       <div className="relative flex items-center">
         <div
-          onClick={() => handleClick(`/bounty`)}
+          onClick={() => handleClick(`/missions`)}
           data-active={isBounty}
           className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-yellow data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
           style={{
@@ -74,11 +74,11 @@ export default function NavigationBtns() {
             src="/icons/task.svg"
             width={24}
             height={24}
-            alt="bounty"
+            alt="missions"
             data-active={isBounty}
             className="cursor-pointer data-[active=true]:mr-1"
           />
-          {isBounty && <div>{t("btn-Bounty")}</div>}
+          {isBounty && <div>{t("btn-missions")}</div>}
         </div>
       </div>
     </div>

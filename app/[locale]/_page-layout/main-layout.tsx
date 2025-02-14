@@ -4,8 +4,6 @@ import GlobalActionTip from "@/components/share/global-action-tip";
 import { useEffect } from "react";
 import ReferralDialog from "../dashboard/referral/referral-dialog";
 import NP from "number-precision";
-import WalletsModal from "@/components/share/wallets-modal";
-import WalletDisconnectModal from "@/components/share/wallet-disconnect-modal";
 import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation";
 
@@ -43,8 +41,6 @@ export default function MainLayout({
 
       <GlobalActionTip />
       <ReferralDialog />
-      <WalletsModal />
-      <WalletDisconnectModal />
       <Toaster position="bottom-center" />
     </div>
   );

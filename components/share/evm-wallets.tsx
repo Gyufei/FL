@@ -66,7 +66,7 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-full">
       <div className="mx-4 mb-1 text-sm text-black">Choose Wallet</div>
       {showWallets
         .filter((i) => i?.installed())

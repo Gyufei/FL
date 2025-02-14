@@ -4,23 +4,26 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import * as Sentry from "@sentry/nextjs";
 import { EIP6963AnnounceProviderEvent } from "@/lib/types/wallet";
-import { useWalletModalContext } from "@/components/provider/wallet-modal-provider";
+import WalletDisconnectModal from "@/components/share/wallet-disconnect-modal";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ConnectBtn() {
   const t = useTranslations("Header");
 
   const { isMobileSize } = useDeviceSize();
-  const { openWalletModal, openDisconnectModal } = useWalletModalContext();
   const { address, shortAddr, connected, connecting, connector } =
     useChainWallet();
+  const { openConnectModal } = useConnectModal();
 
   const prevAddressRef = useRef<string | null>(null);
   const userWallets = useRef<string[]>([]);
+
+  const [disconnectModalOpen, setDisconnectModalOpen] = useState(false);
 
   useEffect(() => {
     const onAnnounceProvider = (event: EIP6963AnnounceProviderEvent) => {
@@ -63,12 +66,12 @@ export default function ConnectBtn() {
   }, [address, connector]);
 
   function handleConnect() {
-    openDisconnectModal(false);
-    openWalletModal(true);
+    setDisconnectModalOpen(false);
+    openConnectModal && openConnectModal();
   }
 
   function handleShowDisconnectModal() {
-    openDisconnectModal(true);
+    setDisconnectModalOpen(true);
   }
 
   if (!connected) {
@@ -99,17 +102,23 @@ export default function ConnectBtn() {
   }
 
   return (
-    <button
-      onClick={() => handleShowDisconnectModal()}
-      className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:border-transparent hover:bg-yellow sm:h-12"
-    >
-      <div className="flex items-center">
-        {!shortAddr || connecting ? (
-          <Skeleton className="h-5 w-24" />
-        ) : (
-          <div>{shortAddr}</div>
-        )}
-      </div>
-    </button>
+    <>
+      <button
+        onClick={() => handleShowDisconnectModal()}
+        className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:border-transparent hover:bg-yellow sm:h-12"
+      >
+        <div className="flex items-center">
+          {!shortAddr || connecting ? (
+            <Skeleton className="h-5 w-24" />
+          ) : (
+            <div>{shortAddr}</div>
+          )}
+        </div>
+      </button>
+      <WalletDisconnectModal
+        open={disconnectModalOpen}
+        onOpenChange={setDisconnectModalOpen}
+      />
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import "react-modern-drawer/dist/index.css";
 import "@/app/globals.css";
+import '@rainbow-me/rainbowkit/styles.css';
 import { AeonikFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";

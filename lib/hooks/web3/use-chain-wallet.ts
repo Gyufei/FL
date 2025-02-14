@@ -16,7 +16,6 @@ export function useChainWallet(chain?: ChainType) {
   const {
     address: evmAddress,
     isConnected: evmConnected,
-    // isDisconnected: isEthDisconnected,
     isConnecting: evmConnecting,
     connector: evmConnector,
   } = useAccount();
@@ -38,7 +37,6 @@ export function useChainWallet(chain?: ChainType) {
     }),
     [evmAddress, evmConnected, evmConnecting, evmDisconnect, evmConnector],
   );
-
 
   if (!chain) {
     return evmWallet.address ? evmWallet : EmptyWallet;

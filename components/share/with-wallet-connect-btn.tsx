@@ -1,7 +1,7 @@
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { cn } from "@/lib/utils/common";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { ChainType } from "@/lib/types/chain";
-import { useWalletModalContext } from "../provider/wallet-modal-provider";
 
 export default function WithWalletConnectBtn({
   chain,
@@ -14,12 +14,12 @@ export default function WithWalletConnectBtn({
   children: React.ReactNode;
   className?: string;
 }) {
-  const { openWalletModal } = useWalletModalContext();
+  const { openConnectModal } = useConnectModal();
   const { connected } = useChainWallet(chain);
 
   function handleClick() {
     if (!connected) {
-      openWalletModal(true, chain);
+      openConnectModal && openConnectModal();
     } else {
       onClick();
     }

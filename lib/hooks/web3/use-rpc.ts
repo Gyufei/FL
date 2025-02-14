@@ -4,7 +4,6 @@ import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
 import { createPublicClient, http } from "viem";
 import { mainnet, sepolia } from "viem/chains";
 import { isProduction } from "@/lib/PathMap";
-// import { testnet } from "@/components/provider/wallet-context/testnet";
 import { ChainType } from "@/lib/types/chain";
 import { isValidRpcUrl } from "@/lib/utils/common";
 
@@ -37,19 +36,18 @@ export function useRpc() {
   );
 
   async function testRpcLatency(chain: ChainType, testRpc: string) {
-
     if (!isValidRpcUrl(testRpc)) {
       throw new Error("Invalid RPC URL");
     }
 
-      const publicClient = createPublicClient({
-        chain: isProduction ? mainnet : sepolia,
-        transport: http(testRpc),
-      });
+    const publicClient = createPublicClient({
+      chain: isProduction ? mainnet : sepolia,
+      transport: http(testRpc),
+    });
 
-      const startTimestamp = Date.now();
-      await publicClient.getChainId();
-      const endTimestamp = Date.now();
+    const startTimestamp = Date.now();
+    await publicClient.getChainId();
+    const endTimestamp = Date.now();
 
     const latency = endTimestamp - startTimestamp;
 

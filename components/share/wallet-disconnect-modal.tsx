@@ -1,32 +1,29 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import { useWalletModalContext } from "../provider/wallet-modal-provider";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { reportEvent } from "@/lib/utils/analytics";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-export default function WalletDisconnectModal() {
-  const { isWalletDisconnectModalOpen, openDisconnectModal } =
-    useWalletModalContext();
-
+export default function WalletDisconnectModal({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const { address, disconnect } = useChainWallet();
 
   const handleDisconnect = () => {
-    openDisconnectModal(false);
+    onOpenChange(false);
     reportEvent("disconnectWalletSuccess", { value: address.slice(-8) });
     disconnect();
   };
 
   return (
     <>
-      <Dialog
-        open={isWalletDisconnectModalOpen}
-        onOpenChange={(isOpen) => {
-          openDisconnectModal(isOpen);
-        }}
-      >
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <VisuallyHidden asChild>
           <DialogTitle>Disconnect Wallet</DialogTitle>
         </VisuallyHidden>
@@ -67,29 +64,3 @@ function SignOutBtn({ logout }: { logout: () => void }) {
     </>
   );
 }
-
-// function WalletItem({
-//   wallet,
-//   onDisconnect,
-// }: {
-//   wallet: any;
-//   onDisconnect: (address: string) => void;
-// }) {
-//   return (
-//     <div className="mb-4 w-full">
-//       <div className="flex items-center justify-between">
-//         <div className="flex items-center">
-//           <img src={wallet.icon} alt={wallet.name} className="mr-2" />
-//           <span className="text-black">{wallet.name}</span>
-//         </div>
-//         <button
-//           onClick={() => onDisconnect(wallet.address)}
-//           className="text-red hover:text-black"
-//         >
-//           断开连接
-//         </button>
-//       </div>
-//       <div className="text-gray-500 text-sm">{wallet.address}</div>
-//     </div>
-//   );
-// }

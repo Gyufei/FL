@@ -18,7 +18,7 @@ export default function MobileDrawerTitle({
         height={24}
         alt="back"
       />
-      <div className="flex flex-1 items-center justify-center">{title}</div>
+      <div className="flex flex-1 items-center justify-center font-[500]">{title}</div>
     </div>
   );
 }

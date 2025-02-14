@@ -31,7 +31,7 @@ export default function OfferInfo({
           />
 
           <div>
-            <div className="mb-[2px] text-2xl leading-9 text-black font-[700]">{name}</div>
+            <div className="mb-[2px] text-2xl leading-9 text-black font-[500]">{name}</div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
               #{no}
             </div>

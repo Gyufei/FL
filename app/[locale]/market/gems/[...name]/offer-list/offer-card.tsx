@@ -74,7 +74,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           />
 
           <div>
-            <div className="mb-[2px] leading-6 text-black font-[700]">
+            <div className="mb-[2px] leading-6 text-black font-[500]">
               {offer.marketplace.item_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">

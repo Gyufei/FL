@@ -66,7 +66,7 @@ export default function ProjectInfoCard({
               </>
             ) : (
               <>
-                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black font-[700]">
+                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black font-[500]">
                   {data.projectName}
                 </div>
                 <OverviewIcons

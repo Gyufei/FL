@@ -49,7 +49,7 @@ export default function Referral() {
         <ReferralInfo referralData={referralData || []} />
         <div className="mt-4 rounded-xl bg-white px-4 sm:mt-0 sm:bg-transparent">
           <div className="mb-2 mt-5 flex items-center space-x-2">
-            <div className="text-base leading-6 text-black">
+            <div className="text-base leading-6 text-black font-[500]">
               {rt("cap-ReferralLink")}
             </div>
             <Image

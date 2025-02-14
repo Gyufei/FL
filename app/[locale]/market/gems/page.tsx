@@ -41,7 +41,7 @@ export default function Marketplace() {
 
   return (
     <div className="flex h-[calc(100vh-100px)] w-full flex-col sm:h-[calc(100vh-96px)]">
-      <MobileMarketBreadcrumb />
+      {/* <MobileMarketBreadcrumb /> */}
       <div className="flex flex-1 items-stretch">
         {checkIsActive("market") && (
           <div className="flex flex-1 flex-col overflow-auto pl-4 sm:pl-6">
@@ -69,9 +69,9 @@ function MobileMarketBreadcrumb() {
 
   return (
     <div className="mb-[10px] mt-4 flex items-center pl-4 sm:hidden">
-      <div className="text-base leading-6 text-[#99a0af]">
+      <div className="text-base leading-6 text-[#99a0af] font-[500]">
         {ht("btn-Marketplace")}
-        <span className="inline-block px-2">&gt;</span>
+        <span className="inline-block px-1">&gt;</span>
       </div>
     </div>
   );

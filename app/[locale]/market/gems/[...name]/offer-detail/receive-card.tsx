@@ -17,7 +17,7 @@ export default function ReceiveCard({
     <div className="rounded-2xl bg-white p-4">
       <div className="text-xs leading-[18px] text-gray">{topText}</div>
       <div className="mt-2 flex justify-between">
-        <div className="h-[36px] text-2xl leading-[36px] font-[700]">
+        <div className="h-[36px] text-2xl leading-[36px] font-[500]">
           {formatNum(value)}
         </div>
         <Image

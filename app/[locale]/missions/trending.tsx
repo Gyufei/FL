@@ -11,7 +11,7 @@ export default function Trending({ data }: { data: Project[] }) {
     router.push(path);
   }
   return (
-    <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5">
+    <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5 font-[500]">
       <h2 className="mb-4 flex items-center gap-2">
         <span className="h-6 w-6 rounded-lg bg-yellow"></span>
         <span className="">Trending Projects</span>

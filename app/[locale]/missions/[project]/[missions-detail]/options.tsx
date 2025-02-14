@@ -18,7 +18,7 @@ export default function ProjectOptions({
     <div className="relative mx-auto w-full max-w-md flex-1 space-y-6 pb-[80px] text-[14px]">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#E8FF81] text-[16px]" />
+        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#E8FF81] text-[16px] font-[500]" />
         <h1 className="text-[16px]">Finish All Steps</h1>
       </div>
       <div className="space-y-4">

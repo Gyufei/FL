@@ -70,7 +70,7 @@ export default function MyDetailCard({ offer }: { offer: IOffer }) {
 
   return (
     <div className="flex-1 px-6">
-      <div className="leading-6 text-black font-[500]">{ot("cap-OfferDetail")}</div>
+      <div className="leading-6 text-black font-medium">{ot("cap-OfferDetail")}</div>
 
       <DetailRow>
         <DetailLabel tipText={ot("tip-Filled")}>

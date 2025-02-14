@@ -222,7 +222,7 @@ export default function MyBalances() {
   return (
     <div className="flex h-full flex-1 flex-col sm:ml-5">
       <div className="hidden items-center space-x-5 sm:flex">
-        <div className="text-xl leading-[30px] text-black">
+        <div className="text-xl leading-[30px] text-black font-medium">
           {mbt("cap-MyBalances")}
         </div>
       </div>

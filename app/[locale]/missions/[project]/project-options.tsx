@@ -18,7 +18,7 @@ export default function ProjectOptions({
             onStatusChange("registered");
           }}
         >
-          <button className="flex w-[320px] items-center justify-center space-x-2 rounded-full bg-[#E0FF62] px-4 py-3 text-[16px] font-[500]">
+          <button className="flex w-[320px] items-center justify-center space-x-2 rounded-full bg-[#E0FF62] px-4 py-3 text-[16px] font-medium">
             <span>Register +</span>
           </button>
         </WithWalletConnectBtn>

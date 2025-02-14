@@ -37,7 +37,7 @@ export function SwapItemPanel({
             onUserInput={onValueChange}
           />
         ) : (
-          <div className="mt-2 h-9 text-2xl leading-9 font-[500]">{value}</div>
+          <div className="mt-2 h-9 text-2xl leading-9 font-medium">{value}</div>
         )}
         <div className="text-xs leading-[18px] text-gray">{bottomText}</div>
       </div>

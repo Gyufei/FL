@@ -34,7 +34,7 @@ export default function FooterSetting() {
         }}
       >
         <div className="ml-30 flex items-center">
-          <div className="flex flex-1 justify-center text-xl leading-[30px]">
+          <div className="flex flex-1 justify-center text-xl leading-[30px] font-medium">
             {ct("cap-NetworkSetting")}
           </div>
           <Image

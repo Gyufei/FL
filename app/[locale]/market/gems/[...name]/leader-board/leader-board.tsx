@@ -228,7 +228,7 @@ export default function LeaderBoard({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black font-[500]">{t("cap-Leaderboard")}</div>
+          <div className="leading-6 text-black font-medium">{t("cap-Leaderboard")}</div>
         </div>
         <div className="flex items-center justify-end space-x-3">
           <LeaderTypeSelect

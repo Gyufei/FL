@@ -188,14 +188,14 @@ export default function RpcManage() {
       {networks.map((network) => (
         <div key={network.id} className="space-y-2">
           <div className="flex items-center justify-start">
-            <span className="text-[14px] font-medium">{network.name}</span>
+            <span className="text-[14px]  font-medium">{network.name}</span>
             {network.rpcs.length < 2 && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => handleAddRpc(network.id)}
               >
-                <Plus className="h-4 w-4 hover:text-[#4CBF87]" />
+                <Plus className="h-4 w-4 hover:text-[#4CBF87] -ml-3" />
               </Button>
             )}
           </div>

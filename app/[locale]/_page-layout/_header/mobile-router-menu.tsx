@@ -72,7 +72,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           height={40}
           alt="pools"
         />
-        <div className="text-lg leading-5 text-black font-[500]">{t("btn-Dashboard")}</div>
+        <div className="text-lg leading-5 text-black font-medium">{t("btn-Dashboard")}</div>
       </div>
       <div
         data-active={isMarketplaceActive}
@@ -93,7 +93,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
             height={40}
             alt="governance"
           />
-          <div className="text-lg leading-5 text-black font-[500]">
+          <div className="text-lg leading-5 text-black font-medium">
             {t("btn-Marketplace")}
           </div>
         </div>
@@ -113,7 +113,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
             height={40}
             alt="governance"
           />
-          <div className="text-lg leading-5 text-black font-[500]">{t("btn-missions")}</div>
+          <div className="text-lg leading-5 text-black font-medium">{t("btn-missions")}</div>
         </div>
       </div>
       <PageFooter className="fixed bottom-0 left-0 w-screen" />

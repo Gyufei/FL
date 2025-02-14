@@ -196,7 +196,7 @@ export function BuyContent({
             (!pointPrice && !isShouldApprove)
           }
           className={cn(
-            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
+            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray font-medium",
             isCreating || isApproving ? "dot-loading" : "",
           )}
         >

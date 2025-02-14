@@ -146,7 +146,7 @@ export default function OverviewInfo() {
         {/* overview */}
         <div className="mt-6 rounded-3xl bg-[#fafafa] p-5">
           <div className="flex items-center justify-between">
-            <div className="leading-6 text-black font-[500]">
+            <div className="leading-6 text-black font-medium">
               {T("cap-AccountOverview")}
             </div>
           </div>

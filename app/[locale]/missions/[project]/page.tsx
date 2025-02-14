@@ -86,7 +86,7 @@ export default function ProjectContent({
           }}
         >
           <div className="flex items-center gap-3 border-[#E8E8E8] sm:border-b sm:pb-5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#E8FF81] text-[16px] font-[500]" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#E8FF81] text-[16px] font-medium" />
             <h1 className="text-[20px]">Bounties</h1>
           </div>
           <div

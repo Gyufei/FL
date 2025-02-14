@@ -20,7 +20,7 @@ export default function FeaturedMobile({ data }: { data: TaskItem[] }) {
 
   return (
     <div className="w-full">
-      <div className="-mb-4 flex items-center justify-between font-[500]">
+      <div className="-mb-4 flex items-center justify-between font-medium">
         <div className="flex items-center gap-2">
           <div className="h-6 w-6 rounded-lg bg-yellow" />
           <span className="text-[16px]">Featured</span>

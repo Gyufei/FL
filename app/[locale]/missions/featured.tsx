@@ -23,7 +23,7 @@ export default function FeaturedCard({ data }: { data: TaskItem[] }) {
       <div className="relative rounded-xl bg-[#FAFAFA]">
         <div className="absolute left-5 top-5 z-10 flex items-center gap-2">
           <div className="h-6 w-6 rounded-lg bg-yellow" />
-          <span className="text-[16px]">Featured</span>
+          <span className="text-[16px] font-medium">Featured</span>
         </div>
 
         <Swiper

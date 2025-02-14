@@ -27,7 +27,7 @@ export default function OtherHoldingCard({ holding }: { holding: any }) {
             />
           </div>
           <div>
-            <div className="mb-[2px] leading-6 text-black font-[500]">
+            <div className="mb-[2px] leading-6 text-black font-medium">
               {holding.marketplace.item_name}
             </div>
             <div className="mt-4 flex items-start justify-between ">

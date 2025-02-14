@@ -39,7 +39,7 @@ export default function Referral() {
     <div className="flex h-full w-screen flex-1 flex-col px-4 sm:ml-5 sm:w-full sm:px-0">
       <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-5">
-          <div className="text-xl leading-[30px] text-black">
+          <div className="text-xl leading-[30px] text-black font-medium">
             {rt("cap-ReferralSystem")}
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function Referral() {
         <ReferralInfo referralData={referralData || []} />
         <div className="mt-4 rounded-xl bg-white px-4 sm:mt-0 sm:bg-transparent">
           <div className="mb-2 mt-5 flex items-center space-x-2">
-            <div className="text-base leading-6 text-black font-[500]">
+            <div className="text-base leading-6 text-black font-medium">
               {rt("cap-ReferralLink")}
             </div>
             <Image

@@ -163,7 +163,7 @@ export default function TrendingAsset({ className }: { className?: string }) {
       <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-yellow"></div>
-          <div className="leading-6 text-black">{t("cap-TrendingAssets")}</div>
+          <div className="leading-6 text-black font-medium">{t("cap-TrendingAssets")}</div>
         </div>
       </div>
       {!tableData.nodes.length ? (

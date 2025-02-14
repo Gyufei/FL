@@ -45,7 +45,7 @@ const MobileBalances: React.FC<MobileBalancesProps> = ({
                 value={item.panelName}
                 className="mb-3 overflow-hidden rounded-lg border bg-[#FAFAFA] p-4"
               >
-                <AccordionTrigger className="mb-4 h-6 font-[500]" showIcon={false}>
+                <AccordionTrigger className="mb-4 h-6 font-medium" showIcon={false}>
                   <AcHeader
                     open={openPanel === item.panelName}
                     name={item.title}

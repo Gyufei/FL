@@ -78,7 +78,7 @@ export function TokenGetCard({
         <div className="hidden text-sm leading-5 text-lightgray sm:flex">
           {mbt("lb-Token")}
         </div>
-        <div className="flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1 font-medium">
           <Image
             src={tokenInfo?.logoURI || ""}
             width={16}

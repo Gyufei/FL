@@ -10,7 +10,7 @@ export default function New({ data }: { data: TaskItem[] }) {
     router.push(path);
   }
   return (
-    <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5 font-[500]">
+    <div className="overflow-hidden rounded-xl bg-[#FAFAFA] p-5 font-medium">
       <h2 className="mb-4 flex items-center gap-2">
         <span className="h-6 w-6 rounded-lg bg-yellow"></span>
         <span className="">New</span>

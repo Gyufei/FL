@@ -123,7 +123,7 @@ function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
         }}
       >
         <div className="flex items-start space-x-1">
-          <div className="mr-1 leading-6 text-black font-[500]">
+          <div className="mr-1 leading-6 text-black font-medium">
             {marketplace?.market_symbol}
           </div>
           <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">

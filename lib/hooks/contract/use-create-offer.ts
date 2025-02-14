@@ -1,4 +1,3 @@
-import { useCreateOfferSol } from "./solana/use-create-offer-sol";
 import { useCreateOfferEth } from "./eth/use-create-offer-eth";
 import { useChainTx } from "./help/use-chain-tx";
 import { ChainType } from "@/lib/types/chain";
@@ -17,7 +16,6 @@ export function useCreateOffer({
   const chainActionRes = useChainTx(
     chain,
     useCreateOfferEth,
-    useCreateOfferSol,
     {
       chain,
       marketSymbol,

@@ -6,7 +6,6 @@ export const GlobalRpcsAtom = atomWithStorage<Record<any, any>>(
   {
     eth: ChainConfigs.eth.rpcs.TadleDefaultRPC,
     bnb: ChainConfigs.bnb.rpcs.TadleDefaultRPC,
-    solana: ChainConfigs.solana.rpcs.TadleDefaultRPC,
   },
 );
 
@@ -15,6 +14,5 @@ export const CustomRpcsAtom = atomWithStorage<Record<any, any>>(
   {
     eth: null,
     bnb: null,
-    solana: null,
   },
 );

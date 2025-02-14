@@ -39,19 +39,6 @@ export default function RpcManage() {
       ? JSON.parse(storedNetworks)
       : [
           {
-            id: "solana",
-            name: "Solana",
-            rpcs: [
-              {
-                id: "1",
-                name: "SolanaFM's RPC",
-                url: globalRpcs[ChainType.SOLANA],
-                isCustom: false,
-                isActive: true,
-              },
-            ],
-          },
-          {
             id: "eth",
             name: "Ethereum",
             rpcs: [

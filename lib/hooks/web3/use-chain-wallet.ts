@@ -1,5 +1,4 @@
 import { truncateAddr } from "@/lib/utils/web3";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { useMemo } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import { ChainType } from "@/lib/types/chain";
@@ -26,13 +25,6 @@ export function useChainWallet(chain?: ChainType) {
 
   const isEvm = [ChainType.ETH, ChainType.BNB].includes(chain as ChainType);
 
-  const {
-    publicKey: solAddress,
-    connected: solConnected,
-    connecting: solConnecting,
-    disconnect: solDisconnect,
-  } = useWallet();
-
   const evmWallet = useMemo(
     () => ({
       address: evmAddress || "",
@@ -47,28 +39,13 @@ export function useChainWallet(chain?: ChainType) {
     [evmAddress, evmConnected, evmConnecting, evmDisconnect, evmConnector],
   );
 
-  const solanaWallet = useMemo(
-    () => ({
-      address: solAddress ? solAddress.toBase58() : "",
-      shortAddr: solAddress
-        ? truncateAddr(solAddress.toBase58(), { nPrefix: 4, nSuffix: 4 })
-        : "",
-      connected: solConnected,
-      connecting: solConnecting,
-      disconnect: solDisconnect,
-      connector: {},
-    }),
-    [solAddress, solConnected, solConnecting, solDisconnect],
-  );
 
   if (!chain) {
-    return evmWallet.address ? evmWallet : solanaWallet;
+    return evmWallet.address ? evmWallet : EmptyWallet;
   }
 
   if (isEvm) {
     return evmWallet;
-  } else if (chain === ChainType.SOLANA) {
-    return solanaWallet;
   } else {
     return EmptyWallet;
   }

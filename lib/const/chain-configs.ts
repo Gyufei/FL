@@ -1,4 +1,3 @@
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { isProduction } from "../PathMap";
 import { ChainType } from "../types/chain";
 
@@ -14,35 +13,6 @@ export interface IChainConfig {
 }
 
 export const ChainConfigs: Record<string, IChainConfig> = {
-  [ChainType.SOLANA]: {
-    name: "Solana",
-    chainType: ChainType.SOLANA,
-    logo: "/icons/solana.svg",
-    rpcs: {
-      TadleDefaultRPC: isProduction
-        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_SOLANA ||
-          "https://rpc.ankr.com/solana"
-        : "https://rpc.ankr.com/solana_devnet",
-    },
-    zeroAddr: "11111111111111111111111111111111",
-    network: isProduction
-      ? WalletAdapterNetwork.Mainnet
-      : WalletAdapterNetwork.Devnet,
-    contracts: isProduction
-      ? {
-          // prod
-          usdcTokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-          projectTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",
-          tadleProgram: "TADLEyeCY4UfTtMgGJqHi74w4Zs8KqpjyLceqQCfGRj",
-        }
-      : {
-          // test
-          usdcTokenMint: "BoXxLrd1FbYj4Dr22B5tNBSP92fiTmFhHEkRAhN2wDxZ",
-          projectTokenMint: "23WDf2virf2Ezw9fQs67Pv1DbpoidWFsCxKUyzqdspT3",
-          tadleProgram: "V2hUyeFz8NwR6QXYxFo3ixJNK5GtFvTGSifsM2RCwEJ",
-        },
-    isEvm: false,
-  },
   [ChainType.ETH]: {
     name: "Ethereum",
     chainType: ChainType.ETH,

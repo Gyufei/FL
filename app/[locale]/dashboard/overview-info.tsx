@@ -13,7 +13,6 @@ import { TadleXp } from "./tadle-xp";
 import DateRangePickerDialog from "@/components/share/date-range-picker-dialog";
 import { useTranslations } from "next-intl";
 import ReferralLink from "./referral-link";
-import RollInBtn from "./roll-in-btn";
 import { ChainType } from "@/lib/types/chain";
 import { useCheckSwitchChain } from "@/lib/hooks/web3/use-check-switch-chain";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
@@ -150,7 +149,6 @@ export default function OverviewInfo() {
             <div className="leading-6 text-black">
               {T("cap-AccountOverview")}
             </div>
-            <RollInBtn />
           </div>
           <div className="mt-5 flex justify-between">
             <div>

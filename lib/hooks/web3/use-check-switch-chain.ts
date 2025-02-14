@@ -20,12 +20,9 @@ export function useCheckSwitchChain(chain: ChainType) {
       }
     }
 
-    if (chain === ChainType.SOLANA) {
-      return chain;
-    }
 
     return null;
-  }, [chainId, isEvm, chain]);
+  }, [chainId, isEvm]);
 
   const checkAndSwitchChain = useCallback(() => {
     if (!chain || !isEvm) {

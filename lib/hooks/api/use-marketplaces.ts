@@ -17,7 +17,7 @@ export function useMarketplaces(chain?: string) {
       `${dataApiEndPoint}${DataApiPaths.markets}`,
     );
 
-    const allMarket = res.flat().map((m: any) => {
+    const allMarket = res.flat().filter((m: any) => m.chain_name !== 'solana').map((m: any) => {
       const chain = m.chain_name;
       return {
         ...m,

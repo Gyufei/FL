@@ -1,13 +1,11 @@
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 import { CustomRpcsAtom, GlobalRpcsAtom } from "@/lib/states/rpc";
-import { Connection } from "@solana/web3.js";
 import { createPublicClient, http } from "viem";
 import { mainnet, sepolia } from "viem/chains";
 import { isProduction } from "@/lib/PathMap";
 // import { testnet } from "@/components/provider/wallet-context/testnet";
 import { ChainType } from "@/lib/types/chain";
-import { isEvmChain } from "@/lib/utils/web3";
 import { isValidRpcUrl } from "@/lib/utils/common";
 
 export function useRpc() {
@@ -39,29 +37,19 @@ export function useRpc() {
   );
 
   async function testRpcLatency(chain: ChainType, testRpc: string) {
-    let startTimestamp: number;
-    let endTimestamp: number;
 
     if (!isValidRpcUrl(testRpc)) {
       throw new Error("Invalid RPC URL");
     }
 
-    if (isEvmChain(chain)) {
       const publicClient = createPublicClient({
         chain: isProduction ? mainnet : sepolia,
         transport: http(testRpc),
       });
 
-      startTimestamp = Date.now();
+      const startTimestamp = Date.now();
       await publicClient.getChainId();
-      endTimestamp = Date.now();
-    } else {
-      const connection = new Connection(testRpc);
-
-      startTimestamp = Date.now();
-      await connection.getEpochInfo();
-      endTimestamp = Date.now();
-    }
+      const endTimestamp = Date.now();
 
     const latency = endTimestamp - startTimestamp;
 

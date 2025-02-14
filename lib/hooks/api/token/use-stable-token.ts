@@ -12,8 +12,6 @@ export function useStableToken(chain: ChainType) {
         ? ["USDT", "USDC", "ETH"]
         : chain === ChainType.BNB
         ? ["USDT", "USDC", "BNB"]
-        : chain === ChainType.SOLANA
-        ? ["USDC", "SOL"]
         : [];
 
     if (!tokens) return [];

@@ -1,7 +1,6 @@
 import { ChainType } from "@/lib/types/chain";
 import { useChainTx } from "./help/use-chain-tx";
 import { useCreateTakerOrderEth } from "./eth/use-create-taker-order-eth";
-import { useCreateTakerOrderSol } from "./solana/use-create-taker-order-sol";
 
 export function useCreateTakerOrder({
   chain,
@@ -27,7 +26,6 @@ export function useCreateTakerOrder({
   const chainActionRes = useChainTx(
     chain,
     useCreateTakerOrderEth,
-    useCreateTakerOrderSol,
     {
       chain,
       marketplaceStr,

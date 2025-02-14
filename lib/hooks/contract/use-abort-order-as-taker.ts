@@ -1,6 +1,5 @@
 import { ChainType } from "@/lib/types/chain";
 import { useChainTx } from "./help/use-chain-tx";
-import { useAbortOrderAsTakerSol } from "./solana/use-abort-order-as-taker-sol";
 import { useAbortOrderAsTakerEth } from "./eth/use-abort-order-as-taker";
 
 export function useAbortOrderAsTaker({
@@ -21,7 +20,6 @@ export function useAbortOrderAsTaker({
   const chainActionRes = useChainTx(
     chain,
     useAbortOrderAsTakerEth,
-    useAbortOrderAsTakerSol,
     {
       chain,
       marketplaceStr,

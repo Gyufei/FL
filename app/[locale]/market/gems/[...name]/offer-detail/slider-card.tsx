@@ -46,7 +46,7 @@ export default function SliderCard({
         {topText}
       </div>
       <div className="mt-2 flex items-center justify-between">
-        <div className="h-[36px] text-2xl leading-[36px]">
+        <div className="h-[36px] text-2xl leading-[36px] font-[700]">
           {formatNum(value, 6)}
         </div>
         <Image

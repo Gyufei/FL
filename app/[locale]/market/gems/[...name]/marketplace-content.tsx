@@ -108,7 +108,7 @@ export default function MarketplaceContent({
   }
 
   return (
-    <div className="flex h-[calc(100vh-100px)] w-full flex-col overflow-y-hidden sm:h-[calc(100vh-96px)]">
+    <div className="flex h-[calc(100vh-100px)] w-full flex-col sm:h-[calc(100vh-96px)]">
       <div className="relative block sm:hidden">
         {marketplace && (
           <CreateOfferBtn marketplace={marketplace} onSuccess={refreshOffers} />

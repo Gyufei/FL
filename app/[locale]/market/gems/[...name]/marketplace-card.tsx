@@ -108,7 +108,7 @@ export default function MarketplaceCard({
               </>
             ) : (
               <>
-                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black">
+                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black font-[700]">
                   {marketplace.item_name}
                 </div>
                 <OverviewIcons
@@ -304,7 +304,7 @@ function FoldPop() {
               className="rounded-full"
             />
             <div className="ml-[10px] flex flex-col">
-              <div className="text-sm leading-[20px] text-black">
+              <div className="text-sm leading-[20px] text-black font-[700]">
                 {cate.name}
               </div>
               <div

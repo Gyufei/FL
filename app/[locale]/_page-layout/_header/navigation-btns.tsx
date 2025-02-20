@@ -2,7 +2,9 @@
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import Image from "next/image";
 import { usePathname, useRouter } from "@/app/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getGoMissionsAppUrl } from "@/lib/utils/jump-url";
+import { Link } from "@/app/navigation";
 
 export default function NavigationBtns() {
   const t = useTranslations("Header");
@@ -10,9 +12,9 @@ export default function NavigationBtns() {
 
   const isDashboard = pathname.startsWith(`/dashboard`);
   const isMarketPlace = pathname.startsWith(`/market/gems`);
-  const isBounty = pathname.startsWith(`/missions`);
 
   const router = useRouter();
+  const locale = useLocale();
 
   function handleClick(href: string) {
     router.push(href);
@@ -57,21 +59,18 @@ export default function NavigationBtns() {
       </div>
 
       <div className="relative flex items-center">
-        <div
-          onClick={() => handleClick(`/missions`)}
-          data-active={isBounty}
-          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-yellow data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
+        <Link
+          href={getGoMissionsAppUrl("/missions", locale)}
+          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] cursor-pointer hover:border-transparent hover:bg-yellow"
         >
           <Image
             src="/icons/task.svg"
             width={24}
             height={24}
             alt="missions"
-            data-active={isBounty}
-            className="cursor-pointer data-[active=true]:mr-1"
+            className="cursor-pointer"
           />
-          {isBounty && <div>{t("btn-missions")}</div>}
-        </div>
+        </Link>
       </div>
     </div>
   );

@@ -4,8 +4,10 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
+import { getGoMissionsAppUrl } from "@/lib/utils/jump-url";
+import { Link } from "@/app/navigation";
 
 export default function MobileRouterMenu() {
   const [showMenu, setShowMenu] = useState(false);
@@ -39,10 +41,10 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
   const router = useRouter();
   const routePath = [`/dashboard`, `/market/gems`];
   const currentRoute = usePathname();
+  const locale = useLocale();
 
   const isDashboardActive = currentRoute.includes(routePath[0]);
   const isMarketplaceActive = currentRoute.includes(routePath[1]);
-  const isBountyActive = currentRoute.includes(routePath[1]);
 
   const handleClick = (r: string) => {
     if (currentRoute === r) {
@@ -98,24 +100,23 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           </div>
         </div>
       </div>
-      <div
-        data-active={isBountyActive}
-        className="mb-2 flex items-center justify-between py-3 data-[active=true]:opacity-50"
+      <Link
+        href={getGoMissionsAppUrl("/missions", locale)}
+        className="mb-2 flex items-center justify-between py-3"
         style={{
           boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
         }}
-        onClick={() => handleClick("/missions")}
       >
         <div className="flex items-center justify-start space-x-3">
           <Image
-            src={isBountyActive ? "/icons/task.svg" : "/icons/task.svg"}
+            src={"/icons/task.svg"}
             width={40}
             height={40}
             alt="governance"
           />
           <div className="text-lg leading-5 text-black font-medium">{t("btn-missions")}</div>
         </div>
-      </div>
+      </Link>
       <PageFooter className="fixed bottom-0 left-0 w-screen" />
     </div>
   );

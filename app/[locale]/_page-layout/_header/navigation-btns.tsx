@@ -1,6 +1,5 @@
 "use client";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import Image from "next/image";
 import { usePathname, useRouter } from "@/app/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { getGoMissionsAppUrl } from "@/lib/utils/jump-url";

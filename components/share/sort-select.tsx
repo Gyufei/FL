@@ -42,15 +42,15 @@ export function SortSelect({
       <DropdownMenuTrigger asChild>
         <div
           data-open={popOpen}
-          className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-yellow data-[open=true]:bg-theme"
+          className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-theme data-[open=true]:bg-theme"
         >
-          <Image src="/icons/sort.svg" width={20} height={20} alt="type icon" />
-          <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">{`${t(
+          <Image src={popOpen ? "/icons/sort-white.svg": "/icons/sort.svg"} width={20} height={20} alt="type icon" />
+          <div data-open={popOpen} className=" data-[open=true]:text-white overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">{`${t(
             "sl-" + sortField,
           )}:${t("sl-" + sortDir)}`}</div>
           <Image
             data-open={popOpen}
-            src="/icons/arrow-down.svg"
+            src={popOpen ? "/icons/arrow-down-white.svg" : "/icons/arrow-down.svg"}
             width={16}
             height={16}
             alt="arrow"

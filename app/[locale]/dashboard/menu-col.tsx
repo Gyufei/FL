@@ -11,14 +11,14 @@ export default function MenuCol() {
         href={`/dashboard/orders`}
         isActive={pathname === `/dashboard/orders`}
       >
-        <Image src="/icons/menus.svg" width={24} height={24} alt="orders" />
+        <Image src={pathname === `/dashboard/orders` ? "/icons/menus-white.svg" : "/icons/menus.svg"} width={24} height={24} alt="orders" />
       </MenuIcon>
       <MenuIcon
         href={`/dashboard/holdings`}
         isActive={pathname === `/dashboard/holdings`}
       >
         <Image
-          src="/icons/holdings.svg"
+          src={pathname === `/dashboard/holdings` ? "/icons/holdings-white.svg" : "/icons/holdings.svg"}
           width={24}
           height={24}
           alt="holdings"
@@ -28,52 +28,19 @@ export default function MenuCol() {
         href={`/dashboard/balances`}
         isActive={pathname === `/dashboard/balances`}
       >
-        <Image src="/icons/wallet.svg" width={24} height={24} alt="balances" />
+        <Image src={pathname === `/dashboard/balances` ? "/icons/wallet-white.svg" : "/icons/wallet.svg"} width={24} height={24} alt="balances" />
       </MenuIcon>
       <MenuIcon
         href={`/dashboard/referral`}
         isActive={pathname === `/dashboard/referral`}
       >
         <Image
-          src="/icons/referral-system.svg"
+          src={pathname === `/dashboard/referral` ? "/icons/referral-system-white.svg" : "/icons/referral-system.svg"}
           width={24}
           height={24}
           alt="referral"
         />
       </MenuIcon>
-      {/* <div
-        onClick={handleComingSoon}
-        data-active={false}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-theme"
-      >
-        <Image src="/icons/compass.svg" width={24} height={24} alt="holdings" />
-      </div>
-      <div
-        onClick={handleComingSoon}
-        data-active={false}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-theme"
-      >
-        <Image src="/icons/stats.svg" width={24} height={24} alt="holdings" />
-      </div>
-      <div
-        onClick={handleComingSoon}
-        data-active={false}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-theme"
-      >
-        <Image src="/icons/referral.svg" width={24} height={24} alt="holdings" />
-      </div> */}
-      {/* <MenuIcon
-        href="/dashboard/balances"
-        isActive={pathname === "/dashboard/balances"}
-      >
-        <Image src="/icons/wallet.svg" width={24} height={24} alt="holdings" />
-      </MenuIcon>
-      <MenuIcon href="#" isActive={pathname === "/dashboard/stats"}>
-        <Image src="/icons/stats.svg" width={24} height={24} alt="holdings" />
-      </MenuIcon>
-      <MenuIcon href="#" isActive={pathname === "/dashboard/referral"}>
-        <Image src="/icons/referral.svg" width={24} height={24} alt="holdings" />
-      </MenuIcon> */}
     </div>
   );
 }
@@ -91,7 +58,7 @@ function MenuIcon({
     <Link href={href}>
       <div
         data-active={isActive}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-yellow data-[active=true]:bg-theme"
+        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#d3d4d5] data-[active=true]:border-theme data-[active=true]:bg-theme"
       >
         {children}
       </div>

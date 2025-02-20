@@ -94,7 +94,7 @@ export function EvmWallets({ onSelected }: { onSelected: () => void }) {
             {!conn?.installed() && (
               <div
                 data-state={hoverWallet === conn.name}
-                className="flex cursor-pointer items-center justify-center rounded-full border border-black px-[12px] py-[2px] text-black data-[state=true]:border-yellow data-[state=true]:bg-theme"
+                className="flex cursor-pointer items-center justify-center rounded-full border border-black px-[12px] py-[2px] text-black data-[state=true]:border-theme data-[state=true]:bg-theme"
                 onClick={() => goToWallet(conn)}
               >
                 <div className="text-sm leading-5 text-black">Install</div>

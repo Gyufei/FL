@@ -14,6 +14,7 @@ import { useTokens } from "@/lib/hooks/api/token/use-tokens";
 import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { formatNum } from "@/lib/utils/number";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
+import HoverIcon from "@/components/share/hover-icon";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
@@ -35,8 +36,9 @@ export default function MessageBtn() {
         onClick={() => setDrawerOpen(true)}
         className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-[#D3D4D6] hover:border-transparent hover:bg-theme sm:h-12 sm:w-12 sm:rounded-full"
       >
-        <Image
+        <HoverIcon
           src="/icons/bell.svg"
+          hoverSrc="/icons/remind-white.svg"
           width={isMobileSize ? 20 : 24}
           height={isMobileSize ? 20 : 24}
           alt="bell"

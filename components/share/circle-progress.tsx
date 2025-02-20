@@ -39,7 +39,7 @@ export const CircleProgress = ({
     <svg className={cn("h-12 w-12", className)}>
       <g transform={`rotate(-90 ${"24 24"})`}>
         <Circle colour="#F0F1F5" />
-        {pct !== 0 && <Circle colour="#E0FF62" pct={pct} />}
+        {pct !== 0 && <Circle colour="#6E75F9" pct={pct} />}
       </g>
     </svg>
   );

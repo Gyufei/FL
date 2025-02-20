@@ -69,7 +69,7 @@ export default function SliderCard({
         </div>
         <div
           onClick={() => setSliderValue(canGoMax)}
-          className="flex h-5 cursor-pointer items-center rounded-full bg-yellow px-[10px] text-[10px] leading-4 text-black"
+          className="flex h-5 cursor-pointer items-center rounded-full bg-theme px-[10px] text-[10px] leading-4 text-white"
         >
           Max
         </div>

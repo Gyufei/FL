@@ -107,7 +107,7 @@ export function TokenGetCard({
           <button
             disabled={isLoading || amount <= 0}
             className={cn(
-              "flex h-12 w-full cursor-pointer items-center justify-center rounded-lg border border-[#d3d4d6] hover:border-0 hover:bg-yellow disabled:cursor-not-allowed disabled:opacity-70 sm:h-7 sm:w-14 sm:rounded-full",
+              "flex h-12 w-full cursor-pointer items-center justify-center rounded-lg border border-[#d3d4d6] hover:border-0 hover:bg-theme disabled:cursor-not-allowed disabled:opacity-70 sm:h-7 sm:w-14 sm:rounded-full",
               isLoading ? "dot-loading" : "",
             )}
           >

@@ -26,7 +26,7 @@ export default function NavigationBtns() {
         <div>
           <div
             data-active={isDashboard}
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-theme data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-theme"
           >
             <Image
               src="/icons/dashboard.svg"
@@ -44,7 +44,7 @@ export default function NavigationBtns() {
         <div
           onClick={() => handleClick(`/market/gems`)}
           data-active={isMarketPlace}
-          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-yellow data-[active=true]:bg-yellow data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-yellow"
+          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-yellow data-[active=true]:bg-theme data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-theme"
         >
           <Image
             src="/icons/Marketplace.svg"
@@ -61,7 +61,7 @@ export default function NavigationBtns() {
       <div className="relative flex items-center">
         <Link
           href={getGoMissionsAppUrl("/missions", locale)}
-          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] cursor-pointer hover:border-transparent hover:bg-yellow"
+          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] cursor-pointer hover:border-transparent hover:bg-theme"
         >
           <Image
             src="/icons/task.svg"

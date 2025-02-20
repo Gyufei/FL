@@ -14,6 +14,7 @@ body {
   --color-gary: #99a0af;
   --color-lightgray: #c0c4cc;
   --color-focus: #3dd866;
+  --color-theme: #6E75F9;
 }
 
 @layer base {

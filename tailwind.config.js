@@ -15,6 +15,7 @@ module.exports = {
         gray: "var(--color-gary)",
         lightgray: "var(--color-lightgray)",
         focus: "var(--color-focus)",
+        theme: "var(--color-theme)",
       },
       keyframes: {
         "accordion-down": {

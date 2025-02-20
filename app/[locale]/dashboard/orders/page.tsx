@@ -38,7 +38,7 @@ export default function MyOrders() {
   }
 
   return (
-    <div className="box-content flex h-[calc(100vh-156px)] w-full flex-1 flex-col sm:ml-5 sm:h-[calc(100vh-96px)] sm:px-0">
+    <div className="box-content flex h-[calc(100vh-156px)] w-full flex-1 flex-col sm:ml-5 sm:h-auto sm:px-0">
       <div className="mb-[10px] mt-4 flex w-full items-center justify-between pl-2 sm:mb-0 sm:mt-0 sm:pl-0">
         <div className="hidden items-center space-x-5 sm:flex">
           <div className="text-xl leading-[30px] text-black font-medium">

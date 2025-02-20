@@ -42,7 +42,7 @@ export function SortSelect({
       <DropdownMenuTrigger asChild>
         <div
           data-open={popOpen}
-          className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-yellow data-[open=true]:bg-yellow"
+          className="flex cursor-pointer items-center space-x-1 rounded-full border border-[#D3D4D6] px-[16px] py-[5px] outline-none data-[open=true]:border-yellow data-[open=true]:bg-theme"
         >
           <Image src="/icons/sort.svg" width={20} height={20} alt="type icon" />
           <div className="overflow-hidden text-clip whitespace-nowrap text-sm leading-5 text-black">{`${t(

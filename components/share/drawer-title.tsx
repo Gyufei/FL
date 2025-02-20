@@ -15,7 +15,7 @@ export default function DrawerTitle({
   return (
     <div className="mb-6 flex items-center justify-between">
       <div className="flex items-center space-x-[10px]">
-        <div className="h-6 w-6 rounded-lg bg-yellow"></div>
+        <div className="h-6 w-6 rounded-lg bg-theme"></div>
         <div className="text-xl leading-[30px] text-black font-medium">{title}</div>
         {tag && (
           <div

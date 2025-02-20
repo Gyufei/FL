@@ -197,7 +197,7 @@ export default function MyAskDetail({
                 chain={offer?.marketplace.chain}
                 onClick={handleSettle}
               >
-                <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black">
+                <button className="mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-theme leading-6 text-black">
                   {ot("btn-SettleThisOffer")}
                 </button>
               </WithWalletConnectBtn>
@@ -226,7 +226,7 @@ export default function MyAskDetail({
                           <button
                             disabled={isRelisting}
                             className={cn(
-                              "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                              "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-theme leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
                               isRelisting ? "dot-loading" : "",
                             )}
                           >
@@ -286,7 +286,7 @@ export default function MyAskDetail({
                 <button
                   disabled={isAborting}
                   className={cn(
-                    "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
+                    "mt-4 flex h-12 w-full items-center justify-center rounded-2xl bg-theme leading-6 text-black disabled:cursor-not-allowed disabled:bg-gray",
                     isAborting ? "dot-loading" : "",
                   )}
                 >

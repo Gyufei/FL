@@ -40,7 +40,7 @@ export default function AccountVerifyDialog({
         <div className="mt-10 w-full">
           <button
             onClick={handleGo}
-            className="flex h-12 w-full items-center justify-center rounded-2xl border border-yellow bg-yellow text-black"
+            className="flex h-12 w-full items-center justify-center rounded-2xl border border-yellow bg-theme text-black"
           >
             {t("text-Go")}
           </button>

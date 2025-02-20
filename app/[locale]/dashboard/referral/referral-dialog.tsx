@@ -130,7 +130,7 @@ export function ReferralSignInBtn({ referralCode }: { referralCode: string }) {
       <div className="mt-10 w-full">
         <button
           onClick={handleSignInReferral}
-          className="flex h-12 w-full items-center justify-center rounded-2xl bg-yellow text-black"
+          className="flex h-12 w-full items-center justify-center rounded-2xl bg-theme text-black"
         >
           {t("btn-SignIn")}
         </button>

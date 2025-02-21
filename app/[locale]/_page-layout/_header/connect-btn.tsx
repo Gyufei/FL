@@ -105,7 +105,7 @@ export default function ConnectBtn() {
     <>
       <button
         onClick={() => handleShowDisconnectModal()}
-        className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:border-transparent hover:bg-theme sm:h-12"
+        className="shadow-25 h-10 rounded-full border border-[#d3d4d6] px-6 text-base leading-6 text-black transition-all hover:border-transparent hover:bg-theme sm:h-12 hover:text-white"
       >
         <div className="flex items-center">
           {!shortAddr || connecting ? (

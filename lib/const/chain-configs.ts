@@ -13,6 +13,25 @@ export interface IChainConfig {
 }
 
 export const ChainConfigs: Record<string, IChainConfig> = {
+  [ChainType.MONAD]: {
+    name: "Monad Testnet",
+    chainType: ChainType.MONAD,
+    logo: "/icons/monad.svg",
+    zeroAddr: "0x0000000000000000000000000000000000000000",
+    network:  isProduction ? 10143 : 10143,
+    rpcs: {
+      TadleDefaultRPC: isProduction
+      ? process.env.NEXT_PUBLIC_DEFAULT_RPC_MON || "https://testnet-rpc.monad.xyz/"
+      : "https://testnet-rpc.monad.xyz/",
+    },
+    contracts: {
+      preMarkets: "您的合约地址",
+      tokenManager: "您的合约地址",
+      systemConfig: "您的合约地址",
+      deliveryPlace: "您的合约地址",
+    },
+    isEvm: true,
+  },
   [ChainType.ETH]: {
     name: "Ethereum",
     chainType: ChainType.ETH,

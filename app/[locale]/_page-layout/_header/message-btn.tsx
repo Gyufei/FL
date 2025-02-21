@@ -18,7 +18,7 @@ import HoverIcon from "@/components/share/hover-icon";
 
 export default function MessageBtn() {
   const t = useTranslations("Header");
-  const { data } = useWsMsgSub(ChainType.BNB);
+  const { data } = useWsMsgSub(ChainType.MONAD);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -161,7 +161,7 @@ function MsgRow({ msgDetail }: { msgDetail: IMsg }) {
               className="flex cursor-pointer items-center"
               onClick={() => {
                 handleGoScan(
-                  marketplace?.chain || ChainType.ETH,
+                  marketplace?.chain || ChainType.MONAD,
                   "",
                   // msgDetail?.txHash,
                 );

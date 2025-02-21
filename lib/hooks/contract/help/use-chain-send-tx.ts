@@ -6,7 +6,7 @@ export function useChainSendTx(chain: ChainType) {
   const { sendTransactionAsync } = useSendTransaction();
 
   const sendTx: any = useMemo(() => {
-    if (chain === ChainType.ETH || chain === ChainType.BNB) {
+    if (chain === ChainType.MONAD || chain === ChainType.ETH || chain === ChainType.BNB) {
       return sendTransactionAsync;
     }
 

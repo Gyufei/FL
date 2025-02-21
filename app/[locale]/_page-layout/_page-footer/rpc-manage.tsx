@@ -39,31 +39,44 @@ export default function RpcManage() {
       ? JSON.parse(storedNetworks)
       : [
           {
-            id: "eth",
-            name: "Ethereum",
+            id: "monad",
+            name: "Monad Testnet",
             rpcs: [
               {
                 id: "1",
-                name: "ETHFM's RPC",
-                url: globalRpcs[ChainType.ETH],
+                name: "Monad Testnet's RPC",
+                url: globalRpcs[ChainType.MONAD],
                 isCustom: false,
                 isActive: true,
               },
             ],
           },
-          {
-            id: "bnb",
-            name: "BNB Chain",
-            rpcs: [
-              {
-                id: "1",
-                name: "BinanceFM's RPC",
-                url: globalRpcs[ChainType.BNB],
-                isCustom: false,
-                isActive: true,
-              },
-            ],
-          },
+          // {
+          //   id: "eth",
+          //   name: "Ethereum",
+          //   rpcs: [
+          //     {
+          //       id: "1",
+          //       name: "ETHFM's RPC",
+          //       url: globalRpcs[ChainType.ETH],
+          //       isCustom: false,
+          //       isActive: true,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: "bnb",
+          //   name: "BNB Chain",
+          //   rpcs: [
+          //     {
+          //       id: "1",
+          //       name: "BinanceFM's RPC",
+          //       url: globalRpcs[ChainType.BNB],
+          //       isCustom: false,
+          //       isActive: true,
+          //     },
+          //   ],
+          // },
         ];
   });
 

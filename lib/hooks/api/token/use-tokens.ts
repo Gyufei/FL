@@ -25,6 +25,9 @@ export function useTokens(chain?: ChainType) {
 
       delete newT.url;
 
+      if (newT.symbol === "WMON") {
+        newT.symbol = "MON";
+      }
       if (newT.symbol === "WSOL") {
         newT.symbol = "SOL";
       }

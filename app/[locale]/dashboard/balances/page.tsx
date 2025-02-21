@@ -40,8 +40,9 @@ export default function MyBalances() {
   const mbt = useTranslations("page-MyBalance");
   const [openPanel, setOpenPanel] = useState("taxIncomeData");
 
-  const { address: wallet } = useChainWallet(ChainType.ETH);
-
+  const { address: wallet } = useChainWallet(ChainType.MONAD);
+  
+  const { data: monadTokens } = useTokens(ChainType.MONAD);
   const { data: ethTokens } = useTokens(ChainType.ETH);
   const { data: bnbTokens } = useTokens(ChainType.BNB);
 
@@ -55,10 +56,11 @@ export default function MyBalances() {
       }));
     }
     return [
+      ...addChainToToken(ChainType.MONAD, monadTokens || []),
       ...addChainToToken(ChainType.ETH, ethTokens || []),
       ...addChainToToken(ChainType.BNB, bnbTokens || []),
     ];
-  }, [ethTokens, bnbTokens]);
+  }, [monadTokens, ethTokens, bnbTokens]);
 
   const { data: tokenBlcData, mutate: refetchTokenBlcData } =
     useUserTokenBalance(wallet);

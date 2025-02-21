@@ -3,7 +3,7 @@
 import React, { ReactNode } from "react";
 import { State } from "wagmi";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { mainnet, bsc, bscTestnet, sepolia } from "wagmi/chains";
+import { mainnet, bsc, bscTestnet, sepolia, monadTestnet } from "wagmi/chains";
 import { WagmiProvider, cookieStorage, createStorage, http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -14,9 +14,9 @@ import { isProduction } from "@/lib/PathMap";
 const queryClient = new QueryClient();
 
 export const supportedChains = isProduction
-  ? ([mainnet, bsc] as const)
-  : // : ([mainnet, bsc, sepolia, testnet, bscTestnet] as const);
-    ([mainnet, bsc, sepolia, bscTestnet] as const);
+    ? ([mainnet, bsc, monadTestnet] as const)
+    : // : ([mainnet, bsc, sepolia, testnet, bscTestnet] as const);
+      ([mainnet, bsc, sepolia, bscTestnet, monadTestnet] as const);
 
 export default function WalletModalProvider({
   children,
@@ -28,20 +28,23 @@ export default function WalletModalProvider({
   const globalRpcs = useAtomValue(GlobalRpcsAtom);
   const customRpcs = useAtomValue(CustomRpcsAtom);
 
+  const monadRpc = customRpcs.monad || globalRpcs.monad;
+
   const ethRpc = customRpcs.eth || globalRpcs.eth;
   const bnbRpc = customRpcs.bnb || globalRpcs.bnb;
-
   const transports = isProduction
-    ? {
-        [mainnet.id]: http(ethRpc),
-        [bsc.id]: http(bnbRpc),
-      }
-    : {
-        [mainnet.id]: http(ethRpc),
-        [bsc.id]: http(bnbRpc),
-        [bscTestnet.id]: http(bnbRpc),
-        [sepolia.id]: http(),
-        // [testnet.id]: http(),
+        ? {
+          [monadTestnet.id]: http(monadRpc),
+          [mainnet.id]: http(ethRpc),
+          [bsc.id]: http(bnbRpc),
+        }
+      : {
+        [monadTestnet.id]: http(monadRpc),
+          [mainnet.id]: http(ethRpc),
+          [bsc.id]: http(bnbRpc),
+          [bscTestnet.id]: http(bnbRpc),
+          [sepolia.id]: http(),
+          // [testnet.id]: http(),
       };
 
   const wagmiConfig = getDefaultConfig({

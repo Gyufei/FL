@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <>
       <MobileLogo />
-      <div className="flex h-14 items-center justify-between  px-4 py-2 sm:h-24 sm:px-6 sm:py-6">
+      <div className="flex h-14 items-center justify-between px-4 py-2 sm:h-24 sm:px-6 sm:py-6">
         {/* pc */}
         <NavigationBtns />
         <Logo />

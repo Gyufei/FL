@@ -16,7 +16,7 @@ export function usePairApprove(
   const skipToken = useMemo(() => {
     if (!token) return true;
 
-    if (token?.symbol === "ETH" || token?.symbol === "BNB") return true;
+    if (token?.symbol === "MONAD" || token?.symbol === "ETH" || token?.symbol === "BNB") return true;
 
     if (isMarketPointToken && ["sell", "sellToBid"].includes(type || ""))
       return true;

@@ -22,7 +22,7 @@ export function useChainWallet(chain?: ChainType) {
 
   const { disconnect: evmDisconnect } = useDisconnect();
 
-  const isEvm = [ChainType.ETH, ChainType.BNB].includes(chain as ChainType);
+  const isEvm = [ChainType.MONAD,ChainType.ETH, ChainType.BNB].includes(chain as ChainType);
 
   const evmWallet = useMemo(
     () => ({

@@ -21,8 +21,8 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     network:  isProduction ? 10143 : 10143,
     rpcs: {
       TadleDefaultRPC: isProduction
-      ? process.env.NEXT_PUBLIC_DEFAULT_RPC_MON || "https://testnet-rpc.monad.xyz/"
-      : "https://testnet-rpc.monad.xyz/",
+      ? process.env.NEXT_PUBLIC_DEFAULT_RPC_MON || "https://monad-testnet.g.alchemy.com/v2/tptPHIbLlR8JoWvmTnw3iDrz4BKJFKjd"
+      : "https://monad-testnet.g.alchemy.com/v2/tptPHIbLlR8JoWvmTnw3iDrz4BKJFKjd",
     },
     contracts: {
       preMarkets: "您的合约地址",

@@ -16,45 +16,44 @@ import { locales } from "../../i18n";
 
 export const metadata = {
   title: {
-    template: "%s | Tadle Market",
-    default: "Tadle Market",
+    template: "%s | Tadle Marketplace",
+    default: "Tadle Marketplace",
   },
-  description: "To predict. To trade. To own.",
+  description: "Predict it. Trade it. Own it.",
   metadataBase: new URL(`https://${process.env.VERCEL_DOMAIN}`),
   openGraph: {
-    title: "Tadle Market",
-    description: "To predict. To trade. To own.",
+    title: "Tadle Marketplace",
+    description: "Predict it. Trade it. Own it.",
     url: `https://${process.env.VERCEL_DOMAIN}`,
     siteName: "Tadle Market",
-    images: "/img/GGzCP6QaAAAm9YG.png",
+    images: "https://tadle.com/img/UjXLk9pSW552Wq3jVMIQU.png",
     locale: "en_US",
     type: "website",
   },
   icons: {
     icon: [
-      { url: "/img/favs/favicon-32x32.png" },
-      { url: "/img/favs/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "https://tadle.com/img/favs/favicon-32x32.png" },
+      { url: "https://tadle.com/img/favs/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    shortcut: "/img/shortcut-icon.png",
     apple: [
-      { url: "/img/favs/apple-touch-icon.png" },
+      { url: "https://tadle.com/img/favs/apple-touch-icon.png" },
       {
-        url: "/img/favs/apple-touch-icon.png",
+        url: "https://tadle.com/img/favs/apple-touch-icon.png",
         sizes: "180x180",
         type: "image/png",
       },
     ],
     other: {
       rel: "apple-touch-icon-precomposed",
-      url: "/img/favs/apple-touch-icon-precomposed.png",
+      url: "https://tadle.com/img/favs/apple-touch-icon-precomposed.png",
     },
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tadle Market",
-    description: "To predict. To trade. To own.",
+    title: "Tadle Marketplace",
+    description: "Predict it. Trade it. Own it.",
     creator: "@tadle_com",
-    images: ["/img/GGzCP6QaAAAm9YG.png"],
+    images: ["https://tadle.com/img/UjXLk9pSW552Wq3jVMIQU.png"],
   },
 };
 

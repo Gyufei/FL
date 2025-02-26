@@ -97,7 +97,7 @@ export default function PointMarket({ className }: { className?: string }) {
   }, [data, isLoadingFlag]);
 
   function handleGo(marketId: string) {
-    const path = `/market/gems/${marketId}`;
+    const path = `/points/${marketId}`;
 
     router.push(path);
   }
@@ -256,14 +256,6 @@ export default function PointMarket({ className }: { className?: string }) {
     },
   ];
 
-  if (!tableData.nodes.length) {
-    return (
-      <div className="flex flex-1 items-center justify-center text-base text-gray">
-        {t("txt-NoMarketData")}
-      </div>
-    );
-  }
-
   return (
     <div
       className={cn(
@@ -274,19 +266,27 @@ export default function PointMarket({ className }: { className?: string }) {
       <div className="hidden items-center justify-between sm:flex">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-theme"></div>
-          <div className="leading-6 text-black font-medium">{t("cap-PointMarket")}</div>
+          <div className="font-medium leading-6 text-black">
+            {t("cap-PointMarket")}
+          </div>
         </div>
       </div>
-      <div className="max-h-auto relative min-h-[296px] w-[820px] flex-1 flex-col overflow-y-hidden sm:w-full sm:min-w-0">
-        <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-1 flex-col">
-          <CompactTable
-            columns={COLUMNS}
-            data={tableData}
-            theme={theme}
-            layout={{ fixedHeader: true }}
-          />
+      {!tableData.nodes.length ? (
+        <div className="flex h-full flex-1 items-center justify-center text-base text-gray">
+          {t("txt-NoMarketData")}
         </div>
-      </div>
+      ) : (
+        <div className="max-h-auto relative w-[820px] flex-1 flex-col overflow-y-hidden sm:w-full sm:min-w-0">
+          <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-1 flex-col">
+            <CompactTable
+              columns={COLUMNS}
+              data={tableData}
+              theme={theme}
+              layout={{ fixedHeader: true }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

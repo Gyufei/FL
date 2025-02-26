@@ -5,25 +5,25 @@ import DrawerTitle from "@/components/share/drawer-title";
 import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import { useTranslations } from "next-intl";
 
-import { InputPanel } from "../../../market/gems/[...name]/create-offer/input-panel";
+import { InputPanel } from "../../../[market]/[...name]/create-offer/input-panel";
 import { IToken } from "@/lib/types/token";
 import { WithTip } from "../../../../../components/share/with-tip";
-import ArrowBetween from "../../../market/gems/[...name]/create-offer/arrow-between";
-import { StableTokenSelectDisplay } from "../../../market/gems/[...name]/create-offer/stable-token-display";
-import CollateralRateInput from "../../../market/gems/[...name]/create-offer/collateral-rate-input";
-import TaxForSubTrades from "../../../market/gems/[...name]/create-offer/tax-for-sub-trades";
-import OrderNoteAndFee from "../../../market/gems/[...name]/create-offer/order-note-and-fee";
+import ArrowBetween from "../../../[market]/[...name]/create-offer/arrow-between";
+import { StableTokenSelectDisplay } from "../../../[market]/[...name]/create-offer/stable-token-display";
+import CollateralRateInput from "../../../[market]/[...name]/create-offer/collateral-rate-input";
+import TaxForSubTrades from "../../../[market]/[...name]/create-offer/tax-for-sub-trades";
+import OrderNoteAndFee from "../../../[market]/[...name]/create-offer/order-note-and-fee";
 import ListBtn from "./list-btn";
 import ListInfo from "./list-info";
 import { formatNum } from "@/lib/utils/number";
-import { SettleModeSelect } from "@/app/[locale]/market/gems/[...name]/create-offer/settle-mode-select";
+import { SettleModeSelect } from "@/app/[locale]/[market]/[...name]/create-offer/settle-mode-select";
 import { IHolding } from "@/lib/types/holding";
 import { useList } from "@/lib/hooks/contract/use-list";
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
 import { useEntryById } from "@/lib/hooks/api/use-entry-by-id";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
-import { PointTokenDisplay } from "@/app/[locale]/market/gems/[...name]/create-offer/point-token-display";
+import { PointTokenDisplay } from "@/app/[locale]/[market]/[...name]/create-offer/point-token-display";
 
 export default function ListAskHoldingBtn({
   holding,

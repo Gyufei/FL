@@ -6,7 +6,7 @@ import { StableTokenSelectDisplay } from "./stable-token-display";
 import NP from "number-precision";
 
 import ArrowBetween from "./arrow-between";
-import { WithTip } from "../../../../../../components/share/with-tip";
+import { WithTip } from "@/components/share/with-tip";
 import CollateralRateInput from "./collateral-rate-input";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";

@@ -108,7 +108,7 @@ export default function MarketplaceCard({
               </>
             ) : (
               <>
-                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[20px] text-black font-medium">
+                <div className="w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium leading-[20px] text-black">
                   {marketplace.item_name}
                 </div>
                 <OverviewIcons
@@ -261,7 +261,7 @@ function FoldPop() {
   );
 
   function handleGo(id: string) {
-    router.push(`/market/gems/${id}`);
+    router.push(`/gems/${id}`);
   }
 
   function renderContent() {
@@ -304,7 +304,7 @@ function FoldPop() {
               className="rounded-full"
             />
             <div className="ml-[10px] flex flex-col">
-              <div className="text-sm leading-[20px] text-black font-medium">
+              <div className="text-sm font-medium leading-[20px] text-black">
                 {cate.name}
               </div>
               <div

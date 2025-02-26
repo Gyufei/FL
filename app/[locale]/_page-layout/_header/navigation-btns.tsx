@@ -11,7 +11,7 @@ export default function NavigationBtns() {
   const pathname = usePathname();
 
   const isDashboard = pathname.startsWith(`/dashboard`);
-  const isMarketPlace = pathname.startsWith(`/market/gems`);
+  const isMarketPlace = pathname.startsWith(`/gems`);
 
   const router = useRouter();
   const locale = useLocale();
@@ -29,7 +29,11 @@ export default function NavigationBtns() {
             className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-none data-[active=true]:bg-theme data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-theme"
           >
             <HoverIcon
-              src={isDashboard ? "/icons/dashboard-white.svg" : "/icons/dashboard.svg"}
+              src={
+                isDashboard
+                  ? "/icons/dashboard-white.svg"
+                  : "/icons/dashboard.svg"
+              }
               hoverSrc="/icons/dashboard-white.svg"
               width={24}
               height={24}
@@ -37,18 +41,24 @@ export default function NavigationBtns() {
               data-active={isDashboard}
               className="data-[active=true]:mr-1"
             />
-            {isDashboard && <div className="text-white">{t("btn-Dashboard")}</div>}
+            {isDashboard && (
+              <div className="text-white">{t("btn-Dashboard")}</div>
+            )}
           </div>
         </div>
       </WithWalletConnectBtn>
       <div className="relative flex items-center">
         <div
-          onClick={() => handleClick(`/market/gems`)}
+          onClick={() => handleClick(`/gems`)}
           data-active={isMarketPlace}
           className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-theme data-[active=true]:bg-theme data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-theme"
         >
           <HoverIcon
-            src={isMarketPlace ? "/icons/Marketplace-white.svg" : "/icons/Marketplace.svg"}
+            src={
+              isMarketPlace
+                ? "/icons/Marketplace-white.svg"
+                : "/icons/Marketplace.svg"
+            }
             hoverSrc="/icons/Marketplace-white.svg"
             width={24}
             height={24}
@@ -56,14 +66,16 @@ export default function NavigationBtns() {
             data-active={isMarketPlace}
             className="cursor-pointer data-[active=true]:mr-1"
           />
-          {isMarketPlace && <div className="text-white">{t("btn-Marketplace")}</div>}
+          {isMarketPlace && (
+            <div className="text-white">{t("btn-Marketplace")}</div>
+          )}
         </div>
       </div>
 
       <div className="relative flex items-center">
         <Link
           href={getGoMissionsAppUrl("/missions", locale)}
-          className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] cursor-pointer hover:border-transparent hover:bg-theme"
+          className="z-20 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#D3D4D6] hover:border-transparent hover:bg-theme"
         >
           <HoverIcon
             src="/icons/task.svg"

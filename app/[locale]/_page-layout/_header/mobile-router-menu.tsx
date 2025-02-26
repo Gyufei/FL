@@ -39,7 +39,7 @@ export default function MobileRouterMenu() {
 function MenuList({ onEnd }: { onEnd: () => void }) {
   const t = useTranslations("Header");
   const router = useRouter();
-  const routePath = [`/dashboard`, `/market/gems`];
+  const routePath = [`/dashboard`, `/gems`];
   const currentRoute = usePathname();
   const locale = useLocale();
 
@@ -74,7 +74,9 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
           height={40}
           alt="pools"
         />
-        <div className="text-lg leading-5 text-black font-medium">{t("btn-Dashboard")}</div>
+        <div className="text-lg font-medium leading-5 text-black">
+          {t("btn-Dashboard")}
+        </div>
       </div>
       <div
         data-active={isMarketplaceActive}
@@ -82,7 +84,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
         style={{
           boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
         }}
-        onClick={() => handleClick("/market/gems")}
+        onClick={() => handleClick("/gems")}
       >
         <div className="flex items-center justify-start space-x-3">
           <Image
@@ -95,7 +97,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
             height={40}
             alt="governance"
           />
-          <div className="text-lg leading-5 text-black font-medium">
+          <div className="text-lg font-medium leading-5 text-black">
             {t("btn-Marketplace")}
           </div>
         </div>
@@ -114,7 +116,9 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
             height={40}
             alt="governance"
           />
-          <div className="text-lg leading-5 text-black font-medium">{t("btn-missions")}</div>
+          <div className="text-lg font-medium leading-5 text-black">
+            {t("btn-missions")}
+          </div>
         </div>
       </Link>
       <PageFooter className="fixed bottom-0 left-0 w-screen" />

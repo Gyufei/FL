@@ -302,7 +302,8 @@
     "txt-RateError": "Your And Your friend's commission rate can't be greater than {rate}%"
   },
   "page-MarketList": {
-    "cap-PointMarket": "Gems Market",
+    "cap-PointMarket": "Points Market",
+    "cap-GemsMarket": "Gems Market",
     "menu-Transaction": "Transaction",
     "menu-Items": "Items",
     "menu-MarketTrades": "Market Trades",

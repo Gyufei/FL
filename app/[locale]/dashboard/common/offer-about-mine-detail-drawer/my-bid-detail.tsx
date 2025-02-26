@@ -11,9 +11,9 @@ import { useCloseOffer } from "@/lib/hooks/contract/use-close-offer";
 import { useRelist } from "@/lib/hooks/contract/use-relist";
 
 import WithWalletConnectBtn from "@/components/share/with-wallet-connect-btn";
-import OfferInfo from "@/app/[locale]/market/gems/[...name]/offer-detail/offer-info";
-import ArrowBetween from "@/app/[locale]/market/gems/[...name]/create-offer/arrow-between";
-import OfferTabs from "@/app/[locale]/market/gems/[...name]/offer-detail/offer-tabs";
+import OfferInfo from "@/app/[locale]/[market]/[...name]/offer-detail/offer-info";
+import ArrowBetween from "@/app/[locale]/[market]/[...name]/create-offer/arrow-between";
+import OfferTabs from "@/app/[locale]/[market]/[...name]/offer-detail/offer-tabs";
 
 import MyDetailCard from "./my-detail-card";
 import { SwapItemPanel } from "./swap-item-panel";

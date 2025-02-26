@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { InputPanel } from "./input-panel";
 import { StableTokenSelectDisplay } from "./stable-token-display";
 import ArrowBetween from "./arrow-between";
-import { WithTip } from "../../../../../../components/share/with-tip";
+import { WithTip } from "@/components/share/with-tip";
 import CollateralRateInput from "./collateral-rate-input";
 import TaxForSubTrades from "./tax-for-sub-trades";
 import OrderNoteAndFee from "./order-note-and-fee";
@@ -196,7 +196,7 @@ export function BuyContent({
             (!pointPrice && !isShouldApprove)
           }
           className={cn(
-            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray font-medium",
+            "mt-2 flex h-12 w-full items-center justify-center rounded-2xl bg-green font-medium leading-6 text-white disabled:cursor-not-allowed disabled:bg-gray",
             isCreating || isApproving ? "dot-loading" : "",
           )}
         >

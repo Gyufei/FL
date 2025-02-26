@@ -1,7 +1,7 @@
 import NP from "number-precision";
 import Image from "next/image";
 import { formatNum } from "@/lib/utils/number";
-import { WithTip } from "../../../../../../components/share/with-tip";
+import { WithTip } from "@/components/share/with-tip";
 import { handleGoScan, truncateAddr } from "@/lib/utils/web3";
 import { IOffer } from "@/lib/types/offer";
 import { useOfferFormat } from "@/lib/hooks/offer/use-offer-format";
@@ -52,7 +52,9 @@ export default function DetailCard({ offer }: { offer: IOffer }) {
   return (
     <div className="flex-1 px-0 sm:px-6">
       <div className="flex items-center justify-between">
-        <div className="leading-6 text-black font-medium">{T("cap-OfferDetail")}</div>
+        <div className="font-medium leading-6 text-black">
+          {T("cap-OfferDetail")}
+        </div>
       </div>
       <DetailRow>
         <DetailLabel

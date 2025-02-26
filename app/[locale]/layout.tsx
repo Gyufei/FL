@@ -1,6 +1,6 @@
 import "react-modern-drawer/dist/index.css";
 import "@/app/globals.css";
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
 import { AeonikFont } from "@/app/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -33,7 +33,11 @@ export const metadata = {
   icons: {
     icon: [
       { url: "https://tadle.com/img/favs/favicon-32x32.png" },
-      { url: "https://tadle.com/img/favs/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      {
+        url: "https://tadle.com/img/favs/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
     ],
     apple: [
       { url: "https://tadle.com/img/favs/apple-touch-icon.png" },

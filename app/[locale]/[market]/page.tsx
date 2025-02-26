@@ -8,12 +8,16 @@ import MobilePageFooter, {
 } from "@/app/[locale]/_page-layout/_page-footer/page-footer-mobile";
 
 import PointMarket from "./point-market";
+import GemsMarket from "./gems-market";
 import TrendingAsset from "./trending-asset";
+import { usePathname } from "@/app/navigation";
 
 export default function Marketplace() {
   const { isMobileSize } = useDeviceSize();
 
   const pt = useTranslations("page-MarketList");
+  const pathname = usePathname();
+  const isPoint = pathname.includes("/points");
 
   const mobilePanels: Array<IMobilePanel> = useMemo(
     () => [
@@ -45,7 +49,7 @@ export default function Marketplace() {
       <div className="flex flex-1 items-stretch">
         {checkIsActive("market") && (
           <div className="flex flex-1 flex-col overflow-auto pl-4 sm:pl-6">
-            <PointMarket />
+            {isPoint ? <PointMarket /> : <GemsMarket />}
           </div>
         )}
         {checkIsActive("assets") && (

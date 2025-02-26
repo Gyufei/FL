@@ -305,6 +305,7 @@
   },
   "page-MarketList": {
     "cap-PointMarket": "Point市场",
+    "cap-GemsMarket": "Gems市场",
     "menu-Transaction": "事务",
     "menu-Items": "项目",
     "menu-MarketTrades": "交易",

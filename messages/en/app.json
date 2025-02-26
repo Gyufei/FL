@@ -321,5 +321,11 @@
     "th-24hChange": "24h Change",
     "txt-NotStarted": "Not Started",
     "txt-NoMarketData": "No Market Data Available"
+  },
+  "monad-module": {
+    "lb-MonadTestnet": "Monad Testnet",
+    "lb-MonadTestnetInfo": "Monad Testnet Info",
+    "btn-AddTestnetToWallet": "Add Testnet to wallet",
+    "btn-$MONFaucet": "$MON Faucet"
   }
 }

@@ -14,7 +14,11 @@ body {
   --color-gary: #99a0af;
   --color-lightgray: #c0c4cc;
   --color-focus: #3dd866;
-  --color-theme: #6E75F9;
+  --color-theme: #6e75f9;
+  --color-theme-hover: #5a62f7;
+  --color-theme-light: #eef0fe;
+  --color-theme-text: #6e75f9;
+  --color-theme-ring: #a5a9fb;
 }
 
 @layer base {

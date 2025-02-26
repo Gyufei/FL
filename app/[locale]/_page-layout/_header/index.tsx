@@ -2,10 +2,10 @@
 import Image from "next/image";
 import ConnectBtn from "./connect-btn";
 import NavigationBtns from "./navigation-btns";
-import MessageBtn from "./message-btn";
 import MobileRouterMenu from "./mobile-router-menu";
 import Link from "next/link";
 import { usePathname } from "@/app/navigation";
+import MonadTestnetDialog from "@/components/share/monad-testnet-dialog";
 
 export default function Header() {
   const pathname = usePathname();
@@ -19,8 +19,8 @@ export default function Header() {
         <NavigationBtns />
         <Logo />
         <div className="hidden flex-1 items-center justify-end space-x-4 sm:flex md:space-x-4">
+          <MonadTestnetDialog />
           <ConnectBtn />
-          <MessageBtn />
         </div>
 
         {/* Mobile */}
@@ -32,7 +32,7 @@ export default function Header() {
               paddingRight: isMarketItemPage ? "52px" : "0",
             }}
           >
-            <MessageBtn />
+            <MonadTestnetDialog />
             <ConnectBtn />
           </div>
         </div>

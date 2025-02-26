@@ -323,5 +323,11 @@
     "th-24hChange": "24h变化",
     "txt-NotStarted": "未开始",
     "txt-NoMarketData": "无市场数据"
+  },
+  "monad-module": {
+    "lb-MonadTestnet": "Monad 测试网",
+    "lb-MonadTestnetInfo": "Monad 测试网信息",
+    "btn-AddTestnetToWallet": "添加测试网到钱包",
+    "btn-$MONFaucet": "$MON 水龙头"
   }
 }

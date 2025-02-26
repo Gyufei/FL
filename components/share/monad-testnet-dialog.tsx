@@ -45,7 +45,9 @@ export default function MonadTestnetDialog() {
               {t("btn-AddTestnetToWallet")}
             </div>
             <a
-              href="#"
+              href="https://testnet.monad.xyz/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-2 hover:bg-[var(--color-theme-light)] hover:text-[var(--color-theme)]"
             >
               <Image

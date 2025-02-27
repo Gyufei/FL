@@ -6,7 +6,6 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { useMemo } from "react";
 import { formatNum } from "@/lib/utils/number";
 import { ITradeType } from "./trade-type-select";
-import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
 import { IMarketplace } from "@/lib/types/marketplace";
 import { useMarketTrades } from "@/lib/hooks/api/use-market-trades";
 import { range, sortBy } from "lodash";
@@ -35,37 +34,19 @@ export function TradesTable({
   const { data: tokens } = useTokens(marketplace?.chain || ChainType.ETH);
   const isLoadingFlag = !marketplace || isLoading || isHistoryLoading;
 
-  const { data: msgEvents } = useWsMsgSub(marketplace?.chain || ChainType.ETH);
-
-  const tradeMsgs = useMemo<any[]>(() => {
+  const tradeHistory = useMemo<any[]>(() => {
     const sortHistory = sortBy(historyData || [], "trade_at").reverse();
     const history = sortHistory.map((item: any) => {
+      const token = tokens?.find((token) => token.address === item.token_mint);
       return {
         ...item,
         timestamp: item.trade_at * 1000,
+        token: token || item.token,
       };
     });
 
-    const msgAll = (msgEvents || []).filter(
-      (msg) => !!msg && msg.market_id === marketplace?.market_place_account,
-    );
-
-    const allMsg = sortBy(msgAll || [], "trade_at")
-      .reverse()
-      .concat(history || [])
-      .map((item: any) => {
-        const token = tokens?.find(
-          (token) => token.address === item.token_mint,
-        );
-
-        return {
-          ...item,
-          token: token || item.token,
-        };
-      });
-
-    return allMsg;
-  }, [msgEvents, historyData, tokens]);
+    return history;
+  }, [historyData, tokens]);
 
   const data = useMemo(() => {
     if (isLoadingFlag) {
@@ -82,7 +63,7 @@ export function TradesTable({
       };
     }
 
-    const trades = tradeMsgs.map((msg) => {
+    const trades = tradeHistory.map((msg) => {
       const time = (Date.now() - msg.timestamp) / 1000;
       return {
         id: Math.floor(Math.random() * 100000),
@@ -97,7 +78,7 @@ export function TradesTable({
     return {
       nodes: tableData,
     };
-  }, [tradeMsgs, type, isLoadingFlag]);
+  }, [tradeHistory, type, isLoadingFlag]);
 
   const pointDecimalNum = useMemo(() => {
     if (marketplace && ProjectDecimalsMap[marketplace.market_symbol]) {

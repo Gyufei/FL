@@ -16,15 +16,11 @@ import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@/lib/types/chain";
-import { useWsMsgSub } from "@/lib/hooks/api/use-ws-msgs";
-import { useEffect } from "react";
 
 export default function LeaderBoard({
-  marketplaceId,
   chain,
   className,
 }: {
-  marketplaceId: string;
   chain: ChainType;
   className?: string;
 }) {
@@ -32,38 +28,21 @@ export default function LeaderBoard({
   const [leaderType, setLeaderType] = useState<ILeaderType>("Maker Orders");
   const [timeRange, setTimeRange] = useState<IRangeType>("month");
 
-  const {
-    data: taxIncomeData,
-    isLoading: taxIncomeLoading,
-    mutate: taxIncomeMutate,
-  } = useTaxIncome(chain, timeRange);
+  const { data: taxIncomeData, isLoading: taxIncomeLoading } = useTaxIncome(
+    chain,
+    timeRange,
+  );
 
-  const {
-    data: makerOrdersData,
-    isLoading: makerOrdersLoading,
-    mutate: makerOrdersMutate,
-  } = useMakerOrders(chain, timeRange);
+  const { data: makerOrdersData, isLoading: makerOrdersLoading } =
+    useMakerOrders(chain, timeRange);
 
-  const {
-    data: tradingVolData,
-    isLoading: tradingVolLoading,
-    mutate: tradingVolMutate,
-  } = useTradingVol(chain, timeRange);
+  const { data: tradingVolData, isLoading: tradingVolLoading } = useTradingVol(
+    chain,
+    timeRange,
+  );
 
   const isLoadingFlag =
     taxIncomeLoading || makerOrdersLoading || tradingVolLoading;
-
-  const { data: msgEvents } = useWsMsgSub(chain);
-  useEffect(() => {
-    if (msgEvents && msgEvents.length > 0) {
-      const currentMsg = msgEvents[msgEvents.length - 1];
-      if (currentMsg.market_id === marketplaceId) {
-        taxIncomeMutate();
-        makerOrdersMutate();
-        tradingVolMutate();
-      }
-    }
-  }, [msgEvents]);
 
   function handleTradeTypeChange(t: ILeaderType) {
     setLeaderType(t);
@@ -228,7 +207,9 @@ export default function LeaderBoard({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-lg bg-theme"></div>
-          <div className="leading-6 text-black font-medium">{t("cap-Leaderboard")}</div>
+          <div className="font-medium leading-6 text-black">
+            {t("cap-Leaderboard")}
+          </div>
         </div>
         <div className="flex items-center justify-end space-x-3">
           <LeaderTypeSelect

@@ -121,11 +121,7 @@ export default function MarketplaceContent({
               className="basic-[218px] h-[218px] shrink-0 grow-0"
               marketplace={marketplace}
             />
-            <LeaderBoard
-              marketplaceId={marketplace.market_place_account}
-              chain={marketplace.chain}
-              className="shrink grow"
-            />
+            <LeaderBoard chain={marketplace.chain} className="shrink grow" />
             <AdBanner className="shrink grow-0" />
           </div>
         )}

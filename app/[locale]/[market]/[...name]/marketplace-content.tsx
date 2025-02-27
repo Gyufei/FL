@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { sortBy } from "lodash";
 
@@ -24,6 +24,7 @@ import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import MobilePageFooter, {
   IMobilePanel,
 } from "@/app/[locale]/_page-layout/_page-footer/page-footer-mobile";
+import { usePanelActivation } from "@/lib/hooks/common/use-panel-activation";
 
 export default function MarketplaceContent({
   marketplace,
@@ -34,13 +35,6 @@ export default function MarketplaceContent({
   const mt = useTranslations("pn-Marketplace");
 
   const { isMobileSize } = useDeviceSize();
-  const [activePanel, setActivePanel] = useState("Transaction");
-
-  function checkIsActive(name: string) {
-    if (!isMobileSize) return true;
-
-    return activePanel === name;
-  }
 
   const mobilePanels: Array<IMobilePanel> = useMemo(
     () => [
@@ -67,6 +61,9 @@ export default function MarketplaceContent({
     ],
     [pt],
   );
+  const { activePanel, setActivePanel, checkIsActive } = usePanelActivation({
+    defaultPanel: mobilePanels[0].name,
+  });
 
   const {
     data: offers,

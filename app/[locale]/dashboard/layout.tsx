@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import MobilePageFooter, {
   IMobilePanel,
 } from "../_page-layout/_page-footer/page-footer-mobile";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import { useRouter } from "@/app/navigation";
 import PageFooter from "../_page-layout/_page-footer";
@@ -13,6 +13,7 @@ import { usePathname } from "@/app/navigation";
 import { useChainWallet } from "@/lib/hooks/web3/use-chain-wallet";
 import { useEffect } from "react";
 import { isProduction } from "@/lib/PathMap";
+import { usePanelActivation } from "@/lib/hooks/common/use-panel-activation";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { isMobileSize } = useDeviceSize();
@@ -57,15 +58,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     ],
     [pt],
   );
-  const [activePanel, setActivePanel] = useState(
-    pathname.split("/").pop() || mobilePanels[0].name,
-  );
-
-  function checkIsActive(name: string) {
-    if (!isMobileSize) return true;
-
-    return activePanel === name;
-  }
+  const { activePanel, setActivePanel, checkIsActive } = usePanelActivation({
+    defaultPanel: pathname.split("/").pop() || mobilePanels[0].name,
+  });
 
   function handleClickMenuItem(pn: string) {
     setActivePanel(pn);

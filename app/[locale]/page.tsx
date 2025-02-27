@@ -1,7 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { useDeviceSize } from "@/lib/hooks/common/use-device-size";
 import PageFooter from "@/app/[locale]/_page-layout/_page-footer";
 import MobilePageFooter, {
   IMobilePanel,
@@ -10,10 +9,9 @@ import MobilePageFooter, {
 import PointMarket from "@/app/[locale]/[market]/point-market";
 import GemsMarket from "@/app/[locale]/[market]/gems-market";
 import TrendingAsset from "@/app/[locale]/[market]/trending-asset";
+import { usePanelActivation } from "@/lib/hooks/common/use-panel-activation";
 
 export default function Marketplace() {
-  const { isMobileSize } = useDeviceSize();
-
   const pt = useTranslations("page-MarketList");
 
   const mobilePanels: Array<IMobilePanel> = useMemo(
@@ -32,17 +30,12 @@ export default function Marketplace() {
     [pt],
   );
 
-  const [activePanel, setActivePanel] = useState(mobilePanels[0].name);
-
-  function checkIsActive(name: string) {
-    if (!isMobileSize) return true;
-
-    return activePanel === name;
-  }
+  const { activePanel, setActivePanel, checkIsActive } = usePanelActivation({
+    defaultPanel: mobilePanels[0].name,
+  });
 
   return (
     <div className="flex h-[calc(100vh-100px)] w-full flex-col sm:h-[calc(100vh-96px)]">
-      {/* <MobileMarketBreadcrumb /> */}
       <div className="flex flex-1 items-stretch">
         {checkIsActive("market") && (
           <div className="flex flex-1 flex-col overflow-auto border-r border-[#EEEEEE] pl-4 sm:pl-6 sm:pr-5">

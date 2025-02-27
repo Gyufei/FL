@@ -21,7 +21,8 @@ import { ChainConfigs } from "@/lib/const/chain-configs";
 import { useCloseBidOffer } from "@/lib/hooks/contract/use-close-bid-offer";
 import NP from "number-precision";
 import { reportEvent } from "@/lib/utils/analytics";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+// 修改引入语句
+import { useCheckBalance } from "@/lib/hooks/api/use-check-balance";
 import { cn } from "@/lib/utils/common";
 
 export default function MyBidDetail({
@@ -94,7 +95,8 @@ export default function MyBidDetail({
     isNativeToken,
   });
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
+  // 修改使用处
+  const { checkBalanceInsufficient } = useCheckBalance(
     offer.marketplace.chain,
     offerChainInfo,
   );

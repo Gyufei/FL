@@ -20,7 +20,7 @@ import { usePairApprove } from "./use-pair-approve";
 import { PointTokenDisplay } from "./point-token-display";
 import { cn } from "@/lib/utils/common";
 import { reportEvent } from "@/lib/utils/analytics";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { useCheckBalance } from "@/lib/hooks/api/use-check-balance";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
 
@@ -84,7 +84,7 @@ export function SellContent({
       sellPointAmount,
     );
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(currentMarket.chain, {
+  const { checkBalanceInsufficient } = useCheckBalance(currentMarket.chain, {
     address: currentMarket.project_token_addr,
     decimals: ProjectDecimalsMap[currentMarket.market_symbol],
     symbol: currentMarket.item_name,

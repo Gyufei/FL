@@ -19,7 +19,7 @@ import { useTranslations } from "next-intl";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import { usePairApprove } from "../create-offer/use-pair-approve";
 import { reportEvent } from "@/lib/utils/analytics";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { useCheckBalance } from "@/lib/hooks/api/use-check-balance";
 import ArrowBetween from "../create-offer/arrow-between";
 import { IToken } from "@/lib/types/token";
 import { StableBalance } from "@/components/share/stable-balance";
@@ -101,7 +101,7 @@ export default function AskDetail({
     return NP.times(payTokenAmount || 0, tokenPrice);
   }, [payTokenAmount, tokenPrice]);
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBalance(
     offer.marketplace.chain,
     offerTokenInfo,
   );

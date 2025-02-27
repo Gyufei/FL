@@ -21,7 +21,7 @@ import { reportEvent } from "@/lib/utils/analytics";
 import ArrowBetween from "../create-offer/arrow-between";
 import PointBalance from "@/components/share/point-balance";
 import { IPoint } from "@/lib/types/token";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { useCheckBalance } from "@/lib/hooks/api/use-check-balance";
 import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { cn } from "@/lib/utils/common";
 
@@ -76,7 +76,7 @@ export default function BidDetail({
     return NP.times(receiveTokenAmount || 0, tokenPrice);
   }, [receiveTokenAmount, tokenPrice]);
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBalance(
     offer.marketplace.chain,
     {
       address: offerPointInfo.marketplace.project_token_addr,

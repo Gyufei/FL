@@ -18,7 +18,7 @@ import { useAbortAskOffer } from "@/lib/hooks/contract/use-abort-ask-offer";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import NP from "number-precision";
 import { reportEvent } from "@/lib/utils/analytics";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { useCheckBalance } from "@/lib/hooks/api/use-check-balance";
 import { cn } from "@/lib/utils/common";
 
 export default function MyAskDetail({
@@ -94,7 +94,7 @@ export default function MyAskDetail({
     isNativeToken,
   });
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBalance(
     offer.marketplace.chain,
     offerChainInfo,
   );

@@ -8,7 +8,7 @@ import { formatLeadingZeros } from "@/lib/utils/number";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import toast from "react-hot-toast";
 
-export function useCheckBnbBalance(chain: ChainType, token: any) {
+export function useCheckBalance(chain: ChainType, token: any) {
   const { address } = useAccount();
   const tokenBalance = useTokenBalance({
     abiAddress: token?.address,

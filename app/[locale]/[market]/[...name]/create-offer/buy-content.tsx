@@ -15,7 +15,7 @@ import { useOptionOfCreate } from "./use-option-of-create";
 import { usePairApprove } from "./use-pair-approve";
 import { PointTokenDisplay } from "./point-token-display";
 import { reportEvent } from "@/lib/utils/analytics";
-import { useCheckBnbBalance } from "@/lib/hooks/api/use-check-bnb-balance";
+import { useCheckBalance } from "@/lib/hooks/api/use-check-balance";
 import { cn } from "@/lib/utils/common";
 import NP from "number-precision";
 import { useCreateOfferMinPrice } from "@/lib/hooks/offer/use-create-offer-min-price";
@@ -72,7 +72,7 @@ export function BuyContent({
       payTokenAmount,
     );
 
-  const { checkBalanceInsufficient } = useCheckBnbBalance(
+  const { checkBalanceInsufficient } = useCheckBalance(
     currentMarket.chain,
     payToken,
   );

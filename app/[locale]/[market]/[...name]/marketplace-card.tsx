@@ -24,6 +24,7 @@ import MobileDrawerTitle from "@/components/share/drawer-title-mobile";
 import Drawer from "react-modern-drawer";
 import { ChainConfigs } from "@/lib/const/chain-configs";
 import toast from "react-hot-toast";
+import { Link } from "@/app/navigation";
 
 export default function MarketplaceCard({
   marketplace,
@@ -138,81 +139,38 @@ export default function MarketplaceCard({
 }
 
 function OverviewIcons({
-  // isStar,
-  // handleStar,
-  // handleCopy,
   twitter,
   discord,
 }: {
-  // isStar: boolean;
-  // handleStar: () => void;
-  // handleCopy: () => void;
   twitter: string | undefined;
   discord: string | undefined;
   [key: string]: any;
 }) {
-  const handleGoTwitter = () => {
-    if (!twitter) return;
-    window.open(twitter, "_blank");
-  };
-
-  const handleGoDiscord = () => {
-    if (!discord) return;
-    window.open(discord, "_blank");
-  };
-
   return (
     <div className="flex h-5 items-center space-x-1">
-      {/* <HoverIcon
-        onClick={handleCopy}
-        src="/icons/copy-gray.svg"
-        hoverSrc="/icons/copy.svg"
-        width={20}
-        height={20}
-        alt="copy"
-      /> */}
-
       {twitter && (
-        <HoverIcon
-          onClick={handleGoTwitter}
-          src="/icons/twitter-gray.svg"
-          hoverSrc="/icons/twitter.svg"
-          width={20}
-          height={20}
-          alt="x"
-        />
+        <Link href={twitter} target="_blank">
+          <HoverIcon
+            src="/icons/twitter-gray.svg"
+            hoverSrc="/icons/twitter.svg"
+            width={20}
+            height={20}
+            alt="x"
+          />
+        </Link>
       )}
 
       {discord && (
-        <HoverIcon
-          onClick={handleGoDiscord}
-          src="/icons/discord-gray.svg"
-          hoverSrc="/icons/discord.svg"
-          width={20}
-          height={20}
-          alt="discord"
-        />
+        <Link href={discord} target="_blank">
+          <HoverIcon
+            src="/icons/discord-gray.svg"
+            hoverSrc="/icons/discord.svg"
+            width={20}
+            height={20}
+            alt="discord"
+          />
+        </Link>
       )}
-
-      {/* {isStar ? (
-        <Image
-          onClick={handleStar}
-          src="/icons/stared.svg"
-          width={20}
-          height={20}
-          alt="stared"
-          className="cursor-pointer"
-        />
-      ) : (
-        <HoverIcon
-          onClick={handleStar}
-          src="/icons/star-gray.svg"
-          hoverSrc="/icons/star.svg"
-          width={20}
-          height={20}
-          alt="star"
-        />
-      )} */}
     </div>
   );
 }

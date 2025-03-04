@@ -14,9 +14,8 @@ import { isProduction } from "@/lib/PathMap";
 const queryClient = new QueryClient();
 
 export const supportedChains = isProduction
-    ? ([mainnet, bsc, monadTestnet] as const)
-    : // : ([mainnet, bsc, sepolia, testnet, bscTestnet] as const);
-      ([mainnet, bsc, sepolia, bscTestnet, monadTestnet] as const);
+  ? ([mainnet, bsc, monadTestnet] as const)
+  : ([mainnet, bsc, sepolia, bscTestnet, monadTestnet] as const);
 
 export default function WalletModalProvider({
   children,
@@ -33,18 +32,17 @@ export default function WalletModalProvider({
   const ethRpc = customRpcs.eth || globalRpcs.eth;
   const bnbRpc = customRpcs.bnb || globalRpcs.bnb;
   const transports = isProduction
-        ? {
-          [monadTestnet.id]: http(monadRpc),
-          [mainnet.id]: http(ethRpc),
-          [bsc.id]: http(bnbRpc),
-        }
-      : {
+    ? {
         [monadTestnet.id]: http(monadRpc),
-          [mainnet.id]: http(ethRpc),
-          [bsc.id]: http(bnbRpc),
-          [bscTestnet.id]: http(bnbRpc),
-          [sepolia.id]: http(),
-          // [testnet.id]: http(),
+        [mainnet.id]: http(ethRpc),
+        [bsc.id]: http(bnbRpc),
+      }
+    : {
+        [monadTestnet.id]: http(monadRpc),
+        [mainnet.id]: http(ethRpc),
+        [bsc.id]: http(bnbRpc),
+        [bscTestnet.id]: http(bnbRpc),
+        [sepolia.id]: http(),
       };
 
   const wagmiConfig = getDefaultConfig({

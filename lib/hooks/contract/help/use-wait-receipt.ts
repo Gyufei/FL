@@ -1,11 +1,11 @@
 import { createPublicClient, http } from "viem";
-import { bsc, bscTestnet } from "viem/chains";
+import { monadTestnet } from "viem/chains";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { isProduction } from "@/lib/PathMap";
 
 const publicClient = createPublicClient({
-  chain: isProduction ? bsc : bscTestnet,
+  chain: isProduction ? monadTestnet : monadTestnet,
   transport: http(),
 });
 

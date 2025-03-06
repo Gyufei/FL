@@ -18,18 +18,26 @@ export const ChainConfigs: Record<string, IChainConfig> = {
     chainType: ChainType.MONAD,
     logo: "/icons/monad.svg",
     zeroAddr: "0x0000000000000000000000000000000000000000",
-    network:  isProduction ? 10143 : 10143,
+    network: isProduction ? 10143 : 10143,
     rpcs: {
       TadleDefaultRPC: isProduction
-      ? process.env.NEXT_PUBLIC_DEFAULT_RPC_MON || "https://monad-testnet.g.alchemy.com/v2/tptPHIbLlR8JoWvmTnw3iDrz4BKJFKjd"
-      : "https://monad-testnet.g.alchemy.com/v2/tptPHIbLlR8JoWvmTnw3iDrz4BKJFKjd",
+        ? process.env.NEXT_PUBLIC_DEFAULT_RPC_MON ||
+          "https://monad-testnet.g.alchemy.com/v2/tptPHIbLlR8JoWvmTnw3iDrz4BKJFKjd"
+        : "https://monad-testnet.g.alchemy.com/v2/tptPHIbLlR8JoWvmTnw3iDrz4BKJFKjd",
     },
-    contracts: {
-      preMarkets: "您的合约地址",
-      tokenManager: "您的合约地址",
-      systemConfig: "您的合约地址",
-      deliveryPlace: "您的合约地址",
-    },
+    contracts: isProduction
+      ? {
+          preMarkets: "0x079f5217C6B8C765FD3b889E87F1a6aa79a6e537",
+          tokenManager: "0x0091E1b230bAb4A7FD6b7Bee8722E18FD7770Cfb",
+          systemConfig: "0xe4478D8085Fad0E0119060f89Fd27b0e6eBbf1C6",
+          deliveryPlace: "0xb876426C57420828ba02c17006BdeA0F181b3ec5",
+        }
+      : {
+          preMarkets: "0x079f5217C6B8C765FD3b889E87F1a6aa79a6e537",
+          tokenManager: "0x0091E1b230bAb4A7FD6b7Bee8722E18FD7770Cfb",
+          systemConfig: "0xe4478D8085Fad0E0119060f89Fd27b0e6eBbf1C6",
+          deliveryPlace: "0xb876426C57420828ba02c17006BdeA0F181b3ec5",
+        },
     isEvm: true,
   },
   [ChainType.ETH]: {

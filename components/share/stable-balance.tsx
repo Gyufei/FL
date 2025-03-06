@@ -28,14 +28,13 @@ export function StableBalance({
   const nativeBalance = userBalance?.data?.value || "0";
   const evmBalance = NP.divide(String(nativeBalance), 10 ** 18);
 
-
   useEffect(() => {
-      setBalance((prevBalance) => {
-        if (prevBalance !== evmBalance) {
-          return evmBalance;
-        }
-        return prevBalance;
-      });
+    setBalance((prevBalance) => {
+      if (prevBalance !== evmBalance) {
+        return evmBalance;
+      }
+      return prevBalance;
+    });
   }, [evmBalance]);
 
   return (

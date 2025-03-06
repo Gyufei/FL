@@ -20,12 +20,12 @@ export default function PointBalance({
   });
 
   useEffect(() => {
-      setBalance((prevBalance) => {
-        if (prevBalance !== evmTokenBalance) {
-          return evmTokenBalance;
-        }
-        return prevBalance;
-      });
+    setBalance((prevBalance) => {
+      if (prevBalance !== evmTokenBalance) {
+        return evmTokenBalance;
+      }
+      return prevBalance;
+    });
   }, [evmTokenBalance]);
 
   return (

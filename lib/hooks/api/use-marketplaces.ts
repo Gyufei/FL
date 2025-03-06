@@ -17,16 +17,19 @@ export function useMarketplaces(chain?: string) {
       `${dataApiEndPoint}${DataApiPaths.markets}`,
     );
 
-    const allMarket = res.flat().filter((m: any) => m.chain_name !== 'solana').map((m: any) => {
-      const chain = m.chain_name;
-      return {
-        ...m,
-        projectLogo: WithProjectImgCDN(m.market_symbol, chain),
-        pointLogo: WithPointImgCDN(m.market_symbol, chain),
-        chain,
-        status: m.market_symbol === "spherex" ? "offline" : m.status,
-      };
-    });
+    const allMarket = res
+      .flat()
+      .filter((m: any) => m.chain_name !== "solana")
+      .map((m: any) => {
+        const chain = m.chain_name;
+        return {
+          ...m,
+          projectLogo: WithProjectImgCDN(m.market_symbol, chain),
+          pointLogo: WithPointImgCDN(m.market_symbol, chain),
+          chain,
+          status: m.market_symbol !== "hadron" ? "offline" : m.status,
+        };
+      });
 
     return allMarket as Array<IMarketplace>;
   }

@@ -19,7 +19,7 @@ export function truncateAddr(
 }
 
 export function isEvmChain(chain: ChainType) {
-  return [ChainType.ETH, ChainType.BNB].includes(chain);
+  return [ChainType.MONAD, ChainType.ETH, ChainType.BNB].includes(chain);
 }
 
 export const checkIsNativeToken = (chain: ChainType, token: IToken | null) => {

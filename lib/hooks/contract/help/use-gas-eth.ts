@@ -39,7 +39,7 @@ export function useGasEth() {
 
   const ApiCallGas = isBSC
     ? {
-        gasPrice: parseGwei("1"),
+        gasPrice: parseGwei("53"),
       }
     : {};
 

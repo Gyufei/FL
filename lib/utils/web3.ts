@@ -26,7 +26,7 @@ export const checkIsNativeToken = (chain: ChainType, token: IToken | null) => {
   if (!token) return false;
 
   if (chain === ChainType.MONAD) {
-    return token.symbol === "ETH";
+    return token.symbol === "MON";
   }
 
   if (chain === ChainType.ETH) {

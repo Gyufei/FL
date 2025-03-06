@@ -9,7 +9,7 @@ export function useStableToken(chain: ChainType) {
   const stableTokens = useMemo(() => {
     const stableTokenList =
       chain === ChainType.MONAD
-        ? ["ETH", "USDT"]
+        ? ["MON", "USDT"]
         : chain === ChainType.BNB
         ? ["USDT", "USDC", "BNB"]
         : [];

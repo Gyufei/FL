@@ -15,7 +15,12 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   const { checkIsAfterTge, checkIsDuringTge, checkIsAfterTgePeriod } = useTge();
 
   const offerTokenInfo = useMemo(() => {
-    return tokens?.find((t) => t.symbol === offer.payment_token);
+    const payment_token =
+      offer.marketplace.market_symbol === "hadron" &&
+      offer.payment_token === "ETH"
+        ? "MON"
+        : offer.payment_token;
+    return tokens?.find((t) => t.symbol === payment_token);
   }, [offer, tokens]);
 
   const offerChainInfo = useMemo(() => {

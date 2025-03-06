@@ -26,10 +26,8 @@ export default function useTxStatus(
   }, [isSuccess, isError]);
 
   useWaitReceipt(data);
-  console.log("🚀 ~ data:", data);
 
   const txAction = async (...args: Parameters<typeof txFn>) => {
-    console.log("🚀 ~ txAction ~ args:", args);
     setIsLoading(true);
 
     try {

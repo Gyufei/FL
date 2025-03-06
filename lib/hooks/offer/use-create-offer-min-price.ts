@@ -4,6 +4,7 @@ export function useCreateOfferMinPrice() {
     minPrice: number,
     isSell: boolean,
   ) {
+    if (!minPrice) return false;
     return isSell
       ? Number(price) > Number(minPrice * 1.2)
       : Number(price) < Number(minPrice * 0.8);

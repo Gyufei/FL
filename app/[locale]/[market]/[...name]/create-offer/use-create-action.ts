@@ -94,7 +94,6 @@ export function useCreateAction(
     taxForSub: string;
   }) {
     try {
-      console.log("🚀 ~ pointAmount:", pointAmount, tokenAmount);
       if (!pointAmount || !tokenAmount) {
         return;
       }

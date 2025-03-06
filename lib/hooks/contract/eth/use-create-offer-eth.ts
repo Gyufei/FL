@@ -21,7 +21,6 @@ export function useCreateOfferEth({
   const { ApiCallGas } = useGasEth();
 
   const { address } = useChainWallet(chain);
-  console.log("🚀 ~ address:", address);
 
   const txAction = async (args: {
     direction: "buy" | "sell";
@@ -36,7 +35,6 @@ export function useCreateOfferEth({
       ...args,
       creator: address,
     };
-    console.log("🚀 ~ reqData:", reqData);
     const res = await dataApiFetcher(
       `${dataApiEndPoint}/market/${marketSymbol}/create_offer?chain=${chain}`,
       {

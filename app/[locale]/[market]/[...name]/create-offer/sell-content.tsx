@@ -104,12 +104,18 @@ export function SellContent({
       )
     ) {
       curErrorText = "Too big price shift";
+      console.log("🚀 ~ useEffect ~ curErrorText:", curErrorText);
     }
 
-    setErrorText(curErrorText);
+    // setErrorText(curErrorText);
+    setErrorText("");
   }, [sellPointAmount, isShouldApprove, pointPrice]);
 
   async function handleConfirmBtnClick() {
+    console.log(
+      "🚀 ~ handleConfirmBtnClick ~ isShouldApprove:",
+      isShouldApprove,
+    );
     if (isShouldApprove) {
       reportEvent("click", { value: "approve" });
       await approveAction();

@@ -25,6 +25,10 @@ export function isEvmChain(chain: ChainType) {
 export const checkIsNativeToken = (chain: ChainType, token: IToken | null) => {
   if (!token) return false;
 
+  if (chain === ChainType.MONAD) {
+    return token.symbol === "ETH";
+  }
+
   if (chain === ChainType.ETH) {
     return token.symbol === "ETH";
   }

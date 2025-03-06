@@ -111,7 +111,7 @@ export function BuyContent({
         false,
       )
     ) {
-      curErrorText = "Too big price shift";
+      // curErrorText = "Too big price shift";
     }
 
     setErrorText(curErrorText);

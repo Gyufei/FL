@@ -8,7 +8,6 @@ export function useAccountVerifyDialog(market: IMarketplace) {
   const [verifyDialogOpen, setVerifyDialogOpen] = useState(false);
 
   const { data: marketInfos } = useMarketInfo(market?.chain || ChainType.MONAD);
-  console.log("🚀 ~ useAccountVerifyDialog ~ marketInfos:", marketInfos);
 
   const targetUrl = useMemo(() => {
     if (!market || !marketInfos) return;

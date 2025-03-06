@@ -22,7 +22,6 @@ export function StableTokenSelectDisplay({
   showBalance?: boolean;
 }) {
   const { data: tokens } = useStableToken(chain);
-  console.log("🚀 ~ tokens:", chain, tokens);
   const [popOpen, setPopOpen] = useState(false);
 
   const handleSelectToken = (t: IToken) => {

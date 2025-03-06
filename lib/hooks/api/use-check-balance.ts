@@ -12,7 +12,7 @@ export function useCheckBalance(chain: ChainType, token: any) {
   const { address } = useAccount();
   const tokenBalance = useTokenBalance({
     abiAddress: token?.address,
-    decimals: token?.decimals,
+    decimals: token?.decimals || 18,
   });
   const isNativeToken = checkIsNativeToken(chain, token || null);
 

@@ -1,6 +1,6 @@
 import { IPoint } from "@/lib/types/token";
 import { useTokenBalance } from "@/lib/hooks/api/use-token-balance";
-import { ProjectDecimalsMap } from "@/lib/const/constant";
+// import { ProjectDecimalsMap } from "@/lib/const/constant";
 import { formatNum } from "@/lib/utils/number";
 import { cn } from "@/lib/utils/common";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export default function PointBalance({
 
   const evmTokenBalance = useTokenBalance({
     abiAddress: point?.marketplace?.project_token_addr,
-    decimals: ProjectDecimalsMap[point?.marketplace?.market_symbol],
+    decimals: 18,
   });
 
   useEffect(() => {

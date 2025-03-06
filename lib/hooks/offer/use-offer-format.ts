@@ -24,9 +24,7 @@ export function useOfferFormat({ offer }: { offer: IOffer }) {
   }, [offer, tokens]);
 
   const offerChainInfo = useMemo(() => {
-    return tokens?.find(
-      (t) => t.symbol === offer?.marketplace?.chain?.toUpperCase(),
-    );
+    return tokens?.find((t) => t.symbol === offer?.marketplace?.item_name);
   }, [offer, tokens]);
 
   const pointDecimalNum = useMemo(() => {

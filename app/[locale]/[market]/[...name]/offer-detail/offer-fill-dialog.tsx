@@ -66,7 +66,7 @@ export default function OfferFillDialog({
         </div>
 
         <Link href={`/dashboard/holdings?chain=${chain}`}>
-          <button className="mt-7 flex h-12 w-full items-center justify-center rounded-2xl bg-theme leading-6 text-black">
+          <button className="mt-7 flex h-12 w-full items-center justify-center rounded-2xl bg-theme leading-6 text-white">
             <span className="mr-1 inline-block">Go To My Holdings</span>
             <Image
               src="/icons/right-45.svg"

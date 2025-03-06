@@ -8,7 +8,7 @@ import { range } from "lodash";
 import { cn } from "@/lib/utils/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
-import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
+// import { useMarketplaces } from "@/lib/hooks/api/use-marketplaces";
 import { TokenPairImg } from "@/components/share/token-pair-img";
 import { formatNum } from "@/lib/utils/number";
 import { format } from "date-fns";
@@ -24,7 +24,8 @@ export default function GemsMarket({ className }: { className?: string }) {
 
   const router = useRouter();
 
-  const { data, isLoading: isLoadingFlag } = useMarketplaces();
+  const { data, isLoading: isLoadingFlag } = { data: [], isLoading: false };
+  // const { data, isLoading: isLoadingFlag } = useMarketplaces();
 
   const theme = useTheme({
     Table: `
@@ -83,7 +84,7 @@ export default function GemsMarket({ className }: { className?: string }) {
     }
 
     const nodes = (data || [])
-      .filter((m) => m.status !== "offline")
+      .filter((m: any) => m.status !== "offline")
       .map((item: any, index: number) => {
         return {
           id: index + 1,

@@ -24,7 +24,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { address } = useChainWallet();
   useEffect(() => {
     if (!address && isProduction) {
-      router.push(`/gems`);
+      router.push(`/points`);
     }
   }, [address]);
 

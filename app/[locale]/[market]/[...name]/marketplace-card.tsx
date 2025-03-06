@@ -219,7 +219,7 @@ function FoldPop() {
   );
 
   function handleGo(id: string) {
-    router.push(`/gems/${id}`);
+    router.push(`/points/${id}`);
   }
 
   function renderContent() {

@@ -74,7 +74,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
           />
 
           <div>
-            <div className="mb-[2px] leading-6 text-black font-medium">
+            <div className="mb-[2px] font-medium leading-6 text-black">
               {offer.marketplace.item_name}
             </div>
             <div className="w-fit rounded-[4px] bg-[#F0F1F5] px-[5px] py-[2px] text-[10px] leading-4 text-gray">
@@ -200,7 +200,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
                   handleShowOffer(String(offer.entry.id));
                 }}
               >
-                <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-theme">
+                <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-theme hover:text-white">
                   {orderType === "sell" ? t("btn-Buy") : t("btn-Sell")}
                 </button>
               </WithWalletConnectBtn>
@@ -217,7 +217,7 @@ export function OfferCard({ offer }: { offer: IOffer }) {
               chain={offer.marketplace.chain}
               onClick={() => handleShowOffer(String(offer.entry.id))}
             >
-              <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-theme">
+              <button className="flex items-center justify-center rounded-full border border-[#eee] px-[18px] py-1 text-sm leading-5 text-black hover:border-transparent hover:bg-theme hover:text-white">
                 {t("btn-Detail")}
               </button>
             </WithWalletConnectBtn>

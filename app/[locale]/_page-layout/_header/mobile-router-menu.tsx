@@ -39,7 +39,7 @@ export default function MobileRouterMenu() {
 function MenuList({ onEnd }: { onEnd: () => void }) {
   const t = useTranslations("Header");
   const router = useRouter();
-  const routePath = [`/dashboard`, `/gems`];
+  const routePath = [`/dashboard`, `/gems`, `/points`];
   const currentRoute = usePathname();
   const locale = useLocale();
 

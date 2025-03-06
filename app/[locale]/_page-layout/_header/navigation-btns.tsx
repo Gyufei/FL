@@ -11,7 +11,8 @@ export default function NavigationBtns() {
   const pathname = usePathname();
 
   const isDashboard = pathname.startsWith(`/dashboard`);
-  const isMarketPlace = pathname.startsWith(`/gems`);
+  const isMarketPlace =
+    pathname.startsWith(`/gems`) || pathname.startsWith(`/points`);
 
   const router = useRouter();
   const locale = useLocale();
@@ -49,7 +50,7 @@ export default function NavigationBtns() {
       </WithWalletConnectBtn>
       <div className="relative flex items-center">
         <div
-          onClick={() => handleClick(`/gems`)}
+          onClick={() => handleClick(`/points`)}
           data-active={isMarketPlace}
           className="z-20 flex h-12 w-12 items-center justify-center rounded-full border border-[#D3D4D6] data-[active=true]:w-fit data-[active=false]:cursor-pointer data-[active=true]:border-theme data-[active=true]:bg-theme data-[active=true]:px-6 data-[active=false]:hover:border-transparent data-[active=false]:hover:bg-theme"
         >

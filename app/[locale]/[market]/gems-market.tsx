@@ -98,7 +98,7 @@ export default function GemsMarket({ className }: { className?: string }) {
   }, [data, isLoadingFlag]);
 
   function handleGo(marketId: string) {
-    const path = `/gems/${marketId}`;
+    const path = `/points/${marketId}`;
 
     router.push(path);
   }

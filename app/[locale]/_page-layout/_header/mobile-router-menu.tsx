@@ -84,7 +84,7 @@ function MenuList({ onEnd }: { onEnd: () => void }) {
         style={{
           boxShadow: "inset 0px -1px 0px 0px rgba(14, 4, 62, 0.1)",
         }}
-        onClick={() => handleClick("/gems")}
+        onClick={() => handleClick("/points")}
       >
         <div className="flex items-center justify-start space-x-3">
           <Image

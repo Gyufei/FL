@@ -9,7 +9,7 @@ import MonadTestnetDialog from "@/components/share/monad-testnet-dialog";
 
 export default function Header() {
   const pathname = usePathname();
-  const isMarketItemPage = /\/market\/gems\/[a-zA-Z]+/.test(pathname);
+  const isMarketItemPage = /\/(points|gems)\/[a-zA-Z0-9-_]+/.test(pathname);
 
   return (
     <>
@@ -46,7 +46,12 @@ function MobileLogo() {
     <Link href="/">
       <div className="flex h-11 cursor-pointer items-center justify-center sm:hidden">
         <div className="flex h-6 w-[70px] items-center justify-center rounded-full bg-theme">
-          <Image src="/icons/logo.svg" alt="logo" width={37.5} height={10} />
+          <Image
+            src="/icons/logo-white.svg"
+            alt="logo"
+            width={37.5}
+            height={10}
+          />
         </div>
       </div>
     </Link>

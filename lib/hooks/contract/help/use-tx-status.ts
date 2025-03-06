@@ -55,7 +55,7 @@ export default function useTxStatus(
         e?.message.includes("An internal error was received") ||
         e?.message.includes("Execution reverted for an unknown reason")
       ) {
-        eMsg = "No enough BNB to send transaction.";
+        eMsg = "Not enough balance to send transaction.";
       }
       if (eMsg) {
         toast.error(errorTip || eMsg || "Fail: Some error occur");

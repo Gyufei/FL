@@ -49,7 +49,7 @@ export function useApprove(
 
     if (!isEvm || !tokenAddr) return false;
 
-    if (tokenSymbol === "ETH" || tokenSymbol === "BNB") return false;
+    if (tokenSymbol === "MONAD" || tokenSymbol === "BNB") return false;
 
     if (!walletAccount || !spender || !tokenAddr) return false;
 

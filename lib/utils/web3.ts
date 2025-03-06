@@ -52,6 +52,13 @@ export function handleGoScan(
     goType = "address";
   }
 
+  if (chain === ChainType.MONAD) {
+    window.open(
+      `https://testnet.monadexplorer.com/${goType}/${addr}`,
+      "_blank",
+    );
+  }
+
   if (chain === ChainType.ETH) {
     window.open(`https://etherscan.io/${goType}/${addr}`, "_blank");
   }

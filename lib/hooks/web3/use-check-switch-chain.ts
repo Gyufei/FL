@@ -7,10 +7,15 @@ export function useCheckSwitchChain(chain: ChainType) {
   const chainId = useChainId();
   const { switchChainAsync } = useSwitchChain();
 
-  const isEvm = [ChainType.ETH, ChainType.BNB].includes(chain as ChainType);
+  const isEvm = [ChainType.MONAD, ChainType.ETH, ChainType.BNB].includes(
+    chain as ChainType,
+  );
 
   const currentWalletChain = useMemo(() => {
     if (isEvm) {
+      if (ChainConfigs[ChainType.MONAD].network === chainId) {
+        return ChainType.MONAD;
+      }
       if (ChainConfigs[ChainType.ETH].network === chainId) {
         return ChainType.ETH;
       }
@@ -19,7 +24,6 @@ export function useCheckSwitchChain(chain: ChainType) {
         return ChainType.BNB;
       }
     }
-
 
     return null;
   }, [chainId, isEvm]);

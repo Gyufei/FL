@@ -32,7 +32,7 @@ export function useSortOffer(offers: Array<any>) {
         // return order.price;
 
         const tokenPriceMap: any = {
-          MON: 1,
+          MON: 0.027,
           USDC: 1,
           USDT: 1,
           BNB: 614,

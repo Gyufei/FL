@@ -106,7 +106,7 @@ export function useCreateAction(
         total_item_amount: toNonExponential(
           NP.times(pointAmount, pointDecimalNum),
         ),
-        payment_token: token.symbol === "MON" ? "ETH" : token.symbol,
+        payment_token: token.symbol,
         collateral_ratio: collateralRate,
         settle_mode: settleMode,
         trade_tax_pct: taxForSub,

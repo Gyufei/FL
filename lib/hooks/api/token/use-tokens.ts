@@ -20,12 +20,7 @@ export function useTokens(chain?: ChainType) {
     const newTokens = tokens.map((t: Record<string, any>) => {
       const newT = {
         ...t,
-        logoURI:
-          chain === ChainType.MONAD && t.symbol === "WETH"
-            ? "/icons/monad.svg"
-            : t.url,
-        symbol:
-          chain === ChainType.MONAD && t.symbol === "WETH" ? "WMON" : t.symbol,
+        logoURI: t.url,
       } as any;
 
       delete newT.url;

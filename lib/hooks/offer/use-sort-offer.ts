@@ -42,12 +42,7 @@ export function useSortOffer(offers: Array<any>) {
         const amount = NP.times(order.item_amount, order.price);
         const tokenTotalPrice = NP.times(
           amount,
-          tokenPriceMap[
-            order.marketplace.market_symbol === "hadron" &&
-            order.payment_token === "ETH"
-              ? "MON"
-              : order.payment_token
-          ] || 1,
+          tokenPriceMap[order.payment_token] || 1,
         );
         const pointPerPrice = NP.divide(tokenTotalPrice, order.item_amount);
         return pointPerPrice;

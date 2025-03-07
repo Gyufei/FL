@@ -27,7 +27,7 @@ export default function WalletModalProvider({
   const globalRpcs = useAtomValue(GlobalRpcsAtom);
   const customRpcs = useAtomValue(CustomRpcsAtom);
 
-  const monadRpc = customRpcs.monad || globalRpcs.monad;
+  const monadRpc = customRpcs.monad_testnet || globalRpcs.monad_testnet;
 
   const ethRpc = customRpcs.eth || globalRpcs.eth;
   const bnbRpc = customRpcs.bnb || globalRpcs.bnb;

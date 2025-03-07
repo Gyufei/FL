@@ -1,5 +1,5 @@
 export enum ChainType {
   ETH = "eth",
   BNB = "bnb",
-  MONAD = "monad",
+  MONAD = "monad_testnet",
 }

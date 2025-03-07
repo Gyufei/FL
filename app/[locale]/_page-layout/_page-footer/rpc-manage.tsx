@@ -39,7 +39,7 @@ export default function RpcManage() {
       ? JSON.parse(storedNetworks)
       : [
           {
-            id: "monad",
+            id: "monad_testnet",
             name: "Monad Testnet",
             rpcs: [
               {
@@ -208,7 +208,7 @@ export default function RpcManage() {
                 size="icon"
                 onClick={() => handleAddRpc(network.id)}
               >
-                <Plus className="h-4 w-4 hover:text-[#4CBF87] -ml-3" />
+                <Plus className="-ml-3 h-4 w-4 hover:text-[#4CBF87]" />
               </Button>
             )}
           </div>
